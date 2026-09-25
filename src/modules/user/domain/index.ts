@@ -1,1 +1,12 @@
-export {};
+export * from './entities/address.entity';
+export * from './entities/user.entity';
+export * from './enums/business-type.enum';
+export * from './enums/login-type.enum';
+export * from './enums/user-role.enum';
+export * from './enums/user-status.enum';
+export * from './exceptions/business-type-not-allowed.exception';
+export * from './exceptions/business-type-required.exception';
+export * from './exceptions/invalid-coordinates.exception';
+export * from './exceptions/user-identifier-already-used.exception';
+export * from './value-objects/coordinates.vo';
+export * from './value-objects/identifier.vo';
