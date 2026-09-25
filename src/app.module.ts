@@ -4,6 +4,7 @@ import { DatabaseModule } from '@shared/database';
 import { CryptoModule } from '@shared/crypto';
 import { EventBusModule } from '@shared/event-bus';
 import { SharedLoggerModule } from '@shared/logger';
+import { MessagingModule } from '@shared/messaging';
 import { SharedHttpModule } from '@shared/http';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,6 +17,7 @@ import { AppService } from './app.service';
     DatabaseModule,
     EventBusModule,
     CryptoModule,
+    MessagingModule,
     SharedHttpModule,
     // business modules
   ],
