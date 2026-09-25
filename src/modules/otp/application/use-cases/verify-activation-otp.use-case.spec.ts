@@ -1,6 +1,7 @@
 import { IConfigService } from '@shared/config';
 import { InMemoryCryptoService } from '@shared/crypto';
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
 import { IUserQueryPort } from '@modules/user/contracts';
 import {
   EOtpBlockReason,
@@ -13,6 +14,7 @@ import {
   OtpInvalidCodeException,
   OtpNotFoundException,
 } from '../../domain';
+import { OTP_ACTIVATION_CODE_VERIFIED_EVENT } from '../../contracts';
 import { InMemoryOtpRepository } from '../ports/fakes';
 import { VerifyActivationOtpUseCase } from './verify-activation-otp.use-case';
 
@@ -35,6 +37,7 @@ const issue = (overrides: { ttlSeconds?: number; now?: Date } = {}) =>
 describe('VerifyActivationOtpUseCase', () => {
   let otps: InMemoryOtpRepository;
   let userQuery: IUserQueryPort;
+  let eventBus: InMemoryEventBus;
   let useCase: VerifyActivationOtpUseCase;
 
   beforeEach(() => {
@@ -45,12 +48,14 @@ describe('VerifyActivationOtpUseCase', () => {
           ? { userId: 'user-1', hashedIdentifier: HASH }
           : null,
     };
+    eventBus = new InMemoryEventBus();
     useCase = new VerifyActivationOtpUseCase(
       otps,
       userQuery,
       new InMemoryCryptoService(),
       config,
       new InMemoryUnitOfWork(),
+      eventBus,
     );
   });
 
@@ -67,6 +72,13 @@ describe('VerifyActivationOtpUseCase', () => {
 
     expect(latest.isConsumed).toBe(true);
     expect(old.isConsumed).toBe(false);
+    expect(eventBus.published).toEqual([
+      {
+        name: OTP_ACTIVATION_CODE_VERIFIED_EVENT,
+        occurredAt: expect.any(String),
+        payload: { userId: 'user-1' },
+      },
+    ]);
   });
 
   it('ignores otps of another purpose', async () => {
@@ -99,6 +111,7 @@ describe('VerifyActivationOtpUseCase', () => {
     await expect(verify('000000')).rejects.toThrow(OtpInvalidCodeException);
     expect(otp.wrongCount).toBe(1);
     expect(otp.isConsumed).toBe(false);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('blocks once the wrong limit is exceeded and throws OtpBlocked', async () => {
@@ -110,12 +123,14 @@ describe('VerifyActivationOtpUseCase', () => {
     await expect(verify('000000')).rejects.toThrow(OtpBlockedException);
     expect(otp.blockReason).toBe(EOtpBlockReason.WRONG_COUNT_MAXIMUM);
     await expect(verify('482913')).rejects.toThrow(OtpBlockedException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects a consumed otp', async () => {
     await otps.save(issue());
     await verify('482913');
     await expect(verify('482913')).rejects.toThrow(OtpAlreadyConsumedException);
+    expect(eventBus.published).toHaveLength(1);
   });
 
   it('rejects an expired otp', async () => {

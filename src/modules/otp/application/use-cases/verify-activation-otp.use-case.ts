@@ -2,7 +2,16 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
+import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
+import {
+  OTP_ACTIVATION_CODE_VERIFIED_EVENT,
+  TOtpActivationCodeVerifiedEventPayload,
+} from '../../contracts';
 import {
   EOtpPurpose,
   OtpBlockedException,
@@ -26,6 +35,7 @@ export class VerifyActivationOtpUseCase {
     @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
     @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
   async execute(input: TVerifyActivationOtpInput): Promise<void> {
@@ -62,5 +72,12 @@ export class VerifyActivationOtpUseCase {
     if (result === 'BLOCKED') {
       throw new OtpBlockedException(blockUntil!);
     }
+
+    await this.eventBus.publish(
+      createIntegrationEvent<
+        typeof OTP_ACTIVATION_CODE_VERIFIED_EVENT,
+        TOtpActivationCodeVerifiedEventPayload
+      >(OTP_ACTIVATION_CODE_VERIFIED_EVENT, { userId: user.userId }),
+    );
   }
 }
