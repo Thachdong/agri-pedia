@@ -4,6 +4,10 @@ import { IUserRepository } from '../user.repository';
 export class InMemoryUserRepository implements IUserRepository {
   readonly items = new Map<string, User>();
 
+  async findById(id: string): Promise<User | null> {
+    return this.items.get(id) ?? null;
+  }
+
   async existsByHashedIdentifier(hashedIdentifier: string): Promise<boolean> {
     return [...this.items.values()].some(
       (user) => user.hashedIdentifier === hashedIdentifier,

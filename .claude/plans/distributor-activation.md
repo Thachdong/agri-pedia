@@ -11,9 +11,9 @@ Flow: `POST /auth/activate` (otp module) → otp.VerifyActivationOtp
 - [x] 3. [domain-model]       user: User.activate(); error UserNotFound
 - [x] 4. [query-port]         user: IUserQueryPort.findByIdentifier (normalize + hash inside user module) → { userId, hashedIdentifier }; consumed by otp
 - [x] 5. [use-case]           otp: VerifyActivationOtp, port IOtpRepository.findLatest(hashedIdentifier, purpose)
-- [ ] 6. [use-case]           user: ActivateUser, port IUserRepository.findById
+- [x] 6. [use-case]           user: ActivateUser, port IUserRepository.findById
 - [ ] 7. [persistence]        otp: PgOtpRepository.findLatest (method written in step 5 to compile; verify on real DB)
-- [ ] 8. [persistence]        user: PgUserRepository.findById
+- [ ] 8. [persistence]        user: PgUserRepository.findById (method written in step 6 to compile; verify on real DB)
 - [ ] 9. [integration-event]  VerifyActivationOtp emits `otp.activation-code.verified`
 - [ ] 10. [event-handler]     user: `otp.activation-code.verified` → ActivateUser
 - [ ] 11. [http]              POST /auth/activate

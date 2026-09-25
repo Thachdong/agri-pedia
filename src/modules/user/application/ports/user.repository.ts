@@ -1,6 +1,7 @@
 import { User } from '../../domain';
 
 export interface IUserRepository {
+  findById(id: string): Promise<User | null>;
   existsByHashedIdentifier(hashedIdentifier: string): Promise<boolean>;
   findByHashedIdentifier(hashedIdentifier: string): Promise<User | null>;
   save(user: User): Promise<void>;

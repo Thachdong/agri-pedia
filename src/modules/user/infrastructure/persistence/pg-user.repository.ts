@@ -18,6 +18,11 @@ export class PgUserRepository
     super(dataSource, UserOrmEntity);
   }
 
+  async findById(id: string): Promise<User | null> {
+    const row = await this.repository.findOneBy({ id });
+    return row ? UserMapper.toDomain(row) : null;
+  }
+
   async existsByHashedIdentifier(hashedIdentifier: string): Promise<boolean> {
     return this.repository.existsBy({ hashedIdentifier });
   }
