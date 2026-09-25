@@ -17,8 +17,6 @@ export type TIssueOtpInput = {
   identifier: string;
 };
 
-export type TIssueOtpOutput = { otpId: string; expiredAt: string };
-
 const CHANNEL_BY_SENDER: Record<EOtpSender, EMessageChannel> = {
   [EOtpSender.EMAIL]: EMessageChannel.EMAIL,
   [EOtpSender.PHONE]: EMessageChannel.PHONE,
@@ -40,7 +38,7 @@ export class IssueOtpUseCase {
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
   ) {}
 
-  async execute(input: TIssueOtpInput): Promise<TIssueOtpOutput> {
+  async execute(input: TIssueOtpInput): Promise<void> {
     const { length, ttlSeconds } = this.config.get('otp');
     const code = this.crypto.randomDigits(length);
     const otp = Otp.issue({
@@ -59,7 +57,5 @@ export class IssueOtpUseCase {
       subject: SUBJECT_BY_PURPOSE[input.purpose],
       body: `Mã xác thực AgriPedia của bạn là ${code}. Mã hết hạn sau ${Math.ceil(ttlSeconds / 60)} phút.`,
     });
-
-    return { otpId: otp.id, expiredAt: otp.expiredAt.toISOString() };
   }
 }

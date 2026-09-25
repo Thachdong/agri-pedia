@@ -45,4 +45,5 @@ Scope: register only. Reset-password (`user.password.reset-requested`) comes wit
 
 ## Follow-up: remove unused code (no speculative code)
 - [x] 21. [domain-event + integration-event] drop UserRegistered / `user.account.registered` (no consumer); register emits only `user.identifier.verification-requested` for PENDING distributor
-- [ ] 22. [boundary-review]
+- [x] 22. [cleanup] drop unused: crypto decrypt/verifyPassword, Otp.isExpired, VO equals, IssueOtp/RegisterUser outputs (return void)
+- [ ] 23. [boundary-review]

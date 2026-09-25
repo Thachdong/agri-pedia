@@ -13,12 +13,4 @@ describe('Identifier', () => {
       '0912345678',
     );
   });
-
-  it('compares by login type and value', () => {
-    const a = Identifier.create(ELoginType.EMAIL, 'A@b.com');
-    expect(a.equals(Identifier.create(ELoginType.EMAIL, 'a@b.com'))).toBe(true);
-    expect(a.equals(Identifier.create(ELoginType.PHONE, 'a@b.com'))).toBe(
-      false,
-    );
-  });
 });

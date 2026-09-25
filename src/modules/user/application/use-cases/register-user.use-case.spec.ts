@@ -55,9 +55,10 @@ describe('RegisterUserUseCase', () => {
   });
 
   it('registers an active farmer (no event) with hashed/encrypted identifier and primary address', async () => {
-    const { userId } = await useCase.execute(farmerInput);
+    await useCase.execute(farmerInput);
 
-    const user = users.items.get(userId)!;
+    const [user] = [...users.items.values()];
+    const userId = user.id;
     expect(user.status).toBe(EUserStatus.ACTIVE);
     expect(user.hashedIdentifier).toBe('hash(farmer@mail.com)');
     expect(user.encryptedIdentifier).toBe('enc(farmer@mail.com)');
@@ -74,7 +75,7 @@ describe('RegisterUserUseCase', () => {
   });
 
   it('registers a pending distributor with given username', async () => {
-    const { userId } = await useCase.execute({
+    await useCase.execute({
       ...farmerInput,
       loginType: ELoginType.PHONE,
       identifier: '0912 345 678',
@@ -83,7 +84,8 @@ describe('RegisterUserUseCase', () => {
       businessType: EBusinessType.SEEDS_SEEDLINGS,
     });
 
-    const user = users.items.get(userId)!;
+    const [user] = [...users.items.values()];
+    const userId = user.id;
     expect(user.status).toBe(EUserStatus.PENDING);
     expect(user.hashedIdentifier).toBe('hash(0912345678)');
     expect(user.username).toBe('Seed Shop');

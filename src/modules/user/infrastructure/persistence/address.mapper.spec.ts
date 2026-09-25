@@ -14,6 +14,5 @@ describe('AddressMapper', () => {
     const restored = AddressMapper.toDomain(AddressMapper.toOrm(address));
 
     expect(AddressMapper.toOrm(restored)).toEqual(AddressMapper.toOrm(address));
-    expect(restored.coordinates.equals(address.coordinates)).toBe(true);
   });
 });

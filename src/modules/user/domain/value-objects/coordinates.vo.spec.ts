@@ -3,9 +3,9 @@ import { Coordinates } from './coordinates.vo';
 
 describe('Coordinates', () => {
   it('accepts boundary values', () => {
-    expect(
-      Coordinates.create(-90, 180).equals(Coordinates.create(-90, 180)),
-    ).toBe(true);
+    const coordinates = Coordinates.create(-90, 180);
+    expect(coordinates.lat).toBe(-90);
+    expect(coordinates.long).toBe(180);
   });
 
   it.each([

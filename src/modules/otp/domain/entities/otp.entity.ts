@@ -59,10 +59,6 @@ export class Otp extends AggregateRoot {
     return new Otp(id, { ...props });
   }
 
-  isExpired(now: Date = new Date()): boolean {
-    return now.getTime() >= this.props.expiredAt.getTime();
-  }
-
   get sender(): EOtpSender {
     return this.props.sender;
   }

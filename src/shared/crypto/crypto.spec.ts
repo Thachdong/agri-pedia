@@ -16,27 +16,18 @@ describe('NodeCryptoService', () => {
     expect(crypto.hash('a@b.com')).not.toBe(crypto.hash('c@b.com'));
   });
 
-  it('encrypts with random iv and decrypts back', () => {
+  it('encrypts with a random iv without exposing the plain text', () => {
     const first = crypto.encrypt('0912345678');
     expect(first).not.toBe(crypto.encrypt('0912345678'));
-    expect(crypto.decrypt(first)).toBe('0912345678');
+    expect(first).not.toContain('0912345678');
+    expect(first.split('.')).toHaveLength(3);
   });
 
-  it('rejects tampered cipher text', () => {
-    const [iv, tag, data] = crypto.encrypt('secret').split('.');
-    const tampered = [iv, tag, Buffer.from('other').toString('base64url')];
-    expect(() => crypto.decrypt(tampered.join('.'))).toThrow();
-    expect(() => crypto.decrypt(data)).toThrow();
-  });
-
-  it('hashes and verifies passwords', async () => {
+  it('hashes passwords with a random salt', async () => {
     const hashed = await crypto.hashPassword('P@ssw0rd');
+    expect(hashed).toMatch(/^scrypt\$16384\$8\$1\$[\w-]+\$[\w-]+$/);
     expect(hashed).not.toContain('P@ssw0rd');
-    await expect(crypto.verifyPassword('P@ssw0rd', hashed)).resolves.toBe(true);
-    await expect(crypto.verifyPassword('wrong', hashed)).resolves.toBe(false);
-    await expect(crypto.verifyPassword('P@ssw0rd', 'garbage')).resolves.toBe(
-      false,
-    );
+    expect(hashed).not.toBe(await crypto.hashPassword('P@ssw0rd'));
   });
 
   it('generates numeric codes of given length', () => {

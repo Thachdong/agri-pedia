@@ -47,8 +47,6 @@ export type TRegisterUserInput = {
   };
 };
 
-export type TRegisterUserOutput = { userId: string };
-
 @Injectable()
 export class RegisterUserUseCase {
   constructor(
@@ -59,7 +57,7 @@ export class RegisterUserUseCase {
     @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
-  async execute(input: TRegisterUserInput): Promise<TRegisterUserOutput> {
+  async execute(input: TRegisterUserInput): Promise<void> {
     const identifier = Identifier.create(input.loginType, input.identifier);
     const coordinates = Coordinates.create(
       input.address.lat,
@@ -114,7 +112,5 @@ export class RegisterUserUseCase {
           }),
         ),
     );
-
-    return { userId: user.id };
   }
 }

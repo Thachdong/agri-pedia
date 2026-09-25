@@ -30,12 +30,6 @@ describe('Otp.issue', () => {
     expect(otp.hashedIdentifier).toBe('hash');
   });
 
-  it('is expired from expiredAt onwards', () => {
-    const otp = issue();
-    expect(otp.isExpired(new Date('2026-01-01T00:04:59.999Z'))).toBe(false);
-    expect(otp.isExpired(new Date('2026-01-01T00:05:00.000Z'))).toBe(true);
-  });
-
   it('restores persisted state as is', () => {
     const otp = Otp.restore('otp-1', {
       sender: EOtpSender.PHONE,

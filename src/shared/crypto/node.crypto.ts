@@ -1,13 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   createCipheriv,
-  createDecipheriv,
   createHmac,
   randomBytes,
   randomInt,
   scrypt,
   ScryptOptions,
-  timingSafeEqual,
 } from 'node:crypto';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { ICryptoService } from './crypto.interface';
@@ -63,22 +61,6 @@ export class NodeCryptoService implements ICryptoService {
       .join('.');
   }
 
-  decrypt(cipherText: string): string {
-    const parts = cipherText.split('.');
-    if (parts.length !== 3) {
-      throw new Error('Invalid cipher text format');
-    }
-    const [iv, authTag, encrypted] = parts.map((part) =>
-      Buffer.from(part, 'base64url'),
-    );
-    const decipher = createDecipheriv(CIPHER, this.encryptionKey, iv);
-    decipher.setAuthTag(authTag);
-    return Buffer.concat([
-      decipher.update(encrypted),
-      decipher.final(),
-    ]).toString('utf8');
-  }
-
   async hashPassword(password: string): Promise<string> {
     const salt = randomBytes(SCRYPT_SALT_LENGTH);
     const { N, r, p } = SCRYPT_OPTIONS;
@@ -95,25 +77,6 @@ export class NodeCryptoService implements ICryptoService {
       salt.toString('base64url'),
       key.toString('base64url'),
     ].join('$');
-  }
-
-  async verifyPassword(
-    password: string,
-    passwordHash: string,
-  ): Promise<boolean> {
-    const parts = passwordHash.split('$');
-    if (parts.length !== 6 || parts[0] !== 'scrypt') {
-      return false;
-    }
-    const [, N, r, p, salt, key] = parts;
-    const expected = Buffer.from(key, 'base64url');
-    const actual = await scryptAsync(
-      password,
-      Buffer.from(salt, 'base64url'),
-      expected.length,
-      { N: Number(N), r: Number(r), p: Number(p) },
-    );
-    return timingSafeEqual(actual, expected);
   }
 
   randomDigits(length: number): string {

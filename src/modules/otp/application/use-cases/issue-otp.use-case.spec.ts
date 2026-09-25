@@ -32,19 +32,18 @@ describe('IssueOtpUseCase', () => {
 
   it('stores an encrypted code for the hashed identifier and sends it', async () => {
     const before = Date.now();
-    const { otpId, expiredAt } = await useCase.execute({
+    await useCase.execute({
       sender: EOtpSender.EMAIL,
       purpose: EOtpPurpose.ACTIVATE_DISTRIBUTOR,
       identifier: 'shop@mail.com',
     });
 
-    const otp = otps.items.get(otpId)!;
+    const [otp] = [...otps.items.values()];
     expect(otp.hashedIdentifier).toBe('hash(shop@mail.com)');
     expect(otp.encryptedCode).toBe('enc(482913)');
     expect(otp.purpose).toBe(EOtpPurpose.ACTIVATE_DISTRIBUTOR);
     expect(otp.expiredAt.getTime() - otp.issuedAt.getTime()).toBe(300_000);
     expect(otp.issuedAt.getTime()).toBeGreaterThanOrEqual(before);
-    expect(expiredAt).toBe(otp.expiredAt.toISOString());
 
     expect(messageSender.sent).toEqual([
       {

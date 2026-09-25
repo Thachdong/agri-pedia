@@ -19,8 +19,4 @@ export class Coordinates {
     }
     return new Coordinates(lat, long);
   }
-
-  equals(other: Coordinates): boolean {
-    return this.lat === other.lat && this.long === other.long;
-  }
 }

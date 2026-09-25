@@ -19,8 +19,4 @@ export class Identifier {
         : trimmed.replace(/[\s.\-()]/g, '');
     return new Identifier(loginType, value);
   }
-
-  equals(other: Identifier): boolean {
-    return this.loginType === other.loginType && this.value === other.value;
-  }
 }
