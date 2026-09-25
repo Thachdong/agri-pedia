@@ -29,6 +29,7 @@ src/
 │   ├── database/            # wraps TypeORM -> IUnitOfWork (UNIT_OF_WORK), TypeOrmRepositoryBase
 │   ├── logger/              # wraps nestjs-pino -> ILogger (LOGGER), useAppLogger()
 │   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
+│   ├── crypto/              # wraps node:crypto -> ICryptoService (CRYPTO_SERVICE): HMAC hash, AES-GCM, scrypt password
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
 │   └── http/                # global ValidationPipe + DomainExceptionFilter
 └── modules/

@@ -6,7 +6,7 @@ Flow: `POST /auth/register` → user.RegisterUser (User + primary Address, 1 tra
 → emits `user.account.registered` → otp module handles (DISTRIBUTOR only) → otp.IssueOtp (ACTIVATE_DISTRIBUTOR) → send code.
 
 - [x] 1. [config-group]       `security` (identifier hash secret, identifier encryption key) + `otp` (length, TTL, max wrong, max retry, wrong-count block duration, retry-count block duration — 2 separate envs)
-- [ ] 2. [shared-wrapper]     `crypto` — hash identifier (HMAC), encrypt/decrypt (AES-GCM), hash/verify password (node scrypt, no new package)
+- [x] 2. [shared-wrapper]     `crypto` — hash identifier (HMAC), encrypt/decrypt (AES-GCM), hash/verify password (node scrypt, no new package)
 - [ ] 3. [shared-wrapper]     `messaging` — IMessageSender (EMAIL | PHONE); dev adapter logs message, real provider later
 - [ ] 4. [module-scaffold]    module `user`
 - [ ] 5. [module-scaffold]    module `otp`

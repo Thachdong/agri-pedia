@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SharedConfigModule } from '@shared/config';
 import { DatabaseModule } from '@shared/database';
+import { CryptoModule } from '@shared/crypto';
 import { EventBusModule } from '@shared/event-bus';
 import { SharedLoggerModule } from '@shared/logger';
 import { SharedHttpModule } from '@shared/http';
@@ -14,6 +15,7 @@ import { AppService } from './app.service';
     SharedLoggerModule,
     DatabaseModule,
     EventBusModule,
+    CryptoModule,
     SharedHttpModule,
     // business modules
   ],
