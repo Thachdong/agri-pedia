@@ -5,12 +5,13 @@ import {
   IssueOtpUseCase,
   VerifyActivationOtpUseCase,
 } from './application/use-cases';
+import { ActivationController } from './infrastructure/http/activation.controller';
 import { UserIdentifierVerificationRequestedHandler } from './infrastructure/handlers/user-identifier-verification-requested.handler';
 import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository';
 
 @Module({
   imports: [UserModule],
-  controllers: [],
+  controllers: [ActivationController],
   providers: [
     IssueOtpUseCase,
     VerifyActivationOtpUseCase,
