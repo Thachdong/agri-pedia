@@ -5,7 +5,7 @@ import { IMessageSender, TOutboundMessage } from './messaging.interface';
 
 /**
  * Placeholder sender until a real email/SMS provider is wired: writes the message to the log.
- * The body (may hold OTP codes) is logged only outside production.
+ * Outside production the body (may hold OTP codes) is part of the log message; in production it is omitted.
  */
 @Injectable()
 export class LogMessageSender implements IMessageSender {
@@ -21,11 +21,19 @@ export class LogMessageSender implements IMessageSender {
   }
 
   async send(message: TOutboundMessage): Promise<void> {
-    this.logger.info('Message sent (log only)', {
+    const meta = {
       channel: message.channel,
       to: message.to,
       subject: message.subject,
-      ...(this.includeBody ? { body: message.body } : {}),
-    });
+    };
+    if (!this.includeBody) {
+      this.logger.info('Message sent (log only)', meta);
+      return;
+    }
+    // Body in the message text (not meta) so pretty logs show it up front, e.g. the OTP code.
+    this.logger.info(
+      `Message sent (log only) ${message.channel} -> ${message.to}: ${message.body}`,
+      meta,
+    );
   }
 }

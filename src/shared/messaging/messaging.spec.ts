@@ -14,18 +14,19 @@ const message = {
 };
 
 describe('LogMessageSender', () => {
-  it('logs the full message outside production', async () => {
+  it('puts the body in the log message outside production', async () => {
     const logger = new InMemoryLogger();
     await new LogMessageSender(logger, configFor('development')).send(message);
-    expect(logger.entries[0].meta).toMatchObject({
-      to: 'a@b.com',
-      body: 'Your code is 123456',
-    });
+    expect(logger.entries[0].message).toBe(
+      'Message sent (log only) EMAIL -> a@b.com: Your code is 123456',
+    );
+    expect(logger.entries[0].meta).toMatchObject({ to: 'a@b.com' });
   });
 
   it('omits the body in production', async () => {
     const logger = new InMemoryLogger();
     await new LogMessageSender(logger, configFor('production')).send(message);
+    expect(logger.entries[0].message).toBe('Message sent (log only)');
     expect(logger.entries[0].meta).not.toHaveProperty('body');
   });
 });
