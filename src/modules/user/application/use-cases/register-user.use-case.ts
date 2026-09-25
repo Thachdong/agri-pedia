@@ -1,13 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
+import { TDomainEvent } from '@shared/domain';
 import {
   createIntegrationEvent,
   EVENT_BUS,
   IEventBus,
+  TIntegrationEvent,
 } from '@shared/event-bus';
 import {
-  TUserRegisteredEventPayload,
+  TUserIdentifierVerificationRequestedEvent,
+  TUserRegisteredEvent,
+  USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
   USER_REGISTERED_EVENT,
 } from '../../contracts';
 import {
@@ -17,10 +21,12 @@ import {
   ELoginType,
   EUserRole,
   Identifier,
+  TUserIdentifierVerificationRequestedDomainEvent,
+  TUserRegisteredDomainEvent,
   User,
+  USER_IDENTIFIER_VERIFICATION_REQUESTED,
   USER_REGISTERED,
   UserIdentifierAlreadyUsedException,
-  TUserRegisteredDomainEvent,
 } from '../../domain';
 import {
   ADDRESS_REPOSITORY,
@@ -95,27 +101,49 @@ export class RegisterUserUseCase {
       return created;
     });
 
-    const registered = user
-      .pullEvents()
-      .filter(
-        (event): event is TUserRegisteredDomainEvent =>
-          event.name === USER_REGISTERED,
-      );
     await this.eventBus.publishAll(
-      registered.map(({ payload }) =>
-        createIntegrationEvent<
-          typeof USER_REGISTERED_EVENT,
-          TUserRegisteredEventPayload
+      user
+        .pullEvents()
+        .map((event) => this.toIntegrationEvent(event, identifier))
+        .filter((event): event is TIntegrationEvent => event !== null),
+    );
+
+    return { userId: user.id };
+  }
+
+  /** Public contracts carry the plain normalized identifier, which the aggregate never holds. */
+  private toIntegrationEvent(
+    event: TDomainEvent,
+    identifier: Identifier,
+  ): TIntegrationEvent | null {
+    switch (event.name) {
+      case USER_REGISTERED: {
+        const { payload } = event as TUserRegisteredDomainEvent;
+        return createIntegrationEvent<
+          TUserRegisteredEvent['name'],
+          TUserRegisteredEvent['payload']
         >(USER_REGISTERED_EVENT, {
           userId: payload.userId,
           loginType: payload.loginType,
           identifier: identifier.value,
           role: payload.role,
           status: payload.status,
-        }),
-      ),
-    );
-
-    return { userId: user.id };
+        });
+      }
+      case USER_IDENTIFIER_VERIFICATION_REQUESTED: {
+        const { payload } =
+          event as TUserIdentifierVerificationRequestedDomainEvent;
+        return createIntegrationEvent<
+          TUserIdentifierVerificationRequestedEvent['name'],
+          TUserIdentifierVerificationRequestedEvent['payload']
+        >(USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT, {
+          userId: payload.userId,
+          loginType: payload.loginType,
+          identifier: identifier.value,
+        });
+      }
+      default:
+        return null;
+    }
   }
 }

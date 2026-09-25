@@ -1,7 +1,10 @@
 import { InMemoryCryptoService } from '@shared/crypto';
 import { InMemoryUnitOfWork } from '@shared/database';
 import { InMemoryEventBus } from '@shared/event-bus';
-import { USER_REGISTERED_EVENT } from '../../contracts';
+import {
+  USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
+  USER_REGISTERED_EVENT,
+} from '../../contracts';
 import {
   BusinessTypeNotAllowedException,
   BusinessTypeRequiredException,
@@ -70,7 +73,9 @@ describe('RegisterUserUseCase', () => {
     expect(address.isPrimary).toBe(true);
     expect(address.coordinates.lat).toBe(10.03);
 
-    expect(eventBus.published).toHaveLength(1);
+    expect(eventBus.published.map((event) => event.name)).toEqual([
+      USER_REGISTERED_EVENT,
+    ]);
     expect(eventBus.published[0].payload).toMatchObject({
       userId,
       identifier: 'farmer@mail.com',
@@ -103,6 +108,15 @@ describe('RegisterUserUseCase', () => {
           identifier: '0912345678',
           role: 'DISTRIBUTOR',
           status: 'PENDING',
+        },
+      },
+      {
+        name: USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
+        occurredAt: expect.any(String),
+        payload: {
+          userId,
+          loginType: 'PHONE',
+          identifier: '0912345678',
         },
       },
     ]);
