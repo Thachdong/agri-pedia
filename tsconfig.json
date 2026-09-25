@@ -9,7 +9,6 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -19,16 +18,16 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@config": [
-        "src/config"
+        "./src/config"
       ],
       "@config/*": [
-        "src/config/*"
+        "./src/config/*"
       ],
       "@shared/*": [
-        "src/shared/*"
+        "./src/shared/*"
       ],
       "@modules/*": [
-        "src/modules/*"
+        "./src/modules/*"
       ]
     }
   }
