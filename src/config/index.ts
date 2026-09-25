@@ -1,17 +1,29 @@
 import { appConfig, TAppConfig } from './app.config';
 import { databaseConfig, TDatabaseConfig } from './database.config';
 import { loggerConfig, TLoggerConfig } from './logger.config';
+import { otpConfig, TOtpConfig } from './otp.config';
+import { securityConfig, TSecurityConfig } from './security.config';
 
 export * from './app.config';
 export * from './database.config';
 export * from './logger.config';
+export * from './otp.config';
+export * from './security.config';
 
 /** Every config group, loaded once by SharedConfigModule. Add new groups here. */
-export const configGroups = [appConfig, databaseConfig, loggerConfig];
+export const configGroups = [
+  appConfig,
+  databaseConfig,
+  loggerConfig,
+  securityConfig,
+  otpConfig,
+];
 
 /** Namespace -> type map used by IConfigService.get(). Keep in sync with configGroups. */
 export type TConfigMap = {
   app: TAppConfig;
   database: TDatabaseConfig;
   logger: TLoggerConfig;
+  security: TSecurityConfig;
+  otp: TOtpConfig;
 };
