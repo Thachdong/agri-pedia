@@ -10,6 +10,7 @@ NestJS 10 (TypeScript) backend. Postgres 16 via `docker-compose.yml` (pgAdmin on
 - `npm run lint` / `npm run format` — ESLint (auto-fix) / Prettier
 - `npm test` — unit tests (`*.spec.ts` under `src/`)
 - `npm run test:e2e` — e2e tests (`test/`)
+- `npm run migration:generate -- src/migrations/<module>-<desc>` / `migration:run` / `migration:revert`
 
 Run `npm run lint` and `npm test` before calling a task done.
 
@@ -20,74 +21,96 @@ One deployable app, split into business modules. Each module is a hexagon: domai
 ```
 src/
 ├── main.ts
-├── app.module.ts            # wires ConfigModule, shared modules, business modules
-├── config/                  # config groups (see "Config")
-├── shared/                  # wrappers for ALL external packages + cross-cutting infra
-│   ├── config/              # wraps @nestjs/config -> typed IConfigService
-│   ├── event-bus/           # IEventBus port + adapter, TDomainEvent base type
-│   ├── database/            # ORM wrapper, base repository, transaction helper
-│   ├── logger/              # ILogger + adapter
-│   └── ...                  # one folder per wrapped package/concern
+├── app.module.ts            # wires shared modules + business modules
+├── config/                  # config groups (zod-validated), see "Config"
+├── migrations/              # TypeORM migrations, named <timestamp>-<module>-<desc>
+├── shared/
+│   ├── config/              # wraps @nestjs/config -> IConfigService (CONFIG_SERVICE)
+│   ├── database/            # wraps TypeORM -> IUnitOfWork (UNIT_OF_WORK), TypeOrmRepositoryBase
+│   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
+│   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
+│   └── http/                # global ValidationPipe + DomainExceptionFilter
 └── modules/
     └── <module>/
         ├── contracts/       # PUBLIC API of the module (only thing others may import)
         │   ├── events/      # integration event names + payload types
-        │   ├── ports/       # interfaces other modules may call (e.g. IUserQueryPort)
+        │   ├── ports/       # query ports other modules may call (I<X>QueryPort)
         │   ├── tokens.ts    # DI tokens (Symbols) for exported ports
         │   └── index.ts
-        ├── domain/          # entities, value objects, domain events, repository ports
-        ├── application/     # use cases, application services, inbound/outbound ports
-        ├── infrastructure/  # adapters: persistence, http controllers, event handlers
+        ├── domain/          # entities, value objects, domain events, domain exceptions
+        ├── application/
+        │   ├── ports/       # outbound ports (I<X>Repository, ...) + tokens
+        │   └── use-cases/   # one use case per file
+        ├── infrastructure/
+        │   ├── persistence/ # *.orm-entity.ts, mappers, Pg<X>Repository
+        │   ├── http/        # controllers + DTOs
+        │   ├── handlers/    # integration event handlers
+        │   └── queries/     # implementations of contracts/ports
         └── <module>.module.ts
 ```
 
+Path aliases: `@config`, `@shared/*`, `@modules/*` (tsconfig + jest mapped).
+
 ### Dependency rules (hard)
 
-- `domain/` imports nothing from `application/`, `infrastructure/`, NestJS, or any external package. Pure TypeScript.
-- `application/` depends on `domain/` and on port interfaces only — never on concrete adapters.
-- `infrastructure/` implements ports and may use `@shared/*`.
+- `domain/` imports only other `domain/` files and `@shared/domain`. No NestJS, no TypeORM, no external package.
+- `application/` depends on `domain/`, its own ports, and shared interfaces (`IUnitOfWork`, `IEventBus`) — never on concrete adapters.
+- `infrastructure/` implements ports; may use `@shared/*` and utility packages.
 - Adapters are bound to ports via DI tokens in `<module>.module.ts` (`{ provide: USER_REPOSITORY, useClass: PgUserRepository }`). Inject by token, type by interface.
 
 ### Cross-module communication (hard)
 
 Modules never talk to each other directly.
 
-- A module may import **only** from another module's `contracts/` (types, interfaces, tokens, event names). Never from its `domain/`, `application/`, or `infrastructure/`, and never inject another module's concrete service/class.
-- **Async / side effects** → publish an integration event through `IEventBus` (`@shared/event-bus`). The event name + payload type live in the publisher's `contracts/events/`. Subscribers handle it in their own `infrastructure/` event handler and call their own use case.
-- **Sync query** (rare, read-only) → depend on a port interface from the provider's `contracts/ports/`, injected by its token. The provider module binds and exports the implementation.
-- No shared DB tables between modules; no cross-module joins or FK-based reach-ins. Each module owns its tables.
+- A module may import **only** from another module's `contracts/` (types, interfaces, tokens, event names). Never from its `domain/`, `application/`, or `infrastructure/`, and never inject another module's concrete class.
+- **Async / side effects** → publish an integration event through `IEventBus`. Name + payload type live in the publisher's `contracts/events/`. Subscribers use `@OnIntegrationEvent` in their own `infrastructure/handlers/` and call their own use case.
+- **Sync query** (read-only) → depend on `I<X>QueryPort` from the provider's `contracts/ports/`, injected by its token. Provider binds and exports the implementation.
+- Each module owns its tables. No cross-module joins or foreign keys.
 - No circular module dependencies. If two modules need each other, use events.
+
+### Transactions & events
+
+- Use case wraps writes in `unitOfWork.runInTransaction(...)`. Repositories extending `TypeOrmRepositoryBase` join it automatically.
+- Publish integration events **after** the transaction resolves, never inside it.
+
+## Errors
+
+- Business errors = subclasses of `DomainException` (`@shared/domain`) in the module's `domain/exceptions/`, each with a stable `code` (`<MODULE>_<REASON>`) and an `EDomainErrorType`.
+- Throw them from domain/application. `DomainExceptionFilter` maps type → HTTP status. Controllers never catch-and-translate.
 
 ## Config
 
-- Config is split into **groups** under `src/config/`, one file per group: `app.config.ts`, `database.config.ts`, `auth.config.ts`, ...
-- Each group file exports: its type (`TDatabaseConfig`), a factory reading `process.env` (namespaced, e.g. `registerAs('database', ...)`), and env validation for its keys.
-- `src/config/index.ts` exports the list of all groups; `app.module.ts` loads them explicitly in one place. No implicit/scattered `process.env` reads.
-- Code reads config only via the typed `IConfigService` from `@shared/config` (e.g. `config.get('database')` returns `TDatabaseConfig`). Never read `process.env` outside `src/config/`.
-- Adding an env var: add it to its group + validation + `.env.example`.
+- One file per group under `src/config/` (`app.config.ts`, `database.config.ts`): zod schema, inferred type `T<Group>Config`, `registerAs('<group>', ...)` factory that parses `process.env`.
+- `src/config/index.ts` lists all groups in `configGroups` and the `TConfigMap` type; `SharedConfigModule` loads them in one place.
+- Read config only via `IConfigService` (`CONFIG_SERVICE`): `config.get('database')` → `TDatabaseConfig`. No `process.env` outside `src/config/`.
+- New env var → group schema + `.env.example`.
 
 ## External packages
 
-- Every external package must be wrapped/configured in `src/shared/<concern>/` before use. Business modules import the wrapper (`@shared/...`), never the package.
-- Wrapper exposes a project-owned interface (`ILogger`, `IEventBus`, `IHashService`, ...) plus a Nest module that provides the adapter. Swapping the library must only touch `shared/`.
-- Allowed directly anywhere (framework core): `@nestjs/common`, `@nestjs/core`, `reflect-metadata`, `rxjs` — except in `domain/`, which stays framework-free.
-- Before adding a new dependency, create its `shared/` wrapper in the same change.
+- **DI / runtime-configured packages** (module registration, providers, lifecycle: `@nestjs/config`, `@nestjs/typeorm`, `@nestjs/event-emitter`, queues, cache, mailers, HTTP clients, ...) → wrap in `src/shared/<concern>/`: project interface + token + Nest module. Business modules use the interface, never the package's module/service.
+- **Utilities** (decorators and helpers with no DI: `class-validator`, `class-transformer`, TypeORM entity decorators and `Repository` type, `zod`, date/string libs) → import directly, but only outside `domain/`.
+- Framework core (`@nestjs/common`, `@nestjs/core`, `rxjs`) → direct, outside `domain/`.
+- New DI-type dependency → create its `shared/` wrapper in the same change (skill `hex-shared-wrapper`).
 
 ## Naming
 
-- Types: `T` prefix — `type TUser = {...}`, `TCreateUserInput`, `TDatabaseConfig`.
+- Types: `T` prefix — `TUser`, `TCreateUserInput`, `TDatabaseConfig`.
 - Interfaces: `I` prefix — `IUserRepository`, `IEventBus`, `IUserQueryPort`.
 - Enums: `E` prefix — `EUserRole`, `EOrderStatus`.
-- Classes: PascalCase, no prefix — `User`, `CreateUserUseCase`, `PgUserRepository`.
-- DI tokens: UPPER_SNAKE `Symbol` — `export const USER_REPOSITORY = Symbol('USER_REPOSITORY')`.
-- Integration events: `<module>.<entity>.<past-tense>` — `'user.account.created'`, payload type `TUserCreatedEvent`.
-- Files: kebab-case with role suffix — `user.entity.ts`, `user.repository.ts` (port), `pg-user.repository.ts` (adapter), `create-user.use-case.ts`, `user.controller.ts`, `user-created.event.ts`, `user-created.handler.ts`, `database.config.ts`.
-- Each folder that is imported from outside exposes an `index.ts` barrel.
+- Classes: PascalCase, no prefix — `User`, `CreateUserUseCase`, `PgUserRepository`, `EmailAlreadyUsedException`.
+- DI tokens: UPPER_SNAKE `Symbol` — `USER_REPOSITORY = Symbol('USER_REPOSITORY')`.
+- Integration events: `<module>.<entity>.<past-tense>` — `'user.account.registered'`, payload `TUserRegisteredEventPayload`.
+- Files: kebab-case with role suffix — `user.entity.ts`, `email.vo.ts`, `user-registered.domain-event.ts`, `email-already-used.exception.ts`, `user.repository.ts` (port), `user.orm-entity.ts`, `user.mapper.ts`, `pg-user.repository.ts`, `register-user.use-case.ts`, `user.controller.ts`, `register-user.dto.ts`, `user-registered.event.ts`, `user-registered.handler.ts`.
+- Folders imported from outside expose an `index.ts` barrel.
 
 ## Testing
 
-- Unit-test use cases with in-memory fakes of ports (no DB, no Nest container).
-- Adapter/controller tests go in `infrastructure/` alongside the adapter.
+- Unit-test domain and use cases with in-memory fakes (`InMemory<X>Repository`, `InMemoryUnitOfWork`, `InMemoryEventBus`). No DB, no Nest container.
+- HTTP adapters: e2e test in `test/` (needs `docker compose up -d`).
+
+## Skills (hexagonal workflow)
+
+Project skills in `.claude/skills/`. For a whole feature use `/hex-feature`: it reports a plan first, then runs one skill per step and stops for review after each. Single-scope skills: `hex-module-scaffold`, `hex-config-group`, `hex-shared-wrapper`, `hex-domain-model`, `hex-domain-event`, `hex-use-case`, `hex-persistence-adapter`, `hex-integration-event`, `hex-event-handler`, `hex-query-port`, `hex-http-adapter`, `hex-boundary-review`. Stay within the invoked skill's scope.
 
 ## graphify
 
