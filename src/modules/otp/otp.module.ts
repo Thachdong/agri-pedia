@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
+import { UserModule } from '@modules/user/user.module';
 import { OTP_REPOSITORY } from './application/ports';
 import { IssueOtpUseCase } from './application/use-cases';
 import { UserIdentifierVerificationRequestedHandler } from './infrastructure/handlers/user-identifier-verification-requested.handler';
 import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository';
 
 @Module({
-  imports: [],
+  imports: [UserModule],
   controllers: [],
   providers: [
     IssueOtpUseCase,

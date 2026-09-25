@@ -22,6 +22,11 @@ export class PgUserRepository
     return this.repository.existsBy({ hashedIdentifier });
   }
 
+  async findByHashedIdentifier(hashedIdentifier: string): Promise<User | null> {
+    const row = await this.repository.findOneBy({ hashedIdentifier });
+    return row ? UserMapper.toDomain(row) : null;
+  }
+
   async save(user: User): Promise<void> {
     try {
       await this.repository.save(UserMapper.toOrm(user));

@@ -10,6 +10,14 @@ export class InMemoryUserRepository implements IUserRepository {
     );
   }
 
+  async findByHashedIdentifier(hashedIdentifier: string): Promise<User | null> {
+    return (
+      [...this.items.values()].find(
+        (user) => user.hashedIdentifier === hashedIdentifier,
+      ) ?? null
+    );
+  }
+
   async save(user: User): Promise<void> {
     this.items.set(user.id, user);
   }

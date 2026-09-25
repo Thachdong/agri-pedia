@@ -9,7 +9,7 @@ Flow: `POST /auth/activate` (otp module) → otp.VerifyActivationOtp
 - [x] 1. [shared-wrapper]     crypto: add `decrypt` (stored code is AES-encrypted, needed to compare)
 - [x] 2. [domain-model]       otp: Otp behaviours (assert usable, record wrong attempt + block, consume); errors OtpNotFound, OtpAlreadyConsumed, OtpBlocked, OtpExpired, OtpInvalidCode
 - [x] 3. [domain-model]       user: User.activate(); error UserNotFound
-- [ ] 4. [query-port]         user: IUserQueryPort.findByIdentifier (normalize + hash inside user module) → { userId, hashedIdentifier }; consumed by otp
+- [x] 4. [query-port]         user: IUserQueryPort.findByIdentifier (normalize + hash inside user module) → { userId, hashedIdentifier }; consumed by otp
 - [ ] 5. [use-case]           otp: VerifyActivationOtp, port IOtpRepository.findLatest(hashedIdentifier, purpose)
 - [ ] 6. [use-case]           user: ActivateUser, port IUserRepository.findById
 - [ ] 7. [persistence]        otp: PgOtpRepository.findLatest
