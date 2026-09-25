@@ -40,6 +40,14 @@ export type TOtpAttemptPolicy = {
 /** VERIFIED: code consumed. WRONG_CODE: attempt counted. BLOCKED: this attempt exceeded the limit. */
 export type TOtpVerifyResult = 'VERIFIED' | 'WRONG_CODE' | 'BLOCKED';
 
+export type TOtpResendPolicy = {
+  maxRetryCount: number;
+  retryBlockSeconds: number;
+};
+
+/** RESEND: send the same code again. EXPIRED: issue a new otp instead. BLOCKED: this resend exceeded the limit. */
+export type TOtpResendResult = 'RESEND' | 'EXPIRED' | 'BLOCKED';
+
 export class Otp extends AggregateRoot {
   private constructor(
     id: string,
@@ -82,7 +90,10 @@ export class Otp extends AggregateRoot {
     now: Date,
     policy: TOtpAttemptPolicy,
   ): TOtpVerifyResult {
-    this.assertUsable(now);
+    this.assertNotConsumedNorBlocked(now);
+    if (this.isExpired(now)) {
+      throw new OtpExpiredException();
+    }
     if (submittedCode === actualCode) {
       this.props.isConsumed = true;
       return 'VERIFIED';
@@ -98,7 +109,29 @@ export class Otp extends AggregateRoot {
     return 'WRONG_CODE';
   }
 
-  private assertUsable(now: Date): void {
+  /**
+   * Asks for the code to be sent again. Throws if consumed or still blocked (even when expired).
+   * An expired otp is not counted: the caller issues a new one. Otherwise retryCount is counted;
+   * once it exceeds `maxRetryCount` the otp is blocked for `retryBlockSeconds`.
+   * State changes must be persisted even when the result is BLOCKED.
+   */
+  resend(now: Date, policy: TOtpResendPolicy): TOtpResendResult {
+    this.assertNotConsumedNorBlocked(now);
+    if (this.isExpired(now)) {
+      return 'EXPIRED';
+    }
+    this.props.retryCount += 1;
+    if (this.props.retryCount > policy.maxRetryCount) {
+      this.props.blockUntil = new Date(
+        now.getTime() + policy.retryBlockSeconds * 1000,
+      );
+      this.props.blockReason = EOtpBlockReason.RETRY_COUNT_MAXIMUM;
+      return 'BLOCKED';
+    }
+    return 'RESEND';
+  }
+
+  private assertNotConsumedNorBlocked(now: Date): void {
     if (this.props.isConsumed) {
       throw new OtpAlreadyConsumedException();
     }
@@ -106,9 +139,10 @@ export class Otp extends AggregateRoot {
     if (blockUntil !== null && now.getTime() < blockUntil.getTime()) {
       throw new OtpBlockedException(blockUntil);
     }
-    if (now.getTime() >= this.props.expiredAt.getTime()) {
-      throw new OtpExpiredException();
-    }
+  }
+
+  private isExpired(now: Date): boolean {
+    return now.getTime() >= this.props.expiredAt.getTime();
   }
 
   get sender(): EOtpSender {

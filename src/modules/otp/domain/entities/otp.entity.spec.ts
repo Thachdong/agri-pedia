@@ -4,7 +4,7 @@ import { EOtpSender } from '../enums/otp-sender.enum';
 import { OtpAlreadyConsumedException } from '../exceptions/otp-already-consumed.exception';
 import { OtpBlockedException } from '../exceptions/otp-blocked.exception';
 import { OtpExpiredException } from '../exceptions/otp-expired.exception';
-import { Otp, TOtpAttemptPolicy } from './otp.entity';
+import { Otp, TOtpAttemptPolicy, TOtpResendPolicy } from './otp.entity';
 
 const now = new Date('2026-01-01T00:00:00.000Z');
 
@@ -128,5 +128,74 @@ describe('Otp.verify', () => {
       OtpExpiredException,
     );
     expect(otp.wrongCount).toBe(0);
+  });
+});
+
+describe('Otp.resend', () => {
+  const policy: TOtpResendPolicy = {
+    maxRetryCount: 2,
+    retryBlockSeconds: 3600,
+  };
+  const at = (seconds: number) => new Date(now.getTime() + seconds * 1000);
+  const restoreWith = (overrides: Partial<Parameters<typeof Otp.restore>[1]>) =>
+    Otp.restore('otp-1', {
+      sender: EOtpSender.EMAIL,
+      purpose: EOtpPurpose.ACTIVATE_DISTRIBUTOR,
+      hashedIdentifier: 'hash',
+      encryptedCode: 'enc',
+      retryCount: 0,
+      wrongCount: 0,
+      issuedAt: now,
+      expiredAt: at(300),
+      isConsumed: false,
+      blockUntil: null,
+      blockReason: null,
+      ...overrides,
+    });
+
+  it('counts resends up to the limit', () => {
+    const otp = issue();
+    expect(otp.resend(at(10), policy)).toBe('RESEND');
+    expect(otp.resend(at(20), policy)).toBe('RESEND');
+    expect(otp.retryCount).toBe(2);
+    expect(otp.blockUntil).toBeNull();
+  });
+
+  it('blocks once retryCount exceeds the limit', () => {
+    const otp = issue();
+    otp.resend(at(10), policy);
+    otp.resend(at(20), policy);
+    expect(otp.resend(at(30), policy)).toBe('BLOCKED');
+    expect(otp.retryCount).toBe(3);
+    expect(otp.blockUntil).toEqual(at(3630));
+    expect(otp.blockReason).toBe(EOtpBlockReason.RETRY_COUNT_MAXIMUM);
+  });
+
+  it('rejects a resend while blocked', () => {
+    const otp = restoreWith({ retryCount: 3, blockUntil: at(3600) });
+    expect(() => otp.resend(at(100), policy)).toThrow(OtpBlockedException);
+    expect(otp.retryCount).toBe(3);
+  });
+
+  it('rejects a resend while blocked even when expired', () => {
+    const otp = restoreWith({ blockUntil: at(3600) });
+    expect(() => otp.resend(at(400), policy)).toThrow(OtpBlockedException);
+  });
+
+  it('signals EXPIRED without counting once the block is over', () => {
+    const otp = restoreWith({ retryCount: 3, blockUntil: at(200) });
+    expect(otp.resend(at(301), policy)).toBe('EXPIRED');
+    expect(otp.retryCount).toBe(3);
+  });
+
+  it('signals EXPIRED for an expired, never blocked otp', () => {
+    expect(issue().resend(at(300), policy)).toBe('EXPIRED');
+  });
+
+  it('rejects a consumed otp', () => {
+    const otp = restoreWith({ isConsumed: true });
+    expect(() => otp.resend(at(10), policy)).toThrow(
+      OtpAlreadyConsumedException,
+    );
   });
 });
