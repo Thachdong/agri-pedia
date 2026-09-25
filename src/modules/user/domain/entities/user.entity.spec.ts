@@ -4,6 +4,7 @@ import { EUserRole } from '../enums/user-role.enum';
 import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
+import { USER_REGISTERED } from '../events/user-registered.domain-event';
 import { TRegisterUserProps, User } from './user.entity';
 
 const base: TRegisterUserProps = {
@@ -54,6 +55,27 @@ describe('User.register', () => {
     ).toThrow(BusinessTypeNotAllowedException);
   });
 
+  it('records UserRegistered once', () => {
+    const user = User.register({
+      ...base,
+      role: EUserRole.DISTRIBUTOR,
+      businessType: EBusinessType.AQUACULTURE_SEEDLINGS,
+    });
+    expect(user.pullEvents()).toEqual([
+      {
+        name: USER_REGISTERED,
+        occurredAt: expect.any(Date),
+        payload: {
+          userId: user.id,
+          loginType: ELoginType.EMAIL,
+          role: EUserRole.DISTRIBUTOR,
+          status: EUserStatus.PENDING,
+        },
+      },
+    ]);
+    expect(user.pullEvents()).toEqual([]);
+  });
+
   it('restores without changing state', () => {
     const user = User.register(base);
     const restored = User.restore(user.id, {
@@ -74,5 +96,6 @@ describe('User.register', () => {
     });
     expect(restored.id).toBe(user.id);
     expect(restored.status).toBe(EUserStatus.PENDING);
+    expect(restored.pullEvents()).toEqual([]);
   });
 });

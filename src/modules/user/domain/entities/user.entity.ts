@@ -6,6 +6,7 @@ import { EUserRole } from '../enums/user-role.enum';
 import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
+import { userRegistered } from '../events/user-registered.domain-event';
 
 export type TUserProps = {
   loginType: ELoginType;
@@ -52,7 +53,7 @@ export class User extends AggregateRoot {
   static register(input: TRegisterUserProps): User {
     User.assertBusinessType(input.role, input.businessType);
     const now = new Date();
-    return new User(randomUUID(), {
+    const user = new User(randomUUID(), {
       loginType: input.loginType,
       hashedIdentifier: input.hashedIdentifier,
       encryptedIdentifier: input.encryptedIdentifier,
@@ -71,6 +72,15 @@ export class User extends AggregateRoot {
       createdAt: now,
       updatedAt: now,
     });
+    user.addEvent(
+      userRegistered({
+        userId: user.id,
+        loginType: user.loginType,
+        role: user.role,
+        status: user.status,
+      }),
+    );
+    return user;
   }
 
   static restore(id: string, props: TUserProps): User {

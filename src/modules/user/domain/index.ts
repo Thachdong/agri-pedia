@@ -1,6 +1,7 @@
 export * from './entities/address.entity';
 export * from './entities/user.entity';
 export * from './enums/business-type.enum';
+export * from './events';
 export * from './enums/login-type.enum';
 export * from './enums/user-role.enum';
 export * from './enums/user-status.enum';
