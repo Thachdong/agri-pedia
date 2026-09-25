@@ -18,7 +18,7 @@ Flow: `POST /auth/activate` (otp module) → otp.VerifyActivationOtp
 - [x] 10. [event-handler]     user: `otp.activation-code.verified` → ActivateUser
 - [x] 11. [http]              POST /auth/activate
 - [x] 12. [api-docs]          POST /auth/activate
-- [ ] 13. [boundary-review]
+- [x] 13. [boundary-review]
 
 Order note: query-port (4) before the otp use case (5) because the use case depends on it.
 
