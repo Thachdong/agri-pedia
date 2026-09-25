@@ -98,3 +98,30 @@ describe('User.register', () => {
     expect(restored.pullEvents()).toEqual([]);
   });
 });
+
+describe('User.activate', () => {
+  const distributor = () =>
+    User.register({
+      ...base,
+      role: EUserRole.DISTRIBUTOR,
+      businessType: EBusinessType.SEEDS_SEEDLINGS,
+    });
+
+  it('activates a pending user and records verification time', () => {
+    const user = distributor();
+    const now = new Date('2026-09-26T10:00:00.000Z');
+    user.activate(now);
+    expect(user.status).toBe(EUserStatus.ACTIVE);
+    expect(user.identifierVerifiedAt).toEqual(now);
+    expect(user.updatedAt).toEqual(now);
+  });
+
+  it('is a no-op for an active user', () => {
+    const user = User.register(base);
+    const updatedAt = user.updatedAt;
+    user.activate(new Date('2030-01-01T00:00:00.000Z'));
+    expect(user.status).toBe(EUserStatus.ACTIVE);
+    expect(user.identifierVerifiedAt).toBeNull();
+    expect(user.updatedAt).toBe(updatedAt);
+  });
+});

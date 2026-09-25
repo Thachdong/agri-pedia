@@ -88,6 +88,16 @@ export class User extends AggregateRoot {
     return new User(id, { ...props });
   }
 
+  /** Identifier ownership proven: PENDING becomes ACTIVE. Already ACTIVE is a no-op. */
+  activate(now: Date = new Date()): void {
+    if (this.props.status === EUserStatus.ACTIVE) {
+      return;
+    }
+    this.props.status = EUserStatus.ACTIVE;
+    this.props.identifierVerifiedAt = now;
+    this.props.updatedAt = now;
+  }
+
   private static assertBusinessType(
     role: EUserRole,
     businessType: EBusinessType | null,

@@ -9,5 +9,6 @@ export * from './exceptions/business-type-not-allowed.exception';
 export * from './exceptions/business-type-required.exception';
 export * from './exceptions/invalid-coordinates.exception';
 export * from './exceptions/user-identifier-already-used.exception';
+export * from './exceptions/user-not-found.exception';
 export * from './value-objects/coordinates.vo';
 export * from './value-objects/identifier.vo';
