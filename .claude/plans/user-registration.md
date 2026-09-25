@@ -15,7 +15,7 @@ Flow: `POST /auth/register` → user.RegisterUser (User + primary Address, 1 tra
 - [x] 8. [domain-event]       user: UserRegistered
 - [x] 9. [use-case]           user: RegisterUser, ports IUserRepository, IAddressRepository
 - [x] 10. [use-case]          otp: IssueOtp, port IOtpRepository (sends via IMessageSender after commit)
-- [ ] 11. [persistence]       user: PgUserRepository, PgAddressRepository; tables `users`, `addresses`
+- [x] 11. [persistence]       user: PgUserRepository, PgAddressRepository; tables `users`, `addresses`
 - [ ] 12. [persistence]       otp: PgOtpRepository; table `otps`
 - [ ] 13. [integration-event] RegisterUser emits `user.account.registered`
 - [ ] 14. [event-handler]     otp: `user.account.registered` (role DISTRIBUTOR) → IssueOtp(purpose ACTIVATE_DISTRIBUTOR, sender = loginType)
