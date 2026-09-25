@@ -13,7 +13,7 @@ Flow: `POST /auth/register` → user.RegisterUser (User + primary Address, 1 tra
 - [x] 6. [domain-model]       user: aggregate User (ELoginType, EUserRole, EBusinessType, EUserStatus — status from role), aggregate Address; errors UserIdentifierAlreadyUsed, BusinessTypeRequired, BusinessTypeNotAllowed, InvalidCoordinates
 - [x] 7. [domain-model]       otp: aggregate Otp (EOtpSender, EOtpPurpose, issue + expiry) — issue only, verify/block logic comes with activate/resend features
 - [x] 8. [domain-event]       user: UserRegistered
-- [ ] 9. [use-case]           user: RegisterUser, ports IUserRepository, IAddressRepository
+- [x] 9. [use-case]           user: RegisterUser, ports IUserRepository, IAddressRepository
 - [ ] 10. [use-case]          otp: IssueOtp, port IOtpRepository (sends via IMessageSender after commit)
 - [ ] 11. [persistence]       user: PgUserRepository, PgAddressRepository; tables `users`, `addresses`
 - [ ] 12. [persistence]       otp: PgOtpRepository; table `otps`
