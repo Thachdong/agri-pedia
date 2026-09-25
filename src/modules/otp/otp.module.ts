@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { OTP_REPOSITORY } from './application/ports';
 import { IssueOtpUseCase } from './application/use-cases';
-import { UserRegisteredHandler } from './infrastructure/handlers/user-registered.handler';
+import { UserIdentifierVerificationRequestedHandler } from './infrastructure/handlers/user-identifier-verification-requested.handler';
 import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository';
 
 @Module({
@@ -10,7 +10,7 @@ import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository'
   providers: [
     IssueOtpUseCase,
     { provide: OTP_REPOSITORY, useClass: PgOtpRepository },
-    UserRegisteredHandler,
+    UserIdentifierVerificationRequestedHandler,
   ],
   exports: [],
 })

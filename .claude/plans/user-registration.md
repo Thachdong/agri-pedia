@@ -25,7 +25,7 @@ Flow: `POST /auth/register` → user.RegisterUser (User + primary Address, 1 tra
 ## Follow-up: move "who needs activation OTP" rule into user module (boundary-review LOW #9)
 - [x] 17. [domain-event]       user: IdentifierVerificationRequested (recorded by User.register only when status PENDING)
 - [x] 18. [integration-event]  RegisterUser emits `user.identifier.verification-requested` { userId, loginType, identifier }
-- [ ] 19. [event-handler]      otp: subscribe to `user.identifier.verification-requested` → IssueOtp(ACTIVATE_DISTRIBUTOR); drop role branch + `user.account.registered` subscription
+- [x] 19. [event-handler]      otp: subscribe to `user.identifier.verification-requested` → IssueOtp(ACTIVATE_DISTRIBUTOR); drop role branch + `user.account.registered` subscription
 - [ ] 20. [boundary-review]
 Scope: register only. Reset-password (`user.password.reset-requested`) comes with its own feature.
 
