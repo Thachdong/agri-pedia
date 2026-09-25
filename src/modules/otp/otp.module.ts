@@ -5,6 +5,7 @@ import {
   IssueOtpUseCase,
   VerifyActivationOtpUseCase,
 } from './application/use-cases';
+import './infrastructure/http/activation.api-docs';
 import { ActivationController } from './infrastructure/http/activation.controller';
 import { UserIdentifierVerificationRequestedHandler } from './infrastructure/handlers/user-identifier-verification-requested.handler';
 import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository';
