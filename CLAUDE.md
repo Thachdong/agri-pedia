@@ -27,6 +27,7 @@ src/
 ├── shared/
 │   ├── config/              # wraps @nestjs/config -> IConfigService (CONFIG_SERVICE)
 │   ├── database/            # wraps TypeORM -> IUnitOfWork (UNIT_OF_WORK), TypeOrmRepositoryBase
+│   ├── logger/              # wraps nestjs-pino -> ILogger (LOGGER), useAppLogger()
 │   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
 │   └── http/                # global ValidationPipe + DomainExceptionFilter
@@ -84,6 +85,14 @@ Modules never talk to each other directly.
 - `src/config/index.ts` lists all groups in `configGroups` and the `TConfigMap` type; `SharedConfigModule` loads them in one place.
 - Read config only via `IConfigService` (`CONFIG_SERVICE`): `config.get('database')` → `TDatabaseConfig`. No `process.env` outside `src/config/`.
 - New env var → group schema + `.env.example`.
+
+## Logging
+
+- Logger: **Pino** (via `nestjs-pino`), wrapped in `src/shared/logger/` behind `ILogger` (`LOGGER` token). Config group `logger` (`LOG_LEVEL`, `LOG_FILE_PATH`).
+- Development/test: pino → `pino-pretty` transport → terminal. Production (`NODE_ENV=production`): pino → JSON → `pino/file` transport → `LOG_FILE_PATH`.
+- Usage: `constructor(@Inject(LOGGER) logger: ILogger) { this.logger = logger.withContext(MyUseCase.name); }`. Errors: `logger.error(message, error, meta)`. Tests: `InMemoryLogger`.
+- HTTP requests are auto-logged with a request id; logs written during a request carry it. Nest's own logs go through pino (`useAppLogger` in `main.ts`).
+- Business code never uses `console.*` or Nest's `Logger`. `ILogger` lives in `@shared/logger`, so `domain/` does not log — log in application/infrastructure.
 
 ## External packages
 
