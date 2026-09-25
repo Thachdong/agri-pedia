@@ -1,1 +1,1 @@
-export {};
+export * from './user-registered.event';

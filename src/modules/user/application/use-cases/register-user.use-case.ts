@@ -2,6 +2,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
+import {
+  TUserRegisteredEventPayload,
+  USER_REGISTERED_EVENT,
+} from '../../contracts';
+import {
   Address,
   Coordinates,
   EBusinessType,
@@ -9,7 +18,9 @@ import {
   EUserRole,
   Identifier,
   User,
+  USER_REGISTERED,
   UserIdentifierAlreadyUsedException,
+  TUserRegisteredDomainEvent,
 } from '../../domain';
 import {
   ADDRESS_REPOSITORY,
@@ -45,6 +56,7 @@ export class RegisterUserUseCase {
     @Inject(ADDRESS_REPOSITORY) private readonly addresses: IAddressRepository,
     @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
   async execute(input: TRegisterUserInput): Promise<TRegisterUserOutput> {
@@ -82,6 +94,27 @@ export class RegisterUserUseCase {
       );
       return created;
     });
+
+    const registered = user
+      .pullEvents()
+      .filter(
+        (event): event is TUserRegisteredDomainEvent =>
+          event.name === USER_REGISTERED,
+      );
+    await this.eventBus.publishAll(
+      registered.map(({ payload }) =>
+        createIntegrationEvent<
+          typeof USER_REGISTERED_EVENT,
+          TUserRegisteredEventPayload
+        >(USER_REGISTERED_EVENT, {
+          userId: payload.userId,
+          loginType: payload.loginType,
+          identifier: identifier.value,
+          role: payload.role,
+          status: payload.status,
+        }),
+      ),
+    );
 
     return { userId: user.id };
   }
