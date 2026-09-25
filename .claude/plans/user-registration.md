@@ -26,7 +26,7 @@ Flow: `POST /auth/register` → user.RegisterUser (User + primary Address, 1 tra
 - [x] 17. [domain-event]       user: IdentifierVerificationRequested (recorded by User.register only when status PENDING)
 - [x] 18. [integration-event]  RegisterUser emits `user.identifier.verification-requested` { userId, loginType, identifier }
 - [x] 19. [event-handler]      otp: subscribe to `user.identifier.verification-requested` → IssueOtp(ACTIVATE_DISTRIBUTOR); drop role branch + `user.account.registered` subscription
-- [ ] 20. [boundary-review]
+- [x] 20. [boundary-review]
 Scope: register only. Reset-password (`user.password.reset-requested`) comes with its own feature.
 
 ## Decisions (defaults — change if wrong)
@@ -42,3 +42,7 @@ Scope: register only. Reset-password (`user.password.reset-requested`) comes wit
 5. OTP code: resend says "decode hashCode" → must be reversible. [AES-encrypt code, column keeps name hashCode]
 6. OTP.identifier stored as [hashedIdentifier]; plaintext identifier only travels in event payload to send the code.
 7. Email/SMS provider? [none yet — log-only sender]
+
+## Follow-up: remove unused code (no speculative code)
+- [x] 21. [domain-event + integration-event] drop UserRegistered / `user.account.registered` (no consumer); register emits only `user.identifier.verification-requested` for PENDING distributor
+- [ ] 22. [boundary-review]

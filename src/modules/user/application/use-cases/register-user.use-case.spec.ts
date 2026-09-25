@@ -1,10 +1,7 @@
 import { InMemoryCryptoService } from '@shared/crypto';
 import { InMemoryUnitOfWork } from '@shared/database';
 import { InMemoryEventBus } from '@shared/event-bus';
-import {
-  USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
-  USER_REGISTERED_EVENT,
-} from '../../contracts';
+import { USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT } from '../../contracts';
 import {
   BusinessTypeNotAllowedException,
   BusinessTypeRequiredException,
@@ -57,7 +54,7 @@ describe('RegisterUserUseCase', () => {
     );
   });
 
-  it('registers an active farmer with hashed/encrypted identifier and primary address', async () => {
+  it('registers an active farmer (no event) with hashed/encrypted identifier and primary address', async () => {
     const { userId } = await useCase.execute(farmerInput);
 
     const user = users.items.get(userId)!;
@@ -73,15 +70,7 @@ describe('RegisterUserUseCase', () => {
     expect(address.isPrimary).toBe(true);
     expect(address.coordinates.lat).toBe(10.03);
 
-    expect(eventBus.published.map((event) => event.name)).toEqual([
-      USER_REGISTERED_EVENT,
-    ]);
-    expect(eventBus.published[0].payload).toMatchObject({
-      userId,
-      identifier: 'farmer@mail.com',
-      role: 'FARMER',
-      status: 'ACTIVE',
-    });
+    expect(eventBus.published).toEqual([]);
   });
 
   it('registers a pending distributor with given username', async () => {
@@ -100,17 +89,6 @@ describe('RegisterUserUseCase', () => {
     expect(user.username).toBe('Seed Shop');
     expect(eventBus.published).toEqual([
       {
-        name: USER_REGISTERED_EVENT,
-        occurredAt: expect.any(String),
-        payload: {
-          userId,
-          loginType: 'PHONE',
-          identifier: '0912345678',
-          role: 'DISTRIBUTOR',
-          status: 'PENDING',
-        },
-      },
-      {
         name: USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
         occurredAt: expect.any(String),
         payload: {
@@ -128,7 +106,7 @@ describe('RegisterUserUseCase', () => {
       useCase.execute({ ...farmerInput, identifier: 'FARMER@mail.com' }),
     ).rejects.toThrow(UserIdentifierAlreadyUsedException);
     expect(users.items.size).toBe(1);
-    expect(eventBus.published).toHaveLength(1);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects distributor without business type', async () => {

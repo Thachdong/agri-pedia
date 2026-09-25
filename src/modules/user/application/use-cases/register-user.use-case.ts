@@ -1,18 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
-import { TDomainEvent } from '@shared/domain';
 import {
   createIntegrationEvent,
   EVENT_BUS,
   IEventBus,
-  TIntegrationEvent,
 } from '@shared/event-bus';
 import {
-  TUserIdentifierVerificationRequestedEvent,
-  TUserRegisteredEvent,
+  TUserIdentifierVerificationRequestedEventPayload,
   USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
-  USER_REGISTERED_EVENT,
 } from '../../contracts';
 import {
   Address,
@@ -22,10 +18,8 @@ import {
   EUserRole,
   Identifier,
   TUserIdentifierVerificationRequestedDomainEvent,
-  TUserRegisteredDomainEvent,
   User,
   USER_IDENTIFIER_VERIFICATION_REQUESTED,
-  USER_REGISTERED,
   UserIdentifierAlreadyUsedException,
 } from '../../domain';
 import {
@@ -101,49 +95,26 @@ export class RegisterUserUseCase {
       return created;
     });
 
+    // Public contract carries the plain normalized identifier, which the aggregate never holds.
     await this.eventBus.publishAll(
       user
         .pullEvents()
-        .map((event) => this.toIntegrationEvent(event, identifier))
-        .filter((event): event is TIntegrationEvent => event !== null),
+        .filter(
+          (event): event is TUserIdentifierVerificationRequestedDomainEvent =>
+            event.name === USER_IDENTIFIER_VERIFICATION_REQUESTED,
+        )
+        .map(({ payload }) =>
+          createIntegrationEvent<
+            typeof USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
+            TUserIdentifierVerificationRequestedEventPayload
+          >(USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT, {
+            userId: payload.userId,
+            loginType: payload.loginType,
+            identifier: identifier.value,
+          }),
+        ),
     );
 
     return { userId: user.id };
-  }
-
-  /** Public contracts carry the plain normalized identifier, which the aggregate never holds. */
-  private toIntegrationEvent(
-    event: TDomainEvent,
-    identifier: Identifier,
-  ): TIntegrationEvent | null {
-    switch (event.name) {
-      case USER_REGISTERED: {
-        const { payload } = event as TUserRegisteredDomainEvent;
-        return createIntegrationEvent<
-          TUserRegisteredEvent['name'],
-          TUserRegisteredEvent['payload']
-        >(USER_REGISTERED_EVENT, {
-          userId: payload.userId,
-          loginType: payload.loginType,
-          identifier: identifier.value,
-          role: payload.role,
-          status: payload.status,
-        });
-      }
-      case USER_IDENTIFIER_VERIFICATION_REQUESTED: {
-        const { payload } =
-          event as TUserIdentifierVerificationRequestedDomainEvent;
-        return createIntegrationEvent<
-          TUserIdentifierVerificationRequestedEvent['name'],
-          TUserIdentifierVerificationRequestedEvent['payload']
-        >(USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT, {
-          userId: payload.userId,
-          loginType: payload.loginType,
-          identifier: identifier.value,
-        });
-      }
-      default:
-        return null;
-    }
   }
 }

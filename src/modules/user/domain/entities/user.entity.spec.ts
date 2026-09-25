@@ -5,7 +5,6 @@ import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
 import { USER_IDENTIFIER_VERIFICATION_REQUESTED } from '../events/user-identifier-verification-requested.domain-event';
-import { USER_REGISTERED } from '../events/user-registered.domain-event';
 import { TRegisterUserProps, User } from './user.entity';
 
 const base: TRegisterUserProps = {
@@ -56,23 +55,13 @@ describe('User.register', () => {
     ).toThrow(BusinessTypeNotAllowedException);
   });
 
-  it('records UserRegistered and requests identifier verification for a pending distributor', () => {
+  it('requests identifier verification for a pending distributor', () => {
     const user = User.register({
       ...base,
       role: EUserRole.DISTRIBUTOR,
       businessType: EBusinessType.AQUACULTURE_SEEDLINGS,
     });
     expect(user.pullEvents()).toEqual([
-      {
-        name: USER_REGISTERED,
-        occurredAt: expect.any(Date),
-        payload: {
-          userId: user.id,
-          loginType: ELoginType.EMAIL,
-          role: EUserRole.DISTRIBUTOR,
-          status: EUserStatus.PENDING,
-        },
-      },
       {
         name: USER_IDENTIFIER_VERIFICATION_REQUESTED,
         occurredAt: expect.any(Date),
@@ -82,11 +71,8 @@ describe('User.register', () => {
     expect(user.pullEvents()).toEqual([]);
   });
 
-  it('does not request identifier verification for an active farmer', () => {
-    const names = User.register(base)
-      .pullEvents()
-      .map((event) => event.name);
-    expect(names).toEqual([USER_REGISTERED]);
+  it('records no event for an active farmer', () => {
+    expect(User.register(base).pullEvents()).toEqual([]);
   });
 
   it('restores without changing state', () => {
