@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ADDRESS_REPOSITORY, USER_REPOSITORY } from './application/ports';
 import { RegisterUserUseCase } from './application/use-cases';
+import { AuthController } from './infrastructure/http/auth.controller';
 import { PgAddressRepository } from './infrastructure/persistence/pg-address.repository';
 import { PgUserRepository } from './infrastructure/persistence/pg-user.repository';
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [AuthController],
   providers: [
     RegisterUserUseCase,
     { provide: USER_REPOSITORY, useClass: PgUserRepository },
