@@ -45,7 +45,11 @@ describe('VerifyActivationOtpUseCase', () => {
     userQuery = {
       findByIdentifier: async (identifier) =>
         identifier === '0912 345 678'
-          ? { userId: 'user-1', hashedIdentifier: HASH }
+          ? {
+              userId: 'user-1',
+              identifier: '0912345678',
+              hashedIdentifier: HASH,
+            }
           : null,
     };
     eventBus = new InMemoryEventBus();

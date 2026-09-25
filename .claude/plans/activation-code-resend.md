@@ -8,7 +8,7 @@ Flow: `POST /auth/resend { identifier }` (otp module) → otp.ResendActivationOt
 No cross-module write → no event.
 
 - [x] 1. [domain-model]  otp: Otp.resend (checks consumed/blocked, signals expired, retryCount++, block with RETRY_COUNT_MAXIMUM when > OTP_MAX_RETRY_COUNT for OTP_RETRY_BLOCK_SECONDS); no new exception (reuse OtpAlreadyConsumed, OtpBlocked)
-- [ ] 2. [query-port]    user: add normalized `identifier` to TUserIdentifierSummary (recipient of the message)
+- [x] 2. [query-port]    user: add normalized `identifier` to TUserIdentifierSummary (recipient of the message)
 - [ ] 3. [use-case]      otp: ResendActivationOtp (reuses IOtpRepository.findLatest/save; message text shared with IssueOtp)
 - [ ] 4. [http]          POST /auth/resend
 - [ ] 5. [api-docs]      POST /auth/resend

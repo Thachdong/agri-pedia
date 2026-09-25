@@ -28,6 +28,7 @@ describe('UserQueryService.findByIdentifier', () => {
     await users.save(user);
     await expect(service.findByIdentifier(' 0912 345-678 ')).resolves.toEqual({
       userId: user.id,
+      identifier: '0912345678',
       hashedIdentifier: 'hash(0912345678)',
     });
   });
@@ -37,6 +38,7 @@ describe('UserQueryService.findByIdentifier', () => {
     await users.save(user);
     await expect(service.findByIdentifier('Shop@Mail.COM')).resolves.toEqual({
       userId: user.id,
+      identifier: 'shop@mail.com',
       hashedIdentifier: 'hash(shop@mail.com)',
     });
   });

@@ -1,5 +1,7 @@
 export type TUserIdentifierSummary = {
   userId: string;
+  /** Normalized identifier (email lowercase, phone digits): where messages are sent. */
+  identifier: string;
   /** Same hash other modules store for this identifier (e.g. otp). */
   hashedIdentifier: string;
 };

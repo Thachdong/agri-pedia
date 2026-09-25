@@ -18,10 +18,11 @@ export class UserQueryService implements IUserQueryPort {
     const loginType = identifier.includes('@')
       ? ELoginType.EMAIL
       : ELoginType.PHONE;
-    const hashedIdentifier = this.crypto.hash(
-      Identifier.create(loginType, identifier).value,
-    );
+    const normalized = Identifier.create(loginType, identifier).value;
+    const hashedIdentifier = this.crypto.hash(normalized);
     const user = await this.users.findByHashedIdentifier(hashedIdentifier);
-    return user ? { userId: user.id, hashedIdentifier } : null;
+    return user
+      ? { userId: user.id, identifier: normalized, hashedIdentifier }
+      : null;
   }
 }
