@@ -23,6 +23,17 @@ describe('NodeCryptoService', () => {
     expect(first.split('.')).toHaveLength(3);
   });
 
+  it('decrypts what it encrypted', () => {
+    expect(crypto.decrypt(crypto.encrypt('482913'))).toBe('482913');
+  });
+
+  it('rejects tampered or malformed cipher text', () => {
+    const [iv, tag] = crypto.encrypt('482913').split('.');
+    const forged = [iv, tag, Buffer.from('000000').toString('base64url')];
+    expect(() => crypto.decrypt(forged.join('.'))).toThrow();
+    expect(() => crypto.decrypt('not-a-cipher')).toThrow();
+  });
+
   it('hashes passwords with a random salt', async () => {
     const hashed = await crypto.hashPassword('P@ssw0rd');
     expect(hashed).toMatch(/^scrypt\$16384\$8\$1\$[\w-]+\$[\w-]+$/);

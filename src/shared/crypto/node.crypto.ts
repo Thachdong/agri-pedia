@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   createCipheriv,
+  createDecipheriv,
   createHmac,
   randomBytes,
   randomInt,
@@ -59,6 +60,22 @@ export class NodeCryptoService implements ICryptoService {
     return [iv, cipher.getAuthTag(), encrypted]
       .map((part) => part.toString('base64url'))
       .join('.');
+  }
+
+  decrypt(cipherText: string): string {
+    const parts = cipherText.split('.');
+    if (parts.length !== 3) {
+      throw new Error('Invalid cipher text format');
+    }
+    const [iv, authTag, encrypted] = parts.map((part) =>
+      Buffer.from(part, 'base64url'),
+    );
+    const decipher = createDecipheriv(CIPHER, this.encryptionKey, iv);
+    decipher.setAuthTag(authTag);
+    return Buffer.concat([
+      decipher.update(encrypted),
+      decipher.final(),
+    ]).toString('utf8');
   }
 
   async hashPassword(password: string): Promise<string> {

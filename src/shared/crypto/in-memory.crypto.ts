@@ -12,6 +12,14 @@ export class InMemoryCryptoService implements ICryptoService {
     return `enc(${plainText})`;
   }
 
+  decrypt(cipherText: string): string {
+    const match = /^enc\((.*)\)$/s.exec(cipherText);
+    if (!match) {
+      throw new Error('Invalid cipher text format');
+    }
+    return match[1];
+  }
+
   async hashPassword(password: string): Promise<string> {
     return `pwd(${password})`;
   }
