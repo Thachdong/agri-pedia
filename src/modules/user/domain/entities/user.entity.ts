@@ -6,6 +6,7 @@ import { EUserRole } from '../enums/user-role.enum';
 import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
+import { userIdentifierVerificationRequested } from '../events/user-identifier-verification-requested.domain-event';
 import { userRegistered } from '../events/user-registered.domain-event';
 
 export type TUserProps = {
@@ -48,7 +49,7 @@ export class User extends AggregateRoot {
 
   /**
    * Registers a new user. FARMER is active immediately; DISTRIBUTOR stays PENDING
-   * until the identifier is verified. Only DISTRIBUTOR has (and must have) a business type.
+   * until the identifier is verified (records UserIdentifierVerificationRequested). Only DISTRIBUTOR has (and must have) a business type.
    */
   static register(input: TRegisterUserProps): User {
     User.assertBusinessType(input.role, input.businessType);
@@ -80,6 +81,14 @@ export class User extends AggregateRoot {
         status: user.status,
       }),
     );
+    if (user.status === EUserStatus.PENDING) {
+      user.addEvent(
+        userIdentifierVerificationRequested({
+          userId: user.id,
+          loginType: user.loginType,
+        }),
+      );
+    }
     return user;
   }
 

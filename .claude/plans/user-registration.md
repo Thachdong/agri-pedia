@@ -20,7 +20,14 @@ Flow: `POST /auth/register` → user.RegisterUser (User + primary Address, 1 tra
 - [x] 13. [integration-event] RegisterUser emits `user.account.registered`
 - [x] 14. [event-handler]     otp: `user.account.registered` (role DISTRIBUTOR) → IssueOtp(purpose ACTIVATE_DISTRIBUTOR, sender = loginType)
 - [x] 15. [http]              POST /auth/register
-- [ ] 16. [boundary-review]
+- [x] 16. [boundary-review]
+
+## Follow-up: move "who needs activation OTP" rule into user module (boundary-review LOW #9)
+- [x] 17. [domain-event]       user: IdentifierVerificationRequested (recorded by User.register only when status PENDING)
+- [ ] 18. [integration-event]  RegisterUser emits `user.identifier.verification-requested` { userId, loginType, identifier }
+- [ ] 19. [event-handler]      otp: subscribe to `user.identifier.verification-requested` → IssueOtp(ACTIVATE_DISTRIBUTOR); drop role branch + `user.account.registered` subscription
+- [ ] 20. [boundary-review]
+Scope: register only. Reset-password (`user.password.reset-requested`) comes with its own feature.
 
 ## Decisions (defaults — change if wrong)
 - Address lives in `user` module (later: distributor geo search needs user + primary address without cross-module join).

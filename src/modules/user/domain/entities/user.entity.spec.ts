@@ -4,6 +4,7 @@ import { EUserRole } from '../enums/user-role.enum';
 import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
+import { USER_IDENTIFIER_VERIFICATION_REQUESTED } from '../events/user-identifier-verification-requested.domain-event';
 import { USER_REGISTERED } from '../events/user-registered.domain-event';
 import { TRegisterUserProps, User } from './user.entity';
 
@@ -55,7 +56,7 @@ describe('User.register', () => {
     ).toThrow(BusinessTypeNotAllowedException);
   });
 
-  it('records UserRegistered once', () => {
+  it('records UserRegistered and requests identifier verification for a pending distributor', () => {
     const user = User.register({
       ...base,
       role: EUserRole.DISTRIBUTOR,
@@ -72,8 +73,20 @@ describe('User.register', () => {
           status: EUserStatus.PENDING,
         },
       },
+      {
+        name: USER_IDENTIFIER_VERIFICATION_REQUESTED,
+        occurredAt: expect.any(Date),
+        payload: { userId: user.id, loginType: ELoginType.EMAIL },
+      },
     ]);
     expect(user.pullEvents()).toEqual([]);
+  });
+
+  it('does not request identifier verification for an active farmer', () => {
+    const names = User.register(base)
+      .pullEvents()
+      .map((event) => event.name);
+    expect(names).toEqual([USER_REGISTERED]);
   });
 
   it('restores without changing state', () => {
