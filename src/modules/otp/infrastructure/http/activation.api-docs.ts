@@ -21,5 +21,18 @@ defineApiDocs(ActivationController, {
         { type: EDomainErrorType.BUSINESS_RULE, code: 'OTP_BLOCKED' },
       ],
     },
+    resend: {
+      summary: 'Send the DISTRIBUTOR activation code again',
+      description:
+        'Sends the same code again while it is valid; each resend is counted and too many resends ' +
+        'block the code for a while (OTP_BLOCKED). If the code expired (and is not blocked) a new ' +
+        'code is issued and sent. Responds 200 with an empty body.',
+      validation: true,
+      errors: [
+        { type: EDomainErrorType.NOT_FOUND, code: 'OTP_NOT_FOUND' },
+        { type: EDomainErrorType.BUSINESS_RULE, code: 'OTP_ALREADY_CONSUMED' },
+        { type: EDomainErrorType.BUSINESS_RULE, code: 'OTP_BLOCKED' },
+      ],
+    },
   },
 });
