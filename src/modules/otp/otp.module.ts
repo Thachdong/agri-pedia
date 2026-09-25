@@ -3,6 +3,7 @@ import { UserModule } from '@modules/user/user.module';
 import { OTP_REPOSITORY } from './application/ports';
 import {
   IssueOtpUseCase,
+  ResendActivationOtpUseCase,
   VerifyActivationOtpUseCase,
 } from './application/use-cases';
 import './infrastructure/http/activation.api-docs';
@@ -16,6 +17,7 @@ import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository'
   providers: [
     IssueOtpUseCase,
     VerifyActivationOtpUseCase,
+    ResendActivationOtpUseCase,
     { provide: OTP_REPOSITORY, useClass: PgOtpRepository },
     UserIdentifierVerificationRequestedHandler,
   ],

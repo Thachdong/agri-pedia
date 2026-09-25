@@ -2,29 +2,16 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
-import {
-  EMessageChannel,
-  IMessageSender,
-  MESSAGE_SENDER,
-} from '@shared/messaging';
+import { IMessageSender, MESSAGE_SENDER } from '@shared/messaging';
 import { EOtpPurpose, EOtpSender, Otp } from '../../domain';
 import { IOtpRepository, OTP_REPOSITORY } from '../ports/otp.repository';
+import { buildOtpMessage } from '../services/otp-message.builder';
 
 export type TIssueOtpInput = {
   sender: EOtpSender;
   purpose: EOtpPurpose;
   /** Plain identifier, already normalized by the caller (same form the owner module hashes). */
   identifier: string;
-};
-
-const CHANNEL_BY_SENDER: Record<EOtpSender, EMessageChannel> = {
-  [EOtpSender.EMAIL]: EMessageChannel.EMAIL,
-  [EOtpSender.PHONE]: EMessageChannel.PHONE,
-};
-
-const SUBJECT_BY_PURPOSE: Record<EOtpPurpose, string> = {
-  [EOtpPurpose.ACTIVATE_DISTRIBUTOR]: 'AgriPedia - Kích hoạt tài khoản',
-  [EOtpPurpose.RESET_PASSWORD]: 'AgriPedia - Đặt lại mật khẩu',
 };
 
 /** Creates a new OTP for the identifier and sends the code once it is stored. */
@@ -51,11 +38,8 @@ export class IssueOtpUseCase {
 
     await this.unitOfWork.runInTransaction(() => this.otps.save(otp));
 
-    await this.messageSender.send({
-      channel: CHANNEL_BY_SENDER[input.sender],
-      to: input.identifier,
-      subject: SUBJECT_BY_PURPOSE[input.purpose],
-      body: `Mã xác thực AgriPedia của bạn là ${code}. Mã hết hạn sau ${Math.ceil(ttlSeconds / 60)} phút.`,
-    });
+    await this.messageSender.send(
+      buildOtpMessage(otp, input.identifier, code, otp.issuedAt),
+    );
   }
 }
