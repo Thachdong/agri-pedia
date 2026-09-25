@@ -6,6 +6,7 @@ import { EventBusModule } from '@shared/event-bus';
 import { SharedLoggerModule } from '@shared/logger';
 import { MessagingModule } from '@shared/messaging';
 import { SharedHttpModule } from '@shared/http';
+import { UserModule } from '@modules/user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -20,6 +21,7 @@ import { AppService } from './app.service';
     MessagingModule,
     SharedHttpModule,
     // business modules
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

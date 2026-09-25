@@ -8,7 +8,7 @@ Flow: `POST /auth/register` → user.RegisterUser (User + primary Address, 1 tra
 - [x] 1. [config-group]       `security` (identifier hash secret, identifier encryption key) + `otp` (length, TTL, max wrong, max retry, wrong-count block duration, retry-count block duration — 2 separate envs)
 - [x] 2. [shared-wrapper]     `crypto` — hash identifier (HMAC), encrypt/decrypt (AES-GCM), hash/verify password (node scrypt, no new package)
 - [x] 3. [shared-wrapper]     `messaging` — IMessageSender (EMAIL | PHONE); dev adapter logs message, real provider later
-- [ ] 4. [module-scaffold]    module `user`
+- [x] 4. [module-scaffold]    module `user`
 - [ ] 5. [module-scaffold]    module `otp`
 - [ ] 6. [domain-model]       user: aggregate User (ELoginType, EUserRole, EBusinessType, EUserStatus — status from role), aggregate Address; errors UserIdentifierAlreadyUsed, BusinessTypeRequired, BusinessTypeNotAllowed, InvalidCoordinates
 - [ ] 7. [domain-model]       otp: aggregate Otp (EOtpSender, EOtpPurpose, issue + expiry) — issue only, verify/block logic comes with activate/resend features
