@@ -31,6 +31,7 @@ src/
 │   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
 │   ├── crypto/              # wraps node:crypto -> ICryptoService (CRYPTO_SERVICE): HMAC hash, AES-GCM, scrypt password
 │   ├── messaging/           # IMessageSender (MESSAGE_SENDER): email/SMS; currently log-only adapter
+│   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean)
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
 │   └── http/                # global ValidationPipe + DomainExceptionFilter
 └── modules/
@@ -46,7 +47,7 @@ src/
         │   └── use-cases/   # one use case per file
         ├── infrastructure/
         │   ├── persistence/ # *.orm-entity.ts, mappers, Pg<X>Repository
-        │   ├── http/        # controllers + DTOs
+        │   ├── http/        # controllers, DTOs, responses/*.response.ts, <name>.api-docs.ts
         │   ├── handlers/    # integration event handlers
         │   └── queries/     # implementations of contracts/ports
         └── <module>.module.ts
@@ -96,6 +97,11 @@ Modules never talk to each other directly.
 - HTTP requests are auto-logged with a request id; logs written during a request carry it. Nest's own logs go through pino (`useAppLogger` in `main.ts`).
 - Business code never uses `console.*` or Nest's `Logger`. `ILogger` lives in `@shared/logger`, so `domain/` does not log — log in application/infrastructure.
 
+## API docs (Swagger)
+
+- UI `/docs`, JSON `/docs-json`; off when `NODE_ENV=production`. Schemas come from the `@nestjs/swagger` CLI plugin (`nest-cli.json`) → only after `npm run build`, not under ts-jest/ts-node.
+- Controllers and DTOs carry **no** `@Api*` decorators. Tag/summary/error codes live in `<name>.api-docs.ts` via `defineApiDocs`, side-effect imported by the module file. Response bodies are classes in `*.response.ts` so the plugin sees them.
+
 ## External packages
 
 - **DI / runtime-configured packages** (module registration, providers, lifecycle: `@nestjs/config`, `@nestjs/typeorm`, `@nestjs/event-emitter`, queues, cache, mailers, HTTP clients, ...) → wrap in `src/shared/<concern>/`: project interface + token + Nest module. Business modules use the interface, never the package's module/service.
@@ -121,7 +127,7 @@ Modules never talk to each other directly.
 
 ## Skills (hexagonal workflow)
 
-Project skills in `.claude/skills/`. For a whole feature use `/hex-feature`: it reports a plan first, then runs one skill per step and stops for review after each. Single-scope skills: `hex-module-scaffold`, `hex-config-group`, `hex-shared-wrapper`, `hex-domain-model`, `hex-domain-event`, `hex-use-case`, `hex-persistence-adapter`, `hex-integration-event`, `hex-event-handler`, `hex-query-port`, `hex-http-adapter`, `hex-boundary-review`. Stay within the invoked skill's scope.
+Project skills in `.claude/skills/`. For a whole feature use `/hex-feature`: it reports a plan first, then runs one skill per step and stops for review after each. Single-scope skills: `hex-module-scaffold`, `hex-config-group`, `hex-shared-wrapper`, `hex-domain-model`, `hex-domain-event`, `hex-use-case`, `hex-persistence-adapter`, `hex-integration-event`, `hex-event-handler`, `hex-query-port`, `hex-http-adapter`, `hex-api-docs`, `hex-boundary-review`. Stay within the invoked skill's scope.
 
 ## graphify
 

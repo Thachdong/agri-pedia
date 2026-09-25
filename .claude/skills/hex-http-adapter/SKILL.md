@@ -5,14 +5,14 @@ description: Inbound HTTP adapter — controller + request DTOs (class-validator
 
 # hex-http-adapter
 
-**Scope:** `infrastructure/http/` (controller, DTOs, response types), controller registration, e2e test in `test/<module>/`. **Out of scope:** business logic, repository access, error translation (global `DomainExceptionFilter` does it).
+**Scope:** `infrastructure/http/` (controller, DTOs, response types), controller registration, e2e test in `test/<module>/`. **Out of scope:** Swagger docs (`hex-api-docs`), business logic, repository access, error translation (global `DomainExceptionFilter` does it).
 
 ## Rules
 - Controller → use case only. No repositories, no `IUnitOfWork`, no `if` business rules.
 - Request DTO: class with `class-validator` / `class-transformer` decorators (imported directly). Validates shape/format only; business rules stay in domain.
 - Global `ValidationPipe` is `whitelist + forbidNonWhitelisted + transform` — every accepted field needs a decorator.
 - Map DTO → `T<Action>Input` explicitly (don't pass the DTO object through).
-- Response: plain type `T<X>Response` in `infrastructure/http/`, mapped from use case output.
+- Response body: class `<Action>Response` in `infrastructure/http/responses/<action>.response.ts`, no decorators (the Swagger CLI plugin reads `*.response.ts` classes; a plain `type` would be invisible in API docs). Mapped from use case output. No body → `Promise<null>`.
 - Never catch `DomainException` in the controller. Status codes: `@HttpCode` only for non-default success codes.
 - Routes: plural kebab-case nouns (`/users`, `/crop-seasons/:id`). IDs validated with `ParseUUIDPipe`.
 
@@ -27,17 +27,22 @@ export class RegisterUserDto {
 }
 ```
 ```ts
+// infrastructure/http/responses/register-user.response.ts
+export class RegisterUserResponse {
+  id: string;
+}
+```
+```ts
 // infrastructure/http/user.controller.ts
 import { Body, Controller, Post } from '@nestjs/common';
-
-export type TRegisterUserResponse = { id: string };
+import { RegisterUserResponse } from './responses/register-user.response';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly registerUser: RegisterUserUseCase) {}
 
   @Post()
-  async register(@Body() dto: RegisterUserDto): Promise<TRegisterUserResponse> {
+  async register(@Body() dto: RegisterUserDto): Promise<RegisterUserResponse> {
     const { userId } = await this.registerUser.execute({ email: dto.email, name: dto.name });
     return { id: userId };
   }
