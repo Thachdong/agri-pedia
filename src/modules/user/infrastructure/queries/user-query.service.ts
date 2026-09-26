@@ -22,7 +22,13 @@ export class UserQueryService implements IUserQueryPort {
     const hashedIdentifier = this.crypto.hash(normalized);
     const user = await this.users.findByHashedIdentifier(hashedIdentifier);
     return user
-      ? { userId: user.id, identifier: normalized, hashedIdentifier }
+      ? {
+          userId: user.id,
+          identifier: normalized,
+          hashedIdentifier,
+          loginType: user.loginType,
+          canLogin: user.canLogin(),
+        }
       : null;
   }
 }

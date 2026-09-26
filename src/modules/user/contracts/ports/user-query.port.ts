@@ -4,6 +4,10 @@ export type TUserIdentifierSummary = {
   identifier: string;
   /** Same hash other modules store for this identifier (e.g. otp). */
   hashedIdentifier: string;
+  /** Login type the account was registered with. */
+  loginType: 'EMAIL' | 'PHONE';
+  /** Account may log in (ACTIVE). */
+  canLogin: boolean;
 };
 
 export interface IUserQueryPort {

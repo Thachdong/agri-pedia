@@ -56,6 +56,8 @@ describe('ResendActivationOtpUseCase', () => {
               userId: 'user-1',
               identifier: '0912345678',
               hashedIdentifier: HASH,
+              loginType: 'PHONE',
+              canLogin: false,
             }
           : null,
     };
