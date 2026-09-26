@@ -13,6 +13,7 @@ export class RefreshTokenOrmEntity {
   @Column({ name: 'hashed_token', type: 'varchar', length: 128 })
   hashedToken: string;
 
+  @Index('IDX_refresh_tokens_hashed_identifier')
   @Column({ name: 'hashed_identifier', type: 'varchar', length: 128 })
   hashedIdentifier: string;
 

@@ -41,4 +41,11 @@ export class PgRefreshTokenRepository
       { status: ERefreshTokenStatus.REVOKED },
     );
   }
+
+  async revokeAllByHashedIdentifier(hashedIdentifier: string): Promise<void> {
+    await this.repository.update(
+      { hashedIdentifier },
+      { status: ERefreshTokenStatus.REVOKED },
+    );
+  }
 }
