@@ -13,7 +13,7 @@ No cross-module call, no event.
 
 - [x] 1. [config-group]    `auth`: add refresh token grace period (seconds)
 - [x] 2. [domain-model]    user: RefreshToken rotate (→ child) / isExpired / isIssuedWithin; error InvalidRefreshToken (UNAUTHORIZED)
-- [ ] 3. [use-case]        RefreshAccessToken; IRefreshTokenRepository + findByHashedToken, findChild, revokeFamily
+- [x] 3. [use-case]        RefreshAccessToken; IRefreshTokenRepository + findByHashedTokenForUpdate, findChild, revokeFamily
 - [ ] 4. [persistence]     PgRefreshTokenRepository new methods (row lock on lookup); migration: indexes family_id, rotated_from_id
 - [ ] 5. [http]            POST /auth/refresh-token
 - [ ] 6. [api-docs]        POST /auth/refresh-token

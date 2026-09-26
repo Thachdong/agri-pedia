@@ -7,6 +7,7 @@ import {
 import {
   ActivateUserUseCase,
   LoginUserUseCase,
+  RefreshAccessTokenUseCase,
   RegisterUserUseCase,
 } from './application/use-cases';
 import { USER_QUERY_PORT } from './contracts';
@@ -25,6 +26,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
     RegisterUserUseCase,
     ActivateUserUseCase,
     LoginUserUseCase,
+    RefreshAccessTokenUseCase,
     { provide: USER_REPOSITORY, useClass: PgUserRepository },
     { provide: ADDRESS_REPOSITORY, useClass: PgAddressRepository },
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: PgRefreshTokenRepository },
