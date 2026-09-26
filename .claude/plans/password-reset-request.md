@@ -14,7 +14,7 @@ No event, no migration.
 
 - [x] 1. [domain-model]    otp: Otp.assertReplaceable(now) (blocked → OtpBlocked; still valid → OtpAlreadyRequested); error OtpAlreadyRequested (CONFLICT, code OTP_ALREADY_REQUESTED, details purpose/issuedAt/expiredAt)
 - [x] 2. [query-port]      user: TUserIdentifierSummary gets loginType + canLogin
-- [ ] 3. [use-case]        otp: RequestPasswordResetOtp (IOtpRepository.findLatest/save, existing); errors OtpAccountNotFound (NOT_FOUND), OtpAccountNotActive (FORBIDDEN)
+- [x] 3. [use-case]        otp: RequestPasswordResetOtp (IOtpRepository.findLatest/save, existing); errors OtpAccountNotFound (NOT_FOUND), OtpAccountNotActive (FORBIDDEN)
 - [ ] 4. [http]            POST /auth/reset-password (otp module)
 - [ ] 5. [api-docs]        POST /auth/reset-password
 - [ ] 6. [boundary-review]
