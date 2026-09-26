@@ -15,7 +15,7 @@ No cross-module call, no event.
 - [x] 2. [domain-model]    user: RefreshToken rotate (→ child) / isExpired / isIssuedWithin; error InvalidRefreshToken (UNAUTHORIZED)
 - [x] 3. [use-case]        RefreshAccessToken; IRefreshTokenRepository + findByHashedTokenForUpdate, findChild, revokeFamily
 - [x] 4. [persistence]     PgRefreshTokenRepository new methods (row lock on lookup); migration: indexes family_id, rotated_from_id
-- [ ] 5. [http]            POST /auth/refresh-token
+- [x] 5. [http]            POST /auth/refresh-token
 - [ ] 6. [api-docs]        POST /auth/refresh-token
 - [ ] 7. [boundary-review] (also covers login, user-login.md step 9)
 

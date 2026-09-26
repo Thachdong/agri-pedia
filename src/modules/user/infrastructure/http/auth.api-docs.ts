@@ -41,5 +41,9 @@ defineApiDocs(AuthController, {
         { type: EDomainErrorType.FORBIDDEN, code: 'USER_NOT_ACTIVE' },
       ],
     },
+    refreshToken: {
+      summary: 'Exchange a refresh token for a new token pair',
+      validation: true,
+    },
   },
 });

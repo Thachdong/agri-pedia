@@ -1,16 +1,19 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   LoginUserUseCase,
+  RefreshAccessTokenUseCase,
   RegisterUserUseCase,
 } from '../../application/use-cases';
-import { LoginUserDto, RegisterUserDto } from './dto';
+import { LoginUserDto, RefreshAccessTokenDto, RegisterUserDto } from './dto';
 import { LoginUserResponse } from './responses/login-user.response';
+import { RefreshAccessTokenResponse } from './responses/refresh-access-token.response';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly registerUser: RegisterUserUseCase,
     private readonly loginUser: LoginUserUseCase,
+    private readonly refreshAccessToken: RefreshAccessTokenUseCase,
   ) {}
 
   @Post('register')
@@ -57,5 +60,18 @@ export class AuthController {
         updatedAt: user.updatedAt,
       },
     };
+  }
+
+  @Post('refresh-token')
+  @HttpCode(HttpStatus.OK)
+  async refreshToken(
+    @Body() dto: RefreshAccessTokenDto,
+  ): Promise<RefreshAccessTokenResponse> {
+    const { accessToken, refreshToken } = await this.refreshAccessToken.execute(
+      {
+        refreshToken: dto.refreshToken,
+      },
+    );
+    return { accessToken, refreshToken };
   }
 }
