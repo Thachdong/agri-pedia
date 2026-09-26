@@ -26,5 +26,9 @@ defineApiDocs(AuthController, {
         },
       ],
     },
+    login: {
+      summary: 'Log in with identifier and password',
+      validation: true,
+    },
   },
 });

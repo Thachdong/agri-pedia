@@ -13,7 +13,7 @@ No cross-module call, no event.
 - [x] 4. [domain-model]    user: RefreshToken aggregate (issue), ERefreshTokenStatus, User.assertCanLogin; errors InvalidCredentials (UNAUTHORIZED), UserNotActive (FORBIDDEN)
 - [x] 5. [use-case]        LoginUser, port IRefreshTokenRepository
 - [x] 6. [persistence]     PgRefreshTokenRepository, table `refresh_tokens` + migration
-- [ ] 7. [http]            POST /auth/login
+- [x] 7. [http]            POST /auth/login
 - [ ] 8. [api-docs]        POST /auth/login
 - [ ] 9. [boundary-review]
 
