@@ -18,8 +18,8 @@ Event bus is in-process and awaited (emitAsync): the HTTP response waits for the
 - [x] 5. [integration-event]  VerifyPasswordResetOtp emits `otp.password-reset-code.verified`
 - [x] 6. [event-handler]      user: `otp.password-reset-code.verified` → ResetPassword
 - [x] 7. [http]               POST /auth/reset-password/confirm (otp module)
-- [ ] 8. [api-docs]           POST /auth/reset-password/confirm
-- [ ] 9. [boundary-review]
+- [x] 8. [api-docs]           POST /auth/reset-password/confirm
+- [x] 9. [boundary-review]
 
 ## Decisions (approved)
 1. Route `POST /auth/reset-password/confirm` (otp module); `/auth/change-password` stays for action 8.
