@@ -6,6 +6,7 @@ import { EUserRole } from '../enums/user-role.enum';
 import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
+import { UserNotActiveException } from '../exceptions/user-not-active.exception';
 import { userIdentifierVerificationRequested } from '../events/user-identifier-verification-requested.domain-event';
 
 export type TUserProps = {
@@ -96,6 +97,13 @@ export class User extends AggregateRoot {
     this.props.status = EUserStatus.ACTIVE;
     this.props.identifierVerifiedAt = now;
     this.props.updatedAt = now;
+  }
+
+  /** Only ACTIVE users may log in (a DISTRIBUTOR stays PENDING until activated). */
+  assertCanLogin(): void {
+    if (this.props.status !== EUserStatus.ACTIVE) {
+      throw new UserNotActiveException(this.id, this.props.status);
+    }
   }
 
   private static assertBusinessType(

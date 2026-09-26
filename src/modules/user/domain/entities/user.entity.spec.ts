@@ -4,6 +4,7 @@ import { EUserRole } from '../enums/user-role.enum';
 import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
+import { UserNotActiveException } from '../exceptions/user-not-active.exception';
 import { USER_IDENTIFIER_VERIFICATION_REQUESTED } from '../events/user-identifier-verification-requested.domain-event';
 import { TRegisterUserProps, User } from './user.entity';
 
@@ -123,5 +124,20 @@ describe('User.activate', () => {
     expect(user.status).toBe(EUserStatus.ACTIVE);
     expect(user.identifierVerifiedAt).toBeNull();
     expect(user.updatedAt).toBe(updatedAt);
+  });
+});
+
+describe('User.assertCanLogin', () => {
+  it('allows an ACTIVE user', () => {
+    expect(() => User.register(base).assertCanLogin()).not.toThrow();
+  });
+
+  it('rejects a PENDING distributor', () => {
+    const user = User.register({
+      ...base,
+      role: EUserRole.DISTRIBUTOR,
+      businessType: EBusinessType.SEEDS_SEEDLINGS,
+    });
+    expect(() => user.assertCanLogin()).toThrow(UserNotActiveException);
   });
 });

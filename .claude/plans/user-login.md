@@ -10,7 +10,7 @@ No cross-module call, no event.
 - [x] 1. [config-group]    `auth`: access token secret + TTL, refresh token TTL
 - [x] 2. [shared-wrapper]  crypto: add verifyPassword, randomToken
 - [x] 3. [shared-wrapper]  access-token (`@nestjs/jwt`): IAccessTokenService.sign(payload) (sign only; verify comes with the auth guard)
-- [ ] 4. [domain-model]    user: RefreshToken aggregate (issue), ERefreshTokenStatus; errors InvalidCredentials (UNAUTHORIZED), UserNotActive (FORBIDDEN)
+- [x] 4. [domain-model]    user: RefreshToken aggregate (issue), ERefreshTokenStatus, User.assertCanLogin; errors InvalidCredentials (UNAUTHORIZED), UserNotActive (FORBIDDEN)
 - [ ] 5. [use-case]        LoginUser, port IRefreshTokenRepository
 - [ ] 6. [persistence]     PgRefreshTokenRepository, table `refresh_tokens` + migration
 - [ ] 7. [http]            POST /auth/login
