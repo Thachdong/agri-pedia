@@ -13,7 +13,7 @@ import {
   OtpNotFoundException,
 } from '../../domain';
 import { InMemoryOtpRepository } from '../ports/fakes';
-import { ResendActivationOtpUseCase } from './resend-activation-otp.use-case';
+import { ResendOtpUseCase } from './resend-otp.use-case';
 
 const HASH = 'hash(0912345678)';
 
@@ -38,11 +38,11 @@ const issue = (issuedSecondsAgo = 0) =>
     now: ago(issuedSecondsAgo),
   });
 
-describe('ResendActivationOtpUseCase', () => {
+describe('ResendOtpUseCase', () => {
   let otps: InMemoryOtpRepository;
   let crypto: InMemoryCryptoService;
   let messageSender: InMemoryMessageSender;
-  let useCase: ResendActivationOtpUseCase;
+  let useCase: ResendOtpUseCase;
 
   beforeEach(() => {
     otps = new InMemoryOtpRepository();
@@ -61,7 +61,7 @@ describe('ResendActivationOtpUseCase', () => {
             }
           : null,
     };
-    useCase = new ResendActivationOtpUseCase(
+    useCase = new ResendOtpUseCase(
       otps,
       userQuery,
       crypto,
@@ -71,7 +71,8 @@ describe('ResendActivationOtpUseCase', () => {
     );
   });
 
-  const resend = () => useCase.execute({ identifier: '0912 345 678' });
+  const resend = (purpose = EOtpPurpose.ACTIVATE_DISTRIBUTOR) =>
+    useCase.execute({ identifier: '0912 345 678', purpose });
 
   it('sends the same code again and counts the resend', async () => {
     const otp = issue(60);
@@ -157,8 +158,59 @@ describe('ResendActivationOtpUseCase', () => {
 
   it('throws OtpNotFound for an unknown identifier or no otp', async () => {
     await expect(
-      useCase.execute({ identifier: 'nobody@mail.com' }),
+      useCase.execute({
+        identifier: 'nobody@mail.com',
+        purpose: EOtpPurpose.ACTIVATE_DISTRIBUTOR,
+      }),
     ).rejects.toThrow(OtpNotFoundException);
     await expect(resend()).rejects.toThrow(OtpNotFoundException);
+  });
+
+  describe('RESET_PASSWORD', () => {
+    const issueReset = (issuedSecondsAgo = 60) =>
+      Otp.issue({
+        sender: EOtpSender.PHONE,
+        purpose: EOtpPurpose.RESET_PASSWORD,
+        hashedIdentifier: HASH,
+        encryptedCode: 'enc(135790)',
+        ttlSeconds: 300,
+        now: ago(issuedSecondsAgo),
+      });
+
+    it('sends the same reset code again and counts the resend', async () => {
+      const otp = issueReset();
+      await otps.save(otp);
+
+      await resend(EOtpPurpose.RESET_PASSWORD);
+
+      expect(otp.retryCount).toBe(1);
+      expect(messageSender.sent).toEqual([
+        expect.objectContaining({
+          to: '0912345678',
+          subject: 'AgriPedia - Đặt lại mật khẩu',
+          body: expect.stringContaining('135790'),
+        }),
+      ]);
+    });
+
+    it('issues a new RESET_PASSWORD code when the latest one expired', async () => {
+      await otps.save(issueReset(301));
+
+      await resend(EOtpPurpose.RESET_PASSWORD);
+
+      const latest = await otps.findLatest(HASH, EOtpPurpose.RESET_PASSWORD);
+      expect(latest?.encryptedCode).toBe('enc(777111)');
+      expect(otps.items.size).toBe(2);
+    });
+
+    it('does not touch the code of another purpose', async () => {
+      const activation = issue();
+      await otps.save(activation);
+
+      await expect(resend(EOtpPurpose.RESET_PASSWORD)).rejects.toThrow(
+        OtpNotFoundException,
+      );
+      expect(activation.retryCount).toBe(0);
+    });
   });
 });

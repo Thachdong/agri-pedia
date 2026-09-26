@@ -1,15 +1,16 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
-  ResendActivationOtpUseCase,
+  ResendOtpUseCase,
   VerifyActivationOtpUseCase,
 } from '../../application/use-cases';
+import { EOtpPurpose } from '../../domain';
 import { ActivateAccountDto, ResendActivationCodeDto } from './dto';
 
 @Controller('auth')
 export class ActivationController {
   constructor(
     private readonly verifyActivationOtp: VerifyActivationOtpUseCase,
-    private readonly resendActivationOtp: ResendActivationOtpUseCase,
+    private readonly resendOtp: ResendOtpUseCase,
   ) {}
 
   @Post('activate')
@@ -25,7 +26,10 @@ export class ActivationController {
   @Post('resend')
   @HttpCode(HttpStatus.OK)
   async resend(@Body() dto: ResendActivationCodeDto): Promise<null> {
-    await this.resendActivationOtp.execute({ identifier: dto.identifier });
+    await this.resendOtp.execute({
+      identifier: dto.identifier,
+      purpose: EOtpPurpose.ACTIVATE_DISTRIBUTOR,
+    });
     return null;
   }
 }

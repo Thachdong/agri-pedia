@@ -4,7 +4,7 @@ import { OTP_REPOSITORY } from './application/ports';
 import {
   IssueOtpUseCase,
   RequestPasswordResetOtpUseCase,
-  ResendActivationOtpUseCase,
+  ResendOtpUseCase,
   VerifyActivationOtpUseCase,
   VerifyPasswordResetOtpUseCase,
 } from './application/use-cases';
@@ -21,7 +21,7 @@ import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository'
   providers: [
     IssueOtpUseCase,
     VerifyActivationOtpUseCase,
-    ResendActivationOtpUseCase,
+    ResendOtpUseCase,
     RequestPasswordResetOtpUseCase,
     VerifyPasswordResetOtpUseCase,
     { provide: OTP_REPOSITORY, useClass: PgOtpRepository },

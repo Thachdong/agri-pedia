@@ -13,17 +13,18 @@ import {
 import { IOtpRepository, OTP_REPOSITORY } from '../ports/otp.repository';
 import { buildOtpMessage } from '../services/otp-message.builder';
 
-export type TResendActivationOtpInput = {
+export type TResendOtpInput = {
   /** Raw identifier as typed by the client. */
   identifier: string;
+  purpose: EOtpPurpose;
 };
 
 /**
- * Sends the activation code again. An expired code (not blocked) is replaced by a new one;
+ * Sends the latest code of `purpose` again. An expired code (not blocked) is replaced by a new one;
  * otherwise the same code is sent, counted against the resend limit.
  */
 @Injectable()
-export class ResendActivationOtpUseCase {
+export class ResendOtpUseCase {
   constructor(
     @Inject(OTP_REPOSITORY) private readonly otps: IOtpRepository,
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
@@ -33,7 +34,7 @@ export class ResendActivationOtpUseCase {
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
   ) {}
 
-  async execute(input: TResendActivationOtpInput): Promise<void> {
+  async execute(input: TResendOtpInput): Promise<void> {
     const user = await this.userQuery.findByIdentifier(input.identifier);
     if (!user) {
       throw new OtpNotFoundException();
@@ -46,7 +47,7 @@ export class ResendActivationOtpUseCase {
     const outcome = await this.unitOfWork.runInTransaction(async () => {
       const latest = await this.otps.findLatest(
         user.hashedIdentifier,
-        EOtpPurpose.ACTIVATE_DISTRIBUTOR,
+        input.purpose,
       );
       if (!latest) {
         throw new OtpNotFoundException();
@@ -56,7 +57,7 @@ export class ResendActivationOtpUseCase {
         const code = this.crypto.randomDigits(length);
         const renewed = Otp.issue({
           sender: latest.sender,
-          purpose: EOtpPurpose.ACTIVATE_DISTRIBUTOR,
+          purpose: input.purpose,
           hashedIdentifier: user.hashedIdentifier,
           encryptedCode: this.crypto.encrypt(code),
           ttlSeconds,
