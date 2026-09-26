@@ -3,6 +3,7 @@ export * from './enums/otp-block-reason.enum';
 export * from './enums/otp-purpose.enum';
 export * from './enums/otp-sender.enum';
 export * from './exceptions/otp-already-consumed.exception';
+export * from './exceptions/otp-already-requested.exception';
 export * from './exceptions/otp-blocked.exception';
 export * from './exceptions/otp-expired.exception';
 export * from './exceptions/otp-invalid-code.exception';
