@@ -6,6 +6,7 @@ import {
   RequestPasswordResetOtpUseCase,
   ResendActivationOtpUseCase,
   VerifyActivationOtpUseCase,
+  VerifyPasswordResetOtpUseCase,
 } from './application/use-cases';
 import './infrastructure/http/activation.api-docs';
 import './infrastructure/http/password-reset.api-docs';
@@ -22,6 +23,7 @@ import { PgOtpRepository } from './infrastructure/persistence/pg-otp.repository'
     VerifyActivationOtpUseCase,
     ResendActivationOtpUseCase,
     RequestPasswordResetOtpUseCase,
+    VerifyPasswordResetOtpUseCase,
     { provide: OTP_REPOSITORY, useClass: PgOtpRepository },
     UserIdentifierVerificationRequestedHandler,
   ],

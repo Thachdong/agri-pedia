@@ -12,7 +12,7 @@ Flow: `POST /auth/reset-password/confirm { identifier, code, newPassword }` (otp
 Event bus is in-process and awaited (emitAsync): the HTTP response waits for the password change.
 
 - [x] 1. [domain-model]       user: User.changePassword(passwordHash)
-- [ ] 2. [use-case]           otp: VerifyPasswordResetOtp (IOtpRepository.findLatest/save, existing; Otp.verify, existing)
+- [x] 2. [use-case]           otp: VerifyPasswordResetOtp (IOtpRepository.findLatest/save, existing; Otp.verify, existing)
 - [ ] 3. [use-case]           user: ResetPassword; IRefreshTokenRepository + revokeAllByHashedIdentifier
 - [ ] 4. [persistence]        PgRefreshTokenRepository.revokeAllByHashedIdentifier; migration: index refresh_tokens.hashed_identifier
 - [ ] 5. [integration-event]  VerifyPasswordResetOtp emits `otp.password-reset-code.verified`
