@@ -127,9 +127,11 @@ describe('User.activate', () => {
   });
 });
 
-describe('User.assertCanLogin', () => {
+describe('User.canLogin / assertCanLogin', () => {
   it('allows an ACTIVE user', () => {
-    expect(() => User.register(base).assertCanLogin()).not.toThrow();
+    const user = User.register(base);
+    expect(user.canLogin()).toBe(true);
+    expect(() => user.assertCanLogin()).not.toThrow();
   });
 
   it('rejects a PENDING distributor', () => {
@@ -138,6 +140,7 @@ describe('User.assertCanLogin', () => {
       role: EUserRole.DISTRIBUTOR,
       businessType: EBusinessType.SEEDS_SEEDLINGS,
     });
+    expect(user.canLogin()).toBe(false);
     expect(() => user.assertCanLogin()).toThrow(UserNotActiveException);
   });
 });

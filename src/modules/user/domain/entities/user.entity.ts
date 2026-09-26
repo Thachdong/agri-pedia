@@ -99,9 +99,13 @@ export class User extends AggregateRoot {
     this.props.updatedAt = now;
   }
 
-  /** Only ACTIVE users may log in (a DISTRIBUTOR stays PENDING until activated). */
+  /** Only ACTIVE users may log in or keep a session (a DISTRIBUTOR stays PENDING until activated). */
+  canLogin(): boolean {
+    return this.props.status === EUserStatus.ACTIVE;
+  }
+
   assertCanLogin(): void {
-    if (this.props.status !== EUserStatus.ACTIVE) {
+    if (!this.canLogin()) {
       throw new UserNotActiveException(this.id, this.props.status);
     }
   }

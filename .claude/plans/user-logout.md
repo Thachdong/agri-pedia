@@ -9,7 +9,7 @@ Flow: `POST /auth/logout { refreshToken }` + `Authorization: Bearer <accessToken
 No domain change for logout, no new port method, no migration. No cross-module call, no event.
 
 - [x] 1. [shared-wrapper]  access-token: verify(token) + AccessTokenGuard + @CurrentUser() (first protected endpoint); error AUTH_INVALID_ACCESS_TOKEN (UNAUTHORIZED)
-- [ ] 2. [domain-model]    user: User.canLogin(): boolean; assertCanLogin uses it (review LOW #2)
+- [x] 2. [domain-model]    user: User.canLogin(): boolean; assertCanLogin uses it (review LOW #2)
 - [ ] 3. [use-case]        LogoutUser (reuses IRefreshTokenRepository.findByHashedTokenForUpdate + revokeFamily)
 - [ ] 4. [use-case]        RefreshAccessToken: use user.canLogin() (review LOW #2)
 - [ ] 5. [http]            POST /auth/logout (guarded); login e2e verifies JWT via IAccessTokenService.verify instead of @nestjs/jwt (review LOW #1)
