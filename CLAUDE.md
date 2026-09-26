@@ -30,6 +30,7 @@ src/
 │   ├── logger/              # wraps nestjs-pino -> ILogger (LOGGER), useAppLogger()
 │   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
 │   ├── crypto/              # wraps node:crypto -> ICryptoService (CRYPTO_SERVICE): HMAC hash, AES-GCM, scrypt password
+│   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign access tokens
 │   ├── messaging/           # IMessageSender (MESSAGE_SENDER): email/SMS; currently log-only adapter
 │   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean)
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
