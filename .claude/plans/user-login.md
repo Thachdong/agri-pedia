@@ -14,7 +14,7 @@ No cross-module call, no event.
 - [x] 5. [use-case]        LoginUser, port IRefreshTokenRepository
 - [x] 6. [persistence]     PgRefreshTokenRepository, table `refresh_tokens` + migration
 - [x] 7. [http]            POST /auth/login
-- [ ] 8. [api-docs]        POST /auth/login
+- [x] 8. [api-docs]        POST /auth/login
 - [ ] 9. [boundary-review]
 
 ## Open questions
