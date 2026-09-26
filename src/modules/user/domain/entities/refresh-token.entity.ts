@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { AggregateRoot } from '@shared/domain';
 import { ERefreshTokenStatus } from '../enums/refresh-token-status.enum';
+import { InvalidRefreshTokenException } from '../exceptions/invalid-refresh-token.exception';
 
 export type TRefreshTokenProps = {
   /** Shared by every token rotated from the same login. */
@@ -17,6 +18,12 @@ export type TRefreshTokenProps = {
 export type TIssueRefreshTokenProps = {
   hashedToken: string;
   hashedIdentifier: string;
+  ttlSeconds: number;
+  now?: Date;
+};
+
+export type TRotateRefreshTokenProps = {
+  hashedToken: string;
   ttlSeconds: number;
   now?: Date;
 };
@@ -46,6 +53,40 @@ export class RefreshToken extends AggregateRoot {
 
   static restore(id: string, props: TRefreshTokenProps): RefreshToken {
     return new RefreshToken(id, { ...props });
+  }
+
+  /**
+   * Exchanges this token for a new one in the same family (fresh TTL).
+   * Only an ACTIVE, unexpired token can be rotated; it becomes ROTATED.
+   * The child's issuedAt is the rotation time.
+   */
+  rotate(input: TRotateRefreshTokenProps): RefreshToken {
+    const now = input.now ?? new Date();
+    if (
+      this.props.status !== ERefreshTokenStatus.ACTIVE ||
+      this.isExpired(now)
+    ) {
+      throw new InvalidRefreshTokenException();
+    }
+    this.props.status = ERefreshTokenStatus.ROTATED;
+    return new RefreshToken(randomUUID(), {
+      familyId: this.props.familyId,
+      hashedToken: input.hashedToken,
+      hashedIdentifier: this.props.hashedIdentifier,
+      issuedAt: now,
+      expiredAt: new Date(now.getTime() + input.ttlSeconds * 1000),
+      status: ERefreshTokenStatus.ACTIVE,
+      rotatedFromId: this.id,
+    });
+  }
+
+  isExpired(now: Date = new Date()): boolean {
+    return now.getTime() >= this.props.expiredAt.getTime();
+  }
+
+  /** True if issued no more than `seconds` ago. For a child: its parent was rotated that recently. */
+  isIssuedWithin(seconds: number, now: Date = new Date()): boolean {
+    return now.getTime() - this.props.issuedAt.getTime() <= seconds * 1000;
   }
 
   get familyId(): string {

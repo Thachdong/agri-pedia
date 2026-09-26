@@ -12,9 +12,9 @@ Flow: `POST /auth/refresh-token { refreshToken }` (user module) → user.Refresh
 No cross-module call, no event.
 
 - [x] 1. [config-group]    `auth`: add refresh token grace period (seconds)
-- [ ] 2. [domain-model]    user: RefreshToken gets updatedAt + rotate (→ child) / revoke / isExpired; error InvalidRefreshToken (UNAUTHORIZED)
+- [x] 2. [domain-model]    user: RefreshToken rotate (→ child) / isExpired / isIssuedWithin; error InvalidRefreshToken (UNAUTHORIZED)
 - [ ] 3. [use-case]        RefreshAccessToken; IRefreshTokenRepository + findByHashedToken, findChild, revokeFamily
-- [ ] 4. [persistence]     PgRefreshTokenRepository new methods (row lock on lookup); migration: updated_at column, indexes family_id, rotated_from_id
+- [ ] 4. [persistence]     PgRefreshTokenRepository new methods (row lock on lookup); migration: indexes family_id, rotated_from_id
 - [ ] 5. [http]            POST /auth/refresh-token
 - [ ] 6. [api-docs]        POST /auth/refresh-token
 - [ ] 7. [boundary-review] (also covers login, user-login.md step 9)
@@ -27,3 +27,4 @@ No cross-module call, no event.
 5. Grace default 30 s (`AUTH_REFRESH_TOKEN_GRACE_SECONDS`).
 6. Child gets a fresh TTL (sliding session).
 Note: family revoke is committed before the 401 is thrown (throwing inside the transaction would roll it back).
+Delta (step 2): no `updatedAt`. Rotation time = child's issuedAt, so the grace check uses the child found by rotatedFromId (spec's `token.updatedAt`). No domain `revoke()`: family revoke is one bulk update in the repository.
