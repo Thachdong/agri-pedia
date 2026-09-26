@@ -13,8 +13,8 @@ No domain change, no event, no migration.
 
 - [x] 1. [use-case]        otp: ResendActivationOtp → ResendOtp({ identifier, purpose }) (rename + purpose; tests for both purposes)
 - [x] 2. [http]            POST /auth/resend requires `purpose` (ACTIVATE_DISTRIBUTOR | RESET_PASSWORD); existing resend e2e sends it; new e2e for RESET_PASSWORD
-- [ ] 3. [api-docs]        POST /auth/resend
-- [ ] 4. [boundary-review]
+- [x] 3. [api-docs]        POST /auth/resend
+- [x] 4. [boundary-review]
 
 ## Decisions (approved)
 1. One endpoint POST /auth/resend for both purposes.
