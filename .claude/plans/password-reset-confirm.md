@@ -17,7 +17,7 @@ Event bus is in-process and awaited (emitAsync): the HTTP response waits for the
 - [x] 4. [persistence]        PgRefreshTokenRepository.revokeAllByHashedIdentifier; migration: index refresh_tokens.hashed_identifier
 - [x] 5. [integration-event]  VerifyPasswordResetOtp emits `otp.password-reset-code.verified`
 - [x] 6. [event-handler]      user: `otp.password-reset-code.verified` → ResetPassword
-- [ ] 7. [http]               POST /auth/reset-password/confirm (otp module)
+- [x] 7. [http]               POST /auth/reset-password/confirm (otp module)
 - [ ] 8. [api-docs]           POST /auth/reset-password/confirm
 - [ ] 9. [boundary-review]
 
@@ -25,4 +25,4 @@ Event bus is in-process and awaited (emitAsync): the HTTP response waits for the
 1. Route `POST /auth/reset-password/confirm` (otp module); `/auth/change-password` stays for action 8.
 2. After the reset every refresh token of the user is revoked (all sessions end).
 3. newPassword: string, 8–128 chars (same as register).
-4. Otp consumed before the password update. CORRECTION: @OnIntegrationEvent logs handler errors and never propagates them, so if the update fails the client still gets 200 and the password is unchanged (error only in the log). Pending re-confirmation.
+4. Otp consumed before the password update. CORRECTION: @OnIntegrationEvent logs handler errors and never propagates them, so if the update fails the client still gets 200 and the password is unchanged (error only in the log). Developer continued without objection (same as activation).

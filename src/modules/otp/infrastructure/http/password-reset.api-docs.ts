@@ -20,5 +20,9 @@ defineApiDocs(PasswordResetController, {
         { type: EDomainErrorType.BUSINESS_RULE, code: 'OTP_BLOCKED' },
       ],
     },
+    confirmReset: {
+      summary: 'Set a new password with the reset code',
+      validation: true,
+    },
   },
 });
