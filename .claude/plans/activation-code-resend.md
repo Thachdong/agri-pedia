@@ -11,8 +11,8 @@ No cross-module write → no event.
 - [x] 2. [query-port]    user: add normalized `identifier` to TUserIdentifierSummary (recipient of the message)
 - [x] 3. [use-case]      otp: ResendActivationOtp (reuses IOtpRepository.findLatest/save; message text shared with IssueOtp)
 - [x] 4. [http]          POST /auth/resend (docs entry added here: defineApiDocs requires every handler to compile)
-- [ ] 5. [api-docs]      POST /auth/resend (verify /docs-json)
-- [ ] 6. [boundary-review]
+- [x] 5. [api-docs]      POST /auth/resend (verify /docs-json)
+- [x] 6. [boundary-review]
 
 No persistence/migration step: columns retry_count, block_until, block_reason and findLatest already exist.
 Order note: query-port (2) before the use case (3) because the use case depends on it.
