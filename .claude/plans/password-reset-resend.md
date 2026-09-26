@@ -12,7 +12,7 @@ Same rules as the activation resend, via the existing Otp.resend. Pairs with POS
 No domain change, no event, no migration.
 
 - [x] 1. [use-case]        otp: ResendActivationOtp → ResendOtp({ identifier, purpose }) (rename + purpose; tests for both purposes)
-- [ ] 2. [http]            POST /auth/resend requires `purpose` (ACTIVATE_DISTRIBUTOR | RESET_PASSWORD); existing resend e2e sends it; new e2e for RESET_PASSWORD
+- [x] 2. [http]            POST /auth/resend requires `purpose` (ACTIVATE_DISTRIBUTOR | RESET_PASSWORD); existing resend e2e sends it; new e2e for RESET_PASSWORD
 - [ ] 3. [api-docs]        POST /auth/resend
 - [ ] 4. [boundary-review]
 

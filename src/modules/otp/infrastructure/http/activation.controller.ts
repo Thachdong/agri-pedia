@@ -3,8 +3,7 @@ import {
   ResendOtpUseCase,
   VerifyActivationOtpUseCase,
 } from '../../application/use-cases';
-import { EOtpPurpose } from '../../domain';
-import { ActivateAccountDto, ResendActivationCodeDto } from './dto';
+import { ActivateAccountDto, ResendCodeDto } from './dto';
 
 @Controller('auth')
 export class ActivationController {
@@ -25,10 +24,10 @@ export class ActivationController {
 
   @Post('resend')
   @HttpCode(HttpStatus.OK)
-  async resend(@Body() dto: ResendActivationCodeDto): Promise<null> {
+  async resend(@Body() dto: ResendCodeDto): Promise<null> {
     await this.resendOtp.execute({
       identifier: dto.identifier,
-      purpose: EOtpPurpose.ACTIVATE_DISTRIBUTOR,
+      purpose: dto.purpose,
     });
     return null;
   }

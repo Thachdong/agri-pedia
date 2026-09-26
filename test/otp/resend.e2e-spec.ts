@@ -53,8 +53,10 @@ describe('POST /auth/resend (e2e)', () => {
   });
 
   const http = () => request(app.getHttpServer());
-  const resend = (identifier = 'shop@mail.com') =>
-    http().post('/auth/resend').send({ identifier });
+  const resend = (
+    identifier = 'shop@mail.com',
+    purpose = 'ACTIVATE_DISTRIBUTOR',
+  ) => http().post('/auth/resend').send({ identifier, purpose });
 
   /** Registers the distributor and returns its plain activation code. */
   const registerDistributor = async (): Promise<string> => {
@@ -145,10 +147,79 @@ describe('POST /auth/resend (e2e)', () => {
   });
 
   it.each([
-    ['missing identifier', {}],
-    ['empty identifier', { identifier: '' }],
-    ['unknown field', { identifier: 'shop@mail.com', purpose: 'X' }],
+    ['missing identifier', { purpose: 'ACTIVATE_DISTRIBUTOR' }],
+    ['empty identifier', { identifier: '', purpose: 'ACTIVATE_DISTRIBUTOR' }],
+    ['missing purpose', { identifier: 'shop@mail.com' }],
+    ['unknown purpose', { identifier: 'shop@mail.com', purpose: 'X' }],
+    [
+      'unknown field',
+      {
+        identifier: 'shop@mail.com',
+        purpose: 'ACTIVATE_DISTRIBUTOR',
+        extra: 1,
+      },
+    ],
   ])('returns 400 for %s', async (_case, body) => {
     await http().post('/auth/resend').send(body).expect(400);
+  });
+
+  describe('purpose RESET_PASSWORD', () => {
+    const farmer = {
+      loginType: 'EMAIL',
+      identifier: 'farmer@mail.com',
+      password: 'old-secret-123',
+      role: 'FARMER',
+      bussinessType: null,
+      address: distributor.address,
+    };
+    const requestReset = () =>
+      http()
+        .post('/auth/reset-password')
+        .send({ loginType: 'EMAIL', identifier: farmer.identifier });
+    const resendReset = () => resend('Farmer@Mail.com', 'RESET_PASSWORD');
+
+    it('sends the same reset code again, which then resets the password', async () => {
+      await http().post('/auth/register').send(farmer).expect(201);
+      await requestReset().expect(200);
+      expect((await requestReset().expect(409)).body.code).toBe(
+        'OTP_ALREADY_REQUESTED',
+      );
+
+      await resendReset().expect(200, '');
+
+      const [otp] = await dataSource.query(
+        "SELECT hash_code, retry_count FROM otps WHERE purpose = 'RESET_PASSWORD'",
+      );
+      const code = crypto.decrypt(otp.hash_code);
+      expect(otp.retry_count).toBe(1);
+      expect(messages.sent).toHaveLength(2);
+      expect(messages.sent[1]).toMatchObject({
+        to: 'farmer@mail.com',
+        subject: 'AgriPedia - Đặt lại mật khẩu',
+      });
+      expect(messages.sent[1].body).toContain(code);
+
+      await http()
+        .post('/auth/reset-password/confirm')
+        .send({
+          identifier: farmer.identifier,
+          code,
+          newPassword: 'new-secret-456',
+        })
+        .expect(200);
+    });
+
+    it('returns 404 when no reset was requested', async () => {
+      await http().post('/auth/register').send(farmer).expect(201);
+
+      expect((await resendReset().expect(404)).body.code).toBe('OTP_NOT_FOUND');
+    });
+
+    it('does not resend the activation code of a pending distributor', async () => {
+      await registerDistributor();
+
+      await resend('shop@mail.com', 'RESET_PASSWORD').expect(404);
+      expect(messages.sent).toHaveLength(1);
+    });
   });
 });
