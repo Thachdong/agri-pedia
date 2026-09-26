@@ -17,6 +17,7 @@ import { JwtAccessTokenService } from './jwt.access-token';
             algorithm: 'HS256',
             expiresIn: auth.accessTokenTtlSeconds,
           },
+          verifyOptions: { algorithms: ['HS256'] },
         };
       },
     }),

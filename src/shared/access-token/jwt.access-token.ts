@@ -13,4 +13,14 @@ export class JwtAccessTokenService implements IAccessTokenService {
   sign(payload: TAccessTokenPayload): Promise<string> {
     return this.jwt.signAsync({ sub: payload.userId });
   }
+
+  async verify(token: string): Promise<TAccessTokenPayload | null> {
+    try {
+      const claims = await this.jwt.verifyAsync<{ sub?: unknown }>(token);
+      return typeof claims.sub === 'string' ? { userId: claims.sub } : null;
+    } catch {
+      // malformed, bad signature or expired
+      return null;
+    }
+  }
 }
