@@ -1,6 +1,7 @@
 import { IConfigService } from '@shared/config';
 import { InMemoryCryptoService } from '@shared/crypto';
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
 import { IUserQueryPort } from '@modules/user/contracts';
 import {
   EOtpBlockReason,
@@ -13,6 +14,7 @@ import {
   OtpInvalidCodeException,
   OtpNotFoundException,
 } from '../../domain';
+import { OTP_PASSWORD_RESET_CODE_VERIFIED_EVENT } from '../../contracts';
 import { InMemoryOtpRepository } from '../ports/fakes';
 import { VerifyPasswordResetOtpUseCase } from './verify-password-reset-otp.use-case';
 
@@ -36,10 +38,12 @@ const issue = (
 
 describe('VerifyPasswordResetOtpUseCase', () => {
   let otps: InMemoryOtpRepository;
+  let eventBus: InMemoryEventBus;
   let useCase: VerifyPasswordResetOtpUseCase;
 
   beforeEach(() => {
     otps = new InMemoryOtpRepository();
+    eventBus = new InMemoryEventBus();
     const userQuery: IUserQueryPort = {
       findByIdentifier: async (identifier) =>
         identifier === 'Farmer@Mail.com'
@@ -58,6 +62,7 @@ describe('VerifyPasswordResetOtpUseCase', () => {
       new InMemoryCryptoService(),
       config,
       new InMemoryUnitOfWork(),
+      eventBus,
     );
   });
 
@@ -78,6 +83,13 @@ describe('VerifyPasswordResetOtpUseCase', () => {
 
     expect(latest.isConsumed).toBe(true);
     expect(old.isConsumed).toBe(false);
+    expect(eventBus.published).toEqual([
+      {
+        name: OTP_PASSWORD_RESET_CODE_VERIFIED_EVENT,
+        occurredAt: expect.any(String),
+        payload: { userId: 'user-1', passwordHash: 'pwd(new-secret-123)' },
+      },
+    ]);
   });
 
   it('ignores otps of another purpose', async () => {
@@ -109,6 +121,7 @@ describe('VerifyPasswordResetOtpUseCase', () => {
     await expect(verify('000000')).rejects.toThrow(OtpInvalidCodeException);
     expect(otp.wrongCount).toBe(1);
     expect(otp.isConsumed).toBe(false);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('blocks once the wrong limit is exceeded', async () => {
@@ -120,6 +133,7 @@ describe('VerifyPasswordResetOtpUseCase', () => {
     await expect(verify('000000')).rejects.toThrow(OtpBlockedException);
     expect(otp.blockReason).toBe(EOtpBlockReason.WRONG_COUNT_MAXIMUM);
     await expect(verify('482913')).rejects.toThrow(OtpBlockedException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects a consumed otp', async () => {
@@ -127,11 +141,13 @@ describe('VerifyPasswordResetOtpUseCase', () => {
     await verify('482913');
 
     await expect(verify('482913')).rejects.toThrow(OtpAlreadyConsumedException);
+    expect(eventBus.published).toHaveLength(1);
   });
 
   it('rejects an expired otp', async () => {
     await otps.save(issue({ now: new Date(Date.now() - 301_000) }));
 
     await expect(verify('482913')).rejects.toThrow(OtpExpiredException);
+    expect(eventBus.published).toEqual([]);
   });
 });

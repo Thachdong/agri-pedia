@@ -2,7 +2,16 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
+import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
+import {
+  OTP_PASSWORD_RESET_CODE_VERIFIED_EVENT,
+  TOtpPasswordResetCodeVerifiedEventPayload,
+} from '../../contracts';
 import {
   EOtpPurpose,
   OtpBlockedException,
@@ -18,7 +27,10 @@ export type TVerifyPasswordResetOtpInput = {
   newPassword: string;
 };
 
-/** Checks the password reset code of an identifier and consumes it. */
+/**
+ * Checks the password reset code of an identifier and consumes it, then hands the
+ * hashed new password to the user module (`otp.password-reset-code.verified`).
+ */
 @Injectable()
 export class VerifyPasswordResetOtpUseCase {
   constructor(
@@ -27,6 +39,7 @@ export class VerifyPasswordResetOtpUseCase {
     @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
     @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
   async execute(input: TVerifyPasswordResetOtpInput): Promise<void> {
@@ -63,5 +76,15 @@ export class VerifyPasswordResetOtpUseCase {
     if (result === 'BLOCKED') {
       throw new OtpBlockedException(blockUntil!);
     }
+
+    await this.eventBus.publish(
+      createIntegrationEvent<
+        typeof OTP_PASSWORD_RESET_CODE_VERIFIED_EVENT,
+        TOtpPasswordResetCodeVerifiedEventPayload
+      >(OTP_PASSWORD_RESET_CODE_VERIFIED_EVENT, {
+        userId: account.userId,
+        passwordHash: await this.crypto.hashPassword(input.newPassword),
+      }),
+    );
   }
 }
