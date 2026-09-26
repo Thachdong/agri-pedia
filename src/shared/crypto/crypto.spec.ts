@@ -41,7 +41,31 @@ describe('NodeCryptoService', () => {
     expect(hashed).not.toBe(await crypto.hashPassword('P@ssw0rd'));
   });
 
+  it('verifies passwords against their hash', async () => {
+    const hashed = await crypto.hashPassword('P@ssw0rd');
+    await expect(crypto.verifyPassword('P@ssw0rd', hashed)).resolves.toBe(true);
+    await expect(crypto.verifyPassword('wrong', hashed)).resolves.toBe(false);
+  });
+
+  it('rejects malformed password hashes', async () => {
+    await expect(crypto.verifyPassword('P@ssw0rd', 'garbage')).resolves.toBe(
+      false,
+    );
+    await expect(
+      crypto.verifyPassword('P@ssw0rd', 'scrypt$a$b$c$salt$key'),
+    ).resolves.toBe(false);
+    await expect(
+      crypto.verifyPassword('P@ssw0rd', 'scrypt$3$8$1$salt$key'),
+    ).resolves.toBe(false);
+  });
+
   it('generates numeric codes of given length', () => {
     expect(crypto.randomDigits(6)).toMatch(/^\d{6}$/);
+  });
+
+  it('generates random url-safe tokens', () => {
+    const token = crypto.randomToken();
+    expect(token).toMatch(/^[\w-]{43}$/);
+    expect(token).not.toBe(crypto.randomToken());
   });
 });

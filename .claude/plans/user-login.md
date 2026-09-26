@@ -8,7 +8,7 @@ Flow: `POST /auth/login { loginType, identifier, password }` (user module) → u
 No cross-module call, no event.
 
 - [x] 1. [config-group]    `auth`: access token secret + TTL, refresh token TTL
-- [ ] 2. [shared-wrapper]  crypto: add verifyPassword, randomToken
+- [x] 2. [shared-wrapper]  crypto: add verifyPassword, randomToken
 - [ ] 3. [shared-wrapper]  jwt (`@nestjs/jwt`): IAccessTokenService.sign(payload) (sign only; verify comes with the auth guard)
 - [ ] 4. [domain-model]    user: RefreshToken aggregate (issue), ERefreshTokenStatus; errors InvalidCredentials (UNAUTHORIZED), UserNotActive (FORBIDDEN)
 - [ ] 5. [use-case]        LoginUser, port IRefreshTokenRepository
