@@ -1,10 +1,28 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  AccessTokenGuard,
+  CurrentUser,
+  TAccessTokenPayload,
+} from '@shared/access-token';
 import {
   LoginUserUseCase,
+  LogoutUserUseCase,
   RefreshAccessTokenUseCase,
   RegisterUserUseCase,
 } from '../../application/use-cases';
-import { LoginUserDto, RefreshAccessTokenDto, RegisterUserDto } from './dto';
+import {
+  LoginUserDto,
+  LogoutUserDto,
+  RefreshAccessTokenDto,
+  RegisterUserDto,
+} from './dto';
 import { LoginUserResponse } from './responses/login-user.response';
 import { RefreshAccessTokenResponse } from './responses/refresh-access-token.response';
 
@@ -14,6 +32,7 @@ export class AuthController {
     private readonly registerUser: RegisterUserUseCase,
     private readonly loginUser: LoginUserUseCase,
     private readonly refreshAccessToken: RefreshAccessTokenUseCase,
+    private readonly logoutUser: LogoutUserUseCase,
   ) {}
 
   @Post('register')
@@ -73,5 +92,19 @@ export class AuthController {
       },
     );
     return { accessToken, refreshToken };
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
+  async logout(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Body() dto: LogoutUserDto,
+  ): Promise<null> {
+    await this.logoutUser.execute({
+      userId: caller.userId,
+      refreshToken: dto.refreshToken,
+    });
+    return null;
   }
 }

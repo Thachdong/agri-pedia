@@ -56,5 +56,9 @@ defineApiDocs(AuthController, {
         },
       ],
     },
+    logout: {
+      summary: 'End the current session',
+      validation: true,
+    },
   },
 });

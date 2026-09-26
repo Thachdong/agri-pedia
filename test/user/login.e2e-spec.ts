@@ -1,9 +1,12 @@
 import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../src/app.module';
+import {
+  ACCESS_TOKEN_SERVICE,
+  IAccessTokenService,
+} from '@shared/access-token';
 
 const address = {
   province: 'Can Tho',
@@ -72,10 +75,10 @@ describe('POST /auth/login (e2e)', () => {
     }).expect(200);
 
     const [user] = await dataSource.query('SELECT id FROM users');
-    const claims = app
-      .get(JwtService)
-      .verify<{ sub: string }>(res.body.accessToken);
-    expect(claims.sub).toBe(user.id);
+    const payload = await app
+      .get<IAccessTokenService>(ACCESS_TOKEN_SERVICE)
+      .verify(res.body.accessToken);
+    expect(payload).toEqual({ userId: user.id });
     expect(res.body.refreshToken).toEqual(expect.any(String));
     expect(res.body.user).toEqual({
       loginType: 'EMAIL',

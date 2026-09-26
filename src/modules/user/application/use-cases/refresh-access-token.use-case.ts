@@ -8,7 +8,6 @@ import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
   ERefreshTokenStatus,
-  EUserStatus,
   InvalidRefreshTokenException,
   RefreshToken,
 } from '../../domain';
@@ -77,7 +76,7 @@ export class RefreshAccessTokenUseCase {
         const user = await this.users.findByHashedIdentifier(
           current.hashedIdentifier,
         );
-        if (!user || user.status !== EUserStatus.ACTIVE) {
+        if (!user?.canLogin()) {
           return null;
         }
 
