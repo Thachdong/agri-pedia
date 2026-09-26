@@ -16,8 +16,8 @@ No cross-module call, no event.
 - [x] 3. [use-case]        RefreshAccessToken; IRefreshTokenRepository + findByHashedTokenForUpdate, findChild, revokeFamily
 - [x] 4. [persistence]     PgRefreshTokenRepository new methods (row lock on lookup); migration: indexes family_id, rotated_from_id
 - [x] 5. [http]            POST /auth/refresh-token
-- [ ] 6. [api-docs]        POST /auth/refresh-token
-- [ ] 7. [boundary-review] (also covers login, user-login.md step 9)
+- [x] 6. [api-docs]        POST /auth/refresh-token
+- [x] 7. [boundary-review] (also covers login, user-login.md step 9)
 
 ## Decisions (approved)
 1. ROTATED within grace: child still ACTIVE → rotate the child, return a new pair; otherwise reuse → revoke family, 401.

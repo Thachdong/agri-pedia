@@ -43,7 +43,18 @@ defineApiDocs(AuthController, {
     },
     refreshToken: {
       summary: 'Exchange a refresh token for a new token pair',
+      description:
+        'Responds 200 with a new access token and a new refresh token; the one sent stops working. ' +
+        'A just-rotated token sent again within the grace period (retry) still succeeds. ' +
+        'Reusing a rotated token after the grace period, or a revoked one, revokes every token of that login. ' +
+        'Unknown, expired, reused or revoked tokens and inactive owners all return USER_INVALID_REFRESH_TOKEN.',
       validation: true,
+      errors: [
+        {
+          type: EDomainErrorType.UNAUTHORIZED,
+          code: 'USER_INVALID_REFRESH_TOKEN',
+        },
+      ],
     },
   },
 });

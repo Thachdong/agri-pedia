@@ -15,7 +15,7 @@ No cross-module call, no event.
 - [x] 6. [persistence]     PgRefreshTokenRepository, table `refresh_tokens` + migration
 - [x] 7. [http]            POST /auth/login
 - [x] 8. [api-docs]        POST /auth/login
-- [ ] 9. [boundary-review]
+- [x] 9. [boundary-review]
 
 ## Open questions
 1. Tokens in response: spec response lists no accessToken/refreshToken. Proposal: body `{ accessToken, refreshToken, user: {...profile} }`. Alternative: refreshToken in httpOnly cookie.
