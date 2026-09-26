@@ -144,3 +144,16 @@ describe('User.canLogin / assertCanLogin', () => {
     expect(() => user.assertCanLogin()).toThrow(UserNotActiveException);
   });
 });
+
+describe('User.changePassword', () => {
+  it('replaces the password hash and touches updatedAt', () => {
+    const user = User.register(base);
+    const now = new Date(user.updatedAt.getTime() + 60_000);
+
+    user.changePassword('pwd(new-secret)', now);
+
+    expect(user.passwordHash).toBe('pwd(new-secret)');
+    expect(user.updatedAt).toEqual(now);
+    expect(user.createdAt).not.toEqual(now);
+  });
+});

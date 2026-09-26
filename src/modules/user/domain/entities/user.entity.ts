@@ -99,6 +99,12 @@ export class User extends AggregateRoot {
     this.props.updatedAt = now;
   }
 
+  /** Replaces the password; `passwordHash` is already hashed by the caller. */
+  changePassword(passwordHash: string, now: Date = new Date()): void {
+    this.props.passwordHash = passwordHash;
+    this.props.updatedAt = now;
+  }
+
   /** Only ACTIVE users may log in or keep a session (a DISTRIBUTOR stays PENDING until activated). */
   canLogin(): boolean {
     return this.props.status === EUserStatus.ACTIVE;
