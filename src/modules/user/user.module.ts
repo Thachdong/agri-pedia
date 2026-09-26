@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ADDRESS_REPOSITORY, USER_REPOSITORY } from './application/ports';
 import {
   ActivateUserUseCase,
+  LoginUserUseCase,
   RegisterUserUseCase,
 } from './application/use-cases';
 import { USER_QUERY_PORT } from './contracts';
@@ -18,6 +19,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
   providers: [
     RegisterUserUseCase,
     ActivateUserUseCase,
+    LoginUserUseCase,
     { provide: USER_REPOSITORY, useClass: PgUserRepository },
     { provide: ADDRESS_REPOSITORY, useClass: PgAddressRepository },
     { provide: USER_QUERY_PORT, useClass: UserQueryService },
