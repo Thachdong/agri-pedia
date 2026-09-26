@@ -10,7 +10,7 @@ No domain change for logout, no new port method, no migration. No cross-module c
 
 - [x] 1. [shared-wrapper]  access-token: verify(token) + AccessTokenGuard + @CurrentUser() (first protected endpoint); error AUTH_INVALID_ACCESS_TOKEN (UNAUTHORIZED)
 - [x] 2. [domain-model]    user: User.canLogin(): boolean; assertCanLogin uses it (review LOW #2)
-- [ ] 3. [use-case]        LogoutUser (reuses IRefreshTokenRepository.findByHashedTokenForUpdate + revokeFamily)
+- [x] 3. [use-case]        LogoutUser (reuses IRefreshTokenRepository.findByHashedTokenForUpdate + revokeFamily)
 - [ ] 4. [use-case]        RefreshAccessToken: use user.canLogin() (review LOW #2)
 - [ ] 5. [http]            POST /auth/logout (guarded); login e2e verifies JWT via IAccessTokenService.verify instead of @nestjs/jwt (review LOW #1)
 - [ ] 6. [api-docs]        POST /auth/logout; defineApiDocs gets `auth: true` (bearer scheme + 401), setupSwagger adds bearer auth
