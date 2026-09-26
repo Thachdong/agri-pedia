@@ -8,6 +8,8 @@ export interface IRefreshTokenRepository {
   save(token: RefreshToken): Promise<void>;
   /** Marks every token of the family REVOKED. */
   revokeFamily(familyId: string): Promise<void>;
+  /** Marks every token of the owner REVOKED (all sessions end). */
+  revokeAllByHashedIdentifier(hashedIdentifier: string): Promise<void>;
 }
 
 export const REFRESH_TOKEN_REPOSITORY = Symbol('REFRESH_TOKEN_REPOSITORY');

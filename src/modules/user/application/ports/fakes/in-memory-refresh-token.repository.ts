@@ -19,8 +19,16 @@ export class InMemoryRefreshTokenRepository implements IRefreshTokenRepository {
   }
 
   async revokeFamily(familyId: string): Promise<void> {
+    this.revokeWhere((token) => token.familyId === familyId);
+  }
+
+  async revokeAllByHashedIdentifier(hashedIdentifier: string): Promise<void> {
+    this.revokeWhere((token) => token.hashedIdentifier === hashedIdentifier);
+  }
+
+  private revokeWhere(predicate: (token: RefreshToken) => boolean): void {
     for (const [id, token] of this.items) {
-      if (token.familyId === familyId) {
+      if (predicate(token)) {
         this.items.set(
           id,
           RefreshToken.restore(id, {
