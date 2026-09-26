@@ -5,6 +5,7 @@ export class RefreshTokenOrmEntity {
   @PrimaryColumn('uuid')
   id: string;
 
+  @Index('IDX_refresh_tokens_family_id')
   @Column({ name: 'family_id', type: 'uuid' })
   familyId: string;
 
@@ -24,6 +25,7 @@ export class RefreshTokenOrmEntity {
   @Column({ type: 'varchar', length: 16 })
   status: string;
 
+  @Index('IDX_refresh_tokens_rotated_from_id')
   @Column({ name: 'rotated_from_id', type: 'uuid', nullable: true })
   rotatedFromId: string | null;
 }
