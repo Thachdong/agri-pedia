@@ -102,6 +102,7 @@ Modules never talk to each other directly.
 
 - UI `/docs`, JSON `/docs-json`; off when `NODE_ENV=production`. Schemas come from the `@nestjs/swagger` CLI plugin (`nest-cli.json`) → only after `npm run build`, not under ts-jest/ts-node.
 - Controllers and DTOs carry **no** `@Api*` decorators. Tag/summary/error codes live in `<name>.api-docs.ts` via `defineApiDocs`, side-effect imported by the module file. Response bodies are classes in `*.response.ts` so the plugin sees them.
+- Handlers behind `AccessTokenGuard` set `auth: true` in their `defineApiDocs` entry (bearer scheme + 401 `AUTH_INVALID_ACCESS_TOKEN`).
 
 ## External packages
 

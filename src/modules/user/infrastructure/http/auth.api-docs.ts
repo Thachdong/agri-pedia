@@ -58,7 +58,12 @@ defineApiDocs(AuthController, {
     },
     logout: {
       summary: 'End the current session',
+      description:
+        'Revokes the session (every refresh token of that login) the given refresh token belongs to. ' +
+        'Responds 200 with an empty body, also when the refresh token is unknown, expired, already revoked ' +
+        "or another user's (then nothing changes). The access token stays valid until it expires; discard it.",
       validation: true,
+      auth: true,
     },
   },
 });

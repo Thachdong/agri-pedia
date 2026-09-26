@@ -13,8 +13,8 @@ No domain change for logout, no new port method, no migration. No cross-module c
 - [x] 3. [use-case]        LogoutUser (reuses IRefreshTokenRepository.findByHashedTokenForUpdate + revokeFamily)
 - [x] 4. [use-case]        RefreshAccessToken: use user.canLogin() (review LOW #2)
 - [x] 5. [http]            POST /auth/logout (guarded); login e2e verifies JWT via IAccessTokenService.verify instead of @nestjs/jwt (review LOW #1)
-- [ ] 6. [api-docs]        POST /auth/logout; defineApiDocs gets `auth: true` (bearer scheme + 401), setupSwagger adds bearer auth
-- [ ] 7. [boundary-review]
+- [x] 6. [api-docs]        POST /auth/logout; defineApiDocs gets `auth: true` (bearer scheme + 401), setupSwagger adds bearer auth
+- [x] 7. [boundary-review]
 
 ## Decisions (approved)
 1. Login required: access token (Bearer) + refresh token in body; token must belong to the caller.
