@@ -1,10 +1,39 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { RegisterUserUseCase } from '../../application/use-cases';
-import { RegisterUserDto } from './dto';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  AccessTokenGuard,
+  CurrentUser,
+  TAccessTokenPayload,
+} from '@shared/access-token';
+import {
+  LoginUserUseCase,
+  LogoutUserUseCase,
+  RefreshAccessTokenUseCase,
+  RegisterUserUseCase,
+} from '../../application/use-cases';
+import {
+  LoginUserDto,
+  LogoutUserDto,
+  RefreshAccessTokenDto,
+  RegisterUserDto,
+} from './dto';
+import { LoginUserResponse } from './responses/login-user.response';
+import { RefreshAccessTokenResponse } from './responses/refresh-access-token.response';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly registerUser: RegisterUserUseCase) {}
+  constructor(
+    private readonly registerUser: RegisterUserUseCase,
+    private readonly loginUser: LoginUserUseCase,
+    private readonly refreshAccessToken: RefreshAccessTokenUseCase,
+    private readonly logoutUser: LogoutUserUseCase,
+  ) {}
 
   @Post('register')
   async register(@Body() dto: RegisterUserDto): Promise<null> {
@@ -23,6 +52,58 @@ export class AuthController {
         lat: dto.address.lat,
         long: dto.address.long,
       },
+    });
+    return null;
+  }
+
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() dto: LoginUserDto): Promise<LoginUserResponse> {
+    const { accessToken, refreshToken, user } = await this.loginUser.execute({
+      loginType: dto.loginType,
+      identifier: dto.identifier,
+      password: dto.password,
+    });
+    return {
+      accessToken,
+      refreshToken,
+      user: {
+        loginType: user.loginType,
+        username: user.username,
+        role: user.role,
+        bussinessType: user.businessType,
+        bussinessLicense: user.businessLicense,
+        avatar: user.avatar,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    };
+  }
+
+  @Post('refresh-token')
+  @HttpCode(HttpStatus.OK)
+  async refreshToken(
+    @Body() dto: RefreshAccessTokenDto,
+  ): Promise<RefreshAccessTokenResponse> {
+    const { accessToken, refreshToken } = await this.refreshAccessToken.execute(
+      {
+        refreshToken: dto.refreshToken,
+      },
+    );
+    return { accessToken, refreshToken };
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
+  async logout(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Body() dto: LogoutUserDto,
+  ): Promise<null> {
+    await this.logoutUser.execute({
+      userId: caller.userId,
+      refreshToken: dto.refreshToken,
     });
     return null;
   }

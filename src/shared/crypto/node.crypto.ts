@@ -7,6 +7,7 @@ import {
   randomInt,
   scrypt,
   ScryptOptions,
+  timingSafeEqual,
 } from 'node:crypto';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { ICryptoService } from './crypto.interface';
@@ -16,6 +17,7 @@ const IV_LENGTH = 12;
 const SCRYPT_KEY_LENGTH = 64;
 const SCRYPT_SALT_LENGTH = 16;
 const SCRYPT_OPTIONS = { N: 16384, r: 8, p: 1 };
+const RANDOM_TOKEN_BYTES = 32;
 
 const scryptAsync = (
   password: string,
@@ -34,6 +36,7 @@ const scryptAsync = (
  * - hash: HMAC-SHA256, hex.
  * - encrypt: AES-256-GCM, `<iv>.<authTag>.<cipherText>` base64url.
  * - password: scrypt, `scrypt$<N>$<r>$<p>$<salt>$<key>` base64url.
+ * - randomToken: 32 random bytes, base64url.
  */
 @Injectable()
 export class NodeCryptoService implements ICryptoService {
@@ -96,11 +99,42 @@ export class NodeCryptoService implements ICryptoService {
     ].join('$');
   }
 
+  async verifyPassword(
+    password: string,
+    passwordHash: string,
+  ): Promise<boolean> {
+    const parts = passwordHash.split('$');
+    if (parts.length !== 6 || parts[0] !== 'scrypt') {
+      return false;
+    }
+    const [N, r, p] = parts.slice(1, 4).map(Number);
+    const salt = Buffer.from(parts[4], 'base64url');
+    const expected = Buffer.from(parts[5], 'base64url');
+    if (![N, r, p].every(Number.isInteger) || expected.length === 0) {
+      return false;
+    }
+    try {
+      const actual = await scryptAsync(password, salt, expected.length, {
+        N,
+        r,
+        p,
+      });
+      return timingSafeEqual(actual, expected);
+    } catch {
+      // invalid scrypt parameters in the stored hash
+      return false;
+    }
+  }
+
   randomDigits(length: number): string {
     let code = '';
     for (let i = 0; i < length; i++) {
       code += randomInt(0, 10).toString();
     }
     return code;
+  }
+
+  randomToken(): string {
+    return randomBytes(RANDOM_TOKEN_BYTES).toString('base64url');
   }
 }

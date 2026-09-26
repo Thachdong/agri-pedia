@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AccessTokenModule } from '@shared/access-token';
 import { SharedConfigModule } from '@shared/config';
 import { DatabaseModule } from '@shared/database';
 import { CryptoModule } from '@shared/crypto';
@@ -19,6 +20,7 @@ import { AppService } from './app.service';
     DatabaseModule,
     EventBusModule,
     CryptoModule,
+    AccessTokenModule,
     MessagingModule,
     SharedHttpModule,
     // business modules

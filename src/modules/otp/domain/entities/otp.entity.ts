@@ -4,6 +4,7 @@ import { EOtpBlockReason } from '../enums/otp-block-reason.enum';
 import { EOtpPurpose } from '../enums/otp-purpose.enum';
 import { EOtpSender } from '../enums/otp-sender.enum';
 import { OtpAlreadyConsumedException } from '../exceptions/otp-already-consumed.exception';
+import { OtpAlreadyRequestedException } from '../exceptions/otp-already-requested.exception';
 import { OtpBlockedException } from '../exceptions/otp-blocked.exception';
 import { OtpExpiredException } from '../exceptions/otp-expired.exception';
 
@@ -129,6 +130,28 @@ export class Otp extends AggregateRoot {
       return 'BLOCKED';
     }
     return 'RESEND';
+  }
+
+  /**
+   * Checks that a new otp for the same purpose may replace this one (it is the latest).
+   * Consumed → yes. Blocked → OtpBlocked, even if expired, so a block cannot be lifted
+   * early. Still valid → OtpAlreadyRequested. Expired → yes.
+   */
+  assertReplaceable(now: Date): void {
+    if (this.props.isConsumed) {
+      return;
+    }
+    const { blockUntil } = this.props;
+    if (blockUntil !== null && now.getTime() < blockUntil.getTime()) {
+      throw new OtpBlockedException(blockUntil);
+    }
+    if (!this.isExpired(now)) {
+      throw new OtpAlreadyRequestedException(
+        this.props.purpose,
+        this.props.issuedAt,
+        this.props.expiredAt,
+      );
+    }
   }
 
   private assertNotConsumedNorBlocked(now: Date): void {

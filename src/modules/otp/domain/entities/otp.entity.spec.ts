@@ -2,6 +2,7 @@ import { EOtpBlockReason } from '../enums/otp-block-reason.enum';
 import { EOtpPurpose } from '../enums/otp-purpose.enum';
 import { EOtpSender } from '../enums/otp-sender.enum';
 import { OtpAlreadyConsumedException } from '../exceptions/otp-already-consumed.exception';
+import { OtpAlreadyRequestedException } from '../exceptions/otp-already-requested.exception';
 import { OtpBlockedException } from '../exceptions/otp-blocked.exception';
 import { OtpExpiredException } from '../exceptions/otp-expired.exception';
 import { Otp, TOtpAttemptPolicy, TOtpResendPolicy } from './otp.entity';
@@ -197,5 +198,72 @@ describe('Otp.resend', () => {
     expect(() => otp.resend(at(10), policy)).toThrow(
       OtpAlreadyConsumedException,
     );
+  });
+});
+
+describe('Otp.assertReplaceable', () => {
+  const at = (iso: string) => new Date(iso);
+  const restore = (
+    overrides: Partial<{
+      isConsumed: boolean;
+      blockUntil: Date | null;
+    }> = {},
+  ) =>
+    Otp.restore('otp-1', {
+      sender: EOtpSender.EMAIL,
+      purpose: EOtpPurpose.RESET_PASSWORD,
+      hashedIdentifier: 'hash',
+      encryptedCode: 'enc',
+      retryCount: 0,
+      wrongCount: 0,
+      issuedAt: now,
+      expiredAt: at('2026-01-01T00:05:00.000Z'),
+      isConsumed: false,
+      blockUntil: null,
+      blockReason: null,
+      ...overrides,
+    });
+
+  it('rejects a still valid otp with its issue and expiry times', () => {
+    const otp = restore();
+    expect(() => otp.assertReplaceable(at('2026-01-01T00:04:59.000Z'))).toThrow(
+      expect.objectContaining({
+        constructor: OtpAlreadyRequestedException,
+        code: 'OTP_ALREADY_REQUESTED',
+        details: {
+          purpose: EOtpPurpose.RESET_PASSWORD,
+          issuedAt: '2026-01-01T00:00:00.000Z',
+          expiredAt: '2026-01-01T00:05:00.000Z',
+        },
+      }),
+    );
+  });
+
+  it('allows replacing an expired otp', () => {
+    expect(() =>
+      restore().assertReplaceable(at('2026-01-01T00:05:00.000Z')),
+    ).not.toThrow();
+  });
+
+  it('allows replacing a consumed otp, even before expiry', () => {
+    expect(() =>
+      restore({ isConsumed: true }).assertReplaceable(
+        at('2026-01-01T00:01:00.000Z'),
+      ),
+    ).not.toThrow();
+  });
+
+  it('rejects a blocked otp even after expiry', () => {
+    const otp = restore({ blockUntil: at('2026-01-01T00:15:00.000Z') });
+    expect(() => otp.assertReplaceable(at('2026-01-01T00:10:00.000Z'))).toThrow(
+      OtpBlockedException,
+    );
+  });
+
+  it('allows replacing once the block is over', () => {
+    const otp = restore({ blockUntil: at('2026-01-01T00:15:00.000Z') });
+    expect(() =>
+      otp.assertReplaceable(at('2026-01-01T00:15:00.000Z')),
+    ).not.toThrow();
   });
 });

@@ -1,8 +1,9 @@
 import { ICryptoService } from './crypto.interface';
 
-/** Test fake: readable, deterministic transforms. Set `nextDigits` to control generated codes. */
+/** Test fake: readable, deterministic transforms. Set `nextDigits` / `nextToken` to control generated values. */
 export class InMemoryCryptoService implements ICryptoService {
   nextDigits?: string;
+  nextToken?: string;
 
   hash(value: string): string {
     return `hash(${value})`;
@@ -24,7 +25,18 @@ export class InMemoryCryptoService implements ICryptoService {
     return `pwd(${password})`;
   }
 
+  async verifyPassword(
+    password: string,
+    passwordHash: string,
+  ): Promise<boolean> {
+    return passwordHash === `pwd(${password})`;
+  }
+
   randomDigits(length: number): string {
     return this.nextDigits ?? '0'.repeat(length);
+  }
+
+  randomToken(): string {
+    return this.nextToken ?? 'token';
   }
 }

@@ -30,6 +30,7 @@ src/
 │   ├── logger/              # wraps nestjs-pino -> ILogger (LOGGER), useAppLogger()
 │   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
 │   ├── crypto/              # wraps node:crypto -> ICryptoService (CRYPTO_SERVICE): HMAC hash, AES-GCM, scrypt password
+│   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign/verify access tokens; AccessTokenGuard + @CurrentUser() for protected routes
 │   ├── messaging/           # IMessageSender (MESSAGE_SENDER): email/SMS; currently log-only adapter
 │   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean)
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
@@ -101,6 +102,7 @@ Modules never talk to each other directly.
 
 - UI `/docs`, JSON `/docs-json`; off when `NODE_ENV=production`. Schemas come from the `@nestjs/swagger` CLI plugin (`nest-cli.json`) → only after `npm run build`, not under ts-jest/ts-node.
 - Controllers and DTOs carry **no** `@Api*` decorators. Tag/summary/error codes live in `<name>.api-docs.ts` via `defineApiDocs`, side-effect imported by the module file. Response bodies are classes in `*.response.ts` so the plugin sees them.
+- Handlers behind `AccessTokenGuard` set `auth: true` in their `defineApiDocs` entry (bearer scheme + 401 `AUTH_INVALID_ACCESS_TOKEN`).
 
 ## External packages
 

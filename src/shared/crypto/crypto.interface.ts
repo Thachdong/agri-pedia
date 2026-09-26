@@ -8,8 +8,12 @@ export interface ICryptoService {
   decrypt(cipherText: string): string;
   /** Slow salted hash for passwords. */
   hashPassword(password: string): Promise<string>;
+  /** True if `password` matches a hash produced by `hashPassword`; false for a malformed hash. */
+  verifyPassword(password: string, passwordHash: string): Promise<boolean>;
   /** Cryptographically secure numeric code of `length` digits (leading zeros kept). */
   randomDigits(length: number): string;
+  /** Unguessable opaque token (URL-safe), e.g. a refresh token. */
+  randomToken(): string;
 }
 
 export const CRYPTO_SERVICE = Symbol('CRYPTO_SERVICE');

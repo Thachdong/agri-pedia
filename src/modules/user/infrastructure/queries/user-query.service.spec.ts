@@ -30,6 +30,8 @@ describe('UserQueryService.findByIdentifier', () => {
       userId: user.id,
       identifier: '0912345678',
       hashedIdentifier: 'hash(0912345678)',
+      loginType: 'PHONE',
+      canLogin: false,
     });
   });
 
@@ -40,7 +42,18 @@ describe('UserQueryService.findByIdentifier', () => {
       userId: user.id,
       identifier: 'shop@mail.com',
       hashedIdentifier: 'hash(shop@mail.com)',
+      loginType: 'PHONE',
+      canLogin: false,
     });
+  });
+
+  it('reports an activated account as able to log in', async () => {
+    const user = userWith('hash(0912345678)');
+    user.activate();
+    await users.save(user);
+    await expect(service.findByIdentifier('0912345678')).resolves.toMatchObject(
+      { canLogin: true },
+    );
   });
 
   it('returns null for an unknown identifier', async () => {

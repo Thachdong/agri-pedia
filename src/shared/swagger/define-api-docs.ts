@@ -1,5 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiExtraModels,
   ApiOperation,
   ApiResponse,
@@ -15,6 +16,15 @@ import {
 
 export type TApiErrorDoc = { type: EDomainErrorType; code: string };
 
+/** Security scheme name registered in setupSwagger. */
+export const ACCESS_TOKEN_SCHEME = 'access-token';
+
+/** Thrown by AccessTokenGuard (@shared/access-token). */
+const INVALID_ACCESS_TOKEN_ERROR: TApiErrorDoc = {
+  type: EDomainErrorType.UNAUTHORIZED,
+  code: 'AUTH_INVALID_ACCESS_TOKEN',
+};
+
 export type TApiOperationDoc = {
   summary: string;
   description?: string;
@@ -22,6 +32,8 @@ export type TApiOperationDoc = {
   validation?: boolean;
   /** Domain exceptions the endpoint can throw. */
   errors?: TApiErrorDoc[];
+  /** Behind AccessTokenGuard: documents the bearer scheme and AUTH_INVALID_ACCESS_TOKEN (401). */
+  auth?: boolean;
 };
 
 type TControllerMethod<T> = {
@@ -36,7 +48,10 @@ export type TApiDocs<T> = {
 
 const errorResponses = (doc: TApiOperationDoc): MethodDecorator[] => {
   const codesByStatus = new Map<number, string[]>();
-  for (const error of doc.errors ?? []) {
+  const errors = doc.auth
+    ? [INVALID_ACCESS_TOKEN_ERROR, ...(doc.errors ?? [])]
+    : (doc.errors ?? []);
+  for (const error of errors) {
     const status = DOMAIN_ERROR_HTTP_STATUS[error.type];
     codesByStatus.set(status, [
       ...(codesByStatus.get(status) ?? []),
@@ -102,6 +117,7 @@ export const defineApiDocs = <T>(
     const decorators = [
       ApiOperation({ summary: doc.summary, description: doc.description }),
       ...errorResponses(doc),
+      ...(doc.auth ? [ApiBearerAuth(ACCESS_TOKEN_SCHEME)] : []),
     ];
     for (const decorate of decorators) {
       decorate(controller.prototype, method, descriptor);

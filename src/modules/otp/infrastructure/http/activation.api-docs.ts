@@ -22,11 +22,13 @@ defineApiDocs(ActivationController, {
       ],
     },
     resend: {
-      summary: 'Send the DISTRIBUTOR activation code again',
+      summary: 'Send the activation or password reset code again',
       description:
-        'Sends the same code again while it is valid; each resend is counted and too many resends ' +
-        'block the code for a while (OTP_BLOCKED). If the code expired (and is not blocked) a new ' +
-        'code is issued and sent. Responds 200 with an empty body.',
+        '`purpose` picks the code: ACTIVATE_DISTRIBUTOR (sent at registration) or RESET_PASSWORD (sent by POST /auth/reset-password). ' +
+        'Sends the latest code of that purpose again while it is valid; each resend is counted and too many resends ' +
+        'block the code for a while (OTP_BLOCKED, details { blockUntil }). If the code expired (and is not blocked) a new ' +
+        'code is issued and sent. OTP_NOT_FOUND when the identifier is unknown or no code of that purpose was sent. ' +
+        'Responds 200 with an empty body.',
       validation: true,
       errors: [
         { type: EDomainErrorType.NOT_FOUND, code: 'OTP_NOT_FOUND' },
