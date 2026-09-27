@@ -13,7 +13,7 @@ Out of scope (no caller yet): confirmMedia helper + Media table (comes with acti
 - [x] 1. [config-group]     `storage`: FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY, FIREBASE_STORAGE_BUCKET, STORAGE_PRESIGN_URL_TTL_SECONDS (new, default 900)
 - [x] 2. [shared-wrapper]   storage: IFileStorage (FILE_STORAGE) — createPresignedUploadUrl({ key, contentType, maxSizeBytes }) (TTL read from config by adapter) → { url, headers }; firebase-admin adapter + in-memory fake
 - [x] 3. [module-scaffold]  module `media`
-- [ ] 4. [domain-model]     EMediaType (IMAGE | VIDEO | FILE), VO MediaExtension (whitelist per type + contentType), MEDIA_MAX_SIZE_BYTES = 10MB; error MEDIA_INVALID_EXTENSION (VALIDATION)
+- [x] 4. [domain-model]     EMediaType (IMAGE | VIDEO | FILE), VO MediaExtension (whitelist per type + contentType), MEDIA_MAX_SIZE_BYTES = 10MB; error MEDIA_INVALID_EXTENSION (VALIDATION)
 - [ ] 5. [use-case]         GetPresignUrl (uses IFileStorage, key generation)
 - [ ] 6. [http]             POST /media/presign-url (guarded)
 - [ ] 7. [api-docs]         POST /media/presign-url (auth: true)
