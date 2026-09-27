@@ -26,6 +26,8 @@ export interface IFileStorage {
   createPresignedUploadUrl(
     input: TPresignedUploadInput,
   ): Promise<TPresignedUpload>;
+  /** Signed GET URL for an object, valid for the configured download TTL. Does not check the object exists. */
+  createDownloadUrl(key: string): Promise<string>;
   /** Moves an object inside the bucket; throws StorageFileNotFoundError if `fromKey` is missing. */
   moveFile(fromKey: string, toKey: string): Promise<void>;
   /** Deletes an object; a missing object is a no-op. */

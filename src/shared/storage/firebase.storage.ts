@@ -16,10 +16,12 @@ const FIREBASE_APP_NAME = 'storage';
 export class FirebaseFileStorage implements IFileStorage {
   private readonly app: App;
   private readonly presignUrlTtlSeconds: number;
+  private readonly downloadUrlTtlSeconds: number;
 
   constructor(@Inject(CONFIG_SERVICE) config: IConfigService) {
     const storage = config.get('storage');
     this.presignUrlTtlSeconds = storage.presignUrlTtlSeconds;
+    this.downloadUrlTtlSeconds = storage.downloadUrlTtlSeconds;
     // Reuse the named app: several Nest apps in one process (e2e) would otherwise fail on duplicate init.
     this.app =
       getApps().find((app) => app.name === FIREBASE_APP_NAME) ??
@@ -56,6 +58,18 @@ export class FirebaseFileStorage implements IFileStorage {
         },
       });
     return { url, headers };
+  }
+
+  async createDownloadUrl(key: string): Promise<string> {
+    const [url] = await getStorage(this.app)
+      .bucket()
+      .file(key)
+      .getSignedUrl({
+        version: 'v4',
+        action: 'read',
+        expires: Date.now() + this.downloadUrlTtlSeconds * 1000,
+      });
+    return url;
   }
 
   async moveFile(fromKey: string, toKey: string): Promise<void> {

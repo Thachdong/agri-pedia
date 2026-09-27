@@ -23,6 +23,10 @@ export class InMemoryFileStorage implements IFileStorage {
     };
   }
 
+  async createDownloadUrl(key: string): Promise<string> {
+    return `https://storage.test/${key}?signed=read`;
+  }
+
   async moveFile(fromKey: string, toKey: string): Promise<void> {
     if (!this.files.delete(fromKey)) {
       throw new StorageFileNotFoundError(fromKey);

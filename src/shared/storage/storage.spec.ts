@@ -17,6 +17,7 @@ const config = {
     firebasePrivateKey: privateKey,
     firebaseStorageBucket: 'test-bucket',
     presignUrlTtlSeconds: 600,
+    downloadUrlTtlSeconds: 3600,
   }),
 } as unknown as IConfigService;
 
@@ -41,6 +42,17 @@ describe('FirebaseFileStorage', () => {
       'Content-Type': 'image/png',
       'x-goog-content-length-range': '0,10485760',
     });
+  });
+
+  it('signs a V4 GET URL for an object with the download TTL (offline)', async () => {
+    const storage = new FirebaseFileStorage(config);
+
+    const url = new URL(await storage.createDownloadUrl('products/p1/abc.png'));
+
+    expect(url.pathname).toBe('/test-bucket/products/p1/abc.png');
+    expect(url.searchParams.get('X-Goog-Algorithm')).toBe('GOOG4-RSA-SHA256');
+    expect(url.searchParams.get('X-Goog-Expires')).toBe('3600');
+    expect(url.searchParams.get('X-Goog-SignedHeaders')).toBe('host');
   });
 
   it('reuses the named Firebase app across instances', () => {
