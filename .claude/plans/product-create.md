@@ -25,7 +25,7 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 9. [persistence]        media: PgMediaRepository; table `media`
 - [x] 10. [integration-event] CreateProduct emits `product.product.created`
 - [x] 11. [event-handler]     media: `product.product.created` → ConfirmMedia (ownerType PRODUCT)
-- [ ] 12. [http]              POST /products (guarded), GET /categories (public)
+- [x] 12. [http]              POST /products (guarded), GET /categories (public)
 - [ ] 13. [api-docs]          POST /products (auth: true), GET /categories
 - [ ] 14. [boundary-review]
 

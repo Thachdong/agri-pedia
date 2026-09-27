@@ -5,12 +5,14 @@ import {
   ListCategoriesUseCase,
 } from './application/use-cases';
 import { CATEGORY_REPOSITORY, PRODUCT_REPOSITORY } from './application/ports';
+import { CategoryController } from './infrastructure/http/category.controller';
+import { ProductController } from './infrastructure/http/product.controller';
 import { PgCategoryRepository } from './infrastructure/persistence/pg-category.repository';
 import { PgProductRepository } from './infrastructure/persistence/pg-product.repository';
 
 @Module({
   imports: [UserModule],
-  controllers: [],
+  controllers: [ProductController, CategoryController],
   providers: [
     CreateProductUseCase,
     ListCategoriesUseCase,
