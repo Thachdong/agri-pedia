@@ -6,6 +6,15 @@ import {
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
+import {
+  REVIEW_CREATED_EVENT,
+  TReviewCreatedEventPayload,
+} from '../../contracts';
+import {
   EReviewTargetType,
   InvalidReviewTargetException,
   Review,
@@ -36,6 +45,7 @@ export class CreateReviewUseCase {
     @Inject(PRODUCT_QUERY_PORT)
     private readonly productQuery: IProductQueryPort,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
   async execute(input: TCreateReviewInput): Promise<TCreateReviewOutput> {
@@ -43,7 +53,10 @@ export class CreateReviewUseCase {
     if (!reviewer || reviewer.role !== 'FARMER' || !reviewer.isActive) {
       throw new ReviewReviewerNotAllowedException(input.userId);
     }
-    await this.resolveTargetOwnerId(input.targetType, input.targetId);
+    const targetOwnerId = await this.resolveTargetOwnerId(
+      input.targetType,
+      input.targetId,
+    );
 
     const review = await this.unitOfWork.runInTransaction(async () => {
       if (
@@ -69,6 +82,19 @@ export class CreateReviewUseCase {
       return created;
     });
 
+    await this.eventBus.publish(
+      createIntegrationEvent<
+        typeof REVIEW_CREATED_EVENT,
+        TReviewCreatedEventPayload
+      >(REVIEW_CREATED_EVENT, {
+        reviewId: review.id,
+        reviewerId: review.userId,
+        targetType: review.targetType,
+        targetId: review.targetId,
+        targetOwnerId,
+        star: review.star,
+      }),
+    );
     return { reviewId: review.id };
   }
 

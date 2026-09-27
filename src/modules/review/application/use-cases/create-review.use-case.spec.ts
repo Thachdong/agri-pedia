@@ -4,6 +4,8 @@ import {
 } from '@modules/product/contracts';
 import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
+import { REVIEW_CREATED_EVENT } from '../../contracts';
 import {
   EReviewTargetType,
   InvalidReviewStarException,
@@ -37,6 +39,7 @@ describe('CreateReviewUseCase', () => {
   let reviews: InMemoryReviewRepository;
   let roles: Map<string, TUserRoleSummary>;
   let product: TProductOwnerSummary | null;
+  let eventBus: InMemoryEventBus;
   let useCase: CreateReviewUseCase;
 
   beforeEach(() => {
@@ -48,6 +51,7 @@ describe('CreateReviewUseCase', () => {
         { userId: 'distributor-1', role: 'DISTRIBUTOR', isActive: true },
       ],
     ]);
+    eventBus = new InMemoryEventBus();
     product = {
       productId: 'product-1',
       userId: 'distributor-1',
@@ -66,6 +70,7 @@ describe('CreateReviewUseCase', () => {
       userQuery,
       productQuery,
       new InMemoryUnitOfWork(),
+      eventBus,
     );
   });
 
@@ -83,6 +88,30 @@ describe('CreateReviewUseCase', () => {
       star: 5,
     });
   });
+
+  it.each([
+    ['PRODUCT', productInput],
+    ['USER', userInput],
+  ])(
+    'publishes review.review.created to the owner of the %s after saving',
+    async (_, input) => {
+      const { reviewId } = await useCase.execute(input);
+
+      expect(eventBus.published).toEqual([
+        expect.objectContaining({
+          name: REVIEW_CREATED_EVENT,
+          payload: {
+            reviewId,
+            reviewerId: 'farmer-1',
+            targetType: input.targetType,
+            targetId: input.targetId,
+            targetOwnerId: 'distributor-1',
+            star: 5,
+          },
+        }),
+      ]);
+    },
+  );
 
   it.each<[string, TUserRoleSummary | undefined]>([
     ['unknown', undefined],
@@ -102,6 +131,7 @@ describe('CreateReviewUseCase', () => {
       ReviewReviewerNotAllowedException,
     );
     expect(reviews.items.size).toBe(0);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects an unknown target user', async () => {
@@ -138,6 +168,7 @@ describe('CreateReviewUseCase', () => {
     await expect(useCase.execute(productInput)).rejects.toThrow(
       InvalidReviewTargetException,
     );
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects a second review of the same target', async () => {
@@ -149,6 +180,7 @@ describe('CreateReviewUseCase', () => {
       ReviewAlreadyExistsException,
     );
     expect(reviews.items.size).toBe(1);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('allows the same farmer to review another target', async () => {
@@ -164,5 +196,6 @@ describe('CreateReviewUseCase', () => {
     await expect(useCase.execute({ ...productInput, star: 0 })).rejects.toThrow(
       InvalidReviewStarException,
     );
+    expect(eventBus.published).toEqual([]);
   });
 });
