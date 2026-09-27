@@ -7,6 +7,22 @@ defineApiDocs(ReviewController, {
   operations: {
     listByDistributor: {
       summary: "List reviews of a distributor's shop (public)",
+      description:
+        'No login needed. Lists reviews of the distributor itself (USER) and of every product it ever listed ' +
+        '(PRODUCT; any status, deleted products included), newest first. Filter with `targetType` and/or `star`. ' +
+        '`summary` covers every review of the shop and is not affected by filters or cursor; `avgRating` has 1 ' +
+        'decimal and is 0 when there is no review. `limit` 1..50, default 20. To get the next page pass the returned ' +
+        '`nextCursor` as `cursor` with the same filters; `nextCursor` is null on the last page. `productName` is null ' +
+        'for shop (USER) reviews. `user.avatar` is a signed URL (expires after the configured TTL, default 1h), or ' +
+        'null. `distributorId` that is not a DISTRIBUTOR → 404.',
+      validation: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'REVIEW_INVALID_CURSOR' },
+        {
+          type: EDomainErrorType.NOT_FOUND,
+          code: 'REVIEW_DISTRIBUTOR_NOT_FOUND',
+        },
+      ],
     },
     create: {
       summary:

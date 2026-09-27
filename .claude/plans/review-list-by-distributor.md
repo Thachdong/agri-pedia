@@ -23,8 +23,8 @@ Flow: `GET /reviews?distributorId=<uuid>&targetType=<USER|PRODUCT>?&star=<1..5>?
 - [x] 5. [use-case]           review: ListDistributorReviews, ports IReviewRepository.findByTargets(targets, { targetType?, star?, after?, limit }) + summarizeByTargets(targets); cursor encode/decode
 - [x] 6. [persistence]        review: PgReviewRepository.findByTargets (keyset), summarizeByTargets (one aggregate query) + index (target_id, created_at, id) + migration
 - [x] 7. [http]               GET /reviews?distributorId&targetType&star&cursor&limit (public)
-- [ ] 8. [api-docs]           GET /reviews
-- [ ] 9. [boundary-review]
+- [x] 8. [api-docs]           GET /reviews
+- [x] 9. [boundary-review]
 
 Order note: query ports (2–4) before the use case (5) because it depends on them.
 
