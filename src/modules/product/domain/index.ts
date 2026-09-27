@@ -4,4 +4,6 @@ export * from './enums/product-unit.enum';
 export * from './exceptions/invalid-product-price.exception';
 export * from './exceptions/invalid-product-quantity.exception';
 export * from './exceptions/product-category-not-found.exception';
+export * from './exceptions/product-not-found.exception';
+export * from './exceptions/product-not-owner.exception';
 export * from './exceptions/product-seller-not-allowed.exception';

@@ -4,6 +4,7 @@ import { EProductStatus } from '../enums/product-status.enum';
 import { EProductUnit } from '../enums/product-unit.enum';
 import { InvalidProductPriceException } from '../exceptions/invalid-product-price.exception';
 import { InvalidProductQuantityException } from '../exceptions/invalid-product-quantity.exception';
+import { ProductNotOwnerException } from '../exceptions/product-not-owner.exception';
 
 export type TProductProps = {
   userId: string;
@@ -18,6 +19,9 @@ export type TProductProps = {
 
 export type TCreateProductProps = Omit<TProductProps, 'status'>;
 
+/** Fields a seller may change; omitted fields are kept. */
+export type TUpdateProductProps = Partial<Omit<TProductProps, 'userId'>>;
+
 export class Product extends AggregateRoot {
   private constructor(
     id: string,
@@ -28,12 +32,8 @@ export class Product extends AggregateRoot {
 
   /** New product is listed right away (ACTIVE). */
   static create(input: TCreateProductProps): Product {
-    if (!Number.isFinite(input.price) || input.price < 0) {
-      throw new InvalidProductPriceException(input.price);
-    }
-    if (!Number.isInteger(input.quantity) || input.quantity < 0) {
-      throw new InvalidProductQuantityException(input.quantity);
-    }
+    Product.assertValidPrice(input.price);
+    Product.assertValidQuantity(input.quantity);
     return new Product(randomUUID(), {
       userId: input.userId,
       name: input.name.trim(),
@@ -48,6 +48,49 @@ export class Product extends AggregateRoot {
 
   static restore(id: string, props: TProductProps): Product {
     return new Product(id, { ...props });
+  }
+
+  /** Throws unless the product was listed by `userId`. */
+  assertOwnedBy(userId: string): void {
+    if (this.props.userId !== userId) {
+      throw new ProductNotOwnerException(this.id, userId);
+    }
+  }
+
+  /** Applies the given changes; validates price/quantity like create. */
+  update(changes: TUpdateProductProps): void {
+    if (changes.price !== undefined) {
+      Product.assertValidPrice(changes.price);
+    }
+    if (changes.quantity !== undefined) {
+      Product.assertValidQuantity(changes.quantity);
+    }
+    this.props = {
+      ...this.props,
+      ...(changes.name !== undefined && { name: changes.name.trim() }),
+      ...(changes.description !== undefined && {
+        description: changes.description.trim(),
+      }),
+      ...(changes.price !== undefined && { price: changes.price }),
+      ...(changes.quantity !== undefined && { quantity: changes.quantity }),
+      ...(changes.unit !== undefined && { unit: changes.unit }),
+      ...(changes.categoryId !== undefined && {
+        categoryId: changes.categoryId,
+      }),
+      ...(changes.status !== undefined && { status: changes.status }),
+    };
+  }
+
+  private static assertValidPrice(price: number): void {
+    if (!Number.isFinite(price) || price < 0) {
+      throw new InvalidProductPriceException(price);
+    }
+  }
+
+  private static assertValidQuantity(quantity: number): void {
+    if (!Number.isInteger(quantity) || quantity < 0) {
+      throw new InvalidProductQuantityException(quantity);
+    }
   }
 
   get userId(): string {

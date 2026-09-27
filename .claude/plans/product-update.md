@@ -14,7 +14,7 @@ Flow: `PATCH /products/:productId { name?, description?, price?, quantity?, unit
   → 204 No Content
 
 - [x] 0. [shared-wrapper]     storage: IFileStorage.deleteFile(key) (missing object → no-op); firebase adapter + in-memory fake
-- [ ] 1. [domain-model]       product: Product.update(partial fields) reusing price/quantity invariants; errors PRODUCT_NOT_FOUND (NOT_FOUND), PRODUCT_NOT_OWNER (FORBIDDEN)
+- [x] 1. [domain-model]       product: Product.update(partial fields) reusing price/quantity invariants; errors PRODUCT_NOT_FOUND (NOT_FOUND), PRODUCT_NOT_OWNER (FORBIDDEN)
 - [ ] 2. [use-case]           product: UpdateProduct, port IProductRepository.findById (+ existing save, ICategoryRepository.existsById, IUserQueryPort.findRoleById)
 - [ ] 3. [use-case]           media: RemoveMedia, port IMediaRepository.findByOwner(ownerType, ownerId, ids) + delete(ids); uses IFileStorage.deleteFile
 - [ ] 4. [persistence]        product: PgProductRepository.findById; media: PgMediaRepository.findByOwner + delete (no migration)
