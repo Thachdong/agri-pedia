@@ -4,6 +4,7 @@ import { databaseConfig, TDatabaseConfig } from './database.config';
 import { loggerConfig, TLoggerConfig } from './logger.config';
 import { otpConfig, TOtpConfig } from './otp.config';
 import { securityConfig, TSecurityConfig } from './security.config';
+import { storageConfig, TStorageConfig } from './storage.config';
 
 export * from './app.config';
 export * from './auth.config';
@@ -11,6 +12,7 @@ export * from './database.config';
 export * from './logger.config';
 export * from './otp.config';
 export * from './security.config';
+export * from './storage.config';
 
 /** Every config group, loaded once by SharedConfigModule. Add new groups here. */
 export const configGroups = [
@@ -20,6 +22,7 @@ export const configGroups = [
   securityConfig,
   otpConfig,
   authConfig,
+  storageConfig,
 ];
 
 /** Namespace -> type map used by IConfigService.get(). Keep in sync with configGroups. */
@@ -30,4 +33,5 @@ export type TConfigMap = {
   security: TSecurityConfig;
   otp: TOtpConfig;
   auth: TAuthConfig;
+  storage: TStorageConfig;
 };
