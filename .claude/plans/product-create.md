@@ -26,8 +26,8 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 10. [integration-event] CreateProduct emits `product.product.created`
 - [x] 11. [event-handler]     media: `product.product.created` → ConfirmMedia (ownerType PRODUCT)
 - [x] 12. [http]              POST /products (guarded), GET /categories (public)
-- [ ] 13. [api-docs]          POST /products (auth: true), GET /categories
-- [ ] 14. [boundary-review]
+- [x] 13. [api-docs]          POST /products (auth: true), GET /categories
+- [x] 14. [boundary-review]
 
 Order note: query-port (5) before CreateProduct (6) because the use case depends on it.
 
