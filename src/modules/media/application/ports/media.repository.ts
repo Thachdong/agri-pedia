@@ -8,6 +8,11 @@ export interface IMediaRepository {
     ids: string[],
   ): Promise<Media[]>;
   findAllByOwner(ownerType: EMediaOwnerType, ownerId: string): Promise<Media[]>;
+  /** Per owner, its first IMAGE by sortOrder (null last, then id); owners without an image are left out. */
+  findFirstImagesByOwners(
+    ownerType: EMediaOwnerType,
+    ownerIds: string[],
+  ): Promise<Media[]>;
   save(media: Media): Promise<void>;
   delete(ids: string[]): Promise<void>;
 }

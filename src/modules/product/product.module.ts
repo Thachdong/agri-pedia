@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MediaModule } from '@modules/media/media.module';
 import { UserModule } from '@modules/user/user.module';
 import {
   CreateProductUseCase,
@@ -15,7 +16,7 @@ import { PgCategoryRepository } from './infrastructure/persistence/pg-category.r
 import { PgProductRepository } from './infrastructure/persistence/pg-product.repository';
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule, MediaModule],
   controllers: [ProductController, CategoryController],
   providers: [
     CreateProductUseCase,
