@@ -18,7 +18,7 @@ Flow: `DELETE /products/:productId` + `Authorization: Bearer <accessToken>` (pro
 - [x] 3. [use-case]           media: RemoveAllMedia, port IMediaRepository.findAllByOwner(ownerType, ownerId) (+ existing delete); uses IFileStorage.deleteFile
 - [x] 4. [persistence]        product: PgProductRepository.findById excludes deleted; media: PgMediaRepository.findAllByOwner
 - [x] 5. [integration-event]  DeleteProduct emits `product.product.deleted`
-- [ ] 6. [event-handler]      media: `product.product.deleted` → RemoveAllMedia (ownerType PRODUCT)
+- [x] 6. [event-handler]      media: `product.product.deleted` → RemoveAllMedia (ownerType PRODUCT)
 - [ ] 7. [http]               DELETE /products/:productId (guarded) → 200 null body
 - [ ] 8. [api-docs]           DELETE /products/:productId (auth: true)
 - [ ] 9. [boundary-review]

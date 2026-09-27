@@ -7,6 +7,7 @@ import {
 } from './application/use-cases';
 import { MEDIA_REPOSITORY } from './application/ports';
 import { ProductCreatedHandler } from './infrastructure/handlers/product-created.handler';
+import { ProductDeletedHandler } from './infrastructure/handlers/product-deleted.handler';
 import { ProductUpdatedHandler } from './infrastructure/handlers/product-updated.handler';
 import './infrastructure/http/media.api-docs';
 import { MediaController } from './infrastructure/http/media.controller';
@@ -21,6 +22,7 @@ import { PgMediaRepository } from './infrastructure/persistence/pg-media.reposit
     RemoveAllMediaUseCase,
     RemoveMediaUseCase,
     ProductCreatedHandler,
+    ProductDeletedHandler,
     ProductUpdatedHandler,
     { provide: MEDIA_REPOSITORY, useClass: PgMediaRepository },
   ],
