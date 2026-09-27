@@ -8,6 +8,7 @@ import { SharedLoggerModule } from '@shared/logger';
 import { MessagingModule } from '@shared/messaging';
 import { StorageModule } from '@shared/storage';
 import { SharedHttpModule } from '@shared/http';
+import { MediaModule } from '@modules/media/media.module';
 import { OtpModule } from '@modules/otp/otp.module';
 import { UserModule } from '@modules/user/user.module';
 import { AppController } from './app.controller';
@@ -28,6 +29,7 @@ import { AppService } from './app.service';
     // business modules
     UserModule,
     OtpModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
