@@ -1,5 +1,8 @@
 import { EMediaType } from '../enums/media-type.enum';
-import { InvalidMediaExtensionException } from '../exceptions/invalid-media-extension.exception';
+import {
+  InvalidMediaExtensionException,
+  TInvalidMediaExtension,
+} from '../exceptions/invalid-media-extension.exception';
 
 /** Allowed extensions per media type, with the Content-Type each one is stored under. */
 const CONTENT_TYPES: Record<EMediaType, ReadonlyMap<string, string>> = {
@@ -25,12 +28,31 @@ export class MediaExtension {
 
   /** Accepts `png`, `.PNG`, ` Png ` -> `png`; must be allowed for `type`. */
   static create(type: EMediaType, raw: string): MediaExtension {
-    const value = raw.trim().replace(/^\./, '').toLowerCase();
-    const allowed = CONTENT_TYPES[type];
-    const contentType = allowed.get(value);
-    if (!contentType) {
-      throw new InvalidMediaExtensionException(type, raw, [...allowed.keys()]);
+    return MediaExtension.createMany([{ type, extension: raw }])[0];
+  }
+
+  /**
+   * Validates every item first; if any is not allowed, throws one exception listing all of them
+   * (by index), so nothing is half-accepted. Result keeps the input order.
+   */
+  static createMany(
+    items: { type: EMediaType; extension: string }[],
+  ): MediaExtension[] {
+    const valid: MediaExtension[] = [];
+    const invalid: TInvalidMediaExtension[] = [];
+    items.forEach(({ type, extension }, index) => {
+      const value = extension.trim().replace(/^\./, '').toLowerCase();
+      const allowed = CONTENT_TYPES[type];
+      const contentType = allowed.get(value);
+      if (contentType) {
+        valid.push(new MediaExtension(value, contentType));
+      } else {
+        invalid.push({ index, type, extension, allowed: [...allowed.keys()] });
+      }
+    });
+    if (invalid.length > 0) {
+      throw new InvalidMediaExtensionException(invalid);
     }
-    return new MediaExtension(value, contentType);
+    return valid;
   }
 }

@@ -36,7 +36,7 @@ describe('MediaExtension', () => {
     );
   });
 
-  it('exception carries code, type and allowed list', () => {
+  it('exception carries code, type and the invalid file', () => {
     try {
       MediaExtension.create(EMediaType.VIDEO, 'avi');
       fail('expected throw');
@@ -45,10 +45,64 @@ describe('MediaExtension', () => {
       expect(error.code).toBe('MEDIA_INVALID_EXTENSION');
       expect(error.type).toBe(EDomainErrorType.VALIDATION);
       expect(error.details).toEqual({
-        type: EMediaType.VIDEO,
-        extension: 'avi',
-        allowed: ['mp4', 'mov'],
+        files: [
+          {
+            index: 0,
+            type: EMediaType.VIDEO,
+            extension: 'avi',
+            allowed: ['mp4', 'mov'],
+          },
+        ],
       });
     }
+  });
+
+  describe('createMany', () => {
+    it('returns extensions in input order', () => {
+      const result = MediaExtension.createMany([
+        { type: EMediaType.VIDEO, extension: 'MOV' },
+        { type: EMediaType.IMAGE, extension: '.webp' },
+        { type: EMediaType.FILE, extension: 'pdf' },
+      ]);
+      expect(result.map((e) => [e.value, e.contentType])).toEqual([
+        ['mov', 'video/quicktime'],
+        ['webp', 'image/webp'],
+        ['pdf', 'application/pdf'],
+      ]);
+    });
+
+    it('lists every invalid item with its index in one exception', () => {
+      try {
+        MediaExtension.createMany([
+          { type: EMediaType.IMAGE, extension: 'png' },
+          { type: EMediaType.VIDEO, extension: 'png' },
+          { type: EMediaType.FILE, extension: 'pdf' },
+          { type: EMediaType.IMAGE, extension: 'gif' },
+        ]);
+        fail('expected throw');
+      } catch (e) {
+        expect(e).toBeInstanceOf(InvalidMediaExtensionException);
+        expect((e as DomainException).details).toEqual({
+          files: [
+            {
+              index: 1,
+              type: EMediaType.VIDEO,
+              extension: 'png',
+              allowed: ['mp4', 'mov'],
+            },
+            {
+              index: 3,
+              type: EMediaType.IMAGE,
+              extension: 'gif',
+              allowed: ['jpg', 'jpeg', 'png', 'webp'],
+            },
+          ],
+        });
+      }
+    });
+
+    it('returns empty for empty input', () => {
+      expect(MediaExtension.createMany([])).toEqual([]);
+    });
   });
 });
