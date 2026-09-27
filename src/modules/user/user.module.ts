@@ -19,6 +19,7 @@ import './infrastructure/http/auth.api-docs';
 import { OtpActivationCodeVerifiedHandler } from './infrastructure/handlers/otp-activation-code-verified.handler';
 import { OtpPasswordResetCodeVerifiedHandler } from './infrastructure/handlers/otp-password-reset-code-verified.handler';
 import { AuthController } from './infrastructure/http/auth.controller';
+import { UserController } from './infrastructure/http/user.controller';
 import { PgAddressRepository } from './infrastructure/persistence/pg-address.repository';
 import { PgRefreshTokenRepository } from './infrastructure/persistence/pg-refresh-token.repository';
 import { PgUserRepository } from './infrastructure/persistence/pg-user.repository';
@@ -26,7 +27,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
 
 @Module({
   imports: [],
-  controllers: [AuthController],
+  controllers: [AuthController, UserController],
   providers: [
     RegisterUserUseCase,
     ActivateUserUseCase,

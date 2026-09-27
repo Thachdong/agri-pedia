@@ -20,7 +20,7 @@ No migration: users.avatar / users.business_license are already uuid columns (me
 - [x] 4. [use-case]           media: ReplaceMedia (IMediaRepository existing findAllByOwner/save/delete; IFileStorage)
 - [x] 5. [integration-event]  UpdateProfile emits `user.profile.updated`
 - [x] 6. [event-handler]      media: `user.profile.updated` → ReplaceMedia (USER_AVATAR, USER_LICENSE)
-- [ ] 7. [http]               PATCH /users/me (guarded) → 200 profile body
+- [x] 7. [http]               PATCH /users/me (guarded) → 200 profile body
 - [ ] 8. [api-docs]           PATCH /users/me (auth: true)
 - [ ] 9. [boundary-review]
 
