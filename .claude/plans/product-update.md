@@ -17,7 +17,7 @@ Flow: `PATCH /products/:productId { name?, description?, price?, quantity?, unit
 - [x] 1. [domain-model]       product: Product.update(partial fields) reusing price/quantity invariants; errors PRODUCT_NOT_FOUND (NOT_FOUND), PRODUCT_NOT_OWNER (FORBIDDEN)
 - [x] 2. [use-case]           product: UpdateProduct, port IProductRepository.findById (+ existing save, ICategoryRepository.existsById, IUserQueryPort.findRoleById)
 - [x] 3. [use-case]           media: RemoveMedia, port IMediaRepository.findByOwner(ownerType, ownerId, ids) + delete(ids); uses IFileStorage.deleteFile
-- [ ] 4. [persistence]        product: PgProductRepository.findById; media: PgMediaRepository.findByOwner + delete (no migration)
+- [x] 4. [persistence]        product: PgProductRepository.findById; media: PgMediaRepository.findByOwner + delete (no migration)
 - [ ] 5. [integration-event]  UpdateProduct emits `product.product.updated`
 - [ ] 6. [event-handler]      media: `product.product.updated` → RemoveMedia + ConfirmMedia (ownerType PRODUCT)
 - [ ] 7. [http]               PATCH /products/:productId (guarded)

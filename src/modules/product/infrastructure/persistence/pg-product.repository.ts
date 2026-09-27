@@ -15,6 +15,11 @@ export class PgProductRepository
     super(dataSource, ProductOrmEntity);
   }
 
+  async findById(id: string): Promise<Product | null> {
+    const row = await this.repository.findOneBy({ id });
+    return row ? ProductMapper.toDomain(row) : null;
+  }
+
   async save(product: Product): Promise<void> {
     await this.repository.save(ProductMapper.toOrm(product));
   }
