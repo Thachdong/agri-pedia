@@ -3,3 +3,6 @@ export * from './register-user.dto';
 export * from './login-user.dto';
 export * from './refresh-access-token.dto';
 export * from './logout-user.dto';
+export * from './change-password.dto';
+export * from './profile-file.dto';
+export * from './update-profile.dto';

@@ -7,6 +7,8 @@ import { MediaExtension } from '../value-objects/media-extension.vo';
 /** Storage folder per owner type. */
 const OWNER_FOLDERS: Record<EMediaOwnerType, string> = {
   [EMediaOwnerType.PRODUCT]: 'products',
+  [EMediaOwnerType.USER_AVATAR]: 'users',
+  [EMediaOwnerType.USER_LICENSE]: 'users',
 };
 
 export type TMediaProps = {
@@ -22,6 +24,8 @@ export type TMediaProps = {
 };
 
 export type TCreateMediaProps = {
+  /** Id chosen by the owner's module when it must reference the media before it exists; generated when absent. */
+  id?: string;
   type: EMediaType;
   extension: MediaExtension;
   filename: string;
@@ -40,7 +44,7 @@ export class Media extends AggregateRoot {
 
   /** Source key is derived from owner and new id: `<ownerFolder>/<ownerId>/<id>.<extension>`. */
   static create(input: TCreateMediaProps): Media {
-    const id = randomUUID();
+    const id = input.id ?? randomUUID();
     return new Media(id, {
       type: input.type,
       extension: input.extension.value,

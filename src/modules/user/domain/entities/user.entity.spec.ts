@@ -157,3 +157,78 @@ describe('User.changePassword', () => {
     expect(user.createdAt).not.toEqual(now);
   });
 });
+
+describe('User.updateProfile', () => {
+  const distributor = () =>
+    User.register({
+      ...base,
+      role: EUserRole.DISTRIBUTOR,
+      businessType: EBusinessType.SEEDS_SEEDLINGS,
+    });
+
+  it('applies given fields, trims username and touches updatedAt', () => {
+    const user = distributor();
+    const now = new Date(user.updatedAt.getTime() + 60_000);
+
+    user.updateProfile(
+      {
+        username: '  shop02  ',
+        bio: 'new bio',
+        businessType: EBusinessType.AQUACULTURE_SEEDLINGS,
+        avatar: 'avatar-media-id',
+        businessLicense: 'license-media-id',
+      },
+      now,
+    );
+
+    expect(user.username).toBe('shop02');
+    expect(user.bio).toBe('new bio');
+    expect(user.businessType).toBe(EBusinessType.AQUACULTURE_SEEDLINGS);
+    expect(user.avatar).toBe('avatar-media-id');
+    expect(user.businessLicense).toBe('license-media-id');
+    expect(user.updatedAt).toEqual(now);
+  });
+
+  it('leaves undefined fields unchanged', () => {
+    const user = User.register({ ...base, bio: 'old bio' });
+    user.updateProfile({ avatar: 'avatar-media-id' });
+
+    user.updateProfile({ username: 'farmer02' });
+
+    expect(user.username).toBe('farmer02');
+    expect(user.bio).toBe('old bio');
+    expect(user.businessType).toBeNull();
+    expect(user.avatar).toBe('avatar-media-id');
+    expect(user.businessLicense).toBeNull();
+  });
+
+  it('rejects a business type for a farmer and changes nothing', () => {
+    const user = User.register(base);
+
+    expect(() =>
+      user.updateProfile({
+        username: 'farmer02',
+        businessType: EBusinessType.SEEDS_SEEDLINGS,
+      }),
+    ).toThrow(BusinessTypeNotAllowedException);
+    expect(user.username).toBe('farmer01');
+    expect(user.businessType).toBeNull();
+  });
+
+  it('accepts a null business type for a farmer', () => {
+    const user = User.register(base);
+
+    user.updateProfile({ businessType: null });
+
+    expect(user.businessType).toBeNull();
+  });
+
+  it('requires a business type for a distributor', () => {
+    const user = distributor();
+
+    expect(() => user.updateProfile({ businessType: null })).toThrow(
+      BusinessTypeRequiredException,
+    );
+    expect(user.businessType).toBe(EBusinessType.SEEDS_SEEDLINGS);
+  });
+});

@@ -12,12 +12,14 @@ import {
   TAccessTokenPayload,
 } from '@shared/access-token';
 import {
+  ChangePasswordUseCase,
   LoginUserUseCase,
   LogoutUserUseCase,
   RefreshAccessTokenUseCase,
   RegisterUserUseCase,
 } from '../../application/use-cases';
 import {
+  ChangePasswordDto,
   LoginUserDto,
   LogoutUserDto,
   RefreshAccessTokenDto,
@@ -33,6 +35,7 @@ export class AuthController {
     private readonly loginUser: LoginUserUseCase,
     private readonly refreshAccessToken: RefreshAccessTokenUseCase,
     private readonly logoutUser: LogoutUserUseCase,
+    private readonly changeUserPassword: ChangePasswordUseCase,
   ) {}
 
   @Post('register')
@@ -104,6 +107,21 @@ export class AuthController {
     await this.logoutUser.execute({
       userId: caller.userId,
       refreshToken: dto.refreshToken,
+    });
+    return null;
+  }
+
+  @Post('change-password')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
+  async changePassword(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Body() dto: ChangePasswordDto,
+  ): Promise<null> {
+    await this.changeUserPassword.execute({
+      userId: caller.userId,
+      oldPassword: dto.oldPassword,
+      newPassword: dto.newPassword,
     });
     return null;
   }
