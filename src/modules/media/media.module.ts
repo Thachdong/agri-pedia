@@ -4,6 +4,7 @@ import {
   GetPresignUrlUseCase,
 } from './application/use-cases';
 import { MEDIA_REPOSITORY } from './application/ports';
+import { ProductCreatedHandler } from './infrastructure/handlers/product-created.handler';
 import './infrastructure/http/media.api-docs';
 import { MediaController } from './infrastructure/http/media.controller';
 import { PgMediaRepository } from './infrastructure/persistence/pg-media.repository';
@@ -14,6 +15,7 @@ import { PgMediaRepository } from './infrastructure/persistence/pg-media.reposit
   providers: [
     ConfirmMediaUseCase,
     GetPresignUrlUseCase,
+    ProductCreatedHandler,
     { provide: MEDIA_REPOSITORY, useClass: PgMediaRepository },
   ],
   exports: [],
