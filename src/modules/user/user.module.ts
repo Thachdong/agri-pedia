@@ -12,6 +12,7 @@ import {
   RefreshAccessTokenUseCase,
   RegisterUserUseCase,
   ResetPasswordUseCase,
+  UpdateProfileUseCase,
 } from './application/use-cases';
 import { USER_QUERY_PORT } from './contracts';
 import './infrastructure/http/auth.api-docs';
@@ -34,6 +35,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
     RefreshAccessTokenUseCase,
     ResetPasswordUseCase,
     ChangePasswordUseCase,
+    UpdateProfileUseCase,
     { provide: USER_REPOSITORY, useClass: PgUserRepository },
     { provide: ADDRESS_REPOSITORY, useClass: PgAddressRepository },
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: PgRefreshTokenRepository },
