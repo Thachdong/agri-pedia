@@ -11,6 +11,8 @@ import { SharedHttpModule } from '@shared/http';
 import { MediaModule } from '@modules/media/media.module';
 import { OtpModule } from '@modules/otp/otp.module';
 import { ProductModule } from '@modules/product/product.module';
+import { ReviewModule } from '@modules/review/review.module';
+import { NotificationModule } from '@modules/notification/notification.module';
 import { UserModule } from '@modules/user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -32,6 +34,8 @@ import { AppService } from './app.service';
     OtpModule,
     MediaModule,
     ProductModule,
+    ReviewModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
