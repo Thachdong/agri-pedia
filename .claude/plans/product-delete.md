@@ -14,7 +14,7 @@ Flow: `DELETE /products/:productId` + `Authorization: Bearer <accessToken>` (pro
 
 - [x] 1. [domain-model]       product: Product.deletedAt + Product.delete() (sets deletedAt now)
       + (pulled from step 4, approved) column `products.deleted_at` + ProductMapper + migration `product-add-products-deleted-at`
-- [ ] 2. [use-case]           product: DeleteProduct (existing ports: IProductRepository.findById/save, IUserQueryPort.findRoleById)
+- [x] 2. [use-case]           product: DeleteProduct (existing ports: IProductRepository.findById/save, IUserQueryPort.findRoleById)
 - [ ] 3. [use-case]           media: RemoveAllMedia, port IMediaRepository.findAllByOwner(ownerType, ownerId) (+ existing delete); uses IFileStorage.deleteFile
 - [ ] 4. [persistence]        product: PgProductRepository.findById excludes deleted; media: PgMediaRepository.findAllByOwner
 - [ ] 5. [integration-event]  DeleteProduct emits `product.product.deleted`

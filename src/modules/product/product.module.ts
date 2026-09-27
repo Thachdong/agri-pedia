@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserModule } from '@modules/user/user.module';
 import {
   CreateProductUseCase,
+  DeleteProductUseCase,
   ListCategoriesUseCase,
   UpdateProductUseCase,
 } from './application/use-cases';
@@ -18,6 +19,7 @@ import { PgProductRepository } from './infrastructure/persistence/pg-product.rep
   controllers: [ProductController, CategoryController],
   providers: [
     CreateProductUseCase,
+    DeleteProductUseCase,
     ListCategoriesUseCase,
     UpdateProductUseCase,
     { provide: PRODUCT_REPOSITORY, useClass: PgProductRepository },
