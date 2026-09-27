@@ -21,8 +21,8 @@ Flow: `PATCH /products/:productId { name?, description?, price?, quantity?, unit
 - [x] 5. [integration-event]  UpdateProduct emits `product.product.updated`
 - [x] 6. [event-handler]      media: `product.product.updated` → RemoveMedia + ConfirmMedia (ownerType PRODUCT)
 - [x] 7. [http]               PATCH /products/:productId (guarded) → 200 null body (project convention)
-- [ ] 8. [api-docs]           PATCH /products/:productId (auth: true)
-- [ ] 9. [boundary-review]
+- [x] 8. [api-docs]           PATCH /products/:productId (auth: true)
+- [x] 9. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - Role + ACTIVE check same as create (spec WHO: DISTRIBUTOR); locked distributor cannot edit.

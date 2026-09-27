@@ -31,8 +31,30 @@ defineApiDocs(ProductController, {
     },
     update: {
       summary: 'Update own product (ACTIVE distributor only)',
+      description:
+        'Caller must be a DISTRIBUTOR whose account is ACTIVE (else 403 `PRODUCT_SELLER_NOT_ALLOWED`) and the ' +
+        'seller of the product (else 403 `PRODUCT_NOT_OWNER`). Every field is optional: omitted fields keep ' +
+        'their value, `null` is rejected. Same rules as create for `price`, `quantity`, `unit`, `categoryId`; ' +
+        '`status` is ACTIVE | INACTIVE | OUT_OF_STOCK. `addMedia` (0..10): files uploaded via ' +
+        '`POST /media/presign-url`, moved out of TMP and attached; an item that cannot be attached is skipped and ' +
+        'logged. `removeMediaIds` (0..10): media of this product to delete (record and stored file); ids of ' +
+        'other products are ignored. Returns an empty body.',
       validation: true,
       auth: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'PRODUCT_INVALID_PRICE' },
+        { type: EDomainErrorType.VALIDATION, code: 'PRODUCT_INVALID_QUANTITY' },
+        {
+          type: EDomainErrorType.FORBIDDEN,
+          code: 'PRODUCT_SELLER_NOT_ALLOWED',
+        },
+        { type: EDomainErrorType.FORBIDDEN, code: 'PRODUCT_NOT_OWNER' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'PRODUCT_NOT_FOUND' },
+        {
+          type: EDomainErrorType.NOT_FOUND,
+          code: 'PRODUCT_CATEGORY_NOT_FOUND',
+        },
+      ],
     },
   },
 });
