@@ -22,7 +22,7 @@ Flow: `GET /reviews?distributorId=<uuid>&targetType=<USER|PRODUCT>?&star=<1..5>?
 - [x] 4. [query-port]         media: IMediaQueryPort.findThumbnails ownerType widened to 'PRODUCT' | 'USER_AVATAR'; consumed by review
 - [x] 5. [use-case]           review: ListDistributorReviews, ports IReviewRepository.findByTargets(targets, { targetType?, star?, after?, limit }) + summarizeByTargets(targets); cursor encode/decode
 - [x] 6. [persistence]        review: PgReviewRepository.findByTargets (keyset), summarizeByTargets (one aggregate query) + index (target_id, created_at, id) + migration
-- [ ] 7. [http]               GET /reviews?distributorId&targetType&star&cursor&limit (public)
+- [x] 7. [http]               GET /reviews?distributorId&targetType&star&cursor&limit (public)
 - [ ] 8. [api-docs]           GET /reviews
 - [ ] 9. [boundary-review]
 

@@ -5,6 +5,9 @@ import { ReviewController } from './review.controller';
 defineApiDocs(ReviewController, {
   tag: 'Review',
   operations: {
+    listByDistributor: {
+      summary: "List reviews of a distributor's shop (public)",
+    },
     create: {
       summary:
         'Review a distributor or one of its products (ACTIVE farmer only)',
