@@ -19,7 +19,7 @@ Flow: `POST /reviews { targetType: PRODUCT | USER, targetId, content, star: 1..5
 - [x] 3. [domain-model]       notification: Notification (isRead=false on create), ENotificationType (PLATFORM | REVIEW)
 - [x] 4. [query-port]         product: IProductQueryPort.findOwnerById(productId) → { productId, userId, isActive }; consumed by review (user IUserQueryPort.findRoleById reused)
 - [x] 5. [use-case]           review: CreateReview, port IReviewRepository.save + existsByAuthorAndTarget
-- [ ] 6. [use-case]           notification: CreateNotification, port INotificationRepository.save
+- [x] 6. [use-case]           notification: CreateNotification, port INotificationRepository.save
 - [ ] 7. [persistence]        review: PgReviewRepository; table `reviews` (unique user_id + target_type + target_id)
 - [ ] 8. [persistence]        notification: PgNotificationRepository; table `notifications`
 - [ ] 9. [integration-event]  CreateReview emits `review.review.created`
