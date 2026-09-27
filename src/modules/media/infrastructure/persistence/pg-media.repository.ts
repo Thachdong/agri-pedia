@@ -31,6 +31,14 @@ export class PgMediaRepository
     return rows.map((row) => MediaMapper.toDomain(row));
   }
 
+  async findAllByOwner(
+    ownerType: EMediaOwnerType,
+    ownerId: string,
+  ): Promise<Media[]> {
+    const rows = await this.repository.findBy({ ownerType, ownerId });
+    return rows.map((row) => MediaMapper.toDomain(row));
+  }
+
   async save(media: Media): Promise<void> {
     await this.repository.save(MediaMapper.toOrm(media));
   }

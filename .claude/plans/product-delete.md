@@ -16,8 +16,8 @@ Flow: `DELETE /products/:productId` + `Authorization: Bearer <accessToken>` (pro
       + (pulled from step 4, approved) column `products.deleted_at` + ProductMapper + migration `product-add-products-deleted-at`
 - [x] 2. [use-case]           product: DeleteProduct (existing ports: IProductRepository.findById/save, IUserQueryPort.findRoleById)
 - [x] 3. [use-case]           media: RemoveAllMedia, port IMediaRepository.findAllByOwner(ownerType, ownerId) (+ existing delete); uses IFileStorage.deleteFile
-- [ ] 4. [persistence]        product: PgProductRepository.findById excludes deleted; media: PgMediaRepository.findAllByOwner
-- [ ] 5. [integration-event]  DeleteProduct emits `product.product.deleted`
+- [x] 4. [persistence]        product: PgProductRepository.findById excludes deleted; media: PgMediaRepository.findAllByOwner
+- [x] 5. [integration-event]  DeleteProduct emits `product.product.deleted`
 - [ ] 6. [event-handler]      media: `product.product.deleted` → RemoveAllMedia (ownerType PRODUCT)
 - [ ] 7. [http]               DELETE /products/:productId (guarded) → 200 null body
 - [ ] 8. [api-docs]           DELETE /products/:productId (auth: true)

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { DataSource, IsNull } from 'typeorm';
 import { TypeOrmRepositoryBase } from '@shared/database';
 import { IProductRepository } from '../../application/ports';
 import { Product } from '../../domain';
@@ -16,7 +16,7 @@ export class PgProductRepository
   }
 
   async findById(id: string): Promise<Product | null> {
-    const row = await this.repository.findOneBy({ id });
+    const row = await this.repository.findOneBy({ id, deletedAt: IsNull() });
     return row ? ProductMapper.toDomain(row) : null;
   }
 

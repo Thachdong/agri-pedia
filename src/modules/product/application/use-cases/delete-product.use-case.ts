@@ -2,6 +2,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
+import {
+  PRODUCT_DELETED_EVENT,
+  TProductDeletedEventPayload,
+} from '../../contracts';
+import {
   ProductNotFoundException,
   ProductSellerNotAllowedException,
 } from '../../domain';
@@ -22,6 +31,7 @@ export class DeleteProductUseCase {
     @Inject(PRODUCT_REPOSITORY) private readonly products: IProductRepository,
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
   async execute(input: TDeleteProductInput): Promise<void> {
@@ -39,5 +49,12 @@ export class DeleteProductUseCase {
       product.delete();
       await this.products.save(product);
     });
+
+    await this.eventBus.publish(
+      createIntegrationEvent<
+        typeof PRODUCT_DELETED_EVENT,
+        TProductDeletedEventPayload
+      >(PRODUCT_DELETED_EVENT, { productId: input.productId }),
+    );
   }
 }

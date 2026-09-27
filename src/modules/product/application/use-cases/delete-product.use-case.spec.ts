@@ -1,5 +1,7 @@
 import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
+import { PRODUCT_DELETED_EVENT } from '../../contracts';
 import {
   EProductUnit,
   Product,
@@ -14,6 +16,7 @@ describe('DeleteProductUseCase', () => {
   let products: InMemoryProductRepository;
   let seller: TUserRoleSummary | null;
   let product: Product;
+  let eventBus: InMemoryEventBus;
   let useCase: DeleteProductUseCase;
 
   beforeEach(async () => {
@@ -29,6 +32,7 @@ describe('DeleteProductUseCase', () => {
       categoryId: 'c1',
     });
     await products.save(product);
+    eventBus = new InMemoryEventBus();
     const userQuery: IUserQueryPort = {
       findByIdentifier: async () => null,
       findRoleById: async () => seller,
@@ -37,6 +41,7 @@ describe('DeleteProductUseCase', () => {
       products,
       userQuery,
       new InMemoryUnitOfWork(),
+      eventBus,
     );
   });
 
@@ -47,12 +52,25 @@ describe('DeleteProductUseCase', () => {
     expect(await products.findById(product.id)).toBeNull();
   });
 
+  it('publishes product.product.deleted after saving', async () => {
+    await useCase.execute({ userId: 'u1', productId: product.id });
+
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        name: PRODUCT_DELETED_EVENT,
+        payload: { productId: product.id },
+      }),
+    ]);
+  });
+
   it('rejects a product already deleted', async () => {
     await useCase.execute({ userId: 'u1', productId: product.id });
+    eventBus.published.length = 0;
 
     await expect(
       useCase.execute({ userId: 'u1', productId: product.id }),
     ).rejects.toThrow(ProductNotFoundException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it.each<[string, TUserRoleSummary | null]>([
@@ -68,6 +86,7 @@ describe('DeleteProductUseCase', () => {
     await expect(
       useCase.execute({ userId: 'u1', productId: product.id }),
     ).rejects.toThrow(ProductSellerNotAllowedException);
+    expect(eventBus.published).toEqual([]);
     expect(product.deletedAt).toBeNull();
   });
 
@@ -75,6 +94,7 @@ describe('DeleteProductUseCase', () => {
     await expect(
       useCase.execute({ userId: 'u1', productId: 'missing' }),
     ).rejects.toThrow(ProductNotFoundException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects a product of another distributor', async () => {
@@ -83,6 +103,7 @@ describe('DeleteProductUseCase', () => {
     await expect(
       useCase.execute({ userId: 'u2', productId: product.id }),
     ).rejects.toThrow(ProductNotOwnerException);
+    expect(eventBus.published).toEqual([]);
     expect(product.deletedAt).toBeNull();
   });
 });
