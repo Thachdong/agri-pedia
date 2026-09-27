@@ -12,6 +12,8 @@ const storageConfigSchema = z.object({
     .transform((v) => v.replace(/\\n/g, '\n')),
   firebaseStorageBucket: z.string().min(1),
   presignUrlTtlSeconds: z.coerce.number().int().positive().default(900),
+  /** Lifetime of signed read URLs (e.g. product thumbnails). */
+  downloadUrlTtlSeconds: z.coerce.number().int().positive().default(3600),
 });
 
 export type TStorageConfig = z.infer<typeof storageConfigSchema>;
@@ -23,5 +25,6 @@ export const storageConfig = registerAs('storage', (): TStorageConfig =>
     firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY,
     firebaseStorageBucket: process.env.FIREBASE_STORAGE_BUCKET,
     presignUrlTtlSeconds: process.env.STORAGE_PRESIGN_URL_TTL_SECONDS,
+    downloadUrlTtlSeconds: process.env.STORAGE_DOWNLOAD_URL_TTL_SECONDS,
   }),
 );
