@@ -3,7 +3,10 @@ import { MediaModule } from '@modules/media/media.module';
 import { ProductModule } from '@modules/product/product.module';
 import { UserModule } from '@modules/user/user.module';
 import { REVIEW_REPOSITORY } from './application/ports';
-import { CreateReviewUseCase } from './application/use-cases';
+import {
+  CreateReviewUseCase,
+  ListDistributorReviewsUseCase,
+} from './application/use-cases';
 import './infrastructure/http/review.api-docs';
 import { ReviewController } from './infrastructure/http/review.controller';
 import { PgReviewRepository } from './infrastructure/persistence/pg-review.repository';
@@ -13,6 +16,7 @@ import { PgReviewRepository } from './infrastructure/persistence/pg-review.repos
   controllers: [ReviewController],
   providers: [
     CreateReviewUseCase,
+    ListDistributorReviewsUseCase,
     { provide: REVIEW_REPOSITORY, useClass: PgReviewRepository },
   ],
   exports: [],
