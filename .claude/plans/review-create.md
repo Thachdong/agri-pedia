@@ -18,7 +18,7 @@ Flow: `POST /reviews { targetType: PRODUCT | USER, targetId, content, star: 1..5
 - [x] 2. [domain-model]       review: Review (star integer 1..5, content non-empty), EReviewTargetType; errors REVIEW_INVALID_STAR, REVIEW_INVALID_CONTENT, REVIEW_REVIEWER_NOT_ALLOWED (FORBIDDEN), REVIEW_TARGET_NOT_FOUND (NOT_FOUND), REVIEW_INVALID_TARGET, REVIEW_ALREADY_EXISTS (CONFLICT)
 - [x] 3. [domain-model]       notification: Notification (isRead=false on create), ENotificationType (PLATFORM | REVIEW)
 - [x] 4. [query-port]         product: IProductQueryPort.findOwnerById(productId) → { productId, userId, isActive }; consumed by review (user IUserQueryPort.findRoleById reused)
-- [ ] 5. [use-case]           review: CreateReview, port IReviewRepository.save + existsByAuthorAndTarget
+- [x] 5. [use-case]           review: CreateReview, port IReviewRepository.save + existsByAuthorAndTarget
 - [ ] 6. [use-case]           notification: CreateNotification, port INotificationRepository.save
 - [ ] 7. [persistence]        review: PgReviewRepository; table `reviews` (unique user_id + target_type + target_id)
 - [ ] 8. [persistence]        notification: PgNotificationRepository; table `notifications`
