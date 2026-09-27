@@ -1,12 +1,14 @@
 import {
   IFileStorage,
+  StorageFileNotFoundError,
   TPresignedUpload,
   TPresignedUploadInput,
 } from './storage.interface';
 
-/** Test fake: records presign requests and returns a fake URL for the key. */
+/** Test fake: records presign requests and returns a fake URL for the key; keeps object keys in a set. */
 export class InMemoryFileStorage implements IFileStorage {
   readonly presigned: TPresignedUploadInput[] = [];
+  readonly files = new Set<string>();
 
   async createPresignedUploadUrl(
     input: TPresignedUploadInput,
@@ -19,5 +21,12 @@ export class InMemoryFileStorage implements IFileStorage {
         'x-goog-content-length-range': `0,${input.maxSizeBytes}`,
       },
     };
+  }
+
+  async moveFile(fromKey: string, toKey: string): Promise<void> {
+    if (!this.files.delete(fromKey)) {
+      throw new StorageFileNotFoundError(fromKey);
+    }
+    this.files.add(toKey);
   }
 }

@@ -1,6 +1,8 @@
 import { generateKeyPairSync } from 'node:crypto';
 import { IConfigService } from '@shared/config';
 import { FirebaseFileStorage } from './firebase.storage';
+import { InMemoryFileStorage } from './in-memory.storage';
+import { StorageFileNotFoundError } from './storage.interface';
 
 const { privateKey } = generateKeyPairSync('rsa', {
   modulusLength: 2048,
@@ -43,5 +45,24 @@ describe('FirebaseFileStorage', () => {
 
   it('reuses the named Firebase app across instances', () => {
     expect(() => new FirebaseFileStorage(config)).not.toThrow();
+  });
+});
+
+describe('InMemoryFileStorage.moveFile', () => {
+  it('moves an existing object to the new key', async () => {
+    const storage = new InMemoryFileStorage();
+    storage.files.add('tmp/u1/a.png');
+
+    await storage.moveFile('tmp/u1/a.png', 'products/p1/a.png');
+
+    expect([...storage.files]).toEqual(['products/p1/a.png']);
+  });
+
+  it('throws StorageFileNotFoundError when the source is missing', async () => {
+    const storage = new InMemoryFileStorage();
+
+    await expect(
+      storage.moveFile('tmp/u1/missing.png', 'products/p1/a.png'),
+    ).rejects.toBeInstanceOf(StorageFileNotFoundError);
   });
 });

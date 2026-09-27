@@ -14,10 +14,20 @@ export type TPresignedUpload = {
   headers: Record<string, string>;
 };
 
+/** Thrown by moveFile when the source object does not exist. */
+export class StorageFileNotFoundError extends Error {
+  constructor(readonly key: string) {
+    super(`Storage object not found: ${key}`);
+    this.name = StorageFileNotFoundError.name;
+  }
+}
+
 export interface IFileStorage {
   createPresignedUploadUrl(
     input: TPresignedUploadInput,
   ): Promise<TPresignedUpload>;
+  /** Moves an object inside the bucket; throws StorageFileNotFoundError if `fromKey` is missing. */
+  moveFile(fromKey: string, toKey: string): Promise<void>;
 }
 
 export const FILE_STORAGE = Symbol('FILE_STORAGE');

@@ -4,6 +4,7 @@ import { App, cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getStorage } from 'firebase-admin/storage';
 import {
   IFileStorage,
+  StorageFileNotFoundError,
   TPresignedUpload,
   TPresignedUploadInput,
 } from './storage.interface';
@@ -55,5 +56,16 @@ export class FirebaseFileStorage implements IFileStorage {
         },
       });
     return { url, headers };
+  }
+
+  async moveFile(fromKey: string, toKey: string): Promise<void> {
+    try {
+      await getStorage(this.app).bucket().file(fromKey).move(toKey);
+    } catch (error) {
+      if ((error as { code?: unknown }).code === 404) {
+        throw new StorageFileNotFoundError(fromKey);
+      }
+      throw error;
+    }
   }
 }
