@@ -12,6 +12,7 @@ export class ProductMapper {
       unit: row.unit as EProductUnit,
       categoryId: row.categoryId,
       status: row.status as EProductStatus,
+      createdAt: row.createdAt,
       deletedAt: row.deletedAt,
     });
   }
@@ -27,6 +28,7 @@ export class ProductMapper {
       unit: product.unit,
       categoryId: product.categoryId,
       status: product.status,
+      createdAt: product.createdAt,
       deletedAt: product.deletedAt,
     });
   }

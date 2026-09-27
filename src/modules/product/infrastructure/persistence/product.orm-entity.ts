@@ -6,6 +6,8 @@ const numericToNumber = {
   from: (value: string): number => Number(value),
 };
 
+/** Keyset pagination of a seller's products, newest first. */
+@Index('IDX_products_user_created_id', ['userId', 'createdAt', 'id'])
 @Entity({ name: 'products' })
 export class ProductOrmEntity {
   @PrimaryColumn('uuid')
@@ -41,6 +43,9 @@ export class ProductOrmEntity {
 
   @Column({ type: 'varchar', length: 16 })
   status: string;
+
+  @Column({ name: 'created_at', type: 'timestamptz' })
+  createdAt: Date;
 
   /** Soft delete marker; plain column (not @DeleteDateColumn) so filtering stays explicit in the repository. */
   @Column({ name: 'deleted_at', type: 'timestamptz', nullable: true })

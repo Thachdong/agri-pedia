@@ -17,11 +17,13 @@ const input: TCreateProductProps = {
 
 describe('Product.create', () => {
   it('creates an ACTIVE product with trimmed text and a new id', () => {
+    const before = Date.now();
     const product = Product.create(input);
 
     expect(product.id).toEqual(expect.any(String));
     expect(product.status).toBe(EProductStatus.ACTIVE);
     expect(product.deletedAt).toBeNull();
+    expect(product.createdAt.getTime()).toBeGreaterThanOrEqual(before);
     expect(product.name).toBe('Phân NPK');
     expect(product.description).toBe('Bao 50kg');
     expect(product).toMatchObject({
@@ -61,6 +63,7 @@ describe('Product.restore', () => {
     const product = Product.restore('p1', {
       ...input,
       status: EProductStatus.OUT_OF_STOCK,
+      createdAt: new Date('2026-01-01T00:00:00Z'),
       deletedAt: null,
     });
 

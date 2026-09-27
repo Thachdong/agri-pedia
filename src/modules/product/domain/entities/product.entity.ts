@@ -15,15 +15,19 @@ export type TProductProps = {
   unit: EProductUnit;
   categoryId: string;
   status: EProductStatus;
+  createdAt: Date;
   /** Set when the seller deleted the product (soft delete); null while listed. */
   deletedAt: Date | null;
 };
 
-export type TCreateProductProps = Omit<TProductProps, 'status' | 'deletedAt'>;
+export type TCreateProductProps = Omit<
+  TProductProps,
+  'status' | 'createdAt' | 'deletedAt'
+>;
 
 /** Fields a seller may change; omitted fields are kept. */
 export type TUpdateProductProps = Partial<
-  Omit<TProductProps, 'userId' | 'deletedAt'>
+  Omit<TProductProps, 'userId' | 'createdAt' | 'deletedAt'>
 >;
 
 export class Product extends AggregateRoot {
@@ -47,6 +51,7 @@ export class Product extends AggregateRoot {
       unit: input.unit,
       categoryId: input.categoryId,
       status: EProductStatus.ACTIVE,
+      createdAt: new Date(),
       deletedAt: null,
     });
   }
@@ -133,6 +138,10 @@ export class Product extends AggregateRoot {
 
   get status(): EProductStatus {
     return this.props.status;
+  }
+
+  get createdAt(): Date {
+    return this.props.createdAt;
   }
 
   get deletedAt(): Date | null {
