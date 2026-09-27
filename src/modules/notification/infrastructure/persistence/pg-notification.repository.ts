@@ -18,6 +18,14 @@ export class PgNotificationRepository
     super(dataSource, NotificationOrmEntity);
   }
 
+  async findByIdAndUser(
+    id: string,
+    userId: string,
+  ): Promise<Notification | null> {
+    const row = await this.repository.findOneBy({ id, userId });
+    return row ? NotificationMapper.toDomain(row) : null;
+  }
+
   async findByUser(
     userId: string,
     { after, limit }: TNotificationPageQuery,
@@ -38,6 +46,10 @@ export class PgNotificationRepository
       .limit(limit)
       .getMany();
     return rows.map((row) => NotificationMapper.toDomain(row));
+  }
+
+  async markAllReadByUser(userId: string): Promise<void> {
+    await this.repository.update({ userId, isRead: false }, { isRead: true });
   }
 
   async save(notification: Notification): Promise<void> {

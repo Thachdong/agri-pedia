@@ -1,10 +1,22 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import {
   AccessTokenGuard,
   CurrentUser,
   TAccessTokenPayload,
 } from '@shared/access-token';
-import { ListMyNotificationsUseCase } from '../../application/use-cases';
+import {
+  ListMyNotificationsUseCase,
+  MarkAllNotificationsReadUseCase,
+  MarkNotificationReadUseCase,
+} from '../../application/use-cases';
 import {
   DEFAULT_NOTIFICATION_PAGE_SIZE,
   ListMyNotificationsQueryDto,
@@ -15,6 +27,8 @@ import { ListMyNotificationsResponse } from './responses/list-my-notifications.r
 export class NotificationController {
   constructor(
     private readonly listMyNotifications: ListMyNotificationsUseCase,
+    private readonly markNotificationRead: MarkNotificationReadUseCase,
+    private readonly markAllNotificationsRead: MarkAllNotificationsReadUseCase,
   ) {}
 
   /** The caller's own notifications. */
@@ -42,5 +56,25 @@ export class NotificationController {
       })),
       nextCursor,
     };
+  }
+
+  @Patch('read-all')
+  @UseGuards(AccessTokenGuard)
+  async markAllRead(@CurrentUser() caller: TAccessTokenPayload): Promise<null> {
+    await this.markAllNotificationsRead.execute({ userId: caller.userId });
+    return null;
+  }
+
+  @Patch(':notificationId/read')
+  @UseGuards(AccessTokenGuard)
+  async markRead(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Param('notificationId', ParseUUIDPipe) notificationId: string,
+  ): Promise<null> {
+    await this.markNotificationRead.execute({
+      userId: caller.userId,
+      notificationId,
+    });
+    return null;
   }
 }

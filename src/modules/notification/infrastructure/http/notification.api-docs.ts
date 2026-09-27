@@ -20,5 +20,11 @@ defineApiDocs(NotificationController, {
         },
       ],
     },
+    markAllRead: {
+      summary: "Mark all of the caller's notifications as read",
+    },
+    markRead: {
+      summary: "Mark one of the caller's notifications as read",
+    },
   },
 });
