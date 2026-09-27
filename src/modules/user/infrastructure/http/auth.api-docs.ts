@@ -65,5 +65,10 @@ defineApiDocs(AuthController, {
       validation: true,
       auth: true,
     },
+    changePassword: {
+      summary: 'Change the password of the caller',
+      validation: true,
+      auth: true,
+    },
   },
 });
