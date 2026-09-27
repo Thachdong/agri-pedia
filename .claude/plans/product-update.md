@@ -11,7 +11,7 @@ Flow: `PATCH /products/:productId { name?, description?, price?, quantity?, unit
   → media module handles →
       media.RemoveMedia(ownerType PRODUCT, ownerId productId, mediaIds) (delete rows where id ∈ ids AND owner matches, others ignored; after commit delete storage objects `media.source`)
       media.ConfirmMedia(ownerType PRODUCT, ownerId productId, files addMedia) (existing use case)
-  → 204 No Content
+  → 200 (null body)
 
 - [x] 0. [shared-wrapper]     storage: IFileStorage.deleteFile(key) (missing object → no-op); firebase adapter + in-memory fake
 - [x] 1. [domain-model]       product: Product.update(partial fields) reusing price/quantity invariants; errors PRODUCT_NOT_FOUND (NOT_FOUND), PRODUCT_NOT_OWNER (FORBIDDEN)
@@ -20,7 +20,7 @@ Flow: `PATCH /products/:productId { name?, description?, price?, quantity?, unit
 - [x] 4. [persistence]        product: PgProductRepository.findById; media: PgMediaRepository.findByOwner + delete (no migration)
 - [x] 5. [integration-event]  UpdateProduct emits `product.product.updated`
 - [x] 6. [event-handler]      media: `product.product.updated` → RemoveMedia + ConfirmMedia (ownerType PRODUCT)
-- [ ] 7. [http]               PATCH /products/:productId (guarded)
+- [x] 7. [http]               PATCH /products/:productId (guarded) → 200 null body (project convention)
 - [ ] 8. [api-docs]           PATCH /products/:productId (auth: true)
 - [ ] 9. [boundary-review]
 
@@ -31,7 +31,7 @@ Flow: `PATCH /products/:productId { name?, description?, price?, quantity?, unit
 - removeMediaIds of other owner / unknown → silently ignored (async, cannot fail the request).
 - RemoveMedia deletes DB rows in transaction, then storage objects after commit (approved). Storage delete failure → logged, not retried (orphan file, row already gone).
 - addMedia: 0..10 items per request (same max as create); total count per product not enforced.
-- No fields at all → still 204 (no-op save, event with empty lists).
+- No fields at all → still 200 (no-op save, event with empty lists).
 - Event always published after commit; handler skips empty lists.
 
 ## Open questions

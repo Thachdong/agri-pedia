@@ -29,5 +29,10 @@ defineApiDocs(ProductController, {
         },
       ],
     },
+    update: {
+      summary: 'Update own product (ACTIVE distributor only)',
+      validation: true,
+      auth: true,
+    },
   },
 });

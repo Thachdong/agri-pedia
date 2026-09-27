@@ -16,7 +16,7 @@ import { ProductMediaDto } from './product-media.dto';
 
 export const MAX_MEDIA_PER_PRODUCT = 10;
 /** Largest value the `numeric(14,2)` price column holds. */
-const MAX_PRICE = 999_999_999_999.99;
+export const MAX_PRICE = 999_999_999_999.99;
 
 export class CreateProductDto {
   @IsString()
