@@ -9,6 +9,8 @@ export type TNotificationPageQuery = {
 };
 
 export interface INotificationRepository {
+  /** Null when missing or addressed to another user. */
+  findByIdAndUser(id: string, userId: string): Promise<Notification | null>;
   /** Notifications of the recipient, newest first (createdAt desc, id desc). */
   findByUser(
     userId: string,

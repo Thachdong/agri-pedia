@@ -10,6 +10,14 @@ const newestFirst = (a: Notification, b: Notification) =>
 export class InMemoryNotificationRepository implements INotificationRepository {
   readonly items = new Map<string, Notification>();
 
+  async findByIdAndUser(
+    id: string,
+    userId: string,
+  ): Promise<Notification | null> {
+    const notification = this.items.get(id);
+    return notification?.userId === userId ? notification : null;
+  }
+
   async findByUser(
     userId: string,
     { after, limit }: TNotificationPageQuery,

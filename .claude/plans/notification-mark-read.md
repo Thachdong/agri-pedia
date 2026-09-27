@@ -11,7 +11,7 @@ Flow (notification module, both guarded → 401 without token):
     → 200 null
 
 - [x] 1. [domain-model]       notification: Notification.markRead() (idempotent); error NOTIFICATION_NOT_FOUND (NOT_FOUND)
-- [ ] 2. [use-case]           notification: MarkNotificationRead, port INotificationRepository.findByIdAndUser
+- [x] 2. [use-case]           notification: MarkNotificationRead, port INotificationRepository.findByIdAndUser
 - [ ] 3. [use-case]           notification: MarkAllNotificationsRead, port INotificationRepository.markAllReadByUser
 - [ ] 4. [persistence]        notification: PgNotificationRepository.findByIdAndUser, markAllReadByUser (no migration: IDX_notifications_user_created_id covers user_id)
 - [ ] 5. [http]               PATCH /notifications/:id/read, PATCH /notifications/read-all (guarded)
