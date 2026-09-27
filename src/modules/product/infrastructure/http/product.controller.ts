@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -16,10 +18,17 @@ import {
 import {
   CreateProductUseCase,
   DeleteProductUseCase,
+  ListDistributorProductsUseCase,
   UpdateProductUseCase,
 } from '../../application/use-cases';
-import { CreateProductDto, ProductMediaDto, UpdateProductDto } from './dto';
+import {
+  CreateProductDto,
+  ListDistributorProductsQueryDto,
+  ProductMediaDto,
+  UpdateProductDto,
+} from './dto';
 import { CreateProductResponse } from './responses/create-product.response';
+import { ListDistributorProductsResponse } from './responses/list-distributor-products.response';
 
 const toMediaInput = (file: ProductMediaDto) => ({
   key: file.key,
@@ -35,7 +44,35 @@ export class ProductController {
     private readonly createProduct: CreateProductUseCase,
     private readonly updateProduct: UpdateProductUseCase,
     private readonly deleteProduct: DeleteProductUseCase,
+    private readonly listDistributorProducts: ListDistributorProductsUseCase,
   ) {}
+
+  /** Public: no access token needed. */
+  @Get()
+  async listByDistributor(
+    @Query() query: ListDistributorProductsQueryDto,
+  ): Promise<ListDistributorProductsResponse> {
+    const { products, nextCursor } = await this.listDistributorProducts.execute(
+      {
+        distributorId: query.distributorId,
+        cursor: query.cursor,
+        limit: query.limit,
+      },
+    );
+    return {
+      products: products.map((product) => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity,
+        unit: product.unit,
+        thumbnail: product.thumbnail,
+        distributorId: product.distributorId,
+        distributorName: product.distributorName,
+      })),
+      nextCursor,
+    };
+  }
 
   @Post()
   @UseGuards(AccessTokenGuard)

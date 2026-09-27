@@ -1,0 +1,33 @@
+import { Type } from 'class-transformer';
+import {
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Length,
+  Max,
+  Min,
+} from 'class-validator';
+
+export const DEFAULT_PRODUCT_PAGE_SIZE = 20;
+export const MAX_PRODUCT_PAGE_SIZE = 50;
+
+export class ListDistributorProductsQueryDto {
+  /** Seller whose products are listed. */
+  @IsUUID()
+  distributorId: string;
+
+  /** `nextCursor` from the previous page; omit for the first page. */
+  @IsOptional()
+  @IsString()
+  @Length(1, 512)
+  cursor?: string;
+
+  /** Page size, 1..50 (default 20). */
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(MAX_PRODUCT_PAGE_SIZE)
+  limit: number = DEFAULT_PRODUCT_PAGE_SIZE;
+}

@@ -19,7 +19,7 @@ Flow: `GET /products?distributorId=<uuid>&cursor=<opaque>&limit=<1..50, default 
 - [x] 6. [use-case]           product: ListDistributorProducts, port IProductRepository.findActiveByUser(userId, { after?, limit }); cursor encode/decode
 - [x] 7. [persistence]        product: PgProductRepository.findActiveByUser (keyset); media: PgMediaRepository.findFirstImagesByOwners
       + data migration `product-truncate-products-created-at` (backfilled µs → ms, else cursor skips rows)
-- [ ] 8. [http]               GET /products?distributorId&cursor&limit (public)
+- [x] 8. [http]               GET /products?distributorId&cursor&limit (public)
 - [ ] 9. [api-docs]           GET /products
 - [ ] 10. [boundary-review]
 

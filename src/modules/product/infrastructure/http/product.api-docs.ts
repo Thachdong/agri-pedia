@@ -5,6 +5,10 @@ import { ProductController } from './product.controller';
 defineApiDocs(ProductController, {
   tag: 'Product',
   operations: {
+    listByDistributor: {
+      summary: "List a distributor's products (public)",
+      validation: true,
+    },
     create: {
       summary: 'Create a product (ACTIVE distributor only)',
       description:
