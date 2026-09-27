@@ -53,6 +53,7 @@ describe('CreateProductUseCase', () => {
     const userQuery: IUserQueryPort = {
       findByIdentifier: async () => null,
       findRoleById: async () => seller,
+      findProfileById: async () => null,
     };
     useCase = new CreateProductUseCase(
       products,

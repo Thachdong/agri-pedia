@@ -44,6 +44,7 @@ describe('VerifyActivationOtpUseCase', () => {
     otps = new InMemoryOtpRepository();
     userQuery = {
       findRoleById: async () => null,
+      findProfileById: async () => null,
       findByIdentifier: async (identifier) =>
         identifier === '0912 345 678'
           ? {

@@ -17,8 +17,16 @@ export type TUserRoleSummary = {
   isActive: boolean;
 };
 
+/** Public profile of a user (safe to show to anyone). */
+export type TUserProfileSummary = {
+  userId: string;
+  username: string;
+  role: 'FARMER' | 'DISTRIBUTOR';
+};
+
 export interface IUserQueryPort {
   /** Raw identifier as typed by a client (email or phone, any casing/separators). */
   findByIdentifier(identifier: string): Promise<TUserIdentifierSummary | null>;
   findRoleById(userId: string): Promise<TUserRoleSummary | null>;
+  findProfileById(userId: string): Promise<TUserProfileSummary | null>;
 }

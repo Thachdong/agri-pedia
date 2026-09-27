@@ -4,6 +4,7 @@ import { IUserRepository, USER_REPOSITORY } from '../../application/ports';
 import {
   IUserQueryPort,
   TUserIdentifierSummary,
+  TUserProfileSummary,
   TUserRoleSummary,
 } from '../../contracts';
 import { ELoginType, Identifier } from '../../domain';
@@ -40,6 +41,13 @@ export class UserQueryService implements IUserQueryPort {
     const user = await this.users.findById(userId);
     return user
       ? { userId: user.id, role: user.role, isActive: user.canLogin() }
+      : null;
+  }
+
+  async findProfileById(userId: string): Promise<TUserProfileSummary | null> {
+    const user = await this.users.findById(userId);
+    return user
+      ? { userId: user.id, username: user.username, role: user.role }
       : null;
   }
 }

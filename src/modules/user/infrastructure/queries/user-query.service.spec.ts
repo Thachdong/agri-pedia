@@ -95,3 +95,27 @@ describe('UserQueryService.findRoleById', () => {
     await expect(service.findRoleById('missing')).resolves.toBeNull();
   });
 });
+
+describe('UserQueryService.findProfileById', () => {
+  let users: InMemoryUserRepository;
+  let service: UserQueryService;
+
+  beforeEach(() => {
+    users = new InMemoryUserRepository();
+    service = new UserQueryService(users, new InMemoryCryptoService());
+  });
+
+  it('returns the public profile of the user', async () => {
+    const user = userWith('hash(0912345678)');
+    await users.save(user);
+    await expect(service.findProfileById(user.id)).resolves.toEqual({
+      userId: user.id,
+      username: 'shop',
+      role: 'DISTRIBUTOR',
+    });
+  });
+
+  it('returns null for an unknown id', async () => {
+    await expect(service.findProfileById('missing')).resolves.toBeNull();
+  });
+});

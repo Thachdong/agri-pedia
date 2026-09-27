@@ -14,7 +14,7 @@ Flow: `GET /products?distributorId=<uuid>&cursor=<opaque>&limit=<1..50, default 
 - [x] 2. [shared-wrapper]     storage: IFileStorage.createDownloadUrl(key) (V4 signed GET); firebase adapter + in-memory fake
 - [x] 3. [domain-model]       product: Product.createdAt (set on create); error PRODUCT_DISTRIBUTOR_NOT_FOUND (NOT_FOUND), PRODUCT_INVALID_CURSOR (VALIDATION)
       + column `products.created_at` (existing rows = now()) + index (user_id, created_at, id) + ProductMapper + migration (same reason as delete step 1: restore needs it)
-- [ ] 4. [query-port]         user: IUserQueryPort.findProfileById(userId) → { userId, username, role } | null; consumed by product
+- [x] 4. [query-port]         user: IUserQueryPort.findProfileById(userId) → { userId, username, role } | null; consumed by product
 - [ ] 5. [query-port]         media: IMediaQueryPort.findThumbnails(ownerType 'PRODUCT', ownerIds) → [{ ownerId, url }]; port IMediaRepository.findFirstImagesByOwners; uses IFileStorage.createDownloadUrl; consumed by product
 - [ ] 6. [use-case]           product: ListDistributorProducts, port IProductRepository.findActiveByUser(userId, { after?, limit }); cursor encode/decode
 - [ ] 7. [persistence]        product: PgProductRepository.findActiveByUser (keyset); media: PgMediaRepository.findFirstImagesByOwners (no migration)
