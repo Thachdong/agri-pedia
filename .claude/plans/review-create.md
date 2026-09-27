@@ -15,7 +15,7 @@ Flow: `POST /reviews { targetType: PRODUCT | USER, targetId, content, star: 1..5
   → 201 { reviewId }
 
 - [x] 1. [module-scaffold]    modules `review`, `notification`
-- [ ] 2. [domain-model]       review: Review (star integer 1..5, content non-empty), EReviewTargetType; errors REVIEW_INVALID_STAR, REVIEW_INVALID_CONTENT, REVIEW_REVIEWER_NOT_ALLOWED (FORBIDDEN), REVIEW_TARGET_NOT_FOUND (NOT_FOUND), REVIEW_INVALID_TARGET, REVIEW_ALREADY_EXISTS (CONFLICT)
+- [x] 2. [domain-model]       review: Review (star integer 1..5, content non-empty), EReviewTargetType; errors REVIEW_INVALID_STAR, REVIEW_INVALID_CONTENT, REVIEW_REVIEWER_NOT_ALLOWED (FORBIDDEN), REVIEW_TARGET_NOT_FOUND (NOT_FOUND), REVIEW_INVALID_TARGET, REVIEW_ALREADY_EXISTS (CONFLICT)
 - [ ] 3. [domain-model]       notification: Notification (isRead=false on create), ENotificationType (PLATFORM | REVIEW)
 - [ ] 4. [query-port]         product: IProductQueryPort.findOwnerById(productId) → { productId, userId, isActive }; consumed by review (user IUserQueryPort.findRoleById reused)
 - [ ] 5. [use-case]           review: CreateReview, port IReviewRepository.save + existsByAuthorAndTarget
