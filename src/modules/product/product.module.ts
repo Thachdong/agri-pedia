@@ -5,6 +5,7 @@ import {
   CreateProductUseCase,
   DeleteProductUseCase,
   ListCategoriesUseCase,
+  ListDistributorProductsUseCase,
   UpdateProductUseCase,
 } from './application/use-cases';
 import { CATEGORY_REPOSITORY, PRODUCT_REPOSITORY } from './application/ports';
@@ -22,6 +23,7 @@ import { PgProductRepository } from './infrastructure/persistence/pg-product.rep
     CreateProductUseCase,
     DeleteProductUseCase,
     ListCategoriesUseCase,
+    ListDistributorProductsUseCase,
     UpdateProductUseCase,
     { provide: PRODUCT_REPOSITORY, useClass: PgProductRepository },
     { provide: CATEGORY_REPOSITORY, useClass: PgCategoryRepository },
