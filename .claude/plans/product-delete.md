@@ -19,9 +19,9 @@ Flow: `DELETE /products/:productId` + `Authorization: Bearer <accessToken>` (pro
 - [x] 4. [persistence]        product: PgProductRepository.findById excludes deleted; media: PgMediaRepository.findAllByOwner
 - [x] 5. [integration-event]  DeleteProduct emits `product.product.deleted`
 - [x] 6. [event-handler]      media: `product.product.deleted` → RemoveAllMedia (ownerType PRODUCT)
-- [ ] 7. [http]               DELETE /products/:productId (guarded) → 200 null body
-- [ ] 8. [api-docs]           DELETE /products/:productId (auth: true)
-- [ ] 9. [boundary-review]
+- [x] 7. [http]               DELETE /products/:productId (guarded) → 200 null body
+- [x] 8. [api-docs]           DELETE /products/:productId (auth: true)
+- [x] 9. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - Soft delete + remove media (approved).

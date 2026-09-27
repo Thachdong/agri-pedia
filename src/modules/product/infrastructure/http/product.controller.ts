@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -14,6 +15,7 @@ import {
 } from '@shared/access-token';
 import {
   CreateProductUseCase,
+  DeleteProductUseCase,
   UpdateProductUseCase,
 } from '../../application/use-cases';
 import { CreateProductDto, ProductMediaDto, UpdateProductDto } from './dto';
@@ -32,6 +34,7 @@ export class ProductController {
   constructor(
     private readonly createProduct: CreateProductUseCase,
     private readonly updateProduct: UpdateProductUseCase,
+    private readonly deleteProduct: DeleteProductUseCase,
   ) {}
 
   @Post()
@@ -73,6 +76,16 @@ export class ProductController {
       addMedia: dto.addMedia?.map(toMediaInput),
       removeMediaIds: dto.removeMediaIds,
     });
+    return null;
+  }
+
+  @Delete(':productId')
+  @UseGuards(AccessTokenGuard)
+  async delete(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Param('productId', ParseUUIDPipe) productId: string,
+  ): Promise<null> {
+    await this.deleteProduct.execute({ userId: caller.userId, productId });
     return null;
   }
 }

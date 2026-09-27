@@ -56,5 +56,23 @@ defineApiDocs(ProductController, {
         },
       ],
     },
+    delete: {
+      summary: 'Delete own product (ACTIVE distributor only)',
+      description:
+        'Caller must be a DISTRIBUTOR whose account is ACTIVE (else 403 `PRODUCT_SELLER_NOT_ALLOWED`) and the ' +
+        'seller of the product (else 403 `PRODUCT_NOT_OWNER`). Soft delete: the product is kept for history but ' +
+        'treated as missing afterwards (update/delete → 404 `PRODUCT_NOT_FOUND`). All its media (records and ' +
+        'stored files) are removed. Returns an empty body.',
+      validation: true,
+      auth: true,
+      errors: [
+        {
+          type: EDomainErrorType.FORBIDDEN,
+          code: 'PRODUCT_SELLER_NOT_ALLOWED',
+        },
+        { type: EDomainErrorType.FORBIDDEN, code: 'PRODUCT_NOT_OWNER' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'PRODUCT_NOT_FOUND' },
+      ],
+    },
   },
 });
