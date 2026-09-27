@@ -22,7 +22,7 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 6b. [use-case]          product: ListCategories (ICategoryRepository.findAll)
 - [x] 7. [use-case]           media: ConfirmMedia, port IMediaRepository.save (uses IFileStorage.moveFile)
 - [x] 8. [persistence]        product: PgProductRepository, PgCategoryRepository; tables `products`, `categories` + seed migration (3 categories)
-- [ ] 9. [persistence]        media: PgMediaRepository; table `media`
+- [x] 9. [persistence]        media: PgMediaRepository; table `media`
 - [ ] 10. [integration-event] CreateProduct emits `product.product.created`
 - [ ] 11. [event-handler]     media: `product.product.created` → ConfirmMedia (ownerType PRODUCT)
 - [ ] 12. [http]              POST /products (guarded), GET /categories (public)
