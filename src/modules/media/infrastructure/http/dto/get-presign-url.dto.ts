@@ -1,17 +1,20 @@
-import { IsEnum, IsString, Length } from 'class-validator';
-import { EMediaType } from '../../../domain';
+import { Type } from 'class-transformer';
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
+import { PresignFileDto } from './presign-file.dto';
+
+export const MAX_FILES_PER_PRESIGN = 10;
 
 export class GetPresignUrlDto {
-  /** Original file name; kept by the client and sent again when the upload is confirmed. */
-  @IsString()
-  @Length(1, 255)
-  filename: string;
-
-  /** Allowed per type: IMAGE jpg/jpeg/png/webp, VIDEO mp4/mov, FILE pdf. */
-  @IsString()
-  @Length(1, 10)
-  extension: string;
-
-  @IsEnum(EMediaType)
-  type: EMediaType;
+  /** 1..10 files; one signed URL is returned per file, in the same order. */
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(MAX_FILES_PER_PRESIGN)
+  @ValidateNested({ each: true })
+  @Type(() => PresignFileDto)
+  files: PresignFileDto[];
 }

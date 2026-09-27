@@ -28,9 +28,17 @@ export class MediaController {
   ): Promise<GetPresignUrlResponse> {
     const { items } = await this.getPresignUrl.execute({
       userId: caller.userId,
-      files: [{ type: dto.type, extension: dto.extension }],
+      files: dto.files.map((file) => ({
+        type: file.type,
+        extension: file.extension,
+      })),
     });
-    const { presignUrl, key, headers } = items[0];
-    return { presignUrl, key, headers };
+    return {
+      items: items.map(({ presignUrl, key, headers }) => ({
+        presignUrl,
+        key,
+        headers,
+      })),
+    };
   }
 }

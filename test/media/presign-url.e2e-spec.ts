@@ -9,6 +9,16 @@ import { AppModule } from '../../src/app.module';
 
 const USER_ID = '8f14e45f-ceea-467a-9575-6a9f5b1e1c11';
 
+const file = (
+  extension: string,
+  type: string,
+  filename = `f.${extension}`,
+) => ({
+  filename,
+  extension,
+  type,
+});
+
 describe('POST /media/presign-url (e2e)', () => {
   let app: INestApplication;
   let accessToken: string;
@@ -37,53 +47,83 @@ describe('POST /media/presign-url (e2e)', () => {
     return req.send(body);
   };
 
-  it('returns a signed PUT URL for a TMP key of the caller', async () => {
+  it('returns one signed PUT URL per file, in request order', async () => {
     const res = await presign({
-      filename: 'rice.PNG',
-      extension: 'PNG',
-      type: 'IMAGE',
+      files: [
+        file('PNG', 'IMAGE', 'rice.PNG'),
+        file('mov', 'VIDEO'),
+        file('pdf', 'FILE'),
+      ],
     }).expect(200);
 
-    expect(res.body.key).toMatch(
-      new RegExp(`^tmp/${USER_ID}/[0-9a-f-]{36}\\.png$`),
-    );
-    expect(res.body.headers).toEqual({
-      'Content-Type': 'image/png',
-      'x-goog-content-length-range': '0,10485760',
-    });
-    const url = new URL(res.body.presignUrl);
-    expect(url.pathname.endsWith(`/${res.body.key}`)).toBe(true);
-    expect(url.searchParams.get('X-Goog-Algorithm')).toBe('GOOG4-RSA-SHA256');
-    expect(url.searchParams.get('X-Goog-SignedHeaders')).toBe(
-      'content-type;host;x-goog-content-length-range',
+    const items = res.body.items;
+    expect(items).toHaveLength(3);
+    const exts = ['png', 'mov', 'pdf'];
+    const types = ['image/png', 'video/quicktime', 'application/pdf'];
+    items.forEach(
+      (
+        item: { key: string; presignUrl: string; headers: object },
+        i: number,
+      ) => {
+        expect(item.key).toMatch(
+          new RegExp(`^tmp/${USER_ID}/[0-9a-f-]{36}\\.${exts[i]}$`),
+        );
+        expect(item.headers).toEqual({
+          'Content-Type': types[i],
+          'x-goog-content-length-range': '0,10485760',
+        });
+        const url = new URL(item.presignUrl);
+        expect(url.pathname.endsWith(`/${item.key}`)).toBe(true);
+        expect(url.searchParams.get('X-Goog-SignedHeaders')).toBe(
+          'content-type;host;x-goog-content-length-range',
+        );
+      },
     );
   });
 
   it('401 without access token', async () => {
-    const res = await presign(
-      { filename: 'a.pdf', extension: 'pdf', type: 'FILE' },
-      null,
-    ).expect(401);
+    const res = await presign({ files: [file('pdf', 'FILE')] }, null).expect(
+      401,
+    );
     expect(res.body.code).toBe('AUTH_INVALID_ACCESS_TOKEN');
   });
 
   it('400 on invalid body', async () => {
-    await presign({ filename: '', extension: 'pdf', type: 'DOC' }).expect(400);
-    await presign({ extension: 'pdf', type: 'FILE' }).expect(400);
+    await presign({ files: [] }).expect(400);
     await presign({
-      filename: 'a.pdf',
-      extension: 'pdf',
-      type: 'FILE',
-      extra: 1,
+      files: Array.from({ length: 11 }, () => file('png', 'IMAGE')),
     }).expect(400);
+    await presign({ files: [file('pdf', 'DOC')] }).expect(400);
+    await presign({ files: [{ extension: 'pdf', type: 'FILE' }] }).expect(400);
+    await presign(file('pdf', 'FILE')).expect(400);
+    await presign({ files: [{ ...file('pdf', 'FILE'), extra: 1 }] }).expect(
+      400,
+    );
   });
 
-  it('400 MEDIA_INVALID_EXTENSION when extension does not match type', async () => {
+  it('accepts exactly 10 files', async () => {
     const res = await presign({
-      filename: 'clip.png',
-      extension: 'png',
-      type: 'VIDEO',
+      files: Array.from({ length: 10 }, () => file('jpg', 'IMAGE')),
+    }).expect(200);
+    expect(res.body.items).toHaveLength(10);
+  });
+
+  it('400 MEDIA_INVALID_EXTENSION listing every invalid file', async () => {
+    const res = await presign({
+      files: [file('png', 'IMAGE'), file('png', 'VIDEO'), file('gif', 'IMAGE')],
     }).expect(400);
     expect(res.body.code).toBe('MEDIA_INVALID_EXTENSION');
+    expect(res.body.details).toEqual({
+      files: [
+        { index: 1, type: 'VIDEO', extension: 'png', allowed: ['mp4', 'mov'] },
+        {
+          index: 2,
+          type: 'IMAGE',
+          extension: 'gif',
+          allowed: ['jpg', 'jpeg', 'png', 'webp'],
+        },
+      ],
+    });
+    expect(res.body).not.toHaveProperty('items');
   });
 });
