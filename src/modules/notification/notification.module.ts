@@ -4,11 +4,12 @@ import {
   CreateNotificationUseCase,
   ListMyNotificationsUseCase,
 } from './application/use-cases';
+import { NotificationController } from './infrastructure/http/notification.controller';
 import { PgNotificationRepository } from './infrastructure/persistence/pg-notification.repository';
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [NotificationController],
   providers: [
     CreateNotificationUseCase,
     ListMyNotificationsUseCase,
