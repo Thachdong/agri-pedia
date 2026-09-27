@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import {
   ConfirmMediaUseCase,
   GetPresignUrlUseCase,
+  RemoveAllMediaUseCase,
   RemoveMediaUseCase,
 } from './application/use-cases';
 import { MEDIA_REPOSITORY } from './application/ports';
@@ -17,6 +18,7 @@ import { PgMediaRepository } from './infrastructure/persistence/pg-media.reposit
   providers: [
     ConfirmMediaUseCase,
     GetPresignUrlUseCase,
+    RemoveAllMediaUseCase,
     RemoveMediaUseCase,
     ProductCreatedHandler,
     ProductUpdatedHandler,

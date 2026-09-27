@@ -19,6 +19,15 @@ export class InMemoryMediaRepository implements IMediaRepository {
       );
   }
 
+  async findAllByOwner(
+    ownerType: EMediaOwnerType,
+    ownerId: string,
+  ): Promise<Media[]> {
+    return [...this.items.values()].filter(
+      (media) => media.ownerType === ownerType && media.ownerId === ownerId,
+    );
+  }
+
   async save(media: Media): Promise<void> {
     this.items.set(media.id, media);
   }

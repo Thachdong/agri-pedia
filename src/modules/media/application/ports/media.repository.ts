@@ -7,6 +7,7 @@ export interface IMediaRepository {
     ownerId: string,
     ids: string[],
   ): Promise<Media[]>;
+  findAllByOwner(ownerType: EMediaOwnerType, ownerId: string): Promise<Media[]>;
   save(media: Media): Promise<void>;
   delete(ids: string[]): Promise<void>;
 }
