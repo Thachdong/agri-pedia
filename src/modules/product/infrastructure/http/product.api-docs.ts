@@ -7,7 +7,20 @@ defineApiDocs(ProductController, {
   operations: {
     listByDistributor: {
       summary: "List a distributor's products (public)",
+      description:
+        'No login needed. Lists the ACTIVE, not deleted products of `distributorId`, newest first ' +
+        '(INACTIVE / OUT_OF_STOCK are hidden). `limit` 1..50, default 20. To get the next page pass the ' +
+        'returned `nextCursor` as `cursor` (same `distributorId`); `nextCursor` is null on the last page. ' +
+        '`thumbnail` is a signed URL of the first image (expires after the configured TTL, default 1h), ' +
+        'or null when the product has no image. `distributorId` that is not a DISTRIBUTOR → 404.',
       validation: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'PRODUCT_INVALID_CURSOR' },
+        {
+          type: EDomainErrorType.NOT_FOUND,
+          code: 'PRODUCT_DISTRIBUTOR_NOT_FOUND',
+        },
+      ],
     },
     create: {
       summary: 'Create a product (ACTIVE distributor only)',

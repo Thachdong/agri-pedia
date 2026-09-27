@@ -29,5 +29,5 @@ export class ListDistributorProductsQueryDto {
   @IsInt()
   @Min(1)
   @Max(MAX_PRODUCT_PAGE_SIZE)
-  limit: number = DEFAULT_PRODUCT_PAGE_SIZE;
+  limit?: number;
 }

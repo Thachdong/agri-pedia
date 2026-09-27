@@ -20,8 +20,8 @@ Flow: `GET /products?distributorId=<uuid>&cursor=<opaque>&limit=<1..50, default 
 - [x] 7. [persistence]        product: PgProductRepository.findActiveByUser (keyset); media: PgMediaRepository.findFirstImagesByOwners
       + data migration `product-truncate-products-created-at` (backfilled µs → ms, else cursor skips rows)
 - [x] 8. [http]               GET /products?distributorId&cursor&limit (public)
-- [ ] 9. [api-docs]           GET /products
-- [ ] 10. [boundary-review]
+- [x] 9. [api-docs]           GET /products
+- [x] 10. [boundary-review]
 
 Order note: query ports (4, 5) before the use case (6) because it depends on them.
 

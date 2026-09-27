@@ -23,6 +23,7 @@ import {
 } from '../../application/use-cases';
 import {
   CreateProductDto,
+  DEFAULT_PRODUCT_PAGE_SIZE,
   ListDistributorProductsQueryDto,
   ProductMediaDto,
   UpdateProductDto,
@@ -56,7 +57,7 @@ export class ProductController {
       {
         distributorId: query.distributorId,
         cursor: query.cursor,
-        limit: query.limit,
+        limit: query.limit ?? DEFAULT_PRODUCT_PAGE_SIZE,
       },
     );
     return {
