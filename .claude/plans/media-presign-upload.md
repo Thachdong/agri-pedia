@@ -25,7 +25,7 @@ All-or-nothing: every extension validated before any URL is signed; any invalid 
 (details `{ files: [{ index, type, extension, allowed }] }`), nothing signed. Empty / > 10 files → 400 validation. specs/api.md unchanged.
 
 - [x] 9.  [domain-model]     MediaExtension.createMany([{ type, extension }]) collects every invalid item; InvalidMediaExtensionException details → `{ files: [{ index, type, extension, allowed }] }`
-- [ ] 10. [use-case]         GetPresignUrl: input `files[]` → output `items[]`; validate all (createMany), then presign in parallel
+- [x] 10. [use-case]         GetPresignUrl: input `files[]` → output `items[]`; validate all (createMany), then presign in parallel
 - [ ] 11. [http]             body `{ files }` (ArrayMinSize 1, ArrayMaxSize 10, nested validation), response `{ items }`; update e2e
 - [ ] 12. [api-docs]         update POST /media/presign-url description (batch, max 10, error details)
 - [ ] 13. [boundary-review]

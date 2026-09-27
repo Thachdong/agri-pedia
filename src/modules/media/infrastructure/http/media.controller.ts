@@ -26,11 +26,11 @@ export class MediaController {
     @CurrentUser() caller: TAccessTokenPayload,
     @Body() dto: GetPresignUrlDto,
   ): Promise<GetPresignUrlResponse> {
-    const { presignUrl, key, headers } = await this.getPresignUrl.execute({
+    const { items } = await this.getPresignUrl.execute({
       userId: caller.userId,
-      type: dto.type,
-      extension: dto.extension,
+      files: [{ type: dto.type, extension: dto.extension }],
     });
+    const { presignUrl, key, headers } = items[0];
     return { presignUrl, key, headers };
   }
 }
