@@ -18,7 +18,7 @@ Flow: `PATCH /products/:productId { name?, description?, price?, quantity?, unit
 - [x] 2. [use-case]           product: UpdateProduct, port IProductRepository.findById (+ existing save, ICategoryRepository.existsById, IUserQueryPort.findRoleById)
 - [x] 3. [use-case]           media: RemoveMedia, port IMediaRepository.findByOwner(ownerType, ownerId, ids) + delete(ids); uses IFileStorage.deleteFile
 - [x] 4. [persistence]        product: PgProductRepository.findById; media: PgMediaRepository.findByOwner + delete (no migration)
-- [ ] 5. [integration-event]  UpdateProduct emits `product.product.updated`
+- [x] 5. [integration-event]  UpdateProduct emits `product.product.updated`
 - [ ] 6. [event-handler]      media: `product.product.updated` → RemoveMedia + ConfirmMedia (ownerType PRODUCT)
 - [ ] 7. [http]               PATCH /products/:productId (guarded)
 - [ ] 8. [api-docs]           PATCH /products/:productId (auth: true)

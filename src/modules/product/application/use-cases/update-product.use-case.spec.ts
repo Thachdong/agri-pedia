@@ -1,5 +1,7 @@
 import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
+import { PRODUCT_UPDATED_EVENT } from '../../contracts';
 import {
   EProductStatus,
   EProductUnit,
@@ -21,6 +23,7 @@ describe('UpdateProductUseCase', () => {
   let categories: InMemoryCategoryRepository;
   let seller: TUserRoleSummary | null;
   let product: Product;
+  let eventBus: InMemoryEventBus;
   let useCase: UpdateProductUseCase;
 
   beforeEach(async () => {
@@ -39,6 +42,7 @@ describe('UpdateProductUseCase', () => {
       categoryId: 'c1',
     });
     await products.save(product);
+    eventBus = new InMemoryEventBus();
     const userQuery: IUserQueryPort = {
       findByIdentifier: async () => null,
       findRoleById: async () => seller,
@@ -48,6 +52,7 @@ describe('UpdateProductUseCase', () => {
       categories,
       userQuery,
       new InMemoryUnitOfWork(),
+      eventBus,
     );
   });
 
@@ -69,6 +74,52 @@ describe('UpdateProductUseCase', () => {
     });
   });
 
+  it('publishes product.product.updated with the media changes after saving', async () => {
+    const addMedia = [
+      {
+        key: 'tmp/u1/0b6f6f7e-3c1a-4a52-9d3e-2f7a1c9b8e10.png',
+        type: 'IMAGE' as const,
+        extension: 'png',
+        filename: 'side.png',
+        sortOrder: 2,
+      },
+    ];
+
+    await useCase.execute({
+      userId: 'u1',
+      productId: product.id,
+      addMedia,
+      removeMediaIds: ['m1'],
+    });
+
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        name: PRODUCT_UPDATED_EVENT,
+        payload: {
+          productId: product.id,
+          userId: 'u1',
+          addMedia,
+          removeMediaIds: ['m1'],
+        },
+      }),
+    ]);
+  });
+
+  it('publishes empty media lists when none are given', async () => {
+    await useCase.execute({ userId: 'u1', productId: product.id, name: 'X' });
+
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        payload: {
+          productId: product.id,
+          userId: 'u1',
+          addMedia: [],
+          removeMediaIds: [],
+        },
+      }),
+    ]);
+  });
+
   it.each<[string, TUserRoleSummary | null]>([
     ['unknown user', null],
     ['farmer', { userId: 'u1', role: 'FARMER', isActive: true }],
@@ -83,12 +134,14 @@ describe('UpdateProductUseCase', () => {
       useCase.execute({ userId: 'u1', productId: product.id, price: 1 }),
     ).rejects.toThrow(ProductSellerNotAllowedException);
     expect(product.price).toBe(350000);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects an unknown product', async () => {
     await expect(
       useCase.execute({ userId: 'u1', productId: 'missing' }),
     ).rejects.toThrow(ProductNotFoundException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects a product of another distributor', async () => {
@@ -98,6 +151,7 @@ describe('UpdateProductUseCase', () => {
       useCase.execute({ userId: 'u2', productId: product.id, price: 1 }),
     ).rejects.toThrow(ProductNotOwnerException);
     expect(product.price).toBe(350000);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects an unknown category', async () => {
@@ -109,11 +163,13 @@ describe('UpdateProductUseCase', () => {
       }),
     ).rejects.toThrow(ProductCategoryNotFoundException);
     expect(product.categoryId).toBe('c1');
+    expect(eventBus.published).toEqual([]);
   });
 
   it('propagates domain validation', async () => {
     await expect(
       useCase.execute({ userId: 'u1', productId: product.id, quantity: -1 }),
     ).rejects.toThrow(InvalidProductQuantityException);
+    expect(eventBus.published).toEqual([]);
   });
 });

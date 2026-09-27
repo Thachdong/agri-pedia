@@ -2,6 +2,16 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
+import {
+  PRODUCT_UPDATED_EVENT,
+  TProductUpdatedEventPayload,
+  TProductUpdatedMediaPayload,
+} from '../../contracts';
+import {
   EProductStatus,
   EProductUnit,
   ProductCategoryNotFoundException,
@@ -27,6 +37,10 @@ export type TUpdateProductInput = {
   unit?: EProductUnit;
   categoryId?: string;
   status?: EProductStatus;
+  /** Files already uploaded to TMP; confirmed asynchronously by the media module. */
+  addMedia?: TProductUpdatedMediaPayload[];
+  /** Removed asynchronously by the media module; ids of other products are ignored there. */
+  removeMediaIds?: string[];
 };
 
 /** Changes a product listed by the calling ACTIVE distributor; omitted fields are kept. */
@@ -38,6 +52,7 @@ export class UpdateProductUseCase {
     private readonly categories: ICategoryRepository,
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
   async execute(input: TUpdateProductInput): Promise<void> {
@@ -69,5 +84,17 @@ export class UpdateProductUseCase {
       });
       await this.products.save(product);
     });
+
+    await this.eventBus.publish(
+      createIntegrationEvent<
+        typeof PRODUCT_UPDATED_EVENT,
+        TProductUpdatedEventPayload
+      >(PRODUCT_UPDATED_EVENT, {
+        productId: input.productId,
+        userId: input.userId,
+        addMedia: input.addMedia ?? [],
+        removeMediaIds: input.removeMediaIds ?? [],
+      }),
+    );
   }
 }
