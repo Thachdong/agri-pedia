@@ -16,7 +16,7 @@ Out of scope (no caller yet): confirmMedia helper + Media table (comes with acti
 - [x] 4. [domain-model]     EMediaType (IMAGE | VIDEO | FILE), VO MediaExtension (whitelist per type + contentType), MEDIA_MAX_SIZE_BYTES = 10MB; error MEDIA_INVALID_EXTENSION (VALIDATION)
 - [x] 5. [use-case]         GetPresignUrl (uses IFileStorage, key generation)
 - [x] 6. [http]             POST /media/presign-url (guarded)
-- [ ] 7. [api-docs]         POST /media/presign-url (auth: true)
+- [x] 7. [api-docs]         POST /media/presign-url (auth: true)
 - [ ] 8. [boundary-review]
 
 ## Decisions (approved)
