@@ -35,7 +35,7 @@ describe('CreateProductUseCase', () => {
   beforeEach(() => {
     products = new InMemoryProductRepository();
     categories = new InMemoryCategoryRepository();
-    categories.ids.add('c1');
+    categories.add({ id: 'c1', name: 'Phân bón' });
     seller = { userId: 'u1', role: 'DISTRIBUTOR', isActive: true };
     const userQuery: IUserQueryPort = {
       findByIdentifier: async () => null,

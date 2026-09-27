@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from '@modules/user/user.module';
-import { CreateProductUseCase } from './application/use-cases';
+import {
+  CreateProductUseCase,
+  ListCategoriesUseCase,
+} from './application/use-cases';
 
 @Module({
   imports: [UserModule],
   controllers: [],
-  providers: [CreateProductUseCase],
+  providers: [CreateProductUseCase, ListCategoriesUseCase],
   exports: [],
 })
 export class ProductModule {}

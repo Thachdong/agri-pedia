@@ -19,7 +19,7 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 4. [domain-model]       media: Media entity (source key derived), EMediaOwnerType (PRODUCT only for now), VO TmpMediaKey (tmp-key ownership rule); error MEDIA_INVALID_TMP_KEY
 - [x] 5. [query-port]         user: IUserQueryPort.findRoleById(userId) → { userId, role, isActive }; consumed by product
 - [x] 6. [use-case]           product: CreateProduct, ports IProductRepository.save, ICategoryRepository.existsById
-- [ ] 6b. [use-case]          product: ListCategories (ICategoryRepository.findAll)
+- [x] 6b. [use-case]          product: ListCategories (ICategoryRepository.findAll)
 - [ ] 7. [use-case]           media: ConfirmMedia, port IMediaRepository (uses IFileStorage.moveFile)
 - [ ] 8. [persistence]        product: PgProductRepository, PgCategoryRepository; tables `products`, `categories` + seed migration (3 categories)
 - [ ] 9. [persistence]        media: PgMediaRepository; table `media`
