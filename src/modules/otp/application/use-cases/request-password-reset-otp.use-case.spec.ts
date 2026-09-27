@@ -74,6 +74,7 @@ describe('RequestPasswordResetOtpUseCase', () => {
       canLogin: true,
     };
     const userQuery: IUserQueryPort = {
+      findRoleById: async () => null,
       findByIdentifier: async () => account,
     };
     useCase = new RequestPasswordResetOtpUseCase(

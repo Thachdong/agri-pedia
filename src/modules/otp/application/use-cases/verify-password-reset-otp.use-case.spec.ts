@@ -45,6 +45,7 @@ describe('VerifyPasswordResetOtpUseCase', () => {
     otps = new InMemoryOtpRepository();
     eventBus = new InMemoryEventBus();
     const userQuery: IUserQueryPort = {
+      findRoleById: async () => null,
       findByIdentifier: async (identifier) =>
         identifier === 'Farmer@Mail.com'
           ? {

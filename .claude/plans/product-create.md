@@ -4,7 +4,7 @@ Source: specs/api.md §13 create product; entities §7 Media, §8 Product, §9 C
 
 Flow: `POST /products { name, description, price, categoryId, quantity, unit, media: [{ key, type, extension, filename, sortOrder? }] }` + `Authorization: Bearer <accessToken>` (product module)
   → AccessTokenGuard (401) → product.CreateProduct({ userId, ... })
-  (user query port: userId → role + active; not DISTRIBUTOR or not ACTIVE → 403; category must exist → 404;
+  (user query port findRoleById: userId → role + active; not DISTRIBUTOR or not ACTIVE → 403; category must exist → 404;
    save Product { ..., userId, status: ACTIVE } in transaction)
   → emits `product.product.created` { productId, userId, media[] } after commit
   → media module handles → media.ConfirmMedia(ownerType PRODUCT, ownerId productId)
@@ -17,7 +17,7 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 2. [module-scaffold]    module `product`
 - [x] 3. [domain-model]       product: Product (price ≥ 0, quantity integer ≥ 0), EProductUnit, EProductStatus; errors PRODUCT_INVALID_PRICE, PRODUCT_INVALID_QUANTITY, PRODUCT_CATEGORY_NOT_FOUND, PRODUCT_SELLER_NOT_ALLOWED (FORBIDDEN)
 - [x] 4. [domain-model]       media: Media entity (source key derived), EMediaOwnerType (PRODUCT only for now), VO TmpMediaKey (tmp-key ownership rule); error MEDIA_INVALID_TMP_KEY
-- [ ] 5. [query-port]         user: IUserQueryPort.findById(userId) → { userId, role, isActive }; consumed by product
+- [x] 5. [query-port]         user: IUserQueryPort.findRoleById(userId) → { userId, role, isActive }; consumed by product
 - [ ] 6. [use-case]           product: CreateProduct, ports IProductRepository, ICategoryRepository (exists)
 - [ ] 6b. [use-case]          product: ListCategories (ICategoryRepository.findAll)
 - [ ] 7. [use-case]           media: ConfirmMedia, port IMediaRepository (uses IFileStorage.moveFile)
