@@ -21,7 +21,7 @@ Flow: `GET /reviews?distributorId=<uuid>&targetType=<USER|PRODUCT>?&star=<1..5>?
 - [x] 3. [query-port]         user: IUserQueryPort.listProfilesByIds(userIds) → [{ userId, username, role }]; consumed by review (findProfileById reused for the distributor check)
 - [x] 4. [query-port]         media: IMediaQueryPort.findThumbnails ownerType widened to 'PRODUCT' | 'USER_AVATAR'; consumed by review
 - [x] 5. [use-case]           review: ListDistributorReviews, ports IReviewRepository.findByTargets(targets, { targetType?, star?, after?, limit }) + summarizeByTargets(targets); cursor encode/decode
-- [ ] 6. [persistence]        review: PgReviewRepository.findByTargets (keyset), summarizeByTargets (one aggregate query) + index (target_id, created_at, id) + migration
+- [x] 6. [persistence]        review: PgReviewRepository.findByTargets (keyset), summarizeByTargets (one aggregate query) + index (target_id, created_at, id) + migration
 - [ ] 7. [http]               GET /reviews?distributorId&targetType&star&cursor&limit (public)
 - [ ] 8. [api-docs]           GET /reviews
 - [ ] 9. [boundary-review]

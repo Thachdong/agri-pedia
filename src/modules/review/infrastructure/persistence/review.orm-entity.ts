@@ -1,6 +1,8 @@
 import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
 /** One review per (author, target); also serves lookups by author. */
+/** Keyset pagination of reviews of a target set, newest first. */
+@Index('IDX_reviews_target_created_id', ['targetId', 'createdAt', 'id'])
 @Index('UQ_reviews_user_target', ['userId', 'targetType', 'targetId'], {
   unique: true,
 })
