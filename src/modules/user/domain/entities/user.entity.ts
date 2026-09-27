@@ -39,6 +39,17 @@ export type TRegisterUserProps = {
   bio?: string | null;
 };
 
+/** Fields left undefined stay unchanged. */
+export type TUpdateUserProfileProps = {
+  username?: string;
+  bio?: string;
+  businessType?: EBusinessType | null;
+  /** Media id. */
+  avatar?: string;
+  /** Media id. */
+  businessLicense?: string;
+};
+
 export class User extends AggregateRoot {
   private constructor(
     id: string,
@@ -102,6 +113,27 @@ export class User extends AggregateRoot {
   /** Replaces the password; `passwordHash` is already hashed by the caller. */
   changePassword(passwordHash: string, now: Date = new Date()): void {
     this.props.passwordHash = passwordHash;
+    this.props.updatedAt = now;
+  }
+
+  /** Applies the given fields. A business type change follows the same rule as registration. */
+  updateProfile(input: TUpdateUserProfileProps, now: Date = new Date()): void {
+    if (input.businessType !== undefined) {
+      User.assertBusinessType(this.props.role, input.businessType);
+      this.props.businessType = input.businessType;
+    }
+    if (input.username !== undefined) {
+      this.props.username = input.username.trim();
+    }
+    if (input.bio !== undefined) {
+      this.props.bio = input.bio;
+    }
+    if (input.avatar !== undefined) {
+      this.props.avatar = input.avatar;
+    }
+    if (input.businessLicense !== undefined) {
+      this.props.businessLicense = input.businessLicense;
+    }
     this.props.updatedAt = now;
   }
 
