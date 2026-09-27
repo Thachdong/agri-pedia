@@ -1,4 +1,6 @@
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
+import { USER_PROFILE_UPDATED_EVENT } from '../../contracts';
 import {
   BusinessTypeNotAllowedException,
   BusinessTypeRequiredException,
@@ -15,13 +17,14 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const file = (name: string) => ({
   key: `tmp/u/${name}.png`,
-  type: 'IMAGE',
+  type: 'IMAGE' as const,
   extension: 'png',
   filename: `${name}.png`,
 });
 
 describe('UpdateProfileUseCase', () => {
   let users: InMemoryUserRepository;
+  let eventBus: InMemoryEventBus;
   let useCase: UpdateProfileUseCase;
 
   const registerUser = (role: EUserRole) => {
@@ -42,7 +45,12 @@ describe('UpdateProfileUseCase', () => {
 
   beforeEach(() => {
     users = new InMemoryUserRepository();
-    useCase = new UpdateProfileUseCase(users, new InMemoryUnitOfWork());
+    eventBus = new InMemoryEventBus();
+    useCase = new UpdateProfileUseCase(
+      users,
+      new InMemoryUnitOfWork(),
+      eventBus,
+    );
   });
 
   it('updates the given fields and assigns new media ids', async () => {
@@ -70,6 +78,20 @@ describe('UpdateProfileUseCase', () => {
     expect(saved?.avatar).toBe(output.avatar);
     expect(saved?.businessLicense).toBe(output.businessLicense);
     expect(saved?.username).toBe('new-name');
+    expect(eventBus.published).toEqual([
+      {
+        name: USER_PROFILE_UPDATED_EVENT,
+        occurredAt: expect.any(String),
+        payload: {
+          userId: user.id,
+          avatar: { ...file('avatar'), mediaId: output.avatar },
+          businessLicense: {
+            ...file('license'),
+            mediaId: output.businessLicense,
+          },
+        },
+      },
+    ]);
   });
 
   it('keeps omitted fields', async () => {
@@ -84,6 +106,12 @@ describe('UpdateProfileUseCase', () => {
       businessLicense: null,
       businessType: null,
     });
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        name: USER_PROFILE_UPDATED_EVENT,
+        payload: { userId: user.id },
+      }),
+    ]);
   });
 
   it('rejects a business type for a farmer', async () => {
@@ -95,6 +123,7 @@ describe('UpdateProfileUseCase', () => {
         businessType: EBusinessType.SEEDS_SEEDLINGS,
       }),
     ).rejects.toThrow(BusinessTypeNotAllowedException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('requires a business type for a distributor', async () => {
@@ -109,5 +138,6 @@ describe('UpdateProfileUseCase', () => {
     await expect(
       useCase.execute({ userId: 'ghost', username: 'x' }),
     ).rejects.toThrow(UserNotFoundException);
+    expect(eventBus.published).toEqual([]);
   });
 });
