@@ -15,5 +15,6 @@ export * from './exceptions/invalid-refresh-token.exception';
 export * from './exceptions/user-identifier-already-used.exception';
 export * from './exceptions/user-not-active.exception';
 export * from './exceptions/user-not-found.exception';
+export * from './exceptions/wrong-password.exception';
 export * from './value-objects/coordinates.vo';
 export * from './value-objects/identifier.vo';
