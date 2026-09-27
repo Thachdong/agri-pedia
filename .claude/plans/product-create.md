@@ -20,7 +20,7 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 5. [query-port]         user: IUserQueryPort.findRoleById(userId) → { userId, role, isActive }; consumed by product
 - [x] 6. [use-case]           product: CreateProduct, ports IProductRepository.save, ICategoryRepository.existsById
 - [x] 6b. [use-case]          product: ListCategories (ICategoryRepository.findAll)
-- [ ] 7. [use-case]           media: ConfirmMedia, port IMediaRepository (uses IFileStorage.moveFile)
+- [x] 7. [use-case]           media: ConfirmMedia, port IMediaRepository.save (uses IFileStorage.moveFile)
 - [ ] 8. [persistence]        product: PgProductRepository, PgCategoryRepository; tables `products`, `categories` + seed migration (3 categories)
 - [ ] 9. [persistence]        media: PgMediaRepository; table `media`
 - [ ] 10. [integration-event] CreateProduct emits `product.product.created`
