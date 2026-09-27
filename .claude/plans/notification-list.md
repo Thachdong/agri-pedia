@@ -13,7 +13,7 @@ Flow: `GET /notifications?cursor=<opaque>&limit=<1..50, default 20>` + `Authoriz
 - [x] 3. [persistence]        notification: PgNotificationRepository.findByUser (keyset) + index (user_id, created_at, id) + migration
 - [x] 4. [http]               GET /notifications?cursor&limit (guarded)
 - [x] 5. [api-docs]           GET /notifications (auth: true)
-- [ ] 6. [boundary-review]
+- [x] 6. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - Any logged-in user (FARMER | DISTRIBUTOR), no role/status check: a user only ever sees their own rows (userId from token).

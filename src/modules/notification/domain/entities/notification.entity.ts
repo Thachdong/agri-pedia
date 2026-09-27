@@ -40,6 +40,11 @@ export class Notification extends AggregateRoot {
     return new Notification(id, { ...props });
   }
 
+  /** No-op when already read. */
+  markRead(): void {
+    this.props = { ...this.props, isRead: true };
+  }
+
   get userId(): string {
     return this.props.userId;
   }

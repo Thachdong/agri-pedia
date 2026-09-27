@@ -45,3 +45,22 @@ describe('Notification.restore', () => {
     expect(notification.createdAt).toBe(createdAt);
   });
 });
+
+describe('Notification.markRead', () => {
+  it('marks an unread notification as read', () => {
+    const notification = Notification.create(input);
+
+    notification.markRead();
+
+    expect(notification.isRead).toBe(true);
+  });
+
+  it('keeps a read notification read', () => {
+    const notification = Notification.create(input);
+    notification.markRead();
+
+    notification.markRead();
+
+    expect(notification.isRead).toBe(true);
+  });
+});
