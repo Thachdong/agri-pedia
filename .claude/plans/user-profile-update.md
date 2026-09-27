@@ -15,7 +15,7 @@ Flow: `PATCH /users/me { username?, bio?, bussinessType?, avatar?: { key, type, 
 No migration: users.avatar / users.business_license are already uuid columns (media id); media.owner_type is varchar.
 
 - [x] 1. [domain-model]       user: User.updateProfile(username?, bio?, businessType?, avatar?, businessLicense?) (existing BusinessType errors)
-- [ ] 2. [domain-model]       media: EMediaOwnerType USER_AVATAR, USER_LICENSE (folder `users`); Media.create accepts a given id
+- [x] 2. [domain-model]       media: EMediaOwnerType USER_AVATAR, USER_LICENSE (folder `users`); Media.create accepts a given id
 - [ ] 3. [use-case]           user: UpdateProfile (IUserRepository existing)
 - [ ] 4. [use-case]           media: ReplaceMedia (IMediaRepository existing findAllByOwner/save/delete; IFileStorage)
 - [ ] 5. [integration-event]  UpdateProfile emits `user.profile.updated`

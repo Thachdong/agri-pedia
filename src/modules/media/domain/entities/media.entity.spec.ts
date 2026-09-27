@@ -25,6 +25,20 @@ describe('Media.create', () => {
     });
   });
 
+  it('keeps a given id and stores user media under the users folder', () => {
+    const media = Media.create({
+      id: 'm1',
+      type: EMediaType.IMAGE,
+      extension: MediaExtension.create(EMediaType.IMAGE, 'jpg'),
+      filename: 'me.jpg',
+      ownerType: EMediaOwnerType.USER_AVATAR,
+      ownerId: 'u1',
+    });
+
+    expect(media.id).toBe('m1');
+    expect(media.source).toBe('users/u1/m1.jpg');
+  });
+
   it('defaults sortOrder to null', () => {
     const media = Media.create({
       type: EMediaType.FILE,
