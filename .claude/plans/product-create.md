@@ -16,7 +16,7 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 1. [shared-wrapper]     storage: IFileStorage.moveFile(fromKey, toKey) (source missing → error); firebase adapter + in-memory fake
 - [x] 2. [module-scaffold]    module `product`
 - [x] 3. [domain-model]       product: Product (price ≥ 0, quantity integer ≥ 0), EProductUnit, EProductStatus; errors PRODUCT_INVALID_PRICE, PRODUCT_INVALID_QUANTITY, PRODUCT_CATEGORY_NOT_FOUND, PRODUCT_SELLER_NOT_ALLOWED (FORBIDDEN)
-- [ ] 4. [domain-model]       media: Media entity, EMediaOwnerType (USER_AVATAR | USER_LICENSE | PRODUCT | REVIEW); tmp-key ownership rule; error MEDIA_INVALID_TMP_KEY
+- [x] 4. [domain-model]       media: Media entity (source key derived), EMediaOwnerType (PRODUCT only for now), VO TmpMediaKey (tmp-key ownership rule); error MEDIA_INVALID_TMP_KEY
 - [ ] 5. [query-port]         user: IUserQueryPort.findById(userId) → { userId, role, isActive }; consumed by product
 - [ ] 6. [use-case]           product: CreateProduct, ports IProductRepository, ICategoryRepository (exists)
 - [ ] 6b. [use-case]          product: ListCategories (ICategoryRepository.findAll)
