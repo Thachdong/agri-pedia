@@ -17,7 +17,7 @@ No migration: users.avatar / users.business_license are already uuid columns (me
 - [x] 1. [domain-model]       user: User.updateProfile(username?, bio?, businessType?, avatar?, businessLicense?) (existing BusinessType errors)
 - [x] 2. [domain-model]       media: EMediaOwnerType USER_AVATAR, USER_LICENSE (folder `users`); Media.create accepts a given id
 - [x] 3. [use-case]           user: UpdateProfile (IUserRepository existing)
-- [ ] 4. [use-case]           media: ReplaceMedia (IMediaRepository existing findAllByOwner/save/delete; IFileStorage)
+- [x] 4. [use-case]           media: ReplaceMedia (IMediaRepository existing findAllByOwner/save/delete; IFileStorage)
 - [ ] 5. [integration-event]  UpdateProfile emits `user.profile.updated`
 - [ ] 6. [event-handler]      media: `user.profile.updated` → ReplaceMedia (USER_AVATAR, USER_LICENSE)
 - [ ] 7. [http]               PATCH /users/me (guarded) → 200 profile body

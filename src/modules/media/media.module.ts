@@ -4,6 +4,7 @@ import {
   GetPresignUrlUseCase,
   RemoveAllMediaUseCase,
   RemoveMediaUseCase,
+  ReplaceMediaUseCase,
 } from './application/use-cases';
 import { MEDIA_REPOSITORY } from './application/ports';
 import { MEDIA_QUERY_PORT } from './contracts';
@@ -23,6 +24,7 @@ import { PgMediaRepository } from './infrastructure/persistence/pg-media.reposit
     GetPresignUrlUseCase,
     RemoveAllMediaUseCase,
     RemoveMediaUseCase,
+    ReplaceMediaUseCase,
     ProductCreatedHandler,
     ProductDeletedHandler,
     ProductUpdatedHandler,
