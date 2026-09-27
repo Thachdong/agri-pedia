@@ -10,7 +10,7 @@ Flow: `POST /auth/change-password { oldPassword, newPassword }` (AccessTokenGuar
 Reuses existing: User.changePassword, IUserRepository, IRefreshTokenRepository, ICryptoService, AccessTokenGuard + @CurrentUser. No new table/migration.
 
 - [x] 1. [domain-model]       user: exception WrongPassword (USER_WRONG_PASSWORD)
-- [ ] 2. [use-case]           user: ChangePassword (IUserRepository, IRefreshTokenRepository, existing)
+- [x] 2. [use-case]           user: ChangePassword (IUserRepository, IRefreshTokenRepository, existing)
 - [ ] 3. [http]               POST /auth/change-password (AuthController, guarded)
 - [ ] 4. [api-docs]           POST /auth/change-password
 - [ ] 5. [boundary-review]
