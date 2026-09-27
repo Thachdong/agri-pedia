@@ -64,6 +64,7 @@ describe('CreateReviewUseCase', () => {
     };
     const productQuery: IProductQueryPort = {
       findOwnerById: async (id) => (product?.productId === id ? product : null),
+      listBySeller: async () => [],
     };
     useCase = new CreateReviewUseCase(
       reviews,

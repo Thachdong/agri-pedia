@@ -3,7 +3,11 @@ import {
   IProductRepository,
   PRODUCT_REPOSITORY,
 } from '../../application/ports';
-import { IProductQueryPort, TProductOwnerSummary } from '../../contracts';
+import {
+  IProductQueryPort,
+  TProductNameSummary,
+  TProductOwnerSummary,
+} from '../../contracts';
 import { EProductStatus } from '../../domain';
 
 @Injectable()
@@ -21,5 +25,13 @@ export class ProductQueryService implements IProductQueryPort {
           isActive: product.status === EProductStatus.ACTIVE,
         }
       : null;
+  }
+
+  async listBySeller(sellerId: string): Promise<TProductNameSummary[]> {
+    const products = await this.products.findAllByUser(sellerId);
+    return products.map((product) => ({
+      productId: product.id,
+      name: product.name,
+    }));
   }
 }

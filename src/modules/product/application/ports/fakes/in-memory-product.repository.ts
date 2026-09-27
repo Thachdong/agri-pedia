@@ -34,6 +34,12 @@ export class InMemoryProductRepository implements IProductRepository {
       .slice(0, limit);
   }
 
+  async findAllByUser(userId: string): Promise<Product[]> {
+    return [...this.items.values()].filter(
+      (product) => product.userId === userId,
+    );
+  }
+
   async save(product: Product): Promise<void> {
     this.items.set(product.id, product);
   }

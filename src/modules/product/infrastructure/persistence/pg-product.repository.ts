@@ -44,6 +44,11 @@ export class PgProductRepository
     return rows.map((row) => ProductMapper.toDomain(row));
   }
 
+  async findAllByUser(userId: string): Promise<Product[]> {
+    const rows = await this.repository.findBy({ userId });
+    return rows.map((row) => ProductMapper.toDomain(row));
+  }
+
   async save(product: Product): Promise<void> {
     await this.repository.save(ProductMapper.toOrm(product));
   }

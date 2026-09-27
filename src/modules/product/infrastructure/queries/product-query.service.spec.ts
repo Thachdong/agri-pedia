@@ -58,3 +58,48 @@ describe('ProductQueryService.findOwnerById', () => {
     await expect(service.findOwnerById('missing')).resolves.toBeNull();
   });
 });
+
+describe('ProductQueryService.listBySeller', () => {
+  let products: InMemoryProductRepository;
+  let service: ProductQueryService;
+
+  beforeEach(() => {
+    products = new InMemoryProductRepository();
+    service = new ProductQueryService(products);
+  });
+
+  it('lists every product of the seller, any status, deleted included', async () => {
+    const active = newProduct();
+    const inactive = newProduct();
+    inactive.update({ status: EProductStatus.INACTIVE, name: 'Lúa OM5451' });
+    const deleted = newProduct();
+    deleted.delete();
+    const otherSeller = Product.create({
+      userId: 'distributor-2',
+      name: 'Tôm giống',
+      description: 'PL12',
+      price: 100,
+      quantity: 1,
+      unit: EProductUnit.PIECE,
+      categoryId: 'c1',
+    });
+    for (const product of [active, inactive, deleted, otherSeller]) {
+      await products.save(product);
+    }
+
+    const result = await service.listBySeller('distributor-1');
+
+    expect(result).toHaveLength(3);
+    expect(result).toEqual(
+      expect.arrayContaining([
+        { productId: active.id, name: 'Phân NPK' },
+        { productId: inactive.id, name: 'Lúa OM5451' },
+        { productId: deleted.id, name: 'Phân NPK' },
+      ]),
+    );
+  });
+
+  it('returns an empty list for a seller without products', async () => {
+    await expect(service.listBySeller('nobody')).resolves.toEqual([]);
+  });
+});
