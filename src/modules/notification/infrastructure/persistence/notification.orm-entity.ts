@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
+/** Keyset pagination of a user's notifications, newest first. */
+@Index('IDX_notifications_user_created_id', ['userId', 'createdAt', 'id'])
 @Entity({ name: 'notifications' })
 export class NotificationOrmEntity {
   @PrimaryColumn('uuid')

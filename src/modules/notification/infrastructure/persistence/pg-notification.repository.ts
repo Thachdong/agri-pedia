@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { TypeOrmRepositoryBase } from '@shared/database';
-import { INotificationRepository } from '../../application/ports';
+import {
+  INotificationRepository,
+  TNotificationPageQuery,
+} from '../../application/ports';
 import { Notification } from '../../domain';
 import { NotificationMapper } from './notification.mapper';
 import { NotificationOrmEntity } from './notification.orm-entity';
@@ -13,6 +16,28 @@ export class PgNotificationRepository
 {
   constructor(dataSource: DataSource) {
     super(dataSource, NotificationOrmEntity);
+  }
+
+  async findByUser(
+    userId: string,
+    { after, limit }: TNotificationPageQuery,
+  ): Promise<Notification[]> {
+    const query = this.repository
+      .createQueryBuilder('notification')
+      .where('notification.user_id = :userId', { userId });
+    if (after) {
+      // Row comparison matches the (created_at desc, id desc) order and uses IDX_notifications_user_created_id.
+      query.andWhere(
+        '(notification.created_at, notification.id) < (:createdAt, :id)',
+        { createdAt: after.createdAt, id: after.id },
+      );
+    }
+    const rows = await query
+      .orderBy('notification.created_at', 'DESC')
+      .addOrderBy('notification.id', 'DESC')
+      .limit(limit)
+      .getMany();
+    return rows.map((row) => NotificationMapper.toDomain(row));
   }
 
   async save(notification: Notification): Promise<void> {
