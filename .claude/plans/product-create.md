@@ -18,7 +18,7 @@ Category: seeded by migration (3 rows mapped from business types); `GET /categor
 - [x] 3. [domain-model]       product: Product (price ≥ 0, quantity integer ≥ 0), EProductUnit, EProductStatus; errors PRODUCT_INVALID_PRICE, PRODUCT_INVALID_QUANTITY, PRODUCT_CATEGORY_NOT_FOUND, PRODUCT_SELLER_NOT_ALLOWED (FORBIDDEN)
 - [x] 4. [domain-model]       media: Media entity (source key derived), EMediaOwnerType (PRODUCT only for now), VO TmpMediaKey (tmp-key ownership rule); error MEDIA_INVALID_TMP_KEY
 - [x] 5. [query-port]         user: IUserQueryPort.findRoleById(userId) → { userId, role, isActive }; consumed by product
-- [ ] 6. [use-case]           product: CreateProduct, ports IProductRepository, ICategoryRepository (exists)
+- [x] 6. [use-case]           product: CreateProduct, ports IProductRepository.save, ICategoryRepository.existsById
 - [ ] 6b. [use-case]          product: ListCategories (ICategoryRepository.findAll)
 - [ ] 7. [use-case]           media: ConfirmMedia, port IMediaRepository (uses IFileStorage.moveFile)
 - [ ] 8. [persistence]        product: PgProductRepository, PgCategoryRepository; tables `products`, `categories` + seed migration (3 categories)
