@@ -12,7 +12,7 @@ Flow: `GET /notifications?cursor=<opaque>&limit=<1..50, default 20>` + `Authoriz
 - [x] 2. [use-case]           notification: ListMyNotifications, port INotificationRepository.findByUser(userId, { after?, limit }); cursor encode/decode
 - [x] 3. [persistence]        notification: PgNotificationRepository.findByUser (keyset) + index (user_id, created_at, id) + migration
 - [x] 4. [http]               GET /notifications?cursor&limit (guarded)
-- [ ] 5. [api-docs]           GET /notifications (auth: true)
+- [x] 5. [api-docs]           GET /notifications (auth: true)
 - [ ] 6. [boundary-review]
 
 ## Decisions (defaults — change if wrong)

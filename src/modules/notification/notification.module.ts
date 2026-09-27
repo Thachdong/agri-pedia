@@ -4,6 +4,7 @@ import {
   CreateNotificationUseCase,
   ListMyNotificationsUseCase,
 } from './application/use-cases';
+import './infrastructure/http/notification.api-docs';
 import { NotificationController } from './infrastructure/http/notification.controller';
 import { PgNotificationRepository } from './infrastructure/persistence/pg-notification.repository';
 
