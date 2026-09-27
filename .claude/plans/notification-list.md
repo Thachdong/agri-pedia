@@ -9,7 +9,7 @@ Flow: `GET /notifications?cursor=<opaque>&limit=<1..50, default 20>` + `Authoriz
   → 200 { notifications: [{ id, type, label, content, isRead, referenceId, createdAt }], nextCursor: string | null }
 
 - [x] 1. [domain-model]       notification: error NOTIFICATION_INVALID_CURSOR (VALIDATION)
-- [ ] 2. [use-case]           notification: ListMyNotifications, port INotificationRepository.findByUser(userId, { after?, limit }); cursor encode/decode
+- [x] 2. [use-case]           notification: ListMyNotifications, port INotificationRepository.findByUser(userId, { after?, limit }); cursor encode/decode
 - [ ] 3. [persistence]        notification: PgNotificationRepository.findByUser (keyset) + index (user_id, created_at, id) + migration
 - [ ] 4. [http]               GET /notifications?cursor&limit (guarded)
 - [ ] 5. [api-docs]           GET /notifications (auth: true)

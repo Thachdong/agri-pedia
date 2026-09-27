@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { NOTIFICATION_REPOSITORY } from './application/ports';
-import { CreateNotificationUseCase } from './application/use-cases';
+import {
+  CreateNotificationUseCase,
+  ListMyNotificationsUseCase,
+} from './application/use-cases';
 import { PgNotificationRepository } from './infrastructure/persistence/pg-notification.repository';
 
 @Module({
@@ -8,6 +11,7 @@ import { PgNotificationRepository } from './infrastructure/persistence/pg-notifi
   controllers: [],
   providers: [
     CreateNotificationUseCase,
+    ListMyNotificationsUseCase,
     { provide: NOTIFICATION_REPOSITORY, useClass: PgNotificationRepository },
   ],
   exports: [],
