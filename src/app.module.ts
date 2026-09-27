@@ -10,6 +10,7 @@ import { StorageModule } from '@shared/storage';
 import { SharedHttpModule } from '@shared/http';
 import { MediaModule } from '@modules/media/media.module';
 import { OtpModule } from '@modules/otp/otp.module';
+import { ProductModule } from '@modules/product/product.module';
 import { UserModule } from '@modules/user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -30,6 +31,7 @@ import { AppService } from './app.service';
     UserModule,
     OtpModule,
     MediaModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
