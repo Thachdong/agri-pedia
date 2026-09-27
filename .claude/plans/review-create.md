@@ -21,7 +21,7 @@ Flow: `POST /reviews { targetType: PRODUCT | USER, targetId, content, star: 1..5
 - [x] 5. [use-case]           review: CreateReview, port IReviewRepository.save + existsByAuthorAndTarget
 - [x] 6. [use-case]           notification: CreateNotification, port INotificationRepository.save
 - [x] 7. [persistence]        review: PgReviewRepository; table `reviews` (unique user_id + target_type + target_id)
-- [ ] 8. [persistence]        notification: PgNotificationRepository; table `notifications`
+- [x] 8. [persistence]        notification: PgNotificationRepository; table `notifications`
 - [ ] 9. [integration-event]  CreateReview emits `review.review.created`
 - [ ] 10. [event-handler]     notification: `review.review.created` → CreateNotification (type REVIEW)
 - [ ] 11. [http]              POST /reviews (guarded)
