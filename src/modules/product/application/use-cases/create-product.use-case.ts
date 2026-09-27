@@ -2,6 +2,16 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
+import {
+  PRODUCT_CREATED_EVENT,
+  TProductCreatedEventPayload,
+  TProductCreatedMediaPayload,
+} from '../../contracts';
+import {
   EProductUnit,
   Product,
   ProductCategoryNotFoundException,
@@ -24,6 +34,8 @@ export type TCreateProductInput = {
   categoryId: string;
   quantity: number;
   unit: EProductUnit;
+  /** Files already uploaded to TMP; confirmed asynchronously by the media module. */
+  media: TProductCreatedMediaPayload[];
 };
 export type TCreateProductOutput = { productId: string };
 
@@ -36,6 +48,7 @@ export class CreateProductUseCase {
     private readonly categories: ICategoryRepository,
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
   ) {}
 
   async execute(input: TCreateProductInput): Promise<TCreateProductOutput> {
@@ -60,6 +73,17 @@ export class CreateProductUseCase {
       await this.products.save(created);
       return created;
     });
+
+    await this.eventBus.publish(
+      createIntegrationEvent<
+        typeof PRODUCT_CREATED_EVENT,
+        TProductCreatedEventPayload
+      >(PRODUCT_CREATED_EVENT, {
+        productId: product.id,
+        userId: product.userId,
+        media: input.media,
+      }),
+    );
     return { productId: product.id };
   }
 }
