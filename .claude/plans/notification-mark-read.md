@@ -15,8 +15,8 @@ Flow (notification module, both guarded → 401 without token):
 - [x] 3. [use-case]           notification: MarkAllNotificationsRead, port INotificationRepository.markAllReadByUser
 - [x] 4. [persistence]        notification: PgNotificationRepository.findByIdAndUser, markAllReadByUser (no migration: IDX_notifications_user_created_id covers user_id)
 - [x] 5. [http]               PATCH /notifications/:id/read, PATCH /notifications/read-all (guarded)
-- [ ] 6. [api-docs]           both routes (auth: true)
-- [ ] 7. [boundary-review]
+- [x] 6. [api-docs]           both routes (auth: true)
+- [x] 7. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - Two routes, two use cases (one action each) instead of one route with optional `notificationId` (spec §20 input). Same behaviour, clearer REST. (approved)
