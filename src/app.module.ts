@@ -6,6 +6,7 @@ import { CryptoModule } from '@shared/crypto';
 import { EventBusModule } from '@shared/event-bus';
 import { SharedLoggerModule } from '@shared/logger';
 import { MessagingModule } from '@shared/messaging';
+import { StorageModule } from '@shared/storage';
 import { SharedHttpModule } from '@shared/http';
 import { OtpModule } from '@modules/otp/otp.module';
 import { UserModule } from '@modules/user/user.module';
@@ -22,6 +23,7 @@ import { AppService } from './app.service';
     CryptoModule,
     AccessTokenModule,
     MessagingModule,
+    StorageModule,
     SharedHttpModule,
     // business modules
     UserModule,
