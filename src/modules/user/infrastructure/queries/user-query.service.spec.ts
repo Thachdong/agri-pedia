@@ -62,3 +62,60 @@ describe('UserQueryService.findByIdentifier', () => {
     ).resolves.toBeNull();
   });
 });
+
+describe('UserQueryService.findRoleById', () => {
+  let users: InMemoryUserRepository;
+  let service: UserQueryService;
+
+  beforeEach(() => {
+    users = new InMemoryUserRepository();
+    service = new UserQueryService(users, new InMemoryCryptoService());
+  });
+
+  it('reports a pending distributor as not active', async () => {
+    const user = userWith('hash(0912345678)');
+    await users.save(user);
+    await expect(service.findRoleById(user.id)).resolves.toEqual({
+      userId: user.id,
+      role: 'DISTRIBUTOR',
+      isActive: false,
+    });
+  });
+
+  it('reports an activated distributor as active', async () => {
+    const user = userWith('hash(0912345678)');
+    user.activate();
+    await users.save(user);
+    await expect(service.findRoleById(user.id)).resolves.toMatchObject({
+      isActive: true,
+    });
+  });
+
+  it('returns null for an unknown id', async () => {
+    await expect(service.findRoleById('missing')).resolves.toBeNull();
+  });
+});
+
+describe('UserQueryService.findProfileById', () => {
+  let users: InMemoryUserRepository;
+  let service: UserQueryService;
+
+  beforeEach(() => {
+    users = new InMemoryUserRepository();
+    service = new UserQueryService(users, new InMemoryCryptoService());
+  });
+
+  it('returns the public profile of the user', async () => {
+    const user = userWith('hash(0912345678)');
+    await users.save(user);
+    await expect(service.findProfileById(user.id)).resolves.toEqual({
+      userId: user.id,
+      username: 'shop',
+      role: 'DISTRIBUTOR',
+    });
+  });
+
+  it('returns null for an unknown id', async () => {
+    await expect(service.findProfileById('missing')).resolves.toBeNull();
+  });
+});

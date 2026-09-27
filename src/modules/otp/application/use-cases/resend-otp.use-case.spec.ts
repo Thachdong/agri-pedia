@@ -50,6 +50,8 @@ describe('ResendOtpUseCase', () => {
     crypto.nextDigits = '777111';
     messageSender = new InMemoryMessageSender();
     const userQuery: IUserQueryPort = {
+      findRoleById: async () => null,
+      findProfileById: async () => null,
       findByIdentifier: async (identifier) =>
         identifier === '0912 345 678'
           ? {

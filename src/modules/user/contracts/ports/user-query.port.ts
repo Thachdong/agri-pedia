@@ -10,7 +10,23 @@ export type TUserIdentifierSummary = {
   canLogin: boolean;
 };
 
+export type TUserRoleSummary = {
+  userId: string;
+  role: 'FARMER' | 'DISTRIBUTOR';
+  /** Account status is ACTIVE (a DISTRIBUTOR stays PENDING until activated). */
+  isActive: boolean;
+};
+
+/** Public profile of a user (safe to show to anyone). */
+export type TUserProfileSummary = {
+  userId: string;
+  username: string;
+  role: 'FARMER' | 'DISTRIBUTOR';
+};
+
 export interface IUserQueryPort {
   /** Raw identifier as typed by a client (email or phone, any casing/separators). */
   findByIdentifier(identifier: string): Promise<TUserIdentifierSummary | null>;
+  findRoleById(userId: string): Promise<TUserRoleSummary | null>;
+  findProfileById(userId: string): Promise<TUserProfileSummary | null>;
 }

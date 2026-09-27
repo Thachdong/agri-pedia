@@ -1,7 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import { IUserRepository, USER_REPOSITORY } from '../../application/ports';
-import { IUserQueryPort, TUserIdentifierSummary } from '../../contracts';
+import {
+  IUserQueryPort,
+  TUserIdentifierSummary,
+  TUserProfileSummary,
+  TUserRoleSummary,
+} from '../../contracts';
 import { ELoginType, Identifier } from '../../domain';
 
 @Injectable()
@@ -29,6 +34,20 @@ export class UserQueryService implements IUserQueryPort {
           loginType: user.loginType,
           canLogin: user.canLogin(),
         }
+      : null;
+  }
+
+  async findRoleById(userId: string): Promise<TUserRoleSummary | null> {
+    const user = await this.users.findById(userId);
+    return user
+      ? { userId: user.id, role: user.role, isActive: user.canLogin() }
+      : null;
+  }
+
+  async findProfileById(userId: string): Promise<TUserProfileSummary | null> {
+    const user = await this.users.findById(userId);
+    return user
+      ? { userId: user.id, username: user.username, role: user.role }
       : null;
   }
 }
