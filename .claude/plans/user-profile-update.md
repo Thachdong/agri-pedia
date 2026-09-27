@@ -21,8 +21,8 @@ No migration: users.avatar / users.business_license are already uuid columns (me
 - [x] 5. [integration-event]  UpdateProfile emits `user.profile.updated`
 - [x] 6. [event-handler]      media: `user.profile.updated` → ReplaceMedia (USER_AVATAR, USER_LICENSE)
 - [x] 7. [http]               PATCH /users/me (guarded) → 200 profile body
-- [ ] 8. [api-docs]           PATCH /users/me (auth: true)
-- [ ] 9. [boundary-review]
+- [x] 8. [api-docs]           PATCH /users/me (auth: true)
+- [x] 9. [boundary-review]
 
 ## Decisions (approved)
 1. avatar / license: user module generates the mediaId, stores it at once (user.avatar / user.businessLicense = mediaId); media creates the row with that id via event.

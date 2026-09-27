@@ -16,6 +16,7 @@ import {
 } from './application/use-cases';
 import { USER_QUERY_PORT } from './contracts';
 import './infrastructure/http/auth.api-docs';
+import './infrastructure/http/user.api-docs';
 import { OtpActivationCodeVerifiedHandler } from './infrastructure/handlers/otp-activation-code-verified.handler';
 import { OtpPasswordResetCodeVerifiedHandler } from './infrastructure/handlers/otp-password-reset-code-verified.handler';
 import { AuthController } from './infrastructure/http/auth.controller';
