@@ -24,7 +24,7 @@ Flow: `POST /reviews { targetType: PRODUCT | USER, targetId, content, star: 1..5
 - [x] 8. [persistence]        notification: PgNotificationRepository; table `notifications`
 - [x] 9. [integration-event]  CreateReview emits `review.review.created`
 - [x] 10. [event-handler]     notification: `review.review.created` → CreateNotification (type REVIEW)
-- [ ] 11. [http]              POST /reviews (guarded)
+- [x] 11. [http]              POST /reviews (guarded)
 - [ ] 12. [api-docs]          POST /reviews (auth: true)
 - [ ] 13. [boundary-review]
 
