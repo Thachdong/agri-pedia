@@ -67,8 +67,16 @@ defineApiDocs(AuthController, {
     },
     changePassword: {
       summary: 'Change the password of the caller',
+      description:
+        'Requires the current password. Responds 200 with an empty body. ' +
+        'Every session of the user ends (all refresh tokens revoked); access tokens already issued stay valid until they expire. ' +
+        'A wrong current password returns 400 USER_WRONG_PASSWORD and changes nothing.',
       validation: true,
       auth: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'USER_WRONG_PASSWORD' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' },
+      ],
     },
   },
 });

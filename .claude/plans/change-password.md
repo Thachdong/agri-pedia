@@ -12,8 +12,8 @@ Reuses existing: User.changePassword, IUserRepository, IRefreshTokenRepository, 
 - [x] 1. [domain-model]       user: exception WrongPassword (USER_WRONG_PASSWORD)
 - [x] 2. [use-case]           user: ChangePassword (IUserRepository, IRefreshTokenRepository, existing)
 - [x] 3. [http]               POST /auth/change-password (AuthController, guarded)
-- [ ] 4. [api-docs]           POST /auth/change-password
-- [ ] 5. [boundary-review]
+- [x] 4. [api-docs]           POST /auth/change-password
+- [x] 5. [boundary-review]
 
 ## Decisions (approved)
 1. Wrong oldPassword → WrongPassword exception, EDomainErrorType.VALIDATION → 400 (not 401: client must not read it as expired session).
