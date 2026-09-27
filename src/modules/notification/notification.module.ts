@@ -3,6 +3,7 @@ import { NOTIFICATION_REPOSITORY } from './application/ports';
 import {
   CreateNotificationUseCase,
   ListMyNotificationsUseCase,
+  MarkAllNotificationsReadUseCase,
   MarkNotificationReadUseCase,
 } from './application/use-cases';
 import './infrastructure/http/notification.api-docs';
@@ -16,6 +17,7 @@ import { PgNotificationRepository } from './infrastructure/persistence/pg-notifi
     CreateNotificationUseCase,
     ListMyNotificationsUseCase,
     MarkNotificationReadUseCase,
+    MarkAllNotificationsReadUseCase,
     { provide: NOTIFICATION_REPOSITORY, useClass: PgNotificationRepository },
   ],
   exports: [],

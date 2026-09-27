@@ -35,6 +35,12 @@ export class InMemoryNotificationRepository implements INotificationRepository {
       .slice(0, limit);
   }
 
+  async markAllReadByUser(userId: string): Promise<void> {
+    [...this.items.values()]
+      .filter((notification) => notification.userId === userId)
+      .forEach((notification) => notification.markRead());
+  }
+
   async save(notification: Notification): Promise<void> {
     this.items.set(notification.id, notification);
   }

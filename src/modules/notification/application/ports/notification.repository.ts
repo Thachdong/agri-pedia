@@ -16,6 +16,8 @@ export interface INotificationRepository {
     userId: string,
     query: TNotificationPageQuery,
   ): Promise<Notification[]>;
+  /** Marks every unread notification of the recipient as read, in one write. */
+  markAllReadByUser(userId: string): Promise<void>;
   save(notification: Notification): Promise<void>;
 }
 
