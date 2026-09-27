@@ -61,6 +61,7 @@ describe('CreateReviewUseCase', () => {
       findByIdentifier: async () => null,
       findRoleById: async (id) => roles.get(id) ?? null,
       findProfileById: async () => null,
+      listProfilesByIds: async () => [],
     };
     const productQuery: IProductQueryPort = {
       findOwnerById: async (id) => (product?.productId === id ? product : null),

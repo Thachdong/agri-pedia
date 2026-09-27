@@ -47,6 +47,7 @@ describe('VerifyPasswordResetOtpUseCase', () => {
     const userQuery: IUserQueryPort = {
       findRoleById: async () => null,
       findProfileById: async () => null,
+      listProfilesByIds: async () => [],
       findByIdentifier: async (identifier) =>
         identifier === 'Farmer@Mail.com'
           ? {

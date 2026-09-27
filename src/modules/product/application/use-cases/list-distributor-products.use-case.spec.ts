@@ -53,6 +53,7 @@ describe('ListDistributorProductsUseCase', () => {
       findByIdentifier: async () => null,
       findRoleById: async () => null,
       findProfileById: async () => profile,
+      listProfilesByIds: async () => [],
     };
     const mediaQuery: IMediaQueryPort = {
       findThumbnails: async (_, ownerIds) => {

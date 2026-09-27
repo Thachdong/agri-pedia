@@ -17,8 +17,8 @@ Flow: `GET /reviews?distributorId=<uuid>&targetType=<USER|PRODUCT>?&star=<1..5>?
           nextCursor }
 
 - [x] 1. [domain-model]       review: errors REVIEW_DISTRIBUTOR_NOT_FOUND (NOT_FOUND), REVIEW_INVALID_CURSOR (VALIDATION)
-- [ ] 2. [query-port]         product: IProductQueryPort.listBySeller(sellerId) → [{ productId, name }] (all statuses, deleted included); consumed by review
-- [ ] 3. [query-port]         user: IUserQueryPort.listProfilesByIds(userIds) → [{ userId, username, role }]; consumed by review (findProfileById reused for the distributor check)
+- [x] 2. [query-port]         product: IProductQueryPort.listBySeller(sellerId) → [{ productId, name }] (all statuses, deleted included); consumed by review
+- [x] 3. [query-port]         user: IUserQueryPort.listProfilesByIds(userIds) → [{ userId, username, role }]; consumed by review (findProfileById reused for the distributor check)
 - [ ] 4. [query-port]         media: IMediaQueryPort.findThumbnails ownerType widened to 'PRODUCT' | 'USER_AVATAR'; consumed by review
 - [ ] 5. [use-case]           review: ListDistributorReviews, ports IReviewRepository.findByTargets(targets, { targetType?, star?, after?, limit }) + summarizeByTargets(targets); cursor encode/decode
 - [ ] 6. [persistence]        review: PgReviewRepository.findByTargets (keyset), summarizeByTargets (one aggregate query) + index (target_id, created_at, id) + migration

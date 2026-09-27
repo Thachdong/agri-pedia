@@ -37,6 +37,7 @@ describe('DeleteProductUseCase', () => {
       findByIdentifier: async () => null,
       findRoleById: async () => seller,
       findProfileById: async () => null,
+      listProfilesByIds: async () => [],
     };
     useCase = new DeleteProductUseCase(
       products,

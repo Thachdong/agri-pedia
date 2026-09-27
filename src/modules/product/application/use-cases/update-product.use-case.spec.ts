@@ -47,6 +47,7 @@ describe('UpdateProductUseCase', () => {
       findByIdentifier: async () => null,
       findRoleById: async () => seller,
       findProfileById: async () => null,
+      listProfilesByIds: async () => [],
     };
     useCase = new UpdateProductUseCase(
       products,

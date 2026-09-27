@@ -52,6 +52,7 @@ describe('ResendOtpUseCase', () => {
     const userQuery: IUserQueryPort = {
       findRoleById: async () => null,
       findProfileById: async () => null,
+      listProfilesByIds: async () => [],
       findByIdentifier: async (identifier) =>
         identifier === '0912 345 678'
           ? {
