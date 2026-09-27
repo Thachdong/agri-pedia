@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
+import { GetPresignUrlUseCase } from './application/use-cases';
 
 @Module({
   imports: [],
   controllers: [],
-  providers: [],
+  providers: [GetPresignUrlUseCase],
   exports: [],
 })
 export class MediaModule {}
