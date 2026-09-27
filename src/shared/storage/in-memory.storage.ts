@@ -29,4 +29,8 @@ export class InMemoryFileStorage implements IFileStorage {
     }
     this.files.add(toKey);
   }
+
+  async deleteFile(key: string): Promise<void> {
+    this.files.delete(key);
+  }
 }

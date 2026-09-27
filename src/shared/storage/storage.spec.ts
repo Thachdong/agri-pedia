@@ -66,3 +66,22 @@ describe('InMemoryFileStorage.moveFile', () => {
     ).rejects.toBeInstanceOf(StorageFileNotFoundError);
   });
 });
+
+describe('InMemoryFileStorage.deleteFile', () => {
+  it('removes an existing object', async () => {
+    const storage = new InMemoryFileStorage();
+    storage.files.add('products/p1/a.png');
+
+    await storage.deleteFile('products/p1/a.png');
+
+    expect(storage.files.size).toBe(0);
+  });
+
+  it('is a no-op when the object is missing', async () => {
+    const storage = new InMemoryFileStorage();
+
+    await expect(
+      storage.deleteFile('products/p1/missing.png'),
+    ).resolves.toBeUndefined();
+  });
+});

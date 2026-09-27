@@ -68,4 +68,11 @@ export class FirebaseFileStorage implements IFileStorage {
       throw error;
     }
   }
+
+  async deleteFile(key: string): Promise<void> {
+    await getStorage(this.app)
+      .bucket()
+      .file(key)
+      .delete({ ignoreNotFound: true });
+  }
 }

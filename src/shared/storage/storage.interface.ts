@@ -28,6 +28,8 @@ export interface IFileStorage {
   ): Promise<TPresignedUpload>;
   /** Moves an object inside the bucket; throws StorageFileNotFoundError if `fromKey` is missing. */
   moveFile(fromKey: string, toKey: string): Promise<void>;
+  /** Deletes an object; a missing object is a no-op. */
+  deleteFile(key: string): Promise<void>;
 }
 
 export const FILE_STORAGE = Symbol('FILE_STORAGE');
