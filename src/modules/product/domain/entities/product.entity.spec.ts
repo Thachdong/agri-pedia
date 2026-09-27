@@ -21,6 +21,7 @@ describe('Product.create', () => {
 
     expect(product.id).toEqual(expect.any(String));
     expect(product.status).toBe(EProductStatus.ACTIVE);
+    expect(product.deletedAt).toBeNull();
     expect(product.name).toBe('Phân NPK');
     expect(product.description).toBe('Bao 50kg');
     expect(product).toMatchObject({
@@ -60,6 +61,7 @@ describe('Product.restore', () => {
     const product = Product.restore('p1', {
       ...input,
       status: EProductStatus.OUT_OF_STOCK,
+      deletedAt: null,
     });
 
     expect(product.id).toBe('p1');
@@ -150,5 +152,19 @@ describe('Product.update', () => {
       InvalidProductQuantityException,
     );
     expect(product.quantity).toBe(20);
+  });
+});
+
+describe('Product.delete', () => {
+  it('sets deletedAt and keeps the other fields', () => {
+    const product = Product.create(input);
+    const before = Date.now();
+
+    product.delete();
+
+    expect(product.deletedAt).toBeInstanceOf(Date);
+    expect(product.deletedAt!.getTime()).toBeGreaterThanOrEqual(before);
+    expect(product.status).toBe(EProductStatus.ACTIVE);
+    expect(product.name).toBe('Phân NPK');
   });
 });

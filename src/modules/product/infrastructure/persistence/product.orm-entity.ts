@@ -41,4 +41,8 @@ export class ProductOrmEntity {
 
   @Column({ type: 'varchar', length: 16 })
   status: string;
+
+  /** Soft delete marker; plain column (not @DeleteDateColumn) so filtering stays explicit in the repository. */
+  @Column({ name: 'deleted_at', type: 'timestamptz', nullable: true })
+  deletedAt: Date | null;
 }

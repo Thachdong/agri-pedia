@@ -15,12 +15,16 @@ export type TProductProps = {
   unit: EProductUnit;
   categoryId: string;
   status: EProductStatus;
+  /** Set when the seller deleted the product (soft delete); null while listed. */
+  deletedAt: Date | null;
 };
 
-export type TCreateProductProps = Omit<TProductProps, 'status'>;
+export type TCreateProductProps = Omit<TProductProps, 'status' | 'deletedAt'>;
 
 /** Fields a seller may change; omitted fields are kept. */
-export type TUpdateProductProps = Partial<Omit<TProductProps, 'userId'>>;
+export type TUpdateProductProps = Partial<
+  Omit<TProductProps, 'userId' | 'deletedAt'>
+>;
 
 export class Product extends AggregateRoot {
   private constructor(
@@ -43,6 +47,7 @@ export class Product extends AggregateRoot {
       unit: input.unit,
       categoryId: input.categoryId,
       status: EProductStatus.ACTIVE,
+      deletedAt: null,
     });
   }
 
@@ -79,6 +84,11 @@ export class Product extends AggregateRoot {
       }),
       ...(changes.status !== undefined && { status: changes.status }),
     };
+  }
+
+  /** Soft delete: the row is kept (e.g. for reviews), the product is no longer listed. */
+  delete(): void {
+    this.props = { ...this.props, deletedAt: new Date() };
   }
 
   private static assertValidPrice(price: number): void {
@@ -123,5 +133,9 @@ export class Product extends AggregateRoot {
 
   get status(): EProductStatus {
     return this.props.status;
+  }
+
+  get deletedAt(): Date | null {
+    return this.props.deletedAt;
   }
 }
