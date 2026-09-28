@@ -10,13 +10,14 @@ import {
   ListMyChatRoomsUseCase,
   SendChatMessageUseCase,
 } from './application/use-cases';
+import { ChatController } from './infrastructure/http/chat.controller';
 import { PgChatMessageRepository } from './infrastructure/persistence/pg-chat-message.repository';
 import { PgChatRoomRepository } from './infrastructure/persistence/pg-chat-room.repository';
 import { ChatGateway } from './infrastructure/realtime/chat.gateway';
 
 @Module({
   imports: [UserModule],
-  controllers: [],
+  controllers: [ChatController],
   providers: [
     SendChatMessageUseCase,
     ListMyChatRoomsUseCase,
