@@ -18,8 +18,8 @@ Flow: `PATCH /reviews/:reviewId { content?, star?: 1..5 }` + `Authorization: Bea
 - [x] 4. [integration-event]  UpdateReview emits `review.review.updated`
 - [x] 5. [event-handler]      notification: `review.review.updated` → CreateNotification (type REVIEW)
 - [x] 6. [http]               PATCH /reviews/:reviewId (guarded) → 200 null body
-- [ ] 7. [api-docs]           PATCH /reviews/:reviewId (auth: true)
-- [ ] 8. [boundary-review]
+- [x] 7. [api-docs]           PATCH /reviews/:reviewId (auth: true)
+- [x] 8. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - Reviewer must still be ACTIVE FARMER (same check as create; locked farmer cannot edit).

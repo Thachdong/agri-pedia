@@ -51,6 +51,25 @@ defineApiDocs(ReviewController, {
     },
     update: {
       summary: 'Edit own review (ACTIVE farmer only)',
+      description:
+        'Caller must be a FARMER whose account is ACTIVE, otherwise 403 `REVIEW_REVIEWER_NOT_ALLOWED`. ' +
+        'Only the author may edit the review (else 403 `REVIEW_NOT_OWNER`). Works for shop (USER) and ' +
+        'product (PRODUCT) reviews; the target is not re-checked. Omitted fields keep their value; `null` ' +
+        'is rejected. `star` integer 1..5; `content` 1..1000 characters after trimming. Empty body → 200, ' +
+        'nothing changes. On change the distributor (the shop itself, or the seller of the product) gets a ' +
+        'REVIEW notification with `referenceId` = `reviewId` (none if the product was deleted). Response body is null.',
+      validation: true,
+      auth: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'REVIEW_INVALID_STAR' },
+        { type: EDomainErrorType.VALIDATION, code: 'REVIEW_INVALID_CONTENT' },
+        {
+          type: EDomainErrorType.FORBIDDEN,
+          code: 'REVIEW_REVIEWER_NOT_ALLOWED',
+        },
+        { type: EDomainErrorType.FORBIDDEN, code: 'REVIEW_NOT_OWNER' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'REVIEW_NOT_FOUND' },
+      ],
     },
   },
 });
