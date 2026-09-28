@@ -6,5 +6,7 @@ export * from './exceptions/invalid-review-star.exception';
 export * from './exceptions/invalid-review-target.exception';
 export * from './exceptions/review-already-exists.exception';
 export * from './exceptions/review-distributor-not-found.exception';
+export * from './exceptions/review-not-found.exception';
+export * from './exceptions/review-not-owner.exception';
 export * from './exceptions/review-reviewer-not-allowed.exception';
 export * from './exceptions/review-target-not-found.exception';

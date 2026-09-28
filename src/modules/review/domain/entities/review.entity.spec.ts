@@ -1,6 +1,7 @@
 import { EReviewTargetType } from '../enums/review-target-type.enum';
 import { InvalidReviewContentException } from '../exceptions/invalid-review-content.exception';
 import { InvalidReviewStarException } from '../exceptions/invalid-review-star.exception';
+import { ReviewNotOwnerException } from '../exceptions/review-not-owner.exception';
 import {
   REVIEW_CONTENT_MAX_LENGTH,
   Review,
@@ -69,4 +70,55 @@ describe('Review.restore', () => {
     expect(review.id).toBe('r1');
     expect(review.createdAt).toBe(createdAt);
   });
+});
+
+describe('Review.assertOwnedBy', () => {
+  it('passes for the author', () => {
+    expect(() => Review.create(input).assertOwnedBy('farmer-1')).not.toThrow();
+  });
+
+  it('rejects another user', () => {
+    expect(() => Review.create(input).assertOwnedBy('farmer-2')).toThrow(
+      ReviewNotOwnerException,
+    );
+  });
+});
+
+describe('Review.update', () => {
+  it('changes content (trimmed) and star', () => {
+    const review = Review.create(input);
+
+    review.update({ content: '  Tạm ổn  ', star: 3 });
+
+    expect(review.content).toBe('Tạm ổn');
+    expect(review.star).toBe(3);
+  });
+
+  it('keeps omitted fields', () => {
+    const review = Review.create(input);
+
+    review.update({ star: 2 });
+
+    expect(review.content).toBe('Phân tốt, giao nhanh');
+    expect(review.star).toBe(2);
+  });
+
+  it.each([0, 6, 2.5])('rejects star %p', (star) => {
+    const review = Review.create(input);
+
+    expect(() => review.update({ star })).toThrow(InvalidReviewStarException);
+    expect(review.star).toBe(5);
+  });
+
+  it.each(['   ', 'a'.repeat(REVIEW_CONTENT_MAX_LENGTH + 1)])(
+    'rejects content of length %#',
+    (content) => {
+      const review = Review.create(input);
+
+      expect(() => review.update({ content })).toThrow(
+        InvalidReviewContentException,
+      );
+      expect(review.content).toBe('Phân tốt, giao nhanh');
+    },
+  );
 });

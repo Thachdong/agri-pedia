@@ -3,6 +3,7 @@ import { AggregateRoot } from '@shared/domain';
 import { EReviewTargetType } from '../enums/review-target-type.enum';
 import { InvalidReviewContentException } from '../exceptions/invalid-review-content.exception';
 import { InvalidReviewStarException } from '../exceptions/invalid-review-star.exception';
+import { ReviewNotOwnerException } from '../exceptions/review-not-owner.exception';
 
 export const REVIEW_CONTENT_MAX_LENGTH = 1000;
 
@@ -18,6 +19,10 @@ export type TReviewProps = {
 
 export type TCreateReviewProps = Omit<TReviewProps, 'createdAt'>;
 
+export type TUpdateReviewProps = Partial<
+  Pick<TReviewProps, 'content' | 'star'>
+>;
+
 export class Review extends AggregateRoot {
   private constructor(
     id: string,
@@ -28,15 +33,11 @@ export class Review extends AggregateRoot {
 
   static create(input: TCreateReviewProps): Review {
     Review.assertValidStar(input.star);
-    const content = input.content.trim();
-    if (content.length === 0 || content.length > REVIEW_CONTENT_MAX_LENGTH) {
-      throw new InvalidReviewContentException(REVIEW_CONTENT_MAX_LENGTH);
-    }
     return new Review(randomUUID(), {
       userId: input.userId,
       targetType: input.targetType,
       targetId: input.targetId,
-      content,
+      content: Review.normalizeContent(input.content),
       star: input.star,
       createdAt: new Date(),
     });
@@ -50,6 +51,36 @@ export class Review extends AggregateRoot {
     if (!Number.isInteger(star) || star < 1 || star > 5) {
       throw new InvalidReviewStarException(star);
     }
+  }
+
+  private static normalizeContent(raw: string): string {
+    const content = raw.trim();
+    if (content.length === 0 || content.length > REVIEW_CONTENT_MAX_LENGTH) {
+      throw new InvalidReviewContentException(REVIEW_CONTENT_MAX_LENGTH);
+    }
+    return content;
+  }
+
+  assertOwnedBy(userId: string): void {
+    if (this.props.userId !== userId) {
+      throw new ReviewNotOwnerException(this.id, userId);
+    }
+  }
+
+  /** Applies the given changes; validates star/content like create. */
+  update(changes: TUpdateReviewProps): void {
+    if (changes.star !== undefined) {
+      Review.assertValidStar(changes.star);
+    }
+    const content =
+      changes.content !== undefined
+        ? Review.normalizeContent(changes.content)
+        : undefined;
+    this.props = {
+      ...this.props,
+      ...(content !== undefined && { content }),
+      ...(changes.star !== undefined && { star: changes.star }),
+    };
   }
 
   get userId(): string {
