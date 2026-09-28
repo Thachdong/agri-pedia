@@ -1,7 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
-import { IRealtimePublisher, REALTIME_PUBLISHER } from '@shared/realtime';
+import {
+  IRealtimeChannels,
+  IRealtimePublisher,
+  REALTIME_CHANNELS,
+  REALTIME_PUBLISHER,
+} from '@shared/realtime';
 import {
   ChatMessage,
   ChatReceiverNotFoundException,
@@ -11,6 +16,7 @@ import {
   ChatSenderNotAllowedException,
   InvalidChatReceiverException,
 } from '../../domain';
+import { chatRoomChannel } from '../chat-room-channel';
 import {
   CHAT_MESSAGE_REPOSITORY,
   IChatMessageRepository,
@@ -46,7 +52,10 @@ export type TSendChatMessageOutput = {
   createdAt: Date;
 };
 
-/** An ACTIVE user messages the other member of a FARMER <-> DISTRIBUTOR room, then pushes it to them in realtime. */
+/**
+ * An ACTIVE user messages the other member of a FARMER <-> DISTRIBUTOR room, then pushes it to them in realtime.
+ * The message is read by the receiver right away if they have the room open (entered), unread otherwise.
+ */
 @Injectable()
 export class SendChatMessageUseCase {
   constructor(
@@ -56,6 +65,7 @@ export class SendChatMessageUseCase {
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
     @Inject(REALTIME_PUBLISHER) private readonly realtime: IRealtimePublisher,
+    @Inject(REALTIME_CHANNELS) private readonly channels: IRealtimeChannels,
   ) {}
 
   async execute(input: TSendChatMessageInput): Promise<TSendChatMessageOutput> {
@@ -78,6 +88,13 @@ export class SendChatMessageUseCase {
           message: input.message,
         });
         await this.messages.save(message);
+        room.recordMessage(message);
+        if (
+          await this.channels.hasUser(chatRoomChannel(room.id), otherMemberId)
+        ) {
+          room.markReadBy(otherMemberId, message.createdAt);
+        }
+        await this.rooms.save(room);
         return { room, message, otherMemberId };
       });
 

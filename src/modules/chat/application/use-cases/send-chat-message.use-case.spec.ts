@@ -1,6 +1,9 @@
 import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
 import { InMemoryUnitOfWork } from '@shared/database';
-import { InMemoryRealtimePublisher } from '@shared/realtime';
+import {
+  InMemoryRealtimeChannels,
+  InMemoryRealtimePublisher,
+} from '@shared/realtime';
 import {
   ChatNotRoomMemberException,
   ChatReceiverNotFoundException,
@@ -11,6 +14,7 @@ import {
   InvalidChatMessageException,
   InvalidChatReceiverException,
 } from '../../domain';
+import { chatRoomChannel } from '../chat-room-channel';
 import {
   InMemoryChatMessageRepository,
   InMemoryChatRoomRepository,
@@ -30,6 +34,7 @@ describe('SendChatMessageUseCase', () => {
   let rooms: InMemoryChatRoomRepository;
   let messages: InMemoryChatMessageRepository;
   let realtime: InMemoryRealtimePublisher;
+  let channels: InMemoryRealtimeChannels;
   let roles: Map<string, TUserRoleSummary>;
   let useCase: SendChatMessageUseCase;
 
@@ -37,6 +42,7 @@ describe('SendChatMessageUseCase', () => {
     rooms = new InMemoryChatRoomRepository();
     messages = new InMemoryChatMessageRepository();
     realtime = new InMemoryRealtimePublisher();
+    channels = new InMemoryRealtimeChannels();
     roles = new Map([
       summary('farmer-1', 'FARMER'),
       summary('farmer-2', 'FARMER'),
@@ -55,6 +61,7 @@ describe('SendChatMessageUseCase', () => {
       userQuery,
       new InMemoryUnitOfWork(),
       realtime,
+      channels,
     );
   });
 
@@ -94,6 +101,47 @@ describe('SendChatMessageUseCase', () => {
         },
       },
     ]);
+  });
+
+  it('records the message on the room: last message, read by sender, unread by receiver', async () => {
+    const output = await useCase.execute({
+      senderId: 'farmer-1',
+      receiverId: 'distributor-1',
+      message: 'Hi',
+    });
+
+    const room = rooms.items.get(output.roomId)!;
+    expect(room.lastMessageAt).toBe(output.createdAt);
+    expect(room.lastReadAtOf('farmer-1')).toBe(output.createdAt);
+    expect(room.lastReadAtOf('distributor-1')).toBeNull();
+  });
+
+  it('marks the message read by the receiver when they have the room open', async () => {
+    const room = seedRoom();
+    channels.connect('conn-1', 'distributor-1');
+    channels.join('conn-1', chatRoomChannel(room.id));
+
+    const output = await useCase.execute({
+      senderId: 'farmer-1',
+      roomId: room.id,
+      message: 'Hi',
+    });
+
+    expect(room.lastReadAtOf('distributor-1')).toBe(output.createdAt);
+  });
+
+  it('leaves it unread when the receiver only has another room open', async () => {
+    const room = seedRoom();
+    channels.connect('conn-1', 'distributor-1');
+    channels.join('conn-1', chatRoomChannel('other-room'));
+
+    await useCase.execute({
+      senderId: 'farmer-1',
+      roomId: room.id,
+      message: 'Hi',
+    });
+
+    expect(room.lastReadAtOf('distributor-1')).toBeNull();
   });
 
   it('reuses the room of the pair whoever opened it', async () => {

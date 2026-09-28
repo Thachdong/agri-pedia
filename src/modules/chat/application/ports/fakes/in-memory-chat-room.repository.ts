@@ -34,4 +34,8 @@ export class InMemoryChatRoomRepository implements IChatRoomRepository {
     this.items.set(room.id, room);
     return room;
   }
+
+  async save(room: ChatRoom): Promise<void> {
+    this.items.set(room.id, room);
+  }
 }
