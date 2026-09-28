@@ -27,7 +27,7 @@ Change to existing flow — SendChatMessage (in transaction):
 - [x] 1. [shared-wrapper]     realtime (change): channel presence — IRealtimeChannels (REALTIME_CHANNELS): join(connectionId, channel), leave(connectionId, channel), hasUser(channel, userId); @SocketConnectionId() for gateways
 - [x] 2. [domain-model]       ChatRoom: lastMessageAt, per-member lastReadAt (null = never read); recordMessage(message), markReadBy(userId, at), lastReadAtOf(userId); error CHAT_INVALID_CURSOR (VALIDATION)
 - [x] 3. [use-case]           SendChatMessage (change): record message on room, mark receiver read if present in room channel, IChatRoomRepository.save(room)
-- [ ] 4. [use-case]           ListMyChatRooms, ports IChatRoomRepository.findPageByMember(userId, { after, limit }) → room summaries + countUnreadByMember(userId)
+- [x] 4. [use-case]           ListMyChatRooms, ports IChatRoomRepository.findPageByMember(userId, { after, limit }) → room summaries + countUnreadByMember(userId)
 - [ ] 5. [use-case]           EnterChatRoom (member check, join channel, mark read now, save) + LeaveChatRoom (leave channel)
 - [ ] 6. [persistence]        chat_rooms add last_message_at, first_user_last_read_at, second_user_last_read_at (backfill last_message_at from messages); indexes rooms by member + last_message_at, chat_messages (room_id, created_at); implement new repo methods
 - [ ] 7. [http]               GET /chat/rooms (guarded)
