@@ -10,9 +10,9 @@ Flow: FARMER `POST /reviews` (hoặc `PATCH /reviews/:reviewId`)
   → DISTRIBUTOR đang kết nối socket (bất kỳ thiết bị nào) nhận event; offline thì bỏ qua (vẫn thấy qua GET /notifications)
 
 - [x] 1. [use-case]           CreateNotification (sửa): sau commit push `notification.created` tới người nhận qua IRealtimePublisher (đã có trong @shared/realtime)
-- [ ] 2. [http]               e2e socket: FARMER review DISTRIBUTOR (tạo + sửa review) → DISTRIBUTOR online nhận `notification.created`; user khác không nhận (không có endpoint mới)
-- [ ] 3. [api-docs]           GET /notifications: bổ sung description về event realtime `notification.created`
-- [ ] 4. [boundary-review]
+- [x] 2. [http]               e2e socket: FARMER review DISTRIBUTOR (tạo + sửa review) → DISTRIBUTOR online nhận `notification.created`; user khác không nhận (không có endpoint mới)
+- [x] 3. [api-docs]           GET /notifications: bổ sung description về event realtime `notification.created`
+- [x] 4. [boundary-review]
 
 ## Quyết định (mặc định — sửa nếu sai)
 - Push nằm trong CreateNotification ⇒ mọi loại notification (REVIEW, PLATFORM, sau này) đều được push, không riêng review.
