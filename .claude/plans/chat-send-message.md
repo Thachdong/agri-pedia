@@ -20,8 +20,8 @@ Flow: socket.io connect `auth: { token: <accessToken> }` (handshake verified by 
 - [x] 3. [domain-model]       ChatRoom (two distinct members, otherMember — throws CHAT_NOT_ROOM_MEMBER), ChatMessage (message trimmed 1..2000); errors CHAT_INVALID_MESSAGE, CHAT_ROOM_OR_RECEIVER_REQUIRED, CHAT_SENDER_NOT_ALLOWED (FORBIDDEN), CHAT_ROOM_NOT_FOUND (NOT_FOUND), CHAT_NOT_ROOM_MEMBER (FORBIDDEN), CHAT_RECEIVER_NOT_FOUND (NOT_FOUND), CHAT_INVALID_RECEIVER
 - [x] 4. [use-case]           SendChatMessage, ports IChatRoomRepository (findById, findByMembers, saveIfAbsent) + IChatMessageRepository (save); uses IUserQueryPort.findRoleById (exists) + IRealtimePublisher
 - [x] 5. [persistence]        PgChatRoomRepository, PgChatMessageRepository; tables `chat_rooms` (unique pair regardless of order), `chat_messages` (no extra index — added by §17 get messages)
-- [ ] 6. [http]               WS gateway (namespace `/chat`): `chat.message.send` (ack) — inbound adapter, e2e with socket.io-client
-- [ ] 7. [boundary-review]
+- [x] 6. [http]               WS gateway (default namespace, infrastructure/realtime/): `chat.message.send` (ack) — inbound adapter, e2e with socket.io-client
+- [x] 7. [boundary-review]
 
 No [api-docs] step: Swagger does not describe websocket events. Event contract documented in gateway file comment.
 No integration event: realtime push stays inside chat module via shared IRealtimePublisher (no other module reacts).
