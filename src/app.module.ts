@@ -15,6 +15,7 @@ import { ProductModule } from '@modules/product/product.module';
 import { ReviewModule } from '@modules/review/review.module';
 import { NotificationModule } from '@modules/notification/notification.module';
 import { UserModule } from '@modules/user/user.module';
+import { ChatModule } from '@modules/chat/chat.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -38,6 +39,7 @@ import { AppService } from './app.service';
     ProductModule,
     ReviewModule,
     NotificationModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

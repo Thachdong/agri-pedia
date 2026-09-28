@@ -16,7 +16,7 @@ Flow: socket.io connect `auth: { token: <accessToken> }` (handshake verified by 
   → ack { messageId, roomId, createdAt }  (errors → ack { error: { code, message } })
 
 - [x] 1. [shared-wrapper]     `realtime`: wrap @nestjs/websockets + socket.io — handshake auth via access token, per-user socket room, IRealtimePublisher (REALTIME_PUBLISHER).emitToUser; WS DomainException filter + validation for inbound gateways
-- [ ] 2. [module-scaffold]    module `chat`
+- [x] 2. [module-scaffold]    module `chat`
 - [ ] 3. [domain-model]       ChatRoom (two distinct members, isMember, otherMember), ChatMessage (message trimmed 1..2000); errors CHAT_INVALID_MESSAGE, CHAT_ROOM_OR_RECEIVER_REQUIRED, CHAT_SENDER_NOT_ALLOWED (FORBIDDEN), CHAT_ROOM_NOT_FOUND (NOT_FOUND), CHAT_NOT_ROOM_MEMBER (FORBIDDEN), CHAT_RECEIVER_NOT_FOUND (NOT_FOUND), CHAT_INVALID_RECEIVER
 - [ ] 4. [use-case]           SendChatMessage, ports IChatRoomRepository (findById, findByMembers, save) + IChatMessageRepository (save); uses IUserQueryPort.findRoleById (exists) + IRealtimePublisher
 - [ ] 5. [persistence]        PgChatRoomRepository, PgChatMessageRepository; tables `chat_rooms` (unique pair regardless of order), `chat_messages` (index room_id + created_at)
