@@ -16,7 +16,7 @@ Flow B — open window: socket emits `chat.room.enter { roomId }` (ack)
   → chat.EnterChatRoom({ userId, roomId, connectionId })
   (missing → CHAT_ROOM_NOT_FOUND; not member → CHAT_NOT_ROOM_MEMBER;
    connection joins presence channel of the room, then my marker = now)
-  → ack null
+  → ack { roomId } (socket.io only acks a non-null result)
 Flow C — close window: socket emits `chat.room.leave { roomId }` (ack) → chat.LeaveChatRoom → connection leaves channel. Socket disconnect leaves all channels automatically.
 
 Change to existing flow — SendChatMessage (in transaction):
@@ -32,8 +32,8 @@ Change to existing flow — SendChatMessage (in transaction):
 - [x] 6. [persistence]        chat_rooms add last_message_at, first_user_last_read_at, second_user_last_read_at (backfill last_message_at from messages); indexes rooms by member + last_message_at, chat_messages (room_id, created_at); implement new repo methods; save() writes timestamps with GREATEST(stored, new) so concurrent Send/Enter never lose a newer value
 - [x] 7. [http]               GET /chat/rooms (guarded)
 - [x] 8. [api-docs]           GET /chat/rooms (auth: true)
-- [ ] 9. [http]               ChatGateway: `chat.room.enter`, `chat.room.leave` (ack), e2e incl. "receiver in room → unreadCount 0", "receiver not in room / disconnected → counted"
-- [ ] 10. [boundary-review]
+- [x] 9. [http]               ChatGateway: `chat.room.enter`, `chat.room.leave` (ack), e2e incl. "receiver in room → unreadCount 0", "receiver not in room / disconnected → counted"
+- [x] 10. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - "Viewing" = at least one of the receiver's connections entered the room and has not left/disconnected (multi-device: any one counts).
