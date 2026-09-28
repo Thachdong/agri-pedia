@@ -7,6 +7,7 @@ import { EventBusModule } from '@shared/event-bus';
 import { SharedLoggerModule } from '@shared/logger';
 import { MessagingModule } from '@shared/messaging';
 import { StorageModule } from '@shared/storage';
+import { RealtimeModule } from '@shared/realtime';
 import { SharedHttpModule } from '@shared/http';
 import { MediaModule } from '@modules/media/media.module';
 import { OtpModule } from '@modules/otp/otp.module';
@@ -28,6 +29,7 @@ import { AppService } from './app.service';
     AccessTokenModule,
     MessagingModule,
     StorageModule,
+    RealtimeModule,
     SharedHttpModule,
     // business modules
     UserModule,
