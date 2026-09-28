@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
+/** Last message of a room and unread counts (messages after a read marker). */
+@Index('IDX_chat_messages_room_created', ['roomId', 'createdAt'])
 @Entity({ name: 'chat_messages' })
 export class ChatMessageOrmEntity {
   @PrimaryColumn('uuid')

@@ -7,6 +7,9 @@ export class ChatRoomMapper {
       firstUserId: row.firstUserId,
       secondUserId: row.secondUserId,
       createdAt: row.createdAt,
+      lastMessageAt: row.lastMessageAt,
+      firstUserLastReadAt: row.firstUserLastReadAt,
+      secondUserLastReadAt: row.secondUserLastReadAt,
     });
   }
 
@@ -16,6 +19,9 @@ export class ChatRoomMapper {
       firstUserId: room.firstUserId,
       secondUserId: room.secondUserId,
       createdAt: room.createdAt,
+      lastMessageAt: room.lastMessageAt,
+      firstUserLastReadAt: room.firstUserLastReadAt,
+      secondUserLastReadAt: room.secondUserLastReadAt,
     });
   }
 }
