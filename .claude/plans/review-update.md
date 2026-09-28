@@ -13,7 +13,7 @@ Flow: `PATCH /reviews/:reviewId { content?, star?: 1..5 }` + `Authorization: Bea
   → 200 (null body)
 
 - [x] 1. [domain-model]       review: Review.update({ content?, star? }) reusing invariants, Review.assertOwnedBy(userId); errors REVIEW_NOT_FOUND (NOT_FOUND), REVIEW_NOT_OWNER (FORBIDDEN)
-- [ ] 2. [use-case]           review: UpdateReview, port IReviewRepository.findById (+ existing save, IUserQueryPort.findRoleById, IProductQueryPort.findOwnerById)
+- [x] 2. [use-case]           review: UpdateReview, port IReviewRepository.findById (+ existing save, IUserQueryPort.findRoleById, IProductQueryPort.findOwnerById)
 - [ ] 3. [persistence]        review: PgReviewRepository.findById (no migration)
 - [ ] 4. [integration-event]  UpdateReview emits `review.review.updated`
 - [ ] 5. [event-handler]      notification: `review.review.updated` → CreateNotification (type REVIEW)

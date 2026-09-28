@@ -17,6 +17,10 @@ const isOfTargets = (review: Review, targets: TReviewTargets) =>
 export class InMemoryReviewRepository implements IReviewRepository {
   readonly items = new Map<string, Review>();
 
+  async findById(id: string): Promise<Review | null> {
+    return this.items.get(id) ?? null;
+  }
+
   async existsByAuthorAndTarget(
     userId: string,
     targetType: EReviewTargetType,

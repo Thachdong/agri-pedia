@@ -22,6 +22,7 @@ export type TReviewPageQuery = {
 export type TReviewStarCounts = Record<1 | 2 | 3 | 4 | 5, number>;
 
 export interface IReviewRepository {
+  findById(id: string): Promise<Review | null>;
   /** True when `userId` already reviewed this target. */
   existsByAuthorAndTarget(
     userId: string,

@@ -6,6 +6,7 @@ import { REVIEW_REPOSITORY } from './application/ports';
 import {
   CreateReviewUseCase,
   ListDistributorReviewsUseCase,
+  UpdateReviewUseCase,
 } from './application/use-cases';
 import './infrastructure/http/review.api-docs';
 import { ReviewController } from './infrastructure/http/review.controller';
@@ -17,6 +18,7 @@ import { PgReviewRepository } from './infrastructure/persistence/pg-review.repos
   providers: [
     CreateReviewUseCase,
     ListDistributorReviewsUseCase,
+    UpdateReviewUseCase,
     { provide: REVIEW_REPOSITORY, useClass: PgReviewRepository },
   ],
   exports: [],
