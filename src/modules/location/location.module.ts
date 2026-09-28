@@ -4,11 +4,12 @@ import {
   ListProvincesUseCase,
   ListWardsByProvinceUseCase,
 } from './application/use-cases';
+import { LocationController } from './infrastructure/http/location.controller';
 import { PgLocationRepository } from './infrastructure/persistence/pg-location.repository';
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [LocationController],
   providers: [
     ListProvincesUseCase,
     ListWardsByProvinceUseCase,
