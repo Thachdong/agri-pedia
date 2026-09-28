@@ -9,6 +9,7 @@ import {
 import './infrastructure/http/notification.api-docs';
 import { NotificationController } from './infrastructure/http/notification.controller';
 import { ReviewCreatedHandler } from './infrastructure/handlers/review-created.handler';
+import { ReviewUpdatedHandler } from './infrastructure/handlers/review-updated.handler';
 import { PgNotificationRepository } from './infrastructure/persistence/pg-notification.repository';
 
 @Module({
@@ -20,6 +21,7 @@ import { PgNotificationRepository } from './infrastructure/persistence/pg-notifi
     MarkNotificationReadUseCase,
     MarkAllNotificationsReadUseCase,
     ReviewCreatedHandler,
+    ReviewUpdatedHandler,
     { provide: NOTIFICATION_REPOSITORY, useClass: PgNotificationRepository },
   ],
   exports: [],
