@@ -12,7 +12,7 @@ import {
   InvalidAccessTokenException,
   TAccessTokenPayload,
 } from '@shared/access-token';
-import { IRealtimePublisher } from './realtime.interface';
+import { IRealtimeChannels, IRealtimePublisher } from './realtime.interface';
 
 export type TAuthenticatedSocketData = { auth?: TAccessTokenPayload };
 
@@ -20,17 +20,21 @@ const BEARER = /^Bearer\s+(\S+)$/i;
 
 const userRoom = (userId: string) => `user:${userId}`;
 
+const channelRoom = (channel: string) => `channel:${channel}`;
+
 /**
  * Owns the socket.io server: rejects handshakes without a valid access token
  * (`auth.token`, or `Authorization: Bearer` header) and puts every connection
- * in its user's room so events can target a user.
+ * in its user's room so events can target a user. Channels are socket.io
+ * rooms too, so disconnecting leaves them.
  */
 @WebSocketGateway()
 export class SocketIoRealtimeGateway
   implements
     OnGatewayInit<Server>,
     OnGatewayConnection<Socket>,
-    IRealtimePublisher
+    IRealtimePublisher,
+    IRealtimeChannels
 {
   @WebSocketServer()
   private server?: Server;
@@ -65,6 +69,25 @@ export class SocketIoRealtimeGateway
 
   emitToUser(userId: string, event: string, payload: unknown): void {
     this.server?.to(userRoom(userId)).emit(event, payload);
+  }
+
+  join(connectionId: string, channel: string): void {
+    this.server?.in(connectionId).socketsJoin(channelRoom(channel));
+  }
+
+  leave(connectionId: string, channel: string): void {
+    this.server?.in(connectionId).socketsLeave(channelRoom(channel));
+  }
+
+  async hasUser(channel: string, userId: string): Promise<boolean> {
+    if (!this.server) {
+      return false;
+    }
+    const sockets = await this.server.in(channelRoom(channel)).fetchSockets();
+    return sockets.some(
+      (socket) =>
+        (socket.data as TAuthenticatedSocketData).auth?.userId === userId,
+    );
   }
 
   private async authenticate(

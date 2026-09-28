@@ -33,7 +33,7 @@ src/
 │   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign/verify access tokens; AccessTokenGuard + @CurrentUser() for protected routes
 │   ├── messaging/           # IMessageSender (MESSAGE_SENDER): email/SMS; currently log-only adapter
 │   ├── storage/             # wraps firebase-admin -> IFileStorage (FILE_STORAGE): presigned upload URLs, signed download URLs, move/delete objects (Firebase Storage / GCS)
-│   ├── realtime/            # wraps @nestjs/websockets + socket.io -> IRealtimePublisher (REALTIME_PUBLISHER): emitToUser; handshake auth by access token; @RealtimeGateway() + @SocketUser() for inbound gateways (errors/validation answered via ack)
+│   ├── realtime/            # wraps @nestjs/websockets + socket.io -> IRealtimePublisher (REALTIME_PUBLISHER): emitToUser; IRealtimeChannels (REALTIME_CHANNELS): join/leave/hasUser presence channels; handshake auth by access token; @RealtimeGateway() + @SocketUser() + @SocketConnectionId() for inbound gateways (errors/validation answered via ack)
 │   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean)
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
 │   └── http/                # global ValidationPipe + DomainExceptionFilter
