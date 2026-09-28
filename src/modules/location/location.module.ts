@@ -4,6 +4,7 @@ import {
   ListProvincesUseCase,
   ListWardsByProvinceUseCase,
 } from './application/use-cases';
+import './infrastructure/http/location.api-docs';
 import { LocationController } from './infrastructure/http/location.controller';
 import { PgLocationRepository } from './infrastructure/persistence/pg-location.repository';
 

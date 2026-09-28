@@ -17,8 +17,8 @@ Flow B: `GET /provinces/:provinceCode/wards` (không cần login)
 - [x] 4. [use-case]           ListWardsByProvince, port ILocationRepository.provinceExists(code) + listWardsByProvince(code)
 - [x] 5. [persistence]        PgLocationRepository; bảng `provinces`, `wards` (FK wards → provinces, cùng module); migration tạo bảng + migration seed từ province-data.json (ward trùng codename trong cùng tỉnh: bản xuất hiện sau thêm hậu tố `_2`, `_3`...; khóa wards = (province_codename, codename))
 - [x] 6. [http]               GET /provinces, GET /provinces/:provinceCode/wards (public), e2e
-- [ ] 7. [api-docs]           GET /provinces, GET /provinces/:provinceCode/wards
-- [ ] 8. [boundary-review]
+- [x] 7. [api-docs]           GET /provinces, GET /provinces/:provinceCode/wards
+- [x] 8. [boundary-review]
 
 ## Quyết định (mặc định — sửa nếu sai)
 - Định danh dùng `codename` (vd. `ha_noi`, `phuong_ba_dinh`) — ổn định, dễ đọc; không sinh uuid.
