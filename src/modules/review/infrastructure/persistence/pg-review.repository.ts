@@ -32,6 +32,11 @@ export class PgReviewRepository
     super(dataSource, ReviewOrmEntity);
   }
 
+  async findById(id: string): Promise<Review | null> {
+    const row = await this.repository.findOneBy({ id });
+    return row ? ReviewMapper.toDomain(row) : null;
+  }
+
   async existsByAuthorAndTarget(
     userId: string,
     targetType: EReviewTargetType,

@@ -1,5 +1,11 @@
+import {
+  IProductQueryPort,
+  TProductOwnerSummary,
+} from '@modules/product/contracts';
 import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
+import { REVIEW_UPDATED_EVENT } from '../../contracts';
 import {
   EReviewTargetType,
   InvalidReviewStarException,
@@ -15,6 +21,8 @@ describe('UpdateReviewUseCase', () => {
   let reviews: InMemoryReviewRepository;
   let roles: Map<string, TUserRoleSummary>;
   let review: Review;
+  let product: TProductOwnerSummary | null;
+  let eventBus: InMemoryEventBus;
   let useCase: UpdateReviewUseCase;
 
   beforeEach(async () => {
@@ -37,10 +45,22 @@ describe('UpdateReviewUseCase', () => {
       findProfileById: async () => null,
       listProfilesByIds: async () => [],
     };
+    product = {
+      productId: 'product-1',
+      userId: 'distributor-1',
+      isActive: false,
+    };
+    const productQuery: IProductQueryPort = {
+      findOwnerById: async (id) => (product?.productId === id ? product : null),
+      listBySeller: async () => [],
+    };
+    eventBus = new InMemoryEventBus();
     useCase = new UpdateReviewUseCase(
       reviews,
       userQuery,
+      productQuery,
       new InMemoryUnitOfWork(),
+      eventBus,
     );
   });
 
@@ -71,6 +91,59 @@ describe('UpdateReviewUseCase', () => {
     await useCase.execute({ userId: 'farmer-1', reviewId: review.id });
 
     expect(save).not.toHaveBeenCalled();
+    expect(eventBus.published).toEqual([]);
+  });
+
+  it('publishes review.review.updated to the product seller (inactive product too)', async () => {
+    await useCase.execute({ userId: 'farmer-1', reviewId: review.id, star: 3 });
+
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        name: REVIEW_UPDATED_EVENT,
+        payload: {
+          reviewId: review.id,
+          targetOwnerId: 'distributor-1',
+          star: 3,
+        },
+      }),
+    ]);
+  });
+
+  it('publishes review.review.updated to the reviewed distributor', async () => {
+    const shopReview = Review.create({
+      userId: 'farmer-1',
+      targetType: EReviewTargetType.USER,
+      targetId: 'distributor-2',
+      content: 'Shop uy tín',
+      star: 4,
+    });
+    await reviews.save(shopReview);
+
+    await useCase.execute({
+      userId: 'farmer-1',
+      reviewId: shopReview.id,
+      content: 'Shop ổn',
+    });
+
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        name: REVIEW_UPDATED_EVENT,
+        payload: {
+          reviewId: shopReview.id,
+          targetOwnerId: 'distributor-2',
+          star: 4,
+        },
+      }),
+    ]);
+  });
+
+  it('saves but publishes nothing when the reviewed product is gone', async () => {
+    product = null;
+
+    await useCase.execute({ userId: 'farmer-1', reviewId: review.id, star: 3 });
+
+    expect((await reviews.findById(review.id))?.star).toBe(3);
+    expect(eventBus.published).toEqual([]);
   });
 
   it.each([
@@ -91,12 +164,14 @@ describe('UpdateReviewUseCase', () => {
     await expect(
       useCase.execute({ userId, reviewId: review.id, star: 1 }),
     ).rejects.toBeInstanceOf(ReviewReviewerNotAllowedException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects unknown review', async () => {
     await expect(
       useCase.execute({ userId: 'farmer-1', reviewId: 'missing', star: 1 }),
     ).rejects.toBeInstanceOf(ReviewNotFoundException);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects review of another farmer', async () => {
@@ -104,11 +179,13 @@ describe('UpdateReviewUseCase', () => {
       useCase.execute({ userId: 'farmer-2', reviewId: review.id, star: 1 }),
     ).rejects.toBeInstanceOf(ReviewNotOwnerException);
     expect((await reviews.findById(review.id))?.star).toBe(5);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('rejects invalid star', async () => {
     await expect(
       useCase.execute({ userId: 'farmer-1', reviewId: review.id, star: 6 }),
     ).rejects.toBeInstanceOf(InvalidReviewStarException);
+    expect(eventBus.published).toEqual([]);
   });
 });

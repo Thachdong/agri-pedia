@@ -8,14 +8,14 @@ Flow: `PATCH /reviews/:reviewId { content?, star?: 1..5 }` + `Authorization: Bea
    review must exist → 404 REVIEW_NOT_FOUND; review.userId ≠ userId → 403 REVIEW_NOT_OWNER;
    apply fields via Review.update (same star/content invariants as create); save in transaction;
    resolve targetOwnerId: USER → targetId; PRODUCT → product query port findOwnerById(targetId).userId)
-  → emits `review.review.updated` { reviewId, reviewerId, targetType, targetId, targetOwnerId, star } after commit
+  → emits `review.review.updated` { reviewId, targetOwnerId, star } after commit (only fields the notification handler uses)
   → notification module handles → notification.CreateNotification({ userId: targetOwnerId, type: REVIEW, referenceId: reviewId, label, content })
   → 200 (null body)
 
 - [x] 1. [domain-model]       review: Review.update({ content?, star? }) reusing invariants, Review.assertOwnedBy(userId); errors REVIEW_NOT_FOUND (NOT_FOUND), REVIEW_NOT_OWNER (FORBIDDEN)
 - [x] 2. [use-case]           review: UpdateReview, port IReviewRepository.findById (+ existing save, IUserQueryPort.findRoleById, IProductQueryPort.findOwnerById)
-- [ ] 3. [persistence]        review: PgReviewRepository.findById (no migration)
-- [ ] 4. [integration-event]  UpdateReview emits `review.review.updated`
+- [x] 3. [persistence]        review: PgReviewRepository.findById (no migration)
+- [x] 4. [integration-event]  UpdateReview emits `review.review.updated`
 - [ ] 5. [event-handler]      notification: `review.review.updated` → CreateNotification (type REVIEW)
 - [ ] 6. [http]               PATCH /reviews/:reviewId (guarded) → 200 null body
 - [ ] 7. [api-docs]           PATCH /reviews/:reviewId (auth: true)
