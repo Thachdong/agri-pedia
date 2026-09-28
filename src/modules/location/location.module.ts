@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ListProvincesUseCase } from './application/use-cases';
+import {
+  ListProvincesUseCase,
+  ListWardsByProvinceUseCase,
+} from './application/use-cases';
 
 @Module({
   imports: [],
   controllers: [],
-  providers: [ListProvincesUseCase],
+  providers: [ListProvincesUseCase, ListWardsByProvinceUseCase],
   exports: [],
 })
 export class LocationModule {}
