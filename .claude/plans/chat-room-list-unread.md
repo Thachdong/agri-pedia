@@ -31,7 +31,7 @@ Change to existing flow — SendChatMessage (in transaction):
 - [x] 5. [use-case]           EnterChatRoom (member check, join channel, mark read now, save) + LeaveChatRoom (leave channel)
 - [x] 6. [persistence]        chat_rooms add last_message_at, first_user_last_read_at, second_user_last_read_at (backfill last_message_at from messages); indexes rooms by member + last_message_at, chat_messages (room_id, created_at); implement new repo methods; save() writes timestamps with GREATEST(stored, new) so concurrent Send/Enter never lose a newer value
 - [x] 7. [http]               GET /chat/rooms (guarded)
-- [ ] 8. [api-docs]           GET /chat/rooms (auth: true)
+- [x] 8. [api-docs]           GET /chat/rooms (auth: true)
 - [ ] 9. [http]               ChatGateway: `chat.room.enter`, `chat.room.leave` (ack), e2e incl. "receiver in room → unreadCount 0", "receiver not in room / disconnected → counted"
 - [ ] 10. [boundary-review]
 

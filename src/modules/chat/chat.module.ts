@@ -10,6 +10,7 @@ import {
   ListMyChatRoomsUseCase,
   SendChatMessageUseCase,
 } from './application/use-cases';
+import './infrastructure/http/chat.api-docs';
 import { ChatController } from './infrastructure/http/chat.controller';
 import { PgChatMessageRepository } from './infrastructure/persistence/pg-chat-message.repository';
 import { PgChatRoomRepository } from './infrastructure/persistence/pg-chat-room.repository';
