@@ -29,4 +29,6 @@ export interface IUserQueryPort {
   findByIdentifier(identifier: string): Promise<TUserIdentifierSummary | null>;
   findRoleById(userId: string): Promise<TUserRoleSummary | null>;
   findProfileById(userId: string): Promise<TUserProfileSummary | null>;
+  /** Unknown ids are left out of the result. */
+  listProfilesByIds(userIds: string[]): Promise<TUserProfileSummary[]>;
 }

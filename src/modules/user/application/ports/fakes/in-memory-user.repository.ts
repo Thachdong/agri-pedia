@@ -8,6 +8,12 @@ export class InMemoryUserRepository implements IUserRepository {
     return this.items.get(id) ?? null;
   }
 
+  async findByIds(ids: string[]): Promise<User[]> {
+    return ids
+      .map((id) => this.items.get(id))
+      .filter((user): user is User => user !== undefined);
+  }
+
   async existsByHashedIdentifier(hashedIdentifier: string): Promise<boolean> {
     return [...this.items.values()].some(
       (user) => user.hashedIdentifier === hashedIdentifier,

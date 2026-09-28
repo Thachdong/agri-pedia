@@ -1,1 +1,1 @@
-export {};
+export * from './product-query.port';

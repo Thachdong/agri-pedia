@@ -50,4 +50,13 @@ export class UserQueryService implements IUserQueryPort {
       ? { userId: user.id, username: user.username, role: user.role }
       : null;
   }
+
+  async listProfilesByIds(userIds: string[]): Promise<TUserProfileSummary[]> {
+    const users = await this.users.findByIds([...new Set(userIds)]);
+    return users.map((user) => ({
+      userId: user.id,
+      username: user.username,
+      role: user.role,
+    }));
+  }
 }

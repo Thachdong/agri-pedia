@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, QueryFailedError } from 'typeorm';
+import { DataSource, In, QueryFailedError } from 'typeorm';
 import { TypeOrmRepositoryBase } from '@shared/database';
 import { IUserRepository } from '../../application/ports';
 import { User, UserIdentifierAlreadyUsedException } from '../../domain';
@@ -21,6 +21,14 @@ export class PgUserRepository
   async findById(id: string): Promise<User | null> {
     const row = await this.repository.findOneBy({ id });
     return row ? UserMapper.toDomain(row) : null;
+  }
+
+  async findByIds(ids: string[]): Promise<User[]> {
+    if (ids.length === 0) {
+      return [];
+    }
+    const rows = await this.repository.findBy({ id: In(ids) });
+    return rows.map((row) => UserMapper.toDomain(row));
   }
 
   async existsByHashedIdentifier(hashedIdentifier: string): Promise<boolean> {

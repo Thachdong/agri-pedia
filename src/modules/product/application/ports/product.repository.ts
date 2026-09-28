@@ -16,6 +16,8 @@ export interface IProductRepository {
     userId: string,
     query: TProductPageQuery,
   ): Promise<Product[]>;
+  /** Every product of the seller, any status, deleted included; no order. */
+  findAllByUser(userId: string): Promise<Product[]>;
   save(product: Product): Promise<void>;
 }
 

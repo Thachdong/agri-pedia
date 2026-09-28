@@ -12,7 +12,7 @@ export class MediaQueryService implements IMediaQueryPort {
   ) {}
 
   async findThumbnails(
-    ownerType: 'PRODUCT',
+    ownerType: 'PRODUCT' | 'USER_AVATAR',
     ownerIds: string[],
   ): Promise<TMediaThumbnail[]> {
     if (ownerIds.length === 0) {

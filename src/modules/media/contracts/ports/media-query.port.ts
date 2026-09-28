@@ -6,11 +6,11 @@ export type TMediaThumbnail = {
 
 export interface IMediaQueryPort {
   /**
-   * Thumbnail of each owner: its first IMAGE by sortOrder (null last, then id).
+   * Thumbnail of each owner (product image, or user avatar): its first IMAGE by sortOrder (null last, then id).
    * Owners without an image are left out of the result.
    */
   findThumbnails(
-    ownerType: 'PRODUCT',
+    ownerType: 'PRODUCT' | 'USER_AVATAR',
     ownerIds: string[],
   ): Promise<TMediaThumbnail[]>;
 }

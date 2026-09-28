@@ -119,3 +119,39 @@ describe('UserQueryService.findProfileById', () => {
     await expect(service.findProfileById('missing')).resolves.toBeNull();
   });
 });
+
+describe('UserQueryService.listProfilesByIds', () => {
+  let users: InMemoryUserRepository;
+  let service: UserQueryService;
+
+  beforeEach(() => {
+    users = new InMemoryUserRepository();
+    service = new UserQueryService(users, new InMemoryCryptoService());
+  });
+
+  it('returns the profiles of known ids, once each', async () => {
+    const first = userWith('hash(0912345678)');
+    const second = userWith('hash(0987654321)');
+    await users.save(first);
+    await users.save(second);
+
+    const profiles = await service.listProfilesByIds([
+      first.id,
+      'missing',
+      second.id,
+      first.id,
+    ]);
+
+    expect(profiles).toHaveLength(2);
+    expect(profiles).toEqual(
+      expect.arrayContaining([
+        { userId: first.id, username: 'shop', role: 'DISTRIBUTOR' },
+        { userId: second.id, username: 'shop', role: 'DISTRIBUTOR' },
+      ]),
+    );
+  });
+
+  it('returns an empty list for no ids', async () => {
+    await expect(service.listProfilesByIds([])).resolves.toEqual([]);
+  });
+});

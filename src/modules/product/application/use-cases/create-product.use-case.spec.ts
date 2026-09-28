@@ -54,6 +54,7 @@ describe('CreateProductUseCase', () => {
       findByIdentifier: async () => null,
       findRoleById: async () => seller,
       findProfileById: async () => null,
+      listProfilesByIds: async () => [],
     };
     useCase = new CreateProductUseCase(
       products,

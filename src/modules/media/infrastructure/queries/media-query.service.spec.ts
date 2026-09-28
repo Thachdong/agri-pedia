@@ -13,12 +13,13 @@ const media = (
   type: EMediaType,
   extension: string,
   sortOrder?: number,
+  ownerType = EMediaOwnerType.PRODUCT,
 ): Media =>
   Media.create({
     type,
     extension: MediaExtension.create(type, extension),
     filename: `f.${extension}`,
-    ownerType: EMediaOwnerType.PRODUCT,
+    ownerType,
     ownerId,
     sortOrder,
   });
@@ -62,6 +63,31 @@ describe('MediaQueryService.findThumbnails', () => {
     await expect(
       service.findThumbnails('PRODUCT', ['p1', 'p3']),
     ).resolves.toEqual([]);
+  });
+
+  it('returns the avatar of each user, ignoring media of other owner types', async () => {
+    const avatar = media(
+      'u1',
+      EMediaType.IMAGE,
+      'jpg',
+      undefined,
+      EMediaOwnerType.USER_AVATAR,
+    );
+    const license = media(
+      'u1',
+      EMediaType.IMAGE,
+      'png',
+      0,
+      EMediaOwnerType.USER_LICENSE,
+    );
+    await repository.save(avatar);
+    await repository.save(license);
+
+    await expect(
+      service.findThumbnails('USER_AVATAR', ['u1', 'u2']),
+    ).resolves.toEqual([
+      { ownerId: 'u1', url: expect.stringContaining(avatar.source) },
+    ]);
   });
 
   it('returns nothing for no owners', async () => {

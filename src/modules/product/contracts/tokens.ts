@@ -1,1 +1,1 @@
-export {};
+export const PRODUCT_QUERY_PORT = Symbol('PRODUCT_QUERY_PORT');
