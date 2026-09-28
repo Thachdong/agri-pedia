@@ -5,6 +5,8 @@ import {
   CHAT_ROOM_REPOSITORY,
 } from './application/ports';
 import {
+  EnterChatRoomUseCase,
+  LeaveChatRoomUseCase,
   ListMyChatRoomsUseCase,
   SendChatMessageUseCase,
 } from './application/use-cases';
@@ -18,6 +20,8 @@ import { ChatGateway } from './infrastructure/realtime/chat.gateway';
   providers: [
     SendChatMessageUseCase,
     ListMyChatRoomsUseCase,
+    EnterChatRoomUseCase,
+    LeaveChatRoomUseCase,
     ChatGateway,
     { provide: CHAT_ROOM_REPOSITORY, useClass: PgChatRoomRepository },
     { provide: CHAT_MESSAGE_REPOSITORY, useClass: PgChatMessageRepository },
