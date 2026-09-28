@@ -19,4 +19,11 @@ export class InMemoryLocationRepository implements ILocationRepository {
   async listWardsByProvince(provinceCode: string): Promise<Ward[]> {
     return this.wards.filter((ward) => ward.provinceCodename === provinceCode);
   }
+
+  async wardExists(provinceCode: string, wardCode: string): Promise<boolean> {
+    return this.wards.some(
+      (ward) =>
+        ward.provinceCodename === provinceCode && ward.codename === wardCode,
+    );
+  }
 }

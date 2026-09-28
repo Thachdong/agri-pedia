@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { LocationModule } from '@modules/location/location.module';
 import {
   ADDRESS_REPOSITORY,
   REFRESH_TOKEN_REPOSITORY,
@@ -27,7 +28,7 @@ import { PgUserRepository } from './infrastructure/persistence/pg-user.repositor
 import { UserQueryService } from './infrastructure/queries/user-query.service';
 
 @Module({
-  imports: [],
+  imports: [LocationModule],
   controllers: [AuthController, UserController],
   providers: [
     RegisterUserUseCase,

@@ -37,4 +37,11 @@ export class PgLocationRepository
     });
     return rows.map((row) => LocationMapper.wardToDomain(row));
   }
+
+  async wardExists(provinceCode: string, wardCode: string): Promise<boolean> {
+    return this.wards.existsBy({
+      provinceCodename: provinceCode,
+      codename: wardCode,
+    });
+  }
 }

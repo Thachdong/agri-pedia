@@ -1,1 +1,1 @@
-export {};
+export * from './location-query.port';
