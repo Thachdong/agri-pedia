@@ -7,6 +7,10 @@ import {
   IEventBus,
 } from '@shared/event-bus';
 import {
+  ILocationQueryPort,
+  LOCATION_QUERY_PORT,
+} from '@modules/location/contracts';
+import {
   TUserIdentifierVerificationRequestedEventPayload,
   USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
 } from '../../contracts';
@@ -17,6 +21,7 @@ import {
   ELoginType,
   EUserRole,
   Identifier,
+  InvalidLocationException,
   TUserIdentifierVerificationRequestedDomainEvent,
   User,
   USER_IDENTIFIER_VERIFICATION_REQUESTED,
@@ -39,7 +44,9 @@ export type TRegisterUserInput = {
   bio?: string | null;
   /** First address; always stored as primary. */
   address: {
+    /** Province codename (location master data). */
     province: string;
+    /** Ward codename, must belong to `province`. */
     ward: string;
     houseNumber: string;
     lat: number;
@@ -55,6 +62,8 @@ export class RegisterUserUseCase {
     @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
     @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
+    @Inject(LOCATION_QUERY_PORT)
+    private readonly locationQuery: ILocationQueryPort,
   ) {}
 
   async execute(input: TRegisterUserInput): Promise<void> {
@@ -63,6 +72,11 @@ export class RegisterUserUseCase {
       input.address.lat,
       input.address.long,
     );
+    const province = input.address.province.trim();
+    const ward = input.address.ward.trim();
+    if (!(await this.locationQuery.wardBelongsToProvince(province, ward))) {
+      throw new InvalidLocationException(province, ward);
+    }
     const hashedIdentifier = this.crypto.hash(identifier.value);
     const passwordHash = await this.crypto.hashPassword(input.password);
 
@@ -84,8 +98,8 @@ export class RegisterUserUseCase {
       await this.addresses.save(
         Address.createPrimary({
           userId: created.id,
-          province: input.address.province,
-          ward: input.address.ward,
+          province,
+          ward,
           houseNumber: input.address.houseNumber,
           coordinates,
         }),

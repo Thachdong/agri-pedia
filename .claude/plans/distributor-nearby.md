@@ -18,8 +18,8 @@ Flow B: `GET /distributors/nearby?lat&lng | ?provinceCode[&wardCode] | (trống)
 
 ## Part A — validate province/ward lúc register (merge riêng được)
 - [x] 1. [query-port]     location: ILocationQueryPort.wardBelongsToProvince(provinceCode, wardCode); user inject
-- [ ] 2. [domain-model]   user: lỗi USER_LOCATION_INVALID (VALIDATION)
-- [ ] 3. [use-case]       RegisterUser: validate province/ward qua ILocationQueryPort trước khi lưu
+- [x] 2. [domain-model]   user: lỗi USER_LOCATION_INVALID (VALIDATION)
+- [x] 3. [use-case]       RegisterUser: validate province/ward qua ILocationQueryPort trước khi lưu
 - [ ] 4. [api-docs]       POST register: province/ward = codename; lỗi USER_LOCATION_INVALID
 
 ## Part B — tìm distributor gần

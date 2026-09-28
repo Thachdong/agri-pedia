@@ -5,8 +5,8 @@ import { DataSource } from 'typeorm';
 import { AppModule } from '../../src/app.module';
 
 const address = {
-  province: 'Can Tho',
-  ward: 'Ninh Kieu',
+  province: 'can_tho',
+  ward: 'phuong_ninh_kieu',
   houseNumber: '12',
   lat: 10.03,
   long: 105.78,
