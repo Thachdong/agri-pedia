@@ -15,7 +15,7 @@ Flow B: `GET /provinces/:provinceCode/wards` (không cần login)
 - [x] 2. [domain-model]       Province (codename, name), Ward (codename, name, provinceCodename) — chỉ đọc (restore); lỗi LOCATION_PROVINCE_NOT_FOUND (NOT_FOUND)
 - [x] 3. [use-case]           ListProvinces, port ILocationRepository.listProvinces()
 - [x] 4. [use-case]           ListWardsByProvince, port ILocationRepository.provinceExists(code) + listWardsByProvince(code)
-- [ ] 5. [persistence]        PgLocationRepository; bảng `provinces`, `wards` (FK wards → provinces, cùng module); migration tạo bảng + migration seed từ province-data.json (ward trùng codename trong cùng tỉnh: bản xuất hiện sau thêm hậu tố `_2`, `_3`...; khóa wards = (province_codename, codename))
+- [x] 5. [persistence]        PgLocationRepository; bảng `provinces`, `wards` (FK wards → provinces, cùng module); migration tạo bảng + migration seed từ province-data.json (ward trùng codename trong cùng tỉnh: bản xuất hiện sau thêm hậu tố `_2`, `_3`...; khóa wards = (province_codename, codename))
 - [ ] 6. [http]               GET /provinces, GET /provinces/:provinceCode/wards (public), e2e
 - [ ] 7. [api-docs]           GET /provinces, GET /provinces/:provinceCode/wards
 - [ ] 8. [boundary-review]
