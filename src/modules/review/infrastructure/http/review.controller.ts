@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import {
   AccessTokenGuard,
   CurrentUser,
@@ -7,11 +17,13 @@ import {
 import {
   CreateReviewUseCase,
   ListDistributorReviewsUseCase,
+  UpdateReviewUseCase,
 } from '../../application/use-cases';
 import {
   CreateReviewDto,
   DEFAULT_REVIEW_PAGE_SIZE,
   ListDistributorReviewsQueryDto,
+  UpdateReviewDto,
 } from './dto';
 import { CreateReviewResponse } from './responses/create-review.response';
 import { ListDistributorReviewsResponse } from './responses/list-distributor-reviews.response';
@@ -21,6 +33,7 @@ export class ReviewController {
   constructor(
     private readonly createReview: CreateReviewUseCase,
     private readonly listDistributorReviews: ListDistributorReviewsUseCase,
+    private readonly updateReview: UpdateReviewUseCase,
   ) {}
 
   /** Public: no access token needed. */
@@ -74,5 +87,21 @@ export class ReviewController {
       star: dto.star,
     });
     return { reviewId };
+  }
+
+  @Patch(':reviewId')
+  @UseGuards(AccessTokenGuard)
+  async update(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Param('reviewId', ParseUUIDPipe) reviewId: string,
+    @Body() dto: UpdateReviewDto,
+  ): Promise<null> {
+    await this.updateReview.execute({
+      userId: caller.userId,
+      reviewId,
+      content: dto.content,
+      star: dto.star,
+    });
+    return null;
   }
 }

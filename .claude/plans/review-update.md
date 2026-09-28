@@ -17,7 +17,7 @@ Flow: `PATCH /reviews/:reviewId { content?, star?: 1..5 }` + `Authorization: Bea
 - [x] 3. [persistence]        review: PgReviewRepository.findById (no migration)
 - [x] 4. [integration-event]  UpdateReview emits `review.review.updated`
 - [x] 5. [event-handler]      notification: `review.review.updated` → CreateNotification (type REVIEW)
-- [ ] 6. [http]               PATCH /reviews/:reviewId (guarded) → 200 null body
+- [x] 6. [http]               PATCH /reviews/:reviewId (guarded) → 200 null body
 - [ ] 7. [api-docs]           PATCH /reviews/:reviewId (auth: true)
 - [ ] 8. [boundary-review]
 

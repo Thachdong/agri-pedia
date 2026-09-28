@@ -49,5 +49,8 @@ defineApiDocs(ReviewController, {
         { type: EDomainErrorType.BUSINESS_RULE, code: 'REVIEW_INVALID_TARGET' },
       ],
     },
+    update: {
+      summary: 'Edit own review (ACTIVE farmer only)',
+    },
   },
 });
