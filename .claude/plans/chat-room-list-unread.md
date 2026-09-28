@@ -25,7 +25,7 @@ Change to existing flow — SendChatMessage (in transaction):
   room saved.
 
 - [x] 1. [shared-wrapper]     realtime (change): channel presence — IRealtimeChannels (REALTIME_CHANNELS): join(connectionId, channel), leave(connectionId, channel), hasUser(channel, userId); @SocketConnectionId() for gateways
-- [ ] 2. [domain-model]       ChatRoom: lastMessageAt, per-member lastReadAt (null = never read); recordMessage(message), markReadBy(userId, at), lastReadAtOf(userId); error CHAT_INVALID_CURSOR (VALIDATION)
+- [x] 2. [domain-model]       ChatRoom: lastMessageAt, per-member lastReadAt (null = never read); recordMessage(message), markReadBy(userId, at), lastReadAtOf(userId); error CHAT_INVALID_CURSOR (VALIDATION)
 - [ ] 3. [use-case]           SendChatMessage (change): record message on room, mark receiver read if present in room channel, IChatRoomRepository.save(room)
 - [ ] 4. [use-case]           ListMyChatRooms, ports IChatRoomRepository.findPageByMember(userId, { after, limit }) → room summaries + countUnreadByMember(userId)
 - [ ] 5. [use-case]           EnterChatRoom (member check, join channel, mark read now, save) + LeaveChatRoom (leave channel)

@@ -5,5 +5,6 @@ export * from './exceptions/chat-receiver-not-found.exception';
 export * from './exceptions/chat-room-not-found.exception';
 export * from './exceptions/chat-room-or-receiver-required.exception';
 export * from './exceptions/chat-sender-not-allowed.exception';
+export * from './exceptions/invalid-chat-cursor.exception';
 export * from './exceptions/invalid-chat-message.exception';
 export * from './exceptions/invalid-chat-receiver.exception';
