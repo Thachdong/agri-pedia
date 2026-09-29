@@ -23,6 +23,7 @@ import './infrastructure/http/user.api-docs';
 import { OtpActivationCodeVerifiedHandler } from './infrastructure/handlers/otp-activation-code-verified.handler';
 import { OtpPasswordResetCodeVerifiedHandler } from './infrastructure/handlers/otp-password-reset-code-verified.handler';
 import { AuthController } from './infrastructure/http/auth.controller';
+import { DistributorController } from './infrastructure/http/distributor.controller';
 import { UserController } from './infrastructure/http/user.controller';
 import { PgAddressRepository } from './infrastructure/persistence/pg-address.repository';
 import { PgDistributorSearchRepository } from './infrastructure/persistence/pg-distributor-search.repository';
@@ -32,7 +33,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
 
 @Module({
   imports: [LocationModule],
-  controllers: [AuthController, UserController],
+  controllers: [AuthController, UserController, DistributorController],
   providers: [
     RegisterUserUseCase,
     ActivateUserUseCase,

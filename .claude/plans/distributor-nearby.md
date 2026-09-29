@@ -28,7 +28,7 @@ Flow B: `GET /distributors/nearby?lat&lng | ?provinceCode[&wardCode] | (trống)
 - [x] 6b. [query-port]    location: ILocationQueryPort.provinceExists(provinceCode) (area query chỉ có province)
 - [x] 7. [use-case]       FindNearbyDistributors (cascade + chọn nguồn); ports: IAddressRepository.findPrimaryByUserId, IDistributorSearchRepository (searchWithinRadius / searchNearest / searchInProvince / searchNationwide, mỗi method trả { items, total } đã phân trang) + fakes
 - [x] 8. [persistence]    image postgis/postgis:16; migration CREATE EXTENSION postgis + cột generated `addresses.location geography(Point,4326)` + GIST; implement query PostGIS
-- [ ] 9. [http]           GET /distributors/nearby (DTO: point/area loại trừ nhau), response, e2e; bỏ lat/lng khỏi request log
+- [x] 9. [http]           GET /distributors/nearby (DTO: point/area loại trừ nhau), response, e2e; bỏ lat/lng khỏi request log
 - [ ] 10. [api-docs]      GET /distributors/nearby
 - [ ] 11. [boundary-review]
 
