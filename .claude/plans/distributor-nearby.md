@@ -24,8 +24,9 @@ Flow B: `GET /distributors/nearby?lat&lng | ?provinceCode[&wardCode] | (trống)
 
 ## Part B — tìm distributor gần
 - [x] 5. [config-group]   group `distributorSearch`: radiusKm (default 30)
-- [ ] 6. [domain-model]   user: lỗi USER_NEARBY_SEARCH_FARMER_ONLY (FORBIDDEN)
-- [ ] 7. [use-case]       FindNearbyDistributors (cascade + chọn nguồn), port tìm distributor trong user module + fake
+- [x] 6. [domain-model]   user: lỗi USER_NEARBY_SEARCH_FARMER_ONLY (FORBIDDEN)
+- [x] 6b. [query-port]    location: ILocationQueryPort.provinceExists(provinceCode) (area query chỉ có province)
+- [ ] 7. [use-case]       FindNearbyDistributors (cascade + chọn nguồn); ports: IAddressRepository.findPrimaryByUserId, IDistributorSearchRepository (searchWithinRadius / searchNearest / searchInProvince / searchNationwide, mỗi method trả { items, total } đã phân trang) + fakes
 - [ ] 8. [persistence]    image postgis/postgis:16; migration CREATE EXTENSION postgis + cột generated `addresses.location geography(Point,4326)` + GIST; implement query PostGIS
 - [ ] 9. [http]           GET /distributors/nearby (DTO: point/area loại trừ nhau), response, e2e; bỏ lat/lng khỏi request log
 - [ ] 10. [api-docs]      GET /distributors/nearby

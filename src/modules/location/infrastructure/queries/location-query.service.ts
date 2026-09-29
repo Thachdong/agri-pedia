@@ -12,6 +12,10 @@ export class LocationQueryService implements ILocationQueryPort {
     private readonly locations: ILocationRepository,
   ) {}
 
+  async provinceExists(provinceCode: string): Promise<boolean> {
+    return this.locations.provinceExists(provinceCode);
+  }
+
   async wardBelongsToProvince(
     provinceCode: string,
     wardCode: string,

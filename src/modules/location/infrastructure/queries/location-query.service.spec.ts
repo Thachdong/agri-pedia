@@ -37,3 +37,16 @@ describe('LocationQueryService.wardBelongsToProvince', () => {
     ).resolves.toBe(false);
   });
 });
+
+describe('LocationQueryService.provinceExists', () => {
+  it('knows seeded provinces only', async () => {
+    const locations = new InMemoryLocationRepository();
+    locations.provinces.push(
+      Province.restore({ codename: 'ha_noi', name: 'Thành phố Hà Nội' }),
+    );
+    const service = new LocationQueryService(locations);
+
+    await expect(service.provinceExists('ha_noi')).resolves.toBe(true);
+    await expect(service.provinceExists('unknown')).resolves.toBe(false);
+  });
+});

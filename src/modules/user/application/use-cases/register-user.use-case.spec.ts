@@ -39,6 +39,7 @@ const farmerInput: TRegisterUserInput = {
 
 // Only this ward exists in the stubbed master data.
 const locationQuery: ILocationQueryPort = {
+  provinceExists: async (provinceCode) => provinceCode === 'can_tho',
   wardBelongsToProvince: async (provinceCode, wardCode) =>
     provinceCode === 'can_tho' && wardCode === 'phuong_ninh_kieu',
 };
