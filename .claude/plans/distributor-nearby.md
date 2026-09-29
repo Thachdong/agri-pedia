@@ -20,10 +20,10 @@ Flow B: `GET /distributors/nearby?lat&lng | ?provinceCode[&wardCode] | (trống)
 - [x] 1. [query-port]     location: ILocationQueryPort.wardBelongsToProvince(provinceCode, wardCode); user inject
 - [x] 2. [domain-model]   user: lỗi USER_LOCATION_INVALID (VALIDATION)
 - [x] 3. [use-case]       RegisterUser: validate province/ward qua ILocationQueryPort trước khi lưu
-- [ ] 4. [api-docs]       POST register: province/ward = codename; lỗi USER_LOCATION_INVALID
+- [x] 4. [api-docs]       POST register: province/ward = codename; lỗi USER_LOCATION_INVALID
 
 ## Part B — tìm distributor gần
-- [ ] 5. [config-group]   group `distributorSearch`: radiusKm (default 30)
+- [x] 5. [config-group]   group `distributorSearch`: radiusKm (default 30)
 - [ ] 6. [domain-model]   user: lỗi USER_NEARBY_SEARCH_FARMER_ONLY (FORBIDDEN)
 - [ ] 7. [use-case]       FindNearbyDistributors (cascade + chọn nguồn), port tìm distributor trong user module + fake
 - [ ] 8. [persistence]    image postgis/postgis:16; migration CREATE EXTENSION postgis + cột generated `addresses.location geography(Point,4326)` + GIST; implement query PostGIS

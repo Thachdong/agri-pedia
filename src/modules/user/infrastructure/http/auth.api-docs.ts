@@ -8,10 +8,14 @@ defineApiDocs(AuthController, {
     register: {
       summary: 'Register a new account',
       description:
-        'Creates a user with its primary address. Responds 201 with an empty body.',
+        'Creates a user with its primary address. Responds 201 with an empty body. ' +
+        '`address.province` = a province `codename` from GET /provinces; ' +
+        '`address.ward` = a ward `codename` of that province from GET /provinces/{provinceCode}/wards. ' +
+        'Unknown codenames, or a ward of another province, return USER_LOCATION_INVALID.',
       validation: true,
       errors: [
         { type: EDomainErrorType.VALIDATION, code: 'USER_INVALID_COORDINATES' },
+        { type: EDomainErrorType.VALIDATION, code: 'USER_LOCATION_INVALID' },
         {
           type: EDomainErrorType.VALIDATION,
           code: 'USER_BUSINESS_TYPE_REQUIRED',
