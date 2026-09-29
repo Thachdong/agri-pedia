@@ -37,12 +37,20 @@ export type TFindNearbyDistributorsInput = {
 };
 
 /** Where the searched location came from. */
-export type TDistributorSearchSource =
-  'query_point' | 'query_area' | 'address' | 'none';
+export enum EDistributorSearchSource {
+  QUERY_POINT = 'query_point',
+  QUERY_AREA = 'query_area',
+  ADDRESS = 'address',
+  NONE = 'none',
+}
 
 /** Stage that produced the result. */
-export type TDistributorSearchScope =
-  'radius' | 'nationwide_by_distance' | 'province' | 'nationwide';
+export enum EDistributorSearchScope {
+  RADIUS = 'radius',
+  NATIONWIDE_BY_DISTANCE = 'nationwide_by_distance',
+  PROVINCE = 'province',
+  NATIONWIDE = 'nationwide',
+}
 
 export type TNearbyDistributor = {
   userId: string;
@@ -62,14 +70,14 @@ export type TNearbyDistributor = {
 };
 
 export type TFindNearbyDistributorsOutput = {
-  scope: TDistributorSearchScope;
-  source: TDistributorSearchSource;
+  scope: EDistributorSearchScope;
+  source: EDistributorSearchSource;
   items: TNearbyDistributor[];
   total: number;
 };
 
 type TStage = {
-  scope: TDistributorSearchScope;
+  scope: EDistributorSearchScope;
   run: () => Promise<TDistributorSearchResult>;
 };
 
@@ -141,11 +149,11 @@ export class FindNearbyDistributorsUseCase {
   private async plan(
     input: TFindNearbyDistributorsInput,
     page: TDistributorSearchPage,
-  ): Promise<{ source: TDistributorSearchSource; stages: TStage[] }> {
+  ): Promise<{ source: EDistributorSearchSource; stages: TStage[] }> {
     const location = input.location;
     if (location?.kind === 'point') {
       return {
-        source: 'query_point',
+        source: EDistributorSearchSource.QUERY_POINT,
         stages: this.pointStages(
           Coordinates.create(location.lat, location.long),
           page,
@@ -166,10 +174,10 @@ export class FindNearbyDistributorsUseCase {
         throw new InvalidLocationException(provinceCode, wardCode);
       }
       return {
-        source: 'query_area',
+        source: EDistributorSearchSource.QUERY_AREA,
         stages: [
           {
-            scope: 'province',
+            scope: EDistributorSearchScope.PROVINCE,
             run: () =>
               this.distributors.searchInProvince(provinceCode, wardCode, page),
           },
@@ -180,10 +188,13 @@ export class FindNearbyDistributorsUseCase {
     const address = await this.addresses.findPrimaryByUserId(input.userId);
     return address
       ? {
-          source: 'address',
+          source: EDistributorSearchSource.ADDRESS,
           stages: this.pointStages(address.coordinates, page),
         }
-      : { source: 'none', stages: [this.nationwideStage(page)] };
+      : {
+          source: EDistributorSearchSource.NONE,
+          stages: [this.nationwideStage(page)],
+        };
   }
 
   private pointStages(
@@ -193,12 +204,12 @@ export class FindNearbyDistributorsUseCase {
     const radiusMeters = this.config.get('distributorSearch').radiusKm * 1000;
     return [
       {
-        scope: 'radius',
+        scope: EDistributorSearchScope.RADIUS,
         run: () =>
           this.distributors.searchWithinRadius(point, radiusMeters, page),
       },
       {
-        scope: 'nationwide_by_distance',
+        scope: EDistributorSearchScope.NATIONWIDE_BY_DISTANCE,
         run: () => this.distributors.searchNearest(point, page),
       },
     ];
@@ -206,7 +217,7 @@ export class FindNearbyDistributorsUseCase {
 
   private nationwideStage(page: TDistributorSearchPage): TStage {
     return {
-      scope: 'nationwide',
+      scope: EDistributorSearchScope.NATIONWIDE,
       run: () => this.distributors.searchNationwide(page),
     };
   }

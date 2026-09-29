@@ -14,8 +14,6 @@ import {
 export const DEFAULT_NEARBY_PAGE_SIZE = 20;
 export const MAX_NEARBY_PAGE_SIZE = 50;
 
-const CODENAME = '^[a-z0-9_]{1,64}$';
-
 /** Fails when any of `others` is also present: a point and an area cannot be combined. */
 const IsNotCombinedWith =
   (...others: (keyof FindNearbyDistributorsQueryDto)[]): PropertyDecorator =>
@@ -58,12 +56,12 @@ export class FindNearbyDistributorsQueryDto {
 
   /** Province codename from GET /provinces; required with `wardCode`. */
   @ValidateIf(hasArea)
-  @Matches(CODENAME)
+  @Matches('^[a-z0-9_]{1,64}$')
   provinceCode?: string;
 
   /** Ward codename of `provinceCode`; listed first. */
   @IsOptional()
-  @Matches(CODENAME)
+  @Matches('^[a-z0-9_]{1,64}$')
   wardCode?: string;
 
   /** 1-based (default 1). */

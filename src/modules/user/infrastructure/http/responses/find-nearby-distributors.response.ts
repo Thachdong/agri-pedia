@@ -1,3 +1,7 @@
+import {
+  EDistributorSearchScope,
+  EDistributorSearchSource,
+} from '../../../application/use-cases';
 import { EBusinessType } from '../../../domain';
 
 export class NearbyDistributorAddressResponse {
@@ -25,9 +29,9 @@ export class NearbyDistributorResponse {
 
 export class FindNearbyDistributorsResponse {
   /** Stage that produced the list. */
-  scope: 'radius' | 'nationwide_by_distance' | 'province' | 'nationwide';
+  scope: EDistributorSearchScope;
   /** Where the searched location came from. */
-  source: 'query_point' | 'query_area' | 'address' | 'none';
+  source: EDistributorSearchSource;
   items: NearbyDistributorResponse[];
   /** Matches over every page of this scope. */
   total: number;
