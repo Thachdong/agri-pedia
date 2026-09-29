@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { LocationModule } from '@modules/location/location.module';
 import {
   ADDRESS_REPOSITORY,
+  DISTRIBUTOR_SEARCH_REPOSITORY,
   REFRESH_TOKEN_REPOSITORY,
   USER_REPOSITORY,
 } from './application/ports';
@@ -24,6 +25,7 @@ import { OtpPasswordResetCodeVerifiedHandler } from './infrastructure/handlers/o
 import { AuthController } from './infrastructure/http/auth.controller';
 import { UserController } from './infrastructure/http/user.controller';
 import { PgAddressRepository } from './infrastructure/persistence/pg-address.repository';
+import { PgDistributorSearchRepository } from './infrastructure/persistence/pg-distributor-search.repository';
 import { PgRefreshTokenRepository } from './infrastructure/persistence/pg-refresh-token.repository';
 import { PgUserRepository } from './infrastructure/persistence/pg-user.repository';
 import { UserQueryService } from './infrastructure/queries/user-query.service';
@@ -43,6 +45,10 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
     FindNearbyDistributorsUseCase,
     { provide: USER_REPOSITORY, useClass: PgUserRepository },
     { provide: ADDRESS_REPOSITORY, useClass: PgAddressRepository },
+    {
+      provide: DISTRIBUTOR_SEARCH_REPOSITORY,
+      useClass: PgDistributorSearchRepository,
+    },
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: PgRefreshTokenRepository },
     { provide: USER_QUERY_PORT, useClass: UserQueryService },
     OtpActivationCodeVerifiedHandler,
