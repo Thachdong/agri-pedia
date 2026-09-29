@@ -6,3 +6,4 @@ export * from './refresh-access-token.use-case';
 export * from './register-user.use-case';
 export * from './reset-password.use-case';
 export * from './update-profile.use-case';
+export * from './find-nearby-distributors.use-case';
