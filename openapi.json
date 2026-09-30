@@ -308,6 +308,52 @@
       }
     },
     "/users/me": {
+      "get": {
+        "operationId": "UserController_getMe",
+        "summary": "Get the profile of the caller",
+        "description": "Profile as returned by POST /auth/login (user), including the primary address (null if none). Works for any user with a valid access token, whatever its status.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
       "patch": {
         "operationId": "UserController_updateMe",
         "summary": "Update the profile of the caller",
@@ -1949,34 +1995,64 @@
           "password"
         ]
       },
-      "LoginUserProfileResponse": {
+      "UserAddressResponse": {
         "type": "object",
         "properties": {
+          "province": {
+            "type": "string"
+          },
+          "ward": {
+            "type": "string"
+          },
+          "houseNumber": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "long": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "province",
+          "ward",
+          "houseNumber",
+          "lat",
+          "long"
+        ]
+      },
+      "UserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
           "loginType": {
-            "type": "string",
             "enum": [
               "EMAIL",
               "PHONE"
-            ]
+            ],
+            "type": "string"
           },
           "username": {
             "type": "string"
           },
           "role": {
-            "type": "string",
             "enum": [
               "FARMER",
               "DISTRIBUTOR"
-            ]
+            ],
+            "type": "string"
           },
           "bussinessType": {
-            "type": "string",
             "nullable": true,
             "enum": [
               "AGRICULTURAL_CHEMICAL_SUPPLIES",
               "SEEDS_SEEDLINGS",
               "AQUACULTURE_SEEDLINGS"
-            ]
+            ],
+            "type": "string"
           },
           "bussinessLicense": {
             "type": "string",
@@ -1997,9 +2073,18 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string"
+          },
+          "address": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserAddressResponse"
+              }
+            ]
           }
         },
         "required": [
+          "id",
           "loginType",
           "username",
           "role",
@@ -2008,7 +2093,8 @@
           "avatar",
           "bio",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "address"
         ]
       },
       "LoginUserResponse": {
@@ -2021,7 +2107,7 @@
             "type": "string"
           },
           "user": {
-            "$ref": "#/components/schemas/LoginUserProfileResponse"
+            "$ref": "#/components/schemas/UserProfileResponse"
           }
         },
         "required": [
