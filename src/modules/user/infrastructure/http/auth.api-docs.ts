@@ -82,5 +82,13 @@ defineApiDocs(AuthController, {
         { type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' },
       ],
     },
+    realtimeTicket: {
+      summary: 'Issue a realtime ticket for the caller',
+      auth: true,
+      errors: [
+        { type: EDomainErrorType.FORBIDDEN, code: 'USER_NOT_ACTIVE' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' },
+      ],
+    },
   },
 });

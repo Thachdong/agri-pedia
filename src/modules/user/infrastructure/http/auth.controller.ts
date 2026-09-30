@@ -13,6 +13,7 @@ import {
 } from '@shared/access-token';
 import {
   ChangePasswordUseCase,
+  IssueRealtimeTicketUseCase,
   LoginUserUseCase,
   LogoutUserUseCase,
   RefreshAccessTokenUseCase,
@@ -25,6 +26,7 @@ import {
   RefreshAccessTokenDto,
   RegisterUserDto,
 } from './dto';
+import { IssueRealtimeTicketResponse } from './responses/issue-realtime-ticket.response';
 import { LoginUserResponse } from './responses/login-user.response';
 import { RefreshAccessTokenResponse } from './responses/refresh-access-token.response';
 
@@ -36,6 +38,7 @@ export class AuthController {
     private readonly refreshAccessToken: RefreshAccessTokenUseCase,
     private readonly logoutUser: LogoutUserUseCase,
     private readonly changeUserPassword: ChangePasswordUseCase,
+    private readonly issueRealtimeTicket: IssueRealtimeTicketUseCase,
   ) {}
 
   @Post('register')
@@ -132,5 +135,17 @@ export class AuthController {
       newPassword: dto.newPassword,
     });
     return null;
+  }
+
+  @Post('realtime-ticket')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AccessTokenGuard)
+  async realtimeTicket(
+    @CurrentUser() caller: TAccessTokenPayload,
+  ): Promise<IssueRealtimeTicketResponse> {
+    const { ticket, expiresIn } = await this.issueRealtimeTicket.execute({
+      userId: caller.userId,
+    });
+    return { ticket, expiresIn };
   }
 }
