@@ -3,6 +3,8 @@ import { IConfigService } from '@shared/config';
 import { InMemoryCryptoService } from '@shared/crypto';
 import { InMemoryUnitOfWork } from '@shared/database';
 import {
+  Address,
+  Coordinates,
   EBusinessType,
   ELoginType,
   ERefreshTokenStatus,
@@ -12,6 +14,7 @@ import {
   UserNotActiveException,
 } from '../../domain';
 import {
+  InMemoryAddressRepository,
   InMemoryRefreshTokenRepository,
   InMemoryUserRepository,
 } from '../ports/fakes';
@@ -29,6 +32,7 @@ const input: TLoginUserInput = {
 
 describe('LoginUserUseCase', () => {
   let users: InMemoryUserRepository;
+  let addresses: InMemoryAddressRepository;
   let refreshTokens: InMemoryRefreshTokenRepository;
   let crypto: InMemoryCryptoService;
   let accessTokens: InMemoryAccessTokenService;
@@ -53,12 +57,14 @@ describe('LoginUserUseCase', () => {
 
   beforeEach(() => {
     users = new InMemoryUserRepository();
+    addresses = new InMemoryAddressRepository();
     refreshTokens = new InMemoryRefreshTokenRepository();
     crypto = new InMemoryCryptoService();
     crypto.nextToken = 'raw-refresh';
     accessTokens = new InMemoryAccessTokenService();
     useCase = new LoginUserUseCase(
       users,
+      addresses,
       refreshTokens,
       crypto,
       accessTokens,
@@ -69,6 +75,15 @@ describe('LoginUserUseCase', () => {
 
   it('issues tokens and returns the profile of an active user', async () => {
     const user = register({});
+    await addresses.save(
+      Address.createPrimary({
+        userId: user.id,
+        province: 'ha_noi',
+        ward: 'phuong_ba_dinh',
+        houseNumber: '12 Kim Ma',
+        coordinates: Coordinates.create(21.03, 105.82),
+      }),
+    );
 
     const output = await useCase.execute(input);
 
@@ -76,6 +91,7 @@ describe('LoginUserUseCase', () => {
     expect(accessTokens.signed).toEqual([{ userId: user.id }]);
     expect(output.refreshToken).toBe('raw-refresh');
     expect(output.user).toEqual({
+      id: user.id,
       loginType: ELoginType.EMAIL,
       username: 'farmer01',
       role: EUserRole.FARMER,
@@ -85,7 +101,22 @@ describe('LoginUserUseCase', () => {
       bio: null,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
+      address: {
+        province: 'ha_noi',
+        ward: 'phuong_ba_dinh',
+        houseNumber: '12 Kim Ma',
+        lat: 21.03,
+        long: 105.82,
+      },
     });
+  });
+
+  it('returns a null address when the user has no primary address', async () => {
+    register({});
+
+    const output = await useCase.execute(input);
+
+    expect(output.user.address).toBeNull();
   });
 
   it('stores only the hash of the refresh token', async () => {

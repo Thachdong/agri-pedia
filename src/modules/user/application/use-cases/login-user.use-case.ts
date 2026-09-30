@@ -15,6 +15,10 @@ import {
   RefreshToken,
 } from '../../domain';
 import {
+  ADDRESS_REPOSITORY,
+  IAddressRepository,
+} from '../ports/address.repository';
+import {
   IRefreshTokenRepository,
   REFRESH_TOKEN_REPOSITORY,
 } from '../ports/refresh-token.repository';
@@ -30,6 +34,7 @@ export type TLoginUserOutput = {
   accessToken: string;
   refreshToken: string;
   user: {
+    id: string;
     loginType: ELoginType;
     username: string;
     role: EUserRole;
@@ -39,6 +44,14 @@ export type TLoginUserOutput = {
     bio: string | null;
     createdAt: Date;
     updatedAt: Date;
+    /** Primary address; null if the user has none. */
+    address: {
+      province: string;
+      ward: string;
+      houseNumber: string;
+      lat: number;
+      long: number;
+    } | null;
   };
 };
 
@@ -46,6 +59,8 @@ export type TLoginUserOutput = {
 export class LoginUserUseCase {
   constructor(
     @Inject(USER_REPOSITORY) private readonly users: IUserRepository,
+    @Inject(ADDRESS_REPOSITORY)
+    private readonly addresses: IAddressRepository,
     @Inject(REFRESH_TOKEN_REPOSITORY)
     private readonly refreshTokens: IRefreshTokenRepository,
     @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
@@ -84,11 +99,13 @@ export class LoginUserUseCase {
       ),
     );
     const accessToken = await this.accessTokens.sign({ userId: user.id });
+    const address = await this.addresses.findPrimaryByUserId(user.id);
 
     return {
       accessToken,
       refreshToken,
       user: {
+        id: user.id,
         loginType: user.loginType,
         username: user.username,
         role: user.role,
@@ -98,6 +115,13 @@ export class LoginUserUseCase {
         bio: user.bio,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
+        address: address && {
+          province: address.province,
+          ward: address.ward,
+          houseNumber: address.houseNumber,
+          lat: address.coordinates.lat,
+          long: address.coordinates.long,
+        },
       },
     };
   }

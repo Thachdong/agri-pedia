@@ -23,7 +23,8 @@
     "migration:create": "typeorm migration:create",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "seed:fake": "ts-node -r tsconfig-paths/register scripts/seed-fake.ts"
+    "seed:fake": "ts-node -r tsconfig-paths/register scripts/seed-fake.ts",
+    "openapi:export": "nest build && node dist/export-openapi"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

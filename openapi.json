@@ -1,0 +1,3118 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "summary": "Register a new account",
+        "description": "Creates a user with its primary address. Responds 201 with an empty body. `address.province` = a province `codename` from GET /provinces; `address.ward` = a ward `codename` of that province from GET /provinces/{provinceCode}/wards. Unknown codenames, or a ward of another province, return USER_LOCATION_INVALID.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed, or: USER_INVALID_COORDINATES, USER_LOCATION_INVALID, USER_BUSINESS_TYPE_REQUIRED, USER_BUSINESS_TYPE_NOT_ALLOWED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "USER_IDENTIFIER_ALREADY_USED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "summary": "Log in with identifier and password",
+        "description": "Responds 200 with an access token (JWT), a refresh token and the user profile. Unknown identifier, login type mismatch and wrong password all return USER_INVALID_CREDENTIALS. USER_NOT_ACTIVE (distributor not activated yet) is returned only after the password matched.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "USER_INVALID_CREDENTIALS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "USER_NOT_ACTIVE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "operationId": "AuthController_refreshToken",
+        "summary": "Exchange a refresh token for a new token pair",
+        "description": "Responds 200 with a new access token and a new refresh token; the one sent stops working. A just-rotated token sent again within the grace period (retry) still succeeds. Reusing a rotated token after the grace period, or a revoked one, revokes every token of that login. Unknown, expired, reused or revoked tokens and inactive owners all return USER_INVALID_REFRESH_TOKEN.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshAccessTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshAccessTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "USER_INVALID_REFRESH_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "summary": "End the current session",
+        "description": "Revokes the session (every refresh token of that login) the given refresh token belongs to. Responds 200 with an empty body, also when the refresh token is unknown, expired, already revoked or another user's (then nothing changes). The access token stays valid until it expires; discard it.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogoutUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "operationId": "AuthController_changePassword",
+        "summary": "Change the password of the caller",
+        "description": "Requires the current password. Responds 200 with an empty body. Every session of the user ends (all refresh tokens revoked); access tokens already issued stay valid until they expire. A wrong current password returns 400 USER_WRONG_PASSWORD and changes nothing.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed, or: USER_WRONG_PASSWORD",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/users/me": {
+      "patch": {
+        "operationId": "UserController_updateMe",
+        "summary": "Update the profile of the caller",
+        "description": "Every field is optional; an absent or null field is kept (clearing avatar / business license is not supported). bussinessType: DISTRIBUTOR only, cannot be set to null. avatar / bussinessLicense: a file already uploaded to TMP (key from POST /media/presign-url). The response returns its new media id at once; the file is moved and the previous one deleted in the background. An invalid or missing TMP file is skipped (logged) and the previous file is kept, but the returned media id is still stored.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: USER_BUSINESS_TYPE_NOT_ALLOWED, USER_BUSINESS_TYPE_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/distributors/nearby": {
+      "get": {
+        "operationId": "DistributorController_findNearby",
+        "summary": "List distributors near a location (public)",
+        "description": "No login needed; the access token is optional (an invalid one → 401). Location, first match wins: `lat` + `long` (GPS or a point picked on the map); `provinceCode` [+ `wardCode`] (codenames from GET /provinces and GET /provinces/{provinceCode}/wards); none: the caller's primary address (guest, or no address: every distributor by username). A point and an area cannot be combined. Stages run in order and the first one with any distributor is paginated — point: `radius` (within DISTRIBUTOR_SEARCH_RADIUS_KM, default 30 km) → `nationwide_by_distance`, nearest first; area: `province` (the given ward first, then by username) → `nationwide`, by username. `scope` names the stage, `source` where the location came from. `distanceMeters` is set for the distance scopes only. Only ACTIVE distributors are listed, at their primary address. No match at all: 200 with empty `items`.",
+        "parameters": [
+          {
+            "name": "lat",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "long",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "provinceCode",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "pattern": "^[a-z0-9_]{1,64}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "wardCode",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "pattern": "^[a-z0-9_]{1,64}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindNearbyDistributorsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: USER_INVALID_COORDINATES, USER_LOCATION_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Distributors"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/provinces": {
+      "get": {
+        "operationId": "LocationController_listAll",
+        "summary": "List all provinces",
+        "description": "Public (no login). Every province in master data order, not paginated. Use `codename` as `provinceCode` for GET /provinces/{provinceCode}/wards.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListProvincesResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Location"
+        ]
+      }
+    },
+    "/provinces/{provinceCode}/wards": {
+      "get": {
+        "operationId": "LocationController_listWards",
+        "summary": "List the wards of a province",
+        "description": "Public (no login). Every ward of the province in master data order, not paginated. `provinceCode` = a province `codename` (lowercase letters, digits, `_`; max 64). Ward `codename` is unique within its province only.",
+        "parameters": [
+          {
+            "name": "provinceCode",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "pattern": "^[a-z0-9_]{1,64}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListWardsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "LOCATION_PROVINCE_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Location"
+        ]
+      }
+    },
+    "/auth/activate": {
+      "post": {
+        "operationId": "ActivationController_activate",
+        "summary": "Activate a DISTRIBUTOR account with the code sent at registration",
+        "description": "Checks the latest activation code of the identifier (email or phone, any format). A wrong code is counted; too many wrong codes block the code for a while (OTP_BLOCKED). Responds 200 with an empty body; the account becomes ACTIVE.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed, or: OTP_INVALID_CODE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "OTP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "OTP_ALREADY_CONSUMED, OTP_EXPIRED, OTP_BLOCKED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/resend": {
+      "post": {
+        "operationId": "ActivationController_resend",
+        "summary": "Send the activation or password reset code again",
+        "description": "`purpose` picks the code: ACTIVATE_DISTRIBUTOR (sent at registration) or RESET_PASSWORD (sent by POST /auth/reset-password). Sends the latest code of that purpose again while it is valid; each resend is counted and too many resends block the code for a while (OTP_BLOCKED, details { blockUntil }). If the code expired (and is not blocked) a new code is issued and sent. OTP_NOT_FOUND when the identifier is unknown or no code of that purpose was sent. Responds 200 with an empty body.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResendCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "OTP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "OTP_ALREADY_CONSUMED, OTP_BLOCKED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "operationId": "PasswordResetController_requestReset",
+        "summary": "Send a password reset code",
+        "description": "Sends a RESET_PASSWORD code by email or SMS (per loginType) to an ACTIVE account. Responds 200 with an empty body. While the previous reset code is still valid: 409 OTP_ALREADY_REQUESTED, details { purpose, issuedAt, expiredAt }. While it is blocked (too many wrong codes), even if expired: 422 OTP_BLOCKED, details { blockUntil }. Once the previous code is expired or used, a new code is sent.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPasswordResetDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "OTP_ACCOUNT_NOT_ACTIVE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "OTP_ACCOUNT_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "OTP_ALREADY_REQUESTED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "OTP_BLOCKED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/reset-password/confirm": {
+      "post": {
+        "operationId": "PasswordResetController_confirmReset",
+        "summary": "Set a new password with the reset code",
+        "description": "Checks the latest RESET_PASSWORD code of the identifier (email or phone, any format) and consumes it. A wrong code is counted; too many wrong codes block the code for a while (OTP_BLOCKED, details { blockUntil }). Responds 200 with an empty body: the password is replaced and every session of the user is logged out (refresh tokens revoked).",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmPasswordResetDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed, or: OTP_INVALID_CODE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "OTP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "OTP_ALREADY_CONSUMED, OTP_EXPIRED, OTP_BLOCKED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/media/presign-url": {
+      "post": {
+        "operationId": "MediaController_presignUrl",
+        "summary": "Get signed URLs to upload 1..10 files to TMP storage",
+        "description": "Send 1..10 `files`; returns one `items` entry per file, in the same order. Allowed extensions: IMAGE jpg/jpeg/png/webp, VIDEO mp4/mov, FILE pdf (case-insensitive, leading dot ignored). All-or-nothing: if any file has an extension not allowed for its type, responds 400 `MEDIA_INVALID_EXTENSION` with `details.files: [{ index, type, extension, allowed }]` listing every invalid file, and no URL is issued. Upload each file with `PUT <presignUrl>` sending exactly its `headers` (Content-Type and `x-goog-content-length-range`); the storage rejects a different Content-Type, a file over 10 MB, or an expired URL. Keep each `key` to confirm the upload later.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPresignUrlDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPresignUrlResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: MEDIA_INVALID_EXTENSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "ProductController_listByDistributor",
+        "summary": "List a distributor's products (public)",
+        "description": "No login needed. Lists the ACTIVE, not deleted products of `distributorId`, newest first (INACTIVE / OUT_OF_STOCK are hidden). `limit` 1..50, default 20. To get the next page pass the returned `nextCursor` as `cursor` (same `distributorId`); `nextCursor` is null on the last page. `thumbnail` is a signed URL of the first image (expires after the configured TTL, default 1h), or null when the product has no image. `distributorId` that is not a DISTRIBUTOR → 404.",
+        "parameters": [
+          {
+            "name": "distributorId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDistributorProductsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: PRODUCT_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PRODUCT_DISTRIBUTOR_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      },
+      "post": {
+        "operationId": "ProductController_create",
+        "summary": "Create a product (ACTIVE distributor only)",
+        "description": "Caller must be a DISTRIBUTOR whose account is ACTIVE, otherwise 403 `PRODUCT_SELLER_NOT_ALLOWED`. `categoryId` comes from `GET /categories`. `price` >= 0 with at most 2 decimals; `quantity` integer >= 0. Upload files first: `POST /media/presign-url`, PUT each file to its URL, then send 1..10 `media` items with the returned `key` and the same `type`/`extension`. The product is created ACTIVE and each file is moved out of TMP and attached to it. A media item that cannot be attached (key of another user, extension mismatch, file not uploaded) is skipped and logged; the product is still created.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: PRODUCT_INVALID_PRICE, PRODUCT_INVALID_QUANTITY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_SELLER_NOT_ALLOWED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PRODUCT_CATEGORY_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/products/{productId}": {
+      "patch": {
+        "operationId": "ProductController_update",
+        "summary": "Update own product (ACTIVE distributor only)",
+        "description": "Caller must be a DISTRIBUTOR whose account is ACTIVE (else 403 `PRODUCT_SELLER_NOT_ALLOWED`) and the seller of the product (else 403 `PRODUCT_NOT_OWNER`). Every field is optional: omitted fields keep their value, `null` is rejected. Same rules as create for `price`, `quantity`, `unit`, `categoryId`; `status` is ACTIVE | INACTIVE | OUT_OF_STOCK. `addMedia` (0..10): files uploaded via `POST /media/presign-url`, moved out of TMP and attached; an item that cannot be attached is skipped and logged. `removeMediaIds` (0..10): media of this product to delete (record and stored file); ids of other products are ignored. Returns an empty body.",
+        "parameters": [
+          {
+            "name": "productId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed, or: PRODUCT_INVALID_PRICE, PRODUCT_INVALID_QUANTITY",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_SELLER_NOT_ALLOWED, PRODUCT_NOT_OWNER",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PRODUCT_NOT_FOUND, PRODUCT_CATEGORY_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ProductController_delete",
+        "summary": "Delete own product (ACTIVE distributor only)",
+        "description": "Caller must be a DISTRIBUTOR whose account is ACTIVE (else 403 `PRODUCT_SELLER_NOT_ALLOWED`) and the seller of the product (else 403 `PRODUCT_NOT_OWNER`). Soft delete: the product is kept for history but treated as missing afterwards (update/delete → 404 `PRODUCT_NOT_FOUND`). All its media (records and stored files) are removed. Returns an empty body.",
+        "parameters": [
+          {
+            "name": "productId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_SELLER_NOT_ALLOWED, PRODUCT_NOT_OWNER",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PRODUCT_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/categories": {
+      "get": {
+        "operationId": "CategoryController_list",
+        "summary": "List product categories, ordered by name",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCategoriesResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Category"
+        ]
+      }
+    },
+    "/reviews": {
+      "get": {
+        "operationId": "ReviewController_listByDistributor",
+        "summary": "List reviews of a distributor's shop (public)",
+        "description": "No login needed. Lists reviews of the distributor itself (USER) and of every product it ever listed (PRODUCT; any status, deleted products included), newest first. Filter with `targetType` and/or `star`. `summary` covers every review of the shop and is not affected by filters or cursor; `avgRating` has 1 decimal and is 0 when there is no review. `limit` 1..50, default 20. To get the next page pass the returned `nextCursor` as `cursor` with the same filters; `nextCursor` is null on the last page. `productName` is null for shop (USER) reviews. `user.avatar` is a signed URL (expires after the configured TTL, default 1h), or null. `distributorId` that is not a DISTRIBUTOR → 404.",
+        "parameters": [
+          {
+            "name": "distributorId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "PRODUCT",
+                "USER"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "star",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 5,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDistributorReviewsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: REVIEW_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "REVIEW_DISTRIBUTOR_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Review"
+        ]
+      },
+      "post": {
+        "operationId": "ReviewController_create",
+        "summary": "Review a distributor or one of its products (ACTIVE farmer only)",
+        "description": "Caller must be a FARMER whose account is ACTIVE, otherwise 403 `REVIEW_REVIEWER_NOT_ALLOWED`. `targetType` USER: `targetId` is a distributor user id; it must be an ACTIVE DISTRIBUTOR. `targetType` PRODUCT: `targetId` is a product id; the product must be ACTIVE (deleted → 404, INACTIVE / OUT_OF_STOCK → 422). A farmer reviews each target once (second time → 409). `star` integer 1..5; `content` 1..1000 characters after trimming. On success the distributor (the shop itself, or the seller of the product) gets a REVIEW notification with `referenceId` = `reviewId`.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: REVIEW_INVALID_STAR, REVIEW_INVALID_CONTENT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "REVIEW_REVIEWER_NOT_ALLOWED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "REVIEW_TARGET_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "REVIEW_ALREADY_EXISTS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "REVIEW_INVALID_TARGET",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Review"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/reviews/{reviewId}": {
+      "patch": {
+        "operationId": "ReviewController_update",
+        "summary": "Edit own review (ACTIVE farmer only)",
+        "description": "Caller must be a FARMER whose account is ACTIVE, otherwise 403 `REVIEW_REVIEWER_NOT_ALLOWED`. Only the author may edit the review (else 403 `REVIEW_NOT_OWNER`). Works for shop (USER) and product (PRODUCT) reviews; the target is not re-checked. Omitted fields keep their value; `null` is rejected. `star` integer 1..5; `content` 1..1000 characters after trimming. Empty body → 200, nothing changes. On change the distributor (the shop itself, or the seller of the product) gets a REVIEW notification with `referenceId` = `reviewId` (none if the product was deleted). Response body is null.",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReviewDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed, or: REVIEW_INVALID_STAR, REVIEW_INVALID_CONTENT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "REVIEW_REVIEWER_NOT_ALLOWED, REVIEW_NOT_OWNER",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "REVIEW_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Review"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/notifications": {
+      "get": {
+        "operationId": "NotificationController_listMine",
+        "summary": "List the caller's notifications",
+        "description": "Any logged-in user. Returns only notifications addressed to the caller (read and unread), newest first. `limit` 1..50, default 20. To get the next page pass the returned `nextCursor` as `cursor`; `nextCursor` is null on the last page. For type REVIEW, `referenceId` is the review id. Realtime: while connected to the socket (`io(url, { auth: { token } })`), each new notification is also pushed as socket event `notification.created` with the same item shape (createdAt as ISO string), to every open connection of the recipient. Offline recipients get no push; they see it here.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListMyNotificationsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: NOTIFICATION_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Notification"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/notifications/read-all": {
+      "patch": {
+        "operationId": "NotificationController_markAllRead",
+        "summary": "Mark all of the caller's notifications as read",
+        "description": "Marks every unread notification of the caller as read. Empty body on success; also 200 when there is nothing to mark.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Notification"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/notifications/{notificationId}/read": {
+      "patch": {
+        "operationId": "NotificationController_markRead",
+        "summary": "Mark one of the caller's notifications as read",
+        "description": "Empty body on success; already read → 200, no change. A notification of another user → 404, same as a missing one.",
+        "parameters": [
+          {
+            "name": "notificationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOTIFICATION_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Notification"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/chat/rooms": {
+      "get": {
+        "operationId": "ChatController_listMyRooms",
+        "summary": "List the caller's chat rooms with unread counts",
+        "description": "Any logged-in user. Rooms the caller is a member of, most recent message first (`lastMessageAt` desc). `unreadCount` = messages from the other member not read by the caller; a message is read when it arrives while the caller has the room open (socket `chat.room.enter`), or once the caller enters the room later. The caller’s own messages never count. `totalUnread` covers all rooms, not only this page. `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` for the next page (null on the last page).",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListMyChatRoomsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: CHAT_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chat"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "AgriPedia API",
+    "description": "",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "access-token": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "DomainErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 409
+          },
+          "code": {
+            "type": "string",
+            "example": "USER_IDENTIFIER_ALREADY_USED"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "statusCode",
+          "code",
+          "message"
+        ]
+      },
+      "ValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "example": 400
+          },
+          "message": {
+            "example": [
+              "password must be longer than or equal to 8 characters"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "error": {
+            "type": "string",
+            "example": "Bad Request"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message",
+          "error"
+        ]
+      },
+      "RegisterAddressDto": {
+        "type": "object",
+        "properties": {
+          "province": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "ward": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "houseNumber": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "lat": {
+            "type": "number"
+          },
+          "long": {
+            "type": "number"
+          },
+          "isPrimary": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "province",
+          "ward",
+          "houseNumber",
+          "lat",
+          "long"
+        ]
+      },
+      "RegisterUserDto": {
+        "type": "object",
+        "properties": {
+          "loginType": {
+            "type": "string",
+            "enum": [
+              "EMAIL",
+              "PHONE"
+            ]
+          },
+          "identifier": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          },
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "FARMER",
+              "DISTRIBUTOR"
+            ]
+          },
+          "bussinessType": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "AGRICULTURAL_CHEMICAL_SUPPLIES",
+              "SEEDS_SEEDLINGS",
+              "AQUACULTURE_SEEDLINGS"
+            ]
+          },
+          "bio": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "address": {
+            "$ref": "#/components/schemas/RegisterAddressDto"
+          }
+        },
+        "required": [
+          "loginType",
+          "identifier",
+          "password",
+          "role",
+          "address"
+        ]
+      },
+      "LoginUserDto": {
+        "type": "object",
+        "properties": {
+          "loginType": {
+            "type": "string",
+            "enum": [
+              "EMAIL",
+              "PHONE"
+            ]
+          },
+          "identifier": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "loginType",
+          "identifier",
+          "password"
+        ]
+      },
+      "LoginUserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "loginType": {
+            "type": "string",
+            "enum": [
+              "EMAIL",
+              "PHONE"
+            ]
+          },
+          "username": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "FARMER",
+              "DISTRIBUTOR"
+            ]
+          },
+          "bussinessType": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "AGRICULTURAL_CHEMICAL_SUPPLIES",
+              "SEEDS_SEEDLINGS",
+              "AQUACULTURE_SEEDLINGS"
+            ]
+          },
+          "bussinessLicense": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "bio": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loginType",
+          "username",
+          "role",
+          "bussinessType",
+          "bussinessLicense",
+          "avatar",
+          "bio",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "LoginUserResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/LoginUserProfileResponse"
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "user"
+        ]
+      },
+      "RefreshAccessTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "RefreshAccessTokenResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "LogoutUserDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "ChangePasswordDto": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "oldPassword",
+          "newPassword"
+        ]
+      },
+      "AvatarFileDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "IMAGE"
+            ]
+          },
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "extension": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "type",
+          "key",
+          "extension",
+          "filename"
+        ]
+      },
+      "BusinessLicenseFileDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "IMAGE",
+              "FILE"
+            ]
+          },
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "extension": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "type",
+          "key",
+          "extension",
+          "filename"
+        ]
+      },
+      "UpdateProfileDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "bio": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "bussinessType": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "AGRICULTURAL_CHEMICAL_SUPPLIES",
+              "SEEDS_SEEDLINGS",
+              "AQUACULTURE_SEEDLINGS"
+            ]
+          },
+          "avatar": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AvatarFileDto"
+              }
+            ]
+          },
+          "bussinessLicense": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BusinessLicenseFileDto"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateProfileResponse": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "bio": {
+            "type": "string",
+            "nullable": true
+          },
+          "bussinessLicense": {
+            "type": "string",
+            "nullable": true
+          },
+          "bussinessType": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "AGRICULTURAL_CHEMICAL_SUPPLIES",
+              "SEEDS_SEEDLINGS",
+              "AQUACULTURE_SEEDLINGS"
+            ]
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "avatar",
+          "bio",
+          "bussinessLicense",
+          "bussinessType",
+          "updatedAt"
+        ]
+      },
+      "NearbyDistributorAddressResponse": {
+        "type": "object",
+        "properties": {
+          "province": {
+            "type": "string"
+          },
+          "ward": {
+            "type": "string"
+          },
+          "houseNumber": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "long": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "province",
+          "ward",
+          "houseNumber",
+          "lat",
+          "long"
+        ]
+      },
+      "NearbyDistributorResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "bussinessType": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "AGRICULTURAL_CHEMICAL_SUPPLIES",
+              "SEEDS_SEEDLINGS",
+              "AQUACULTURE_SEEDLINGS"
+            ]
+          },
+          "address": {
+            "$ref": "#/components/schemas/NearbyDistributorAddressResponse"
+          },
+          "distanceMeters": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "required": [
+          "userId",
+          "username",
+          "avatar",
+          "bussinessType",
+          "address",
+          "distanceMeters"
+        ]
+      },
+      "FindNearbyDistributorsResponse": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "type": "string",
+            "enum": [
+              "radius",
+              "nationwide_by_distance",
+              "province",
+              "nationwide"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "query_point",
+              "query_area",
+              "address",
+              "none"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NearbyDistributorResponse"
+            }
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "scope",
+          "source",
+          "items",
+          "total"
+        ]
+      },
+      "LocationItemResponse": {
+        "type": "object",
+        "properties": {
+          "codename": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "codename",
+          "name"
+        ]
+      },
+      "ListProvincesResponse": {
+        "type": "object",
+        "properties": {
+          "provinces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationItemResponse"
+            }
+          }
+        },
+        "required": [
+          "provinces"
+        ]
+      },
+      "ListWardsResponse": {
+        "type": "object",
+        "properties": {
+          "wards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationItemResponse"
+            }
+          }
+        },
+        "required": [
+          "wards"
+        ]
+      },
+      "ActivateAccountDto": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "code": {
+            "type": "string",
+            "pattern": "/^\\d{4,10}$/"
+          }
+        },
+        "required": [
+          "identifier",
+          "code"
+        ]
+      },
+      "ResendCodeDto": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "ACTIVATE_DISTRIBUTOR",
+              "RESET_PASSWORD"
+            ]
+          }
+        },
+        "required": [
+          "identifier",
+          "purpose"
+        ]
+      },
+      "RequestPasswordResetDto": {
+        "type": "object",
+        "properties": {
+          "loginType": {
+            "type": "string",
+            "enum": [
+              "EMAIL",
+              "PHONE"
+            ]
+          },
+          "identifier": {
+            "type": "string",
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "loginType",
+          "identifier"
+        ]
+      },
+      "ConfirmPasswordResetDto": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "code": {
+            "type": "string",
+            "pattern": "/^\\d{4,10}$/"
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "identifier",
+          "code",
+          "newPassword"
+        ]
+      },
+      "PresignFileDto": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "extension": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "IMAGE",
+              "VIDEO",
+              "FILE"
+            ]
+          }
+        },
+        "required": [
+          "filename",
+          "extension",
+          "type"
+        ]
+      },
+      "GetPresignUrlDto": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PresignFileDto"
+            }
+          }
+        },
+        "required": [
+          "files"
+        ]
+      },
+      "PresignedMediaResponse": {
+        "type": "object",
+        "properties": {
+          "presignUrl": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "presignUrl",
+          "key",
+          "headers"
+        ]
+      },
+      "GetPresignUrlResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PresignedMediaResponse"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "DistributorProductResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ]
+          },
+          "thumbnail": {
+            "type": "string",
+            "nullable": true
+          },
+          "distributorId": {
+            "type": "string"
+          },
+          "distributorName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "price",
+          "quantity",
+          "unit",
+          "thumbnail",
+          "distributorId",
+          "distributorName"
+        ]
+      },
+      "ListDistributorProductsResponse": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DistributorProductResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "products",
+          "nextCursor"
+        ]
+      },
+      "ProductMediaDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "IMAGE",
+              "VIDEO",
+              "FILE"
+            ]
+          },
+          "extension": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "sortOrder": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "key",
+          "type",
+          "extension",
+          "filename"
+        ]
+      },
+      "CreateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000
+          },
+          "price": {
+            "type": "number",
+            "maximum": 999999999999.99
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "maximum": 2147483647
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ]
+          },
+          "media": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductMediaDto"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "price",
+          "categoryId",
+          "quantity",
+          "unit",
+          "media"
+        ]
+      },
+      "CreateProductResponse": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "productId"
+        ]
+      },
+      "UpdateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000
+          },
+          "price": {
+            "type": "number",
+            "maximum": 999999999999.99
+          },
+          "quantity": {
+            "type": "number",
+            "maximum": 2147483647
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ]
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "OUT_OF_STOCK"
+            ]
+          },
+          "addMedia": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductMediaDto"
+            }
+          },
+          "removeMediaIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CategoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "ListCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryResponse"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "ReviewStarCountsResponse": {
+        "type": "object",
+        "properties": {
+          "1": {
+            "type": "number"
+          },
+          "2": {
+            "type": "number"
+          },
+          "3": {
+            "type": "number"
+          },
+          "4": {
+            "type": "number"
+          },
+          "5": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "ReviewSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "avgRating": {
+            "type": "number"
+          },
+          "reviewCount": {
+            "type": "number"
+          },
+          "starCounts": {
+            "$ref": "#/components/schemas/ReviewStarCountsResponse"
+          }
+        },
+        "required": [
+          "avgRating",
+          "reviewCount",
+          "starCounts"
+        ]
+      },
+      "ReviewerResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "avatar"
+        ]
+      },
+      "DistributorReviewResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "PRODUCT",
+              "USER"
+            ]
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string",
+            "nullable": true
+          },
+          "star": {
+            "type": "number"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/ReviewerResponse"
+          }
+        },
+        "required": [
+          "id",
+          "targetType",
+          "targetId",
+          "productName",
+          "star",
+          "content",
+          "createdAt",
+          "user"
+        ]
+      },
+      "ListDistributorReviewsResponse": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/ReviewSummaryResponse"
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DistributorReviewResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "summary",
+          "reviews",
+          "nextCursor"
+        ]
+      },
+      "CreateReviewDto": {
+        "type": "object",
+        "properties": {
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "PRODUCT",
+              "USER"
+            ]
+          },
+          "targetId": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "star": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "targetType",
+          "targetId",
+          "content",
+          "star"
+        ]
+      },
+      "CreateReviewResponse": {
+        "type": "object",
+        "properties": {
+          "reviewId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reviewId"
+        ]
+      },
+      "UpdateReviewDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "star": {
+            "type": "number"
+          }
+        }
+      },
+      "NotificationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "PLATFORM",
+              "REVIEW"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "isRead": {
+            "type": "boolean"
+          },
+          "referenceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "label",
+          "content",
+          "isRead",
+          "referenceId",
+          "createdAt"
+        ]
+      },
+      "ListMyNotificationsResponse": {
+        "type": "object",
+        "properties": {
+          "notifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "notifications",
+          "nextCursor"
+        ]
+      },
+      "ChatRoomLastMessageResponse": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string"
+          },
+          "senderId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "messageId",
+          "senderId",
+          "message"
+        ]
+      },
+      "ChatRoomResponse": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          },
+          "otherUserId": {
+            "type": "string"
+          },
+          "lastMessage": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatRoomLastMessageResponse"
+              }
+            ]
+          },
+          "lastMessageAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "unreadCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "roomId",
+          "otherUserId",
+          "lastMessage",
+          "lastMessageAt",
+          "unreadCount"
+        ]
+      },
+      "ListMyChatRoomsResponse": {
+        "type": "object",
+        "properties": {
+          "totalUnread": {
+            "type": "number"
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatRoomResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "totalUnread",
+          "rooms",
+          "nextCursor"
+        ]
+      }
+    }
+  }
+}

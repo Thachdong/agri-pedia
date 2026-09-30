@@ -1,16 +1,11 @@
 import { INestApplication } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { CONFIG_SERVICE, IConfigService } from '../config';
 import { ACCESS_TOKEN_SCHEME } from './define-api-docs';
 
-/** Serves Swagger UI at /docs (JSON at /docs-json). Disabled in production. Requires `nest build`. */
-export const setupSwagger = (app: INestApplication): void => {
-  if (
-    app.get<IConfigService>(CONFIG_SERVICE).get('app').nodeEnv === 'production'
-  ) {
-    return;
-  }
-  const document = SwaggerModule.createDocument(
+/** Builds the OpenAPI document from the app's controllers. Requires `nest build`. */
+export const createApiDocument = (app: INestApplication): OpenAPIObject =>
+  SwaggerModule.createDocument(
     app,
     new DocumentBuilder()
       .setTitle('AgriPedia API')
@@ -21,5 +16,13 @@ export const setupSwagger = (app: INestApplication): void => {
       )
       .build(),
   );
-  SwaggerModule.setup('docs', app, document);
+
+/** Serves Swagger UI at /docs (JSON at /docs-json). Disabled in production. Requires `nest build`. */
+export const setupSwagger = (app: INestApplication): void => {
+  if (
+    app.get<IConfigService>(CONFIG_SERVICE).get('app').nodeEnv === 'production'
+  ) {
+    return;
+  }
+  SwaggerModule.setup('docs', app, createApiDocument(app));
 };

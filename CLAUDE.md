@@ -7,6 +7,7 @@ NestJS 10 (TypeScript) backend. Postgres 16 via `docker-compose.yml` (pgAdmin on
 - `docker compose up -d` — start Postgres + pgAdmin
 - `npm run start:dev` — dev server (watch)
 - `npm run build` — compile to `dist/`
+- `npm run openapi:export [-- <path>]` — build + write OpenAPI document (default `openapi.json`), no DB needed
 - `npm run lint` / `npm run format` — ESLint (auto-fix) / Prettier
 - `npm test` — unit tests (`*.spec.ts` under `src/`)
 - `npm run test:e2e` — e2e tests (`test/`)
