@@ -12,6 +12,10 @@ import {
   InvalidAccessTokenException,
   TAccessTokenPayload,
 } from '@shared/access-token';
+import {
+  IRealtimeTicketService,
+  REALTIME_TICKET_SERVICE,
+} from './realtime-ticket.interface';
 import { IRealtimeChannels, IRealtimePublisher } from './realtime.interface';
 
 export type TAuthenticatedSocketData = { auth?: TAccessTokenPayload };
@@ -23,8 +27,9 @@ const userRoom = (userId: string) => `user:${userId}`;
 const channelRoom = (channel: string) => `channel:${channel}`;
 
 /**
- * Owns the socket.io server: rejects handshakes without a valid access token
- * (`auth.token`, or `Authorization: Bearer` header) and puts every connection
+ * Owns the socket.io server: rejects handshakes without a valid realtime ticket
+ * (`auth.ticket`) or access token (`auth.token`, or `Authorization: Bearer`
+ * header) and puts every connection
  * in its user's room so events can target a user. Channels are socket.io
  * rooms too, so disconnecting leaves them.
  */
@@ -42,6 +47,8 @@ export class SocketIoRealtimeGateway
   constructor(
     @Inject(ACCESS_TOKEN_SERVICE)
     private readonly accessTokens: IAccessTokenService,
+    @Inject(REALTIME_TICKET_SERVICE)
+    private readonly tickets: IRealtimeTicketService,
   ) {}
 
   afterInit(server: Server): void {
@@ -93,6 +100,10 @@ export class SocketIoRealtimeGateway
   private async authenticate(
     socket: Socket,
   ): Promise<TAccessTokenPayload | null> {
+    const ticket: unknown = socket.handshake.auth?.ticket;
+    if (ticket !== undefined) {
+      return typeof ticket === 'string' ? this.tickets.verify(ticket) : null;
+    }
     const fromAuth: unknown = socket.handshake.auth?.token;
     const token =
       typeof fromAuth === 'string'

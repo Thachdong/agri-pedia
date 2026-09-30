@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import { io, Socket as ClientSocket } from 'socket.io-client';
 import { InMemoryAccessTokenService } from '@shared/access-token';
 import { InMemoryRealtimeChannels } from './in-memory.realtime';
+import { InMemoryRealtimeTicketService } from './in-memory.realtime-ticket';
 import { SocketIoRealtimeGateway } from './socket-io.realtime';
 
 describe('SocketIoRealtimeGateway channels (real socket.io)', () => {
@@ -16,7 +17,10 @@ describe('SocketIoRealtimeGateway channels (real socket.io)', () => {
   beforeAll(async () => {
     httpServer = createServer();
     server = new Server(httpServer);
-    gateway = new SocketIoRealtimeGateway(new InMemoryAccessTokenService());
+    gateway = new SocketIoRealtimeGateway(
+      new InMemoryAccessTokenService(),
+      new InMemoryRealtimeTicketService(),
+    );
     (gateway as unknown as { server: Server }).server = server;
     gateway.afterInit(server);
     server.on('connection', (socket) => gateway.handleConnection(socket));
