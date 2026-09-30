@@ -8,6 +8,7 @@ import {
   EnterChatRoomUseCase,
   LeaveChatRoomUseCase,
   ListMyChatRoomsUseCase,
+  ListRoomMessagesUseCase,
   SendChatMessageUseCase,
 } from './application/use-cases';
 import './infrastructure/http/chat.api-docs';
@@ -22,6 +23,7 @@ import { ChatGateway } from './infrastructure/realtime/chat.gateway';
   providers: [
     SendChatMessageUseCase,
     ListMyChatRoomsUseCase,
+    ListRoomMessagesUseCase,
     EnterChatRoomUseCase,
     LeaveChatRoomUseCase,
     ChatGateway,
