@@ -10,6 +10,7 @@ import {
   ActivateUserUseCase,
   ChangePasswordUseCase,
   FindNearbyDistributorsUseCase,
+  GetMyProfileUseCase,
   LoginUserUseCase,
   LogoutUserUseCase,
   RefreshAccessTokenUseCase,
@@ -45,6 +46,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
     ChangePasswordUseCase,
     UpdateProfileUseCase,
     FindNearbyDistributorsUseCase,
+    GetMyProfileUseCase,
     { provide: USER_REPOSITORY, useClass: PgUserRepository },
     { provide: ADDRESS_REPOSITORY, useClass: PgAddressRepository },
     {
