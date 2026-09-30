@@ -5,6 +5,14 @@ import { UserController } from './user.controller';
 defineApiDocs(UserController, {
   tag: 'User',
   operations: {
+    getMe: {
+      summary: 'Get the profile of the caller',
+      description:
+        'Profile as returned by POST /auth/login (user), including the primary address (null if none). ' +
+        'Works for any user with a valid access token, whatever its status.',
+      auth: true,
+      errors: [{ type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' }],
+    },
     updateMe: {
       summary: 'Update the profile of the caller',
       description:
