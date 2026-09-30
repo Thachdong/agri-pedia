@@ -20,5 +20,13 @@ defineApiDocs(ChatController, {
         { type: EDomainErrorType.VALIDATION, code: 'CHAT_INVALID_CURSOR' },
       ],
     },
+    listMessages: {
+      summary: 'List the messages of a chat room',
+      validation: true,
+      auth: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'CHAT_INVALID_CURSOR' },
+      ],
+    },
   },
 });

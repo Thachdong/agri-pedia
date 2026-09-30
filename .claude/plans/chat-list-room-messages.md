@@ -10,7 +10,7 @@ Read-only, không đánh dấu đã đọc (việc đó của `chat.room.enter`)
 Domain + exceptions đã có; index `(room_id, created_at)` đã có → không migration.
 
 - [x] 1. [use-case]        ListRoomMessages; IChatMessageRepository + findPageByRoom
-- [ ] 2. [persistence]     PgChatMessageRepository.findPageByRoom (không migration)
-- [ ] 3. [http]            GET /chat/rooms/:roomId/messages
+- [x] 2. [persistence]     PgChatMessageRepository.findPageByRoom (không migration)
+- [x] 3. [http]            GET /chat/rooms/:roomId/messages
 - [ ] 4. [api-docs]        GET /chat/rooms/:roomId/messages
 - [ ] 5. [boundary-review]
