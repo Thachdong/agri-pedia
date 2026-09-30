@@ -1,0 +1,1805 @@
+{
+  "generatedAt": "2026-09-29T08:54:19.762Z",
+  "users": [
+    {
+      "id": "b0f87c6c-1b16-4f99-8a0f-d23ec98746b8",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Thuốc BVTV Huỳnh Lợi",
+      "loginType": "EMAIL",
+      "email": "seed.distributor01@agripedia.test",
+      "phone": null,
+      "password": "Agri@5969",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_cho_lon",
+        "houseNumber": "604/39 Tỉnh lộ 10",
+        "lat": 10.755003,
+        "long": 106.666922
+      },
+      "productCount": 22
+    },
+    {
+      "id": "960c64c2-f685-4279-816c-7f8c9fbabcc7",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Vườn ươm Huỳnh Phú",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0918500002",
+      "password": "Agri@8347",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_cu_chi",
+        "houseNumber": "651/51 Nguyễn Ảnh Thủ",
+        "lat": 10.965103,
+        "long": 106.488297
+      },
+      "productCount": 28
+    },
+    {
+      "id": "e40b1735-7755-4c73-af62-51095dd12798",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Cơ sở Giống thủy sản Đặng Xanh",
+      "loginType": "EMAIL",
+      "email": "seed.distributor03@agripedia.test",
+      "phone": null,
+      "password": "Agri@1799",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_phu_nhuan",
+        "houseNumber": "Ấp 3, Nguyễn Ảnh Thủ",
+        "lat": 10.794393,
+        "long": 106.678493
+      },
+      "productCount": 12
+    },
+    {
+      "id": "95955bf7-a262-47af-8cac-473d01d08cc3",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Thuốc BVTV Dương Hưng",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0919900004",
+      "password": "Agri@4726",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_nha_be",
+        "houseNumber": "909 Nguyễn Văn Linh",
+        "lat": 10.702067,
+        "long": 106.737428
+      },
+      "productCount": 16
+    },
+    {
+      "id": "56a37074-b22f-4552-98c3-5b53949cb3d0",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Nhà vườn Ngô Thịnh",
+      "loginType": "EMAIL",
+      "email": "seed.distributor05@agripedia.test",
+      "phone": null,
+      "password": "Agri@9785",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_can_gio",
+        "houseNumber": "Ấp 6, Trần Hưng Đạo",
+        "lat": 10.405775,
+        "long": 106.953981
+      },
+      "productCount": 23
+    },
+    {
+      "id": "67f81d5d-3c4f-4901-8c82-06cf98bec752",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại giống Thủy sản Đỗ Thịnh",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0910800006",
+      "password": "Agri@5458",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_can_gio",
+        "houseNumber": "485 Lê Văn Việt",
+        "lat": 10.415234,
+        "long": 106.955636
+      },
+      "productCount": 26
+    },
+    {
+      "id": "bf818885-3d8c-49dc-bc1c-45c8db03622e",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Cửa hàng Vật tư Nông nghiệp Huỳnh Thành",
+      "loginType": "EMAIL",
+      "email": "seed.distributor07@agripedia.test",
+      "phone": null,
+      "password": "Agri@5648",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_binh_tay",
+        "houseNumber": "Ấp 8, Nguyễn Văn Quá",
+        "lat": 10.745517,
+        "long": 106.644594
+      },
+      "productCount": 16
+    },
+    {
+      "id": "2fdbf9ca-dbaf-464c-a14e-f68e5feed72e",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Nhà vườn Phan Việt",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0914600008",
+      "password": "Agri@3356",
+      "address": {
+        "province": "dong_nai",
+        "ward": "phuong_bien_hoa",
+        "houseNumber": "Ấp 7, Phạm Văn Đồng",
+        "lat": 10.951182,
+        "long": 106.818239
+      },
+      "productCount": 26
+    },
+    {
+      "id": "b1a525d4-8a2d-4d80-9273-ae3fb15c5e59",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Cơ sở Giống thủy sản Bùi Phát",
+      "loginType": "EMAIL",
+      "email": "seed.distributor09@agripedia.test",
+      "phone": null,
+      "password": "Agri@7117",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_go_vap",
+        "houseNumber": "82 Quốc lộ 1A",
+        "lat": 10.837683,
+        "long": 106.658597
+      },
+      "productCount": 26
+    },
+    {
+      "id": "dda48eed-a7f4-4af2-a2b0-89281ffe941e",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Thuốc BVTV Lý Lợi",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0914400010",
+      "password": "Agri@7159",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_phu_my",
+        "houseNumber": "Ấp 9, Nguyễn Văn Quá",
+        "lat": 10.596399,
+        "long": 107.052455
+      },
+      "productCount": 18
+    },
+    {
+      "id": "db5e82f8-b083-4a4e-a7ef-3a1c68d27418",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Trại giống cây Nguyễn Phú",
+      "loginType": "EMAIL",
+      "email": "seed.distributor11@agripedia.test",
+      "phone": null,
+      "password": "Agri@5033",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "xa_can_giuoc",
+        "houseNumber": "Ấp 2, Quốc lộ 51",
+        "lat": 10.612148,
+        "long": 106.672997
+      },
+      "productCount": 30
+    },
+    {
+      "id": "35fc1cf0-f478-4180-82b2-f4d9c57d7cd5",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Cơ sở Giống thủy sản Lý Thành",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0910200012",
+      "password": "Agri@5154",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_vung_tau",
+        "houseNumber": "365/40 Nguyễn Ảnh Thủ",
+        "lat": 10.343445,
+        "long": 107.084204
+      },
+      "productCount": 22
+    },
+    {
+      "id": "6370a62f-a2d3-4530-8704-20bc6735d4a0",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Thuốc BVTV Ngô Phú",
+      "loginType": "EMAIL",
+      "email": "seed.distributor13@agripedia.test",
+      "phone": null,
+      "password": "Agri@6957",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_phu_nhuan",
+        "houseNumber": "Ấp 8, Nguyễn Văn Quá",
+        "lat": 10.792526,
+        "long": 106.672817
+      },
+      "productCount": 26
+    },
+    {
+      "id": "59fa11bd-6f3e-4078-9a32-842fdd1c61fb",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Trại giống cây Trương Thành",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0915400014",
+      "password": "Agri@3264",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_ben_cat",
+        "houseNumber": "636 Trần Hưng Đạo",
+        "lat": 11.084872,
+        "long": 106.600529
+      },
+      "productCount": 16
+    },
+    {
+      "id": "3b275560-f4d4-4848-9371-5ace67e76f5b",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại giống Thủy sản Nguyễn Hưng",
+      "loginType": "EMAIL",
+      "email": "seed.distributor15@agripedia.test",
+      "phone": null,
+      "password": "Agri@5540",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "phuong_tan_ninh",
+        "houseNumber": "702 Nguyễn Văn Linh",
+        "lat": 11.30781,
+        "long": 106.098458
+      },
+      "productCount": 10
+    },
+    {
+      "id": "4ed38f56-342f-4e00-949d-27f29647eff7",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Thuốc BVTV Dương Việt",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0915300016",
+      "password": "Agri@3912",
+      "address": {
+        "province": "dong_nai",
+        "ward": "phuong_bien_hoa",
+        "houseNumber": "Ấp 6, Đường số 7",
+        "lat": 10.943977,
+        "long": 106.817695
+      },
+      "productCount": 17
+    },
+    {
+      "id": "f38baa13-68c1-4627-87fe-945195d5beb0",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Nhà vườn Bùi Thịnh",
+      "loginType": "EMAIL",
+      "email": "seed.distributor17@agripedia.test",
+      "phone": null,
+      "password": "Agri@9079",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_hoc_mon",
+        "houseNumber": "Ấp 2, Đường số 7",
+        "lat": 10.882756,
+        "long": 106.59665
+      },
+      "productCount": 29
+    },
+    {
+      "id": "84a94e6e-c241-4dbe-bb11-6823240afc4b",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại cá giống Đặng Nông",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0913500018",
+      "password": "Agri@6316",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_phu",
+        "houseNumber": "200 Tô Ký",
+        "lat": 10.783278,
+        "long": 106.620611
+      },
+      "productCount": 26
+    },
+    {
+      "id": "3a18fc27-e38e-4436-8768-5b6dbf4ab072",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Thuốc BVTV Đặng Phú",
+      "loginType": "EMAIL",
+      "email": "seed.distributor19@agripedia.test",
+      "phone": null,
+      "password": "Agri@9244",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_binh_chanh",
+        "houseNumber": "84/8 Nguyễn Ảnh Thủ",
+        "lat": 10.687761,
+        "long": 106.585266
+      },
+      "productCount": 20
+    },
+    {
+      "id": "426401b6-3ae9-4599-b00b-b95d7c8e92e2",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Vườn ươm Phan Lợi",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0918400020",
+      "password": "Agri@0957",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_trang_bom",
+        "houseNumber": "709 Quốc lộ 22",
+        "lat": 10.948525,
+        "long": 106.998804
+      },
+      "productCount": 13
+    },
+    {
+      "id": "e4dd0b25-817a-49e2-81a0-687a6ec3331d",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Cơ sở Giống thủy sản Trần Thành",
+      "loginType": "EMAIL",
+      "email": "seed.distributor21@agripedia.test",
+      "phone": null,
+      "password": "Agri@9881",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_an_khanh",
+        "houseNumber": "354 Trần Hưng Đạo",
+        "lat": 10.793631,
+        "long": 106.725769
+      },
+      "productCount": 25
+    },
+    {
+      "id": "8f768e38-5547-4b04-ae6c-8c79b63d812f",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Phân bón Hoàng Xanh",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0916100022",
+      "password": "Agri@0687",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_dinh",
+        "houseNumber": "706 Nguyễn Văn Quá",
+        "lat": 10.788046,
+        "long": 106.687742
+      },
+      "productCount": 25
+    },
+    {
+      "id": "d671b8be-ced3-4a0a-ad93-c83403f80ebd",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Nhà vườn Trần Thành",
+      "loginType": "EMAIL",
+      "email": "seed.distributor23@agripedia.test",
+      "phone": null,
+      "password": "Agri@4893",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "xa_duc_hoa",
+        "houseNumber": "Ấp 7, Tỉnh lộ 10",
+        "lat": 10.887276,
+        "long": 106.405683
+      },
+      "productCount": 25
+    },
+    {
+      "id": "43d3c061-2d2f-44c2-80ad-6177d6f117a8",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại cá giống Hoàng Phát",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0912700024",
+      "password": "Agri@4114",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_binh_tay",
+        "houseNumber": "Ấp 4, Phạm Văn Đồng",
+        "lat": 10.748888,
+        "long": 106.638823
+      },
+      "productCount": 22
+    },
+    {
+      "id": "cc98722d-9c77-412e-9275-e33d4564ac86",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Cửa hàng Vật tư Nông nghiệp Bùi Xanh",
+      "loginType": "EMAIL",
+      "email": "seed.distributor25@agripedia.test",
+      "phone": null,
+      "password": "Agri@8028",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_long_thanh",
+        "houseNumber": "Ấp 7, Nguyễn Thị Minh Khai",
+        "lat": 10.783523,
+        "long": 106.944835
+      },
+      "productCount": 23
+    },
+    {
+      "id": "7da385e2-cde7-46e8-bf60-7757d91944dc",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Vườn ươm Đỗ Hưng",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0916100026",
+      "password": "Agri@1854",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "xa_ben_luc",
+        "houseNumber": "776/51 Lê Văn Việt",
+        "lat": 10.641309,
+        "long": 106.496469
+      },
+      "productCount": 25
+    },
+    {
+      "id": "7a61bf54-b4cc-457d-a6cc-0aa9de898291",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại cá giống Phan Nông",
+      "loginType": "EMAIL",
+      "email": "seed.distributor27@agripedia.test",
+      "phone": null,
+      "password": "Agri@2959",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_long_binh",
+        "houseNumber": "295 Phạm Văn Đồng",
+        "lat": 10.874978,
+        "long": 106.813714
+      },
+      "productCount": 21
+    },
+    {
+      "id": "7881e5ab-7cc0-4fd0-ac2e-7daeea92a5a9",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Phân bón Phan Lợi",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0916300028",
+      "password": "Agri@6203",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "xa_ben_luc",
+        "houseNumber": "Ấp 3, Quốc lộ 1A",
+        "lat": 10.633291,
+        "long": 106.494394
+      },
+      "productCount": 28
+    },
+    {
+      "id": "7997a2c7-6bd1-4c4d-b1b8-0f0fb4f45636",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Nhà vườn Đỗ Phú",
+      "loginType": "EMAIL",
+      "email": "seed.distributor29@agripedia.test",
+      "phone": null,
+      "password": "Agri@9617",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_uyen",
+        "houseNumber": "253 Nguyễn Thị Minh Khai",
+        "lat": 11.068838,
+        "long": 106.761556
+      },
+      "productCount": 21
+    },
+    {
+      "id": "e3f0cc8f-d3ab-47e3-b066-bf287f53efbc",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại cá giống Dương Thịnh",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0913100030",
+      "password": "Agri@8961",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_dau_giay",
+        "houseNumber": "Ấp 1, Tô Ký",
+        "lat": 10.937938,
+        "long": 107.140188
+      },
+      "productCount": 21
+    },
+    {
+      "id": "879eb5e9-c85d-4a9e-b3cb-76f86b94e942",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Cửa hàng Vật tư Nông nghiệp Bùi Phát",
+      "loginType": "EMAIL",
+      "email": "seed.distributor31@agripedia.test",
+      "phone": null,
+      "password": "Agri@0432",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "phuong_trang_bang",
+        "houseNumber": "845 Nguyễn Văn Quá",
+        "lat": 11.02749,
+        "long": 106.361653
+      },
+      "productCount": 27
+    },
+    {
+      "id": "3e425686-d11a-48b8-b902-0c7b24804b28",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Nhà vườn Phan An",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0919900032",
+      "password": "Agri@4484",
+      "address": {
+        "province": "dong_nai",
+        "ward": "phuong_long_khanh",
+        "houseNumber": "Ấp 6, Nguyễn Văn Linh",
+        "lat": 10.928771,
+        "long": 107.233974
+      },
+      "productCount": 26
+    },
+    {
+      "id": "b29c807a-0505-484c-b373-610590c9449e",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại giống Thủy sản Trương Thịnh",
+      "loginType": "EMAIL",
+      "email": "seed.distributor33@agripedia.test",
+      "phone": null,
+      "password": "Agri@7337",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_thoi_an",
+        "houseNumber": "136/29 Tỉnh lộ 10",
+        "lat": 10.881344,
+        "long": 106.654633
+      },
+      "productCount": 15
+    },
+    {
+      "id": "4a264c7e-9a13-4c0e-8ea4-52ff740db283",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Cửa hàng Vật tư Nông nghiệp Huỳnh Nông",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0916900034",
+      "password": "Agri@6980",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_thu_dau_mot",
+        "houseNumber": "176 Quốc lộ 1A",
+        "lat": 10.976498,
+        "long": 106.650219
+      },
+      "productCount": 20
+    },
+    {
+      "id": "bbd132a9-eaf0-4873-94b8-79356aa69741",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Cửa hàng Giống cây trồng Hoàng Lợi",
+      "loginType": "EMAIL",
+      "email": "seed.distributor35@agripedia.test",
+      "phone": null,
+      "password": "Agri@5521",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_hoc_mon",
+        "houseNumber": "Ấp 4, Đại lộ Bình Dương",
+        "lat": 10.878999,
+        "long": 106.597423
+      },
+      "productCount": 23
+    },
+    {
+      "id": "d39df986-2ed4-424b-9361-e0b36c1547fe",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại tôm giống Trương Hưng",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0911000036",
+      "password": "Agri@6031",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_hoc_mon",
+        "houseNumber": "351 Quốc lộ 22",
+        "lat": 10.891013,
+        "long": 106.584548
+      },
+      "productCount": 29
+    },
+    {
+      "id": "361c1d26-7ff5-4fcc-a655-c4a43c5e4503",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Thuốc BVTV Trần An",
+      "loginType": "EMAIL",
+      "email": "seed.distributor37@agripedia.test",
+      "phone": null,
+      "password": "Agri@1316",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_nhon_trach",
+        "houseNumber": "971/7 Tô Ký",
+        "lat": 10.715593,
+        "long": 106.892098
+      },
+      "productCount": 12
+    },
+    {
+      "id": "e64f2561-693f-4f17-b08d-65118d473159",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Trại giống cây Phạm Lợi",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0918300038",
+      "password": "Agri@0365",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_my",
+        "houseNumber": "Ấp 6, Nguyễn Ảnh Thủ",
+        "lat": 10.730475,
+        "long": 106.717743
+      },
+      "productCount": 14
+    },
+    {
+      "id": "6698ec33-1823-46c7-a2be-1f47358e836b",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại giống Thủy sản Đặng Thịnh",
+      "loginType": "EMAIL",
+      "email": "seed.distributor39@agripedia.test",
+      "phone": null,
+      "password": "Agri@5563",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_long_binh",
+        "houseNumber": "Ấp 7, Lê Văn Việt",
+        "lat": 10.875241,
+        "long": 106.819296
+      },
+      "productCount": 14
+    },
+    {
+      "id": "e75f1fcd-e048-41a6-9944-fdae6d50e138",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Cửa hàng Vật tư Nông nghiệp Lý Việt",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0910300040",
+      "password": "Agri@3107",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_binh_tan",
+        "houseNumber": "23 Lê Trọng Tấn",
+        "lat": 10.760653,
+        "long": 106.609318
+      },
+      "productCount": 29
+    },
+    {
+      "id": "6988de3c-2d20-4896-9ec0-2a85197d35b0",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Trại giống cây Võ Việt",
+      "loginType": "EMAIL",
+      "email": "seed.distributor41@agripedia.test",
+      "phone": null,
+      "password": "Agri@3121",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_ben_cat",
+        "houseNumber": "260 Tỉnh lộ 10",
+        "lat": 11.088215,
+        "long": 106.599353
+      },
+      "productCount": 11
+    },
+    {
+      "id": "d766aacc-3265-4433-9e65-1dcee03ad2d2",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Cơ sở Giống thủy sản Lý Nông",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0916900042",
+      "password": "Agri@5328",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_trang_bom",
+        "houseNumber": "446 Đại lộ Bình Dương",
+        "lat": 10.957526,
+        "long": 107.000667
+      },
+      "productCount": 23
+    },
+    {
+      "id": "ebd0e826-981f-470f-aa91-becbe2572596",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý VTNN Ngô Việt",
+      "loginType": "EMAIL",
+      "email": "seed.distributor43@agripedia.test",
+      "phone": null,
+      "password": "Agri@1398",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_binh",
+        "houseNumber": "Ấp 3, Phạm Văn Đồng",
+        "lat": 10.799713,
+        "long": 106.657601
+      },
+      "productCount": 17
+    },
+    {
+      "id": "91e95155-6957-4e39-a723-3c3b835b9008",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Cửa hàng Giống cây trồng Lý Nông",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0919200044",
+      "password": "Agri@6759",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_di_an",
+        "houseNumber": "964 Lê Trọng Tấn",
+        "lat": 10.902345,
+        "long": 106.774358
+      },
+      "productCount": 14
+    },
+    {
+      "id": "66cc4746-e66b-4daf-b6b3-c69ccf1f9a31",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại tôm giống Võ Phát",
+      "loginType": "EMAIL",
+      "email": "seed.distributor45@agripedia.test",
+      "phone": null,
+      "password": "Agri@1914",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_thu_duc",
+        "houseNumber": "751 Huỳnh Tấn Phát",
+        "lat": 10.85113,
+        "long": 106.753474
+      },
+      "productCount": 14
+    },
+    {
+      "id": "06ca91ee-7f57-40dc-a59b-2a9a93a61133",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Cửa hàng Vật tư Nông nghiệp Đỗ An",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0916600046",
+      "password": "Agri@9736",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_vung_tau",
+        "houseNumber": "754 Trần Hưng Đạo",
+        "lat": 10.344165,
+        "long": 107.077041
+      },
+      "productCount": 26
+    },
+    {
+      "id": "a32748f2-0c02-4e70-b64f-fa822ff230ac",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Trại giống cây Nguyễn Phú",
+      "loginType": "EMAIL",
+      "email": "seed.distributor47@agripedia.test",
+      "phone": null,
+      "password": "Agri@8859",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_ben_thanh",
+        "houseNumber": "974 Quốc lộ 22",
+        "lat": 10.774696,
+        "long": 106.693734
+      },
+      "productCount": 29
+    },
+    {
+      "id": "5862e185-9115-47c7-943d-f0f1f4475122",
+      "role": "DISTRIBUTOR",
+      "businessType": "AQUACULTURE_SEEDLINGS",
+      "username": "Trại cá giống Lê Phát",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0913800048",
+      "password": "Agri@0484",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_hung",
+        "houseNumber": "Ấp 7, Võ Văn Kiệt",
+        "lat": 10.742458,
+        "long": 106.699991
+      },
+      "productCount": 12
+    },
+    {
+      "id": "7b92e422-ee85-4170-8373-82e58c4031ed",
+      "role": "DISTRIBUTOR",
+      "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
+      "username": "Đại lý Phân bón Đỗ Thành",
+      "loginType": "EMAIL",
+      "email": "seed.distributor49@agripedia.test",
+      "phone": null,
+      "password": "Agri@7625",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_binh_tan",
+        "houseNumber": "447/16 Hương lộ 2",
+        "lat": 10.76348,
+        "long": 106.603345
+      },
+      "productCount": 16
+    },
+    {
+      "id": "87f415fa-c6fd-497d-8214-b4029c2f6f4b",
+      "role": "DISTRIBUTOR",
+      "businessType": "SEEDS_SEEDLINGS",
+      "username": "Trại giống cây Bùi Hưng",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0910000050",
+      "password": "Agri@5924",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_trung_my_tay",
+        "houseNumber": "644 Đường số 7",
+        "lat": 10.857878,
+        "long": 106.616078
+      },
+      "productCount": 10
+    },
+    {
+      "id": "15522947-96a3-4638-b949-695954d04961",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Bùi Đức Dũng",
+      "loginType": "EMAIL",
+      "email": "seed.farmer01@agripedia.test",
+      "phone": null,
+      "password": "Agri@5161",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_can_gio",
+        "houseNumber": "Ấp 4, Võ Văn Kiệt",
+        "lat": 10.410504,
+        "long": 106.9482
+      },
+      "productCount": 0
+    },
+    {
+      "id": "9839109a-79f4-43f6-a83d-9c25c7c9a276",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Nguyễn Đức Tuấn",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0928900002",
+      "password": "Agri@1412",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "xa_ben_luc",
+        "houseNumber": "530 Tô Ký",
+        "lat": 10.636433,
+        "long": 106.494281
+      },
+      "productCount": 0
+    },
+    {
+      "id": "55767282-f757-45be-a484-e0c5e309fcb9",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Võ Đức Trung",
+      "loginType": "EMAIL",
+      "email": "seed.farmer03@agripedia.test",
+      "phone": null,
+      "password": "Agri@2580",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_sai_gon",
+        "houseNumber": "879 Hương lộ 2",
+        "lat": 10.775306,
+        "long": 106.698528
+      },
+      "productCount": 0
+    },
+    {
+      "id": "d3b67e46-1156-41b2-8696-ccf85c9ddd2d",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lý Thanh Trang",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0922700004",
+      "password": "Agri@7615",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_vung_tau",
+        "houseNumber": "Ấp 3, Võ Văn Kiệt",
+        "lat": 10.349842,
+        "long": 107.085479
+      },
+      "productCount": 0
+    },
+    {
+      "id": "84a5486d-3d78-48a5-b179-bcb2c4b1d60e",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Đặng Thị Tuấn",
+      "loginType": "EMAIL",
+      "email": "seed.farmer05@agripedia.test",
+      "phone": null,
+      "password": "Agri@2776",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_hung",
+        "houseNumber": "Ấp 1, Huỳnh Tấn Phát",
+        "lat": 10.746283,
+        "long": 106.704192
+      },
+      "productCount": 0
+    },
+    {
+      "id": "02cc993b-3e17-4ec0-b90e-510a837a102c",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Phạm Thị Kim Dũng",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0920100006",
+      "password": "Agri@1049",
+      "address": {
+        "province": "dong_nai",
+        "ward": "phuong_bien_hoa",
+        "houseNumber": "130 Phạm Văn Đồng",
+        "lat": 10.947959,
+        "long": 106.825565
+      },
+      "productCount": 0
+    },
+    {
+      "id": "7df0735e-93ff-4eba-9333-6e3df373f6ed",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trương Văn Quang",
+      "loginType": "EMAIL",
+      "email": "seed.farmer07@agripedia.test",
+      "phone": null,
+      "password": "Agri@0010",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_dau_giay",
+        "houseNumber": "807 Lê Văn Việt",
+        "lat": 10.932888,
+        "long": 107.134077
+      },
+      "productCount": 0
+    },
+    {
+      "id": "055f01e6-2eb6-4ca3-98d6-0216fbd4b11c",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trương Văn Hòa",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0924000008",
+      "password": "Agri@2693",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_binh_chanh",
+        "houseNumber": "406 Lê Văn Việt",
+        "lat": 10.692356,
+        "long": 106.577418
+      },
+      "productCount": 0
+    },
+    {
+      "id": "cae6a2bf-1fad-42ad-9162-f6e5b2038907",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trương Thị Hải",
+      "loginType": "EMAIL",
+      "email": "seed.farmer09@agripedia.test",
+      "phone": null,
+      "password": "Agri@6622",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_thoi_an",
+        "houseNumber": "592 Lê Văn Việt",
+        "lat": 10.874867,
+        "long": 106.647767
+      },
+      "productCount": 0
+    },
+    {
+      "id": "88320e24-6ea6-467b-afb1-40586f7e2c67",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Đặng Ngọc Trang",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0927900010",
+      "password": "Agri@9930",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_phu_nhuan",
+        "houseNumber": "990 Nguyễn Thị Minh Khai",
+        "lat": 10.805638,
+        "long": 106.680531
+      },
+      "productCount": 0
+    },
+    {
+      "id": "623d89a3-dbe7-4c8a-9b26-0c8adfa52993",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Võ Đức Tuấn",
+      "loginType": "EMAIL",
+      "email": "seed.farmer11@agripedia.test",
+      "phone": null,
+      "password": "Agri@9050",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_trang_bom",
+        "houseNumber": "149 Nguyễn Văn Linh",
+        "lat": 10.946785,
+        "long": 107.004848
+      },
+      "productCount": 0
+    },
+    {
+      "id": "60eefcc8-b063-4efe-b8be-961737ab1991",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lý Thị Kim Hà",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0923200012",
+      "password": "Agri@8429",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_thuan_an",
+        "houseNumber": "Ấp 4, Nguyễn Thị Minh Khai",
+        "lat": 10.924595,
+        "long": 106.70781
+      },
+      "productCount": 0
+    },
+    {
+      "id": "40237d8f-c492-4e4c-acb5-7498b7a47bb8",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Nguyễn Thị Hòa",
+      "loginType": "EMAIL",
+      "email": "seed.farmer13@agripedia.test",
+      "phone": null,
+      "password": "Agri@6497",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_binh_chanh",
+        "houseNumber": "113 Quốc lộ 22",
+        "lat": 10.688484,
+        "long": 106.572208
+      },
+      "productCount": 0
+    },
+    {
+      "id": "dc77e7f8-ad05-4805-af1f-9d7377a15b35",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Dương Minh Trang",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0928000014",
+      "password": "Agri@9985",
+      "address": {
+        "province": "dong_nai",
+        "ward": "phuong_bien_hoa",
+        "houseNumber": "Ấp 6, Lê Lợi",
+        "lat": 10.945812,
+        "long": 106.817767
+      },
+      "productCount": 0
+    },
+    {
+      "id": "32fc1cfc-8f72-4e5a-ad19-da1b44f0925e",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Phan Minh Lộc",
+      "loginType": "EMAIL",
+      "email": "seed.farmer15@agripedia.test",
+      "phone": null,
+      "password": "Agri@6813",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_long_binh",
+        "houseNumber": "522 Võ Văn Kiệt",
+        "lat": 10.875321,
+        "long": 106.810655
+      },
+      "productCount": 0
+    },
+    {
+      "id": "7ea3be77-b63d-4e72-856b-382638604545",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trương Thanh An",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0925600016",
+      "password": "Agri@1897",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_long_binh",
+        "houseNumber": "Ấp 4, Quốc lộ 51",
+        "lat": 10.873325,
+        "long": 106.822025
+      },
+      "productCount": 0
+    },
+    {
+      "id": "6d9ff534-7f7e-45ef-8968-76a1a8d35211",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Ngô Hoàng Trang",
+      "loginType": "EMAIL",
+      "email": "seed.farmer17@agripedia.test",
+      "phone": null,
+      "password": "Agri@1709",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_trung_my_tay",
+        "houseNumber": "376 Lê Trọng Tấn",
+        "lat": 10.852471,
+        "long": 106.611642
+      },
+      "productCount": 0
+    },
+    {
+      "id": "e4009260-2036-47ca-88e6-496859e822fa",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Bùi Minh An",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0923600018",
+      "password": "Agri@9673",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_uyen",
+        "houseNumber": "Ấp 8, Nguyễn Văn Linh",
+        "lat": 11.06236,
+        "long": 106.759657
+      },
+      "productCount": 0
+    },
+    {
+      "id": "1ae356a4-9602-457c-982a-8d8d249401f0",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Phạm Thị Kim Lộc",
+      "loginType": "EMAIL",
+      "email": "seed.farmer19@agripedia.test",
+      "phone": null,
+      "password": "Agri@4679",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_long_thanh",
+        "houseNumber": "886 Quốc lộ 22",
+        "lat": 10.778667,
+        "long": 106.950797
+      },
+      "productCount": 0
+    },
+    {
+      "id": "1b6b8ff2-5379-4fc2-bbd5-6efe42ce8472",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Hoàng Thị Kim Yến",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0924500020",
+      "password": "Agri@2361",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_hoc_mon",
+        "houseNumber": "Ấp 2, Lê Trọng Tấn",
+        "lat": 10.887004,
+        "long": 106.593206
+      },
+      "productCount": 0
+    },
+    {
+      "id": "b3bbd4e7-86f9-425a-87b7-70a269c89315",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lê Thị Sơn",
+      "loginType": "EMAIL",
+      "email": "seed.farmer21@agripedia.test",
+      "phone": null,
+      "password": "Agri@4529",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_dau_giay",
+        "houseNumber": "354 Lê Văn Việt",
+        "lat": 10.944313,
+        "long": 107.138712
+      },
+      "productCount": 0
+    },
+    {
+      "id": "a90acdc3-8b71-4d69-9615-16ea7b006042",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lý Hoàng Trung",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0920400022",
+      "password": "Agri@8958",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_hung",
+        "houseNumber": "Ấp 2, Đại lộ Bình Dương",
+        "lat": 10.747476,
+        "long": 106.704174
+      },
+      "productCount": 0
+    },
+    {
+      "id": "980a27df-a2f0-42bb-b0b3-a25a8c497670",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Hoàng Thị Yến",
+      "loginType": "EMAIL",
+      "email": "seed.farmer23@agripedia.test",
+      "phone": null,
+      "password": "Agri@0901",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_phu_nhuan",
+        "houseNumber": "218 Võ Văn Kiệt",
+        "lat": 10.80501,
+        "long": 106.675295
+      },
+      "productCount": 0
+    },
+    {
+      "id": "59eac4ef-50f4-4f42-a30a-1cebcfabfdd9",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lý Thị Trang",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0929800024",
+      "password": "Agri@5288",
+      "address": {
+        "province": "dong_nai",
+        "ward": "phuong_long_khanh",
+        "houseNumber": "947 Huỳnh Tấn Phát",
+        "lat": 10.941221,
+        "long": 107.24445
+      },
+      "productCount": 0
+    },
+    {
+      "id": "1c2a76fb-e066-4793-943d-440fbf28aac0",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Hoàng Quốc Phúc",
+      "loginType": "EMAIL",
+      "email": "seed.farmer25@agripedia.test",
+      "phone": null,
+      "password": "Agri@2508",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_cat_lai",
+        "houseNumber": "485 Nguyễn Văn Quá",
+        "lat": 10.76755,
+        "long": 106.785373
+      },
+      "productCount": 0
+    },
+    {
+      "id": "8e4702e1-3006-4419-b2e0-d5a4726db31c",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Huỳnh Ngọc Nam",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0927600026",
+      "password": "Agri@9878",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_di_an",
+        "houseNumber": "Ấp 3, Nguyễn Thị Minh Khai",
+        "lat": 10.907812,
+        "long": 106.769096
+      },
+      "productCount": 0
+    },
+    {
+      "id": "264ffb00-80b7-4ddb-9e6f-3a53742e0e43",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Huỳnh Ngọc Bình",
+      "loginType": "EMAIL",
+      "email": "seed.farmer27@agripedia.test",
+      "phone": null,
+      "password": "Agri@3722",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_go_vap",
+        "houseNumber": "227 Tô Ký",
+        "lat": 10.831389,
+        "long": 106.671605
+      },
+      "productCount": 0
+    },
+    {
+      "id": "83a8ec6f-f6bb-4016-80c5-86ef2809caaf",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Đặng Thanh Tài",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0928600028",
+      "password": "Agri@3503",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_ben_thanh",
+        "houseNumber": "421 Nguyễn Văn Linh",
+        "lat": 10.779002,
+        "long": 106.702391
+      },
+      "productCount": 0
+    },
+    {
+      "id": "a1e08283-e14d-4038-b9f2-8a664b21158e",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Phan Thị Lan",
+      "loginType": "EMAIL",
+      "email": "seed.farmer29@agripedia.test",
+      "phone": null,
+      "password": "Agri@1906",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_an_lac",
+        "houseNumber": "Ấp 4, Nguyễn Ảnh Thủ",
+        "lat": 10.732888,
+        "long": 106.615044
+      },
+      "productCount": 0
+    },
+    {
+      "id": "c061eef5-4309-4a41-ad8d-f7ecbb69687f",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Huỳnh Ngọc Lan",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0927400030",
+      "password": "Agri@0201",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_long_binh",
+        "houseNumber": "Ấp 7, Lê Lợi",
+        "lat": 10.868793,
+        "long": 106.81713
+      },
+      "productCount": 0
+    },
+    {
+      "id": "b7b176bb-1fd7-40bb-a6be-6cb3d41b6ae8",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trần Thanh Hà",
+      "loginType": "EMAIL",
+      "email": "seed.farmer31@agripedia.test",
+      "phone": null,
+      "password": "Agri@5486",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_binh_tay",
+        "houseNumber": "162 Huỳnh Tấn Phát",
+        "lat": 10.755175,
+        "long": 106.638019
+      },
+      "productCount": 0
+    },
+    {
+      "id": "b627d447-f36c-4018-9131-df782adffa27",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lê Thị Phúc",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0926300032",
+      "password": "Agri@7182",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_hoc_mon",
+        "houseNumber": "799 Quốc lộ 51",
+        "lat": 10.885368,
+        "long": 106.584809
+      },
+      "productCount": 0
+    },
+    {
+      "id": "ca76be71-3703-485d-87e9-88b017698c99",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trần Quốc Tâm",
+      "loginType": "EMAIL",
+      "email": "seed.farmer33@agripedia.test",
+      "phone": null,
+      "password": "Agri@5273",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_binh",
+        "houseNumber": "581 Quốc lộ 22",
+        "lat": 10.802925,
+        "long": 106.647304
+      },
+      "productCount": 0
+    },
+    {
+      "id": "78246527-7317-4a85-a2d8-40bd9ecd20f0",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Võ Thị Hải",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0921600034",
+      "password": "Agri@4292",
+      "address": {
+        "province": "tay_ninh",
+        "ward": "xa_can_duoc",
+        "houseNumber": "15 Nguyễn Ảnh Thủ",
+        "lat": 10.50654,
+        "long": 106.605947
+      },
+      "productCount": 0
+    },
+    {
+      "id": "8ecc6a98-016b-4abf-9833-9c969e5da201",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Ngô Quốc Tâm",
+      "loginType": "EMAIL",
+      "email": "seed.farmer35@agripedia.test",
+      "phone": null,
+      "password": "Agri@7526",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_thu_dau_mot",
+        "houseNumber": "845 Đại lộ Bình Dương",
+        "lat": 10.987849,
+        "long": 106.649524
+      },
+      "productCount": 0
+    },
+    {
+      "id": "d4f968f0-a392-4c0d-ada4-0118fd340c4b",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Đỗ Thanh Nam",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0921000036",
+      "password": "Agri@2043",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_an_khanh",
+        "houseNumber": "Ấp 4, Nguyễn Ảnh Thủ",
+        "lat": 10.789333,
+        "long": 106.737359
+      },
+      "productCount": 0
+    },
+    {
+      "id": "c2c98c77-1abd-4022-a3b2-d3780dfd4db0",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trương Đức Tài",
+      "loginType": "EMAIL",
+      "email": "seed.farmer37@agripedia.test",
+      "phone": null,
+      "password": "Agri@4825",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_cat_lai",
+        "houseNumber": "133 Lê Trọng Tấn",
+        "lat": 10.773714,
+        "long": 106.774752
+      },
+      "productCount": 0
+    },
+    {
+      "id": "78eb2a78-a870-4420-8641-20ac540f8436",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Đặng Hữu Tâm",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0920600038",
+      "password": "Agri@5700",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_go_vap",
+        "houseNumber": "Ấp 6, Đại lộ Bình Dương",
+        "lat": 10.834204,
+        "long": 106.664134
+      },
+      "productCount": 0
+    },
+    {
+      "id": "3f2ee629-91aa-4d9c-86f7-e7c4dbf2f405",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Huỳnh Quốc Phúc",
+      "loginType": "EMAIL",
+      "email": "seed.farmer39@agripedia.test",
+      "phone": null,
+      "password": "Agri@7296",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_an_khanh",
+        "houseNumber": "Ấp 5, Nguyễn Thị Minh Khai",
+        "lat": 10.786127,
+        "long": 106.727773
+      },
+      "productCount": 0
+    },
+    {
+      "id": "5b4dbec7-34f4-4aa2-9526-5ab8e11df31f",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Nguyễn Thị Kim Cường",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0928400040",
+      "password": "Agri@2060",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_di_an",
+        "houseNumber": "593 Lê Lợi",
+        "lat": 10.900623,
+        "long": 106.776791
+      },
+      "productCount": 0
+    },
+    {
+      "id": "44271913-7c16-47ab-97ba-04470c447b67",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Trần Hữu Hải",
+      "loginType": "EMAIL",
+      "email": "seed.farmer41@agripedia.test",
+      "phone": null,
+      "password": "Agri@2457",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_binh_tay",
+        "houseNumber": "661 Đại lộ Bình Dương",
+        "lat": 10.7569,
+        "long": 106.648176
+      },
+      "productCount": 0
+    },
+    {
+      "id": "42c00065-bcff-4db2-a778-eda4f3f2e96c",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Phan Ngọc Phúc",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0923200042",
+      "password": "Agri@2188",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_can_gio",
+        "houseNumber": "Ấp 9, Lê Lợi",
+        "lat": 10.410856,
+        "long": 106.960666
+      },
+      "productCount": 0
+    },
+    {
+      "id": "f1731dc6-26cd-4155-888c-0af9c76354e3",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lý Văn Vy",
+      "loginType": "EMAIL",
+      "email": "seed.farmer43@agripedia.test",
+      "phone": null,
+      "password": "Agri@6294",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_trang_bom",
+        "houseNumber": "197 Lê Lợi",
+        "lat": 10.958605,
+        "long": 106.993954
+      },
+      "productCount": 0
+    },
+    {
+      "id": "8f522e0a-0a31-4e59-841a-ccb764596d17",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Nguyễn Thanh Long",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0925800044",
+      "password": "Agri@3233",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_dinh",
+        "houseNumber": "283 Nguyễn Văn Quá",
+        "lat": 10.786523,
+        "long": 106.684258
+      },
+      "productCount": 0
+    },
+    {
+      "id": "5c354ff0-3241-4175-ba72-82671b6bc536",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lê Hữu Trang",
+      "loginType": "EMAIL",
+      "email": "seed.farmer45@agripedia.test",
+      "phone": null,
+      "password": "Agri@3800",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_tan_binh",
+        "houseNumber": "Ấp 1, Nguyễn Văn Linh",
+        "lat": 10.791266,
+        "long": 106.649657
+      },
+      "productCount": 0
+    },
+    {
+      "id": "a8a6e96b-e4ed-401a-8661-920187ce9b0d",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Dương Thị Yến",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0926700046",
+      "password": "Agri@1142",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_long_thanh",
+        "houseNumber": "Ấp 2, Phạm Văn Đồng",
+        "lat": 10.785862,
+        "long": 106.953425
+      },
+      "productCount": 0
+    },
+    {
+      "id": "4d4fbb45-9880-49a4-9307-a99515869b09",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Đỗ Văn Bình",
+      "loginType": "EMAIL",
+      "email": "seed.farmer47@agripedia.test",
+      "phone": null,
+      "password": "Agri@2174",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_thoi_an",
+        "houseNumber": "969 Nguyễn Thị Minh Khai",
+        "lat": 10.882048,
+        "long": 106.642376
+      },
+      "productCount": 0
+    },
+    {
+      "id": "6c1711b1-1c37-4c19-bf1d-e72895e83b77",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Võ Văn Vy",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0929500048",
+      "password": "Agri@5438",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "phuong_binh_thanh",
+        "houseNumber": "365 Lê Trọng Tấn",
+        "lat": 10.804835,
+        "long": 106.702157
+      },
+      "productCount": 0
+    },
+    {
+      "id": "2ea555d8-19a3-47bf-b18a-f2c0d2b8daf4",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Lê Quốc Sơn",
+      "loginType": "EMAIL",
+      "email": "seed.farmer49@agripedia.test",
+      "phone": null,
+      "password": "Agri@7355",
+      "address": {
+        "province": "ho_chi_minh",
+        "ward": "xa_binh_chanh",
+        "houseNumber": "219 Võ Văn Kiệt",
+        "lat": 10.693434,
+        "long": 106.573466
+      },
+      "productCount": 0
+    },
+    {
+      "id": "26c56690-3967-43c7-a0c6-c254d651bc96",
+      "role": "FARMER",
+      "businessType": null,
+      "username": "Dương Thanh Hùng",
+      "loginType": "PHONE",
+      "email": null,
+      "phone": "0920400050",
+      "password": "Agri@4392",
+      "address": {
+        "province": "dong_nai",
+        "ward": "xa_nhon_trach",
+        "houseNumber": "496 Trần Hưng Đạo",
+        "lat": 10.705321,
+        "long": 106.891829
+      },
+      "productCount": 0
+    }
+  ]
+}
