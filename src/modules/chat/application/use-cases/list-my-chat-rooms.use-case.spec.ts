@@ -1,3 +1,5 @@
+import { IMediaQueryPort, TMediaThumbnail } from '@modules/media/contracts';
+import { IUserQueryPort, TUserProfileSummary } from '@modules/user/contracts';
 import {
   ChatMessage,
   ChatRoom,
@@ -22,11 +24,28 @@ describe('ListMyChatRoomsUseCase', () => {
   let messages: InMemoryChatMessageRepository;
   let rooms: InMemoryChatRoomRepository;
   let useCase: ListMyChatRoomsUseCase;
+  let profiles: TUserProfileSummary[];
+  let avatars: TMediaThumbnail[];
 
   beforeEach(() => {
     messages = new InMemoryChatMessageRepository();
     rooms = new InMemoryChatRoomRepository(messages);
-    useCase = new ListMyChatRoomsUseCase(rooms);
+    profiles = [];
+    avatars = [];
+    const userQuery: IUserQueryPort = {
+      findByIdentifier: async () => null,
+      findRoleById: async () => null,
+      findProfileById: async () => null,
+      listProfilesByIds: async (userIds) =>
+        profiles.filter((profile) => userIds.includes(profile.userId)),
+    };
+    const mediaQuery: IMediaQueryPort = {
+      findThumbnails: async (ownerType, ownerIds) =>
+        ownerType === 'USER_AVATAR'
+          ? avatars.filter((avatar) => ownerIds.includes(avatar.ownerId))
+          : [],
+    };
+    useCase = new ListMyChatRoomsUseCase(rooms, userQuery, mediaQuery);
   });
 
   const seedRoom = (
@@ -80,6 +99,8 @@ describe('ListMyChatRoomsUseCase', () => {
         {
           roomId: ids.r2,
           otherUserId: 'shop-b',
+          otherUsername: null,
+          otherUserAvatar: null,
           lastMessage: {
             messageId: newest.id,
             senderId: 'shop-b',
@@ -97,6 +118,36 @@ describe('ListMyChatRoomsUseCase', () => {
       ],
       nextCursor: null,
     });
+  });
+
+  it("adds the other member's username and avatar", async () => {
+    const withShopA = seedRoom(ids.r1, 'farmer', 'shop-a');
+    const withShopB = seedRoom(ids.r2, 'shop-b', 'farmer');
+    post(withShopA, 'shop-a', at(3));
+    post(withShopB, 'shop-b', at(2));
+    profiles = [
+      { userId: 'shop-a', username: 'Shop A', role: 'DISTRIBUTOR' },
+      { userId: 'shop-b', username: 'Shop B', role: 'DISTRIBUTOR' },
+      { userId: 'farmer', username: 'Me', role: 'FARMER' },
+    ];
+    avatars = [{ ownerId: 'shop-a', url: 'https://avatar/shop-a' }];
+
+    const output = await useCase.execute({ userId: 'farmer', limit: 10 });
+
+    expect(
+      output.rooms.map(({ otherUserId, otherUsername, otherUserAvatar }) => ({
+        otherUserId,
+        otherUsername,
+        otherUserAvatar,
+      })),
+    ).toEqual([
+      {
+        otherUserId: 'shop-a',
+        otherUsername: 'Shop A',
+        otherUserAvatar: 'https://avatar/shop-a',
+      },
+      { otherUserId: 'shop-b', otherUsername: 'Shop B', otherUserAvatar: null },
+    ]);
   });
 
   it('never counts my own messages as unread', async () => {

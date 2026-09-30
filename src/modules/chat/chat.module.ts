@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MediaModule } from '@modules/media/media.module';
 import { UserModule } from '@modules/user/user.module';
 import {
   CHAT_MESSAGE_REPOSITORY,
@@ -18,7 +19,7 @@ import { PgChatRoomRepository } from './infrastructure/persistence/pg-chat-room.
 import { ChatGateway } from './infrastructure/realtime/chat.gateway';
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule, MediaModule],
   controllers: [ChatController],
   providers: [
     SendChatMessageUseCase,

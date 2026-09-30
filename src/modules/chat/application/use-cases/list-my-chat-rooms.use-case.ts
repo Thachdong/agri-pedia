@@ -1,4 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
+import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { InvalidChatCursorException } from '../../domain';
 import {
   CHAT_ROOM_REPOSITORY,
@@ -16,6 +18,10 @@ export type TListMyChatRoomsInput = {
 export type TChatRoomItem = {
   roomId: string;
   otherUserId: string;
+  /** Null when the other user no longer exists. */
+  otherUsername: string | null;
+  /** Signed read URL of the other user's avatar; null when none. */
+  otherUserAvatar: string | null;
   lastMessage: { messageId: string; senderId: string; message: string } | null;
   lastMessageAt: Date;
   unreadCount: number;
@@ -55,11 +61,13 @@ const decodeCursor = (cursor: string): TChatRoomPageKey => {
   }
 };
 
-/** The caller's chat rooms, most recent message first, with unread counts; keyset-paginated. */
+/** The caller's chat rooms, most recent message first, with unread counts and the other member's profile; keyset-paginated. */
 @Injectable()
 export class ListMyChatRoomsUseCase {
   constructor(
     @Inject(CHAT_ROOM_REPOSITORY) private readonly rooms: IChatRoomRepository,
+    @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   async execute(input: TListMyChatRoomsInput): Promise<TListMyChatRoomsOutput> {
@@ -84,19 +92,38 @@ export class ListMyChatRoomsUseCase {
           })
         : null;
 
+    const otherUserIds = [
+      ...new Set(page.map(({ room }) => room.otherMember(input.userId))),
+    ];
+    const [profiles, avatars] = await Promise.all([
+      this.userQuery.listProfilesByIds(otherUserIds),
+      this.mediaQuery.findThumbnails('USER_AVATAR', otherUserIds),
+    ]);
+    const usernames = new Map(
+      profiles.map((profile) => [profile.userId, profile.username]),
+    );
+    const avatarUrls = new Map(
+      avatars.map((avatar) => [avatar.ownerId, avatar.url]),
+    );
+
     return {
       totalUnread,
-      rooms: page.map(({ room, lastMessage, unreadCount }) => ({
-        roomId: room.id,
-        otherUserId: room.otherMember(input.userId),
-        lastMessage: lastMessage && {
-          messageId: lastMessage.id,
-          senderId: lastMessage.senderId,
-          message: lastMessage.message,
-        },
-        lastMessageAt: room.lastMessageAt,
-        unreadCount,
-      })),
+      rooms: page.map(({ room, lastMessage, unreadCount }) => {
+        const otherUserId = room.otherMember(input.userId);
+        return {
+          roomId: room.id,
+          otherUserId,
+          otherUsername: usernames.get(otherUserId) ?? null,
+          otherUserAvatar: avatarUrls.get(otherUserId) ?? null,
+          lastMessage: lastMessage && {
+            messageId: lastMessage.id,
+            senderId: lastMessage.senderId,
+            message: lastMessage.message,
+          },
+          lastMessageAt: room.lastMessageAt,
+          unreadCount,
+        };
+      }),
       nextCursor,
     };
   }

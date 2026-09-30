@@ -307,6 +307,64 @@
         ]
       }
     },
+    "/auth/realtime-ticket": {
+      "post": {
+        "operationId": "AuthController_realtimeTicket",
+        "summary": "Issue a realtime ticket for the caller",
+        "description": "For browsers behind a BFF that must not hold the access token: the BFF calls this with the access token and hands only the ticket to the browser, which opens the socket.io connection with `auth: { ticket }`. The ticket expires after `expiresIn` seconds (default 30) and only needs to be valid at the handshake; fetch a new one for every connect/reconnect. It is not accepted as an access token. An invalid or expired ticket fails the handshake with connect_error AUTH_INVALID_ACCESS_TOKEN.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueRealtimeTicketResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "USER_NOT_ACTIVE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
     "/users/me": {
       "get": {
         "operationId": "UserController_getMe",
@@ -1808,6 +1866,110 @@
           }
         ]
       }
+    },
+    "/chat/rooms/{roomId}/messages": {
+      "get": {
+        "operationId": "ChatController_listMessages",
+        "summary": "List the messages of a chat room",
+        "description": "Caller must be a member of the room. Newest message first (`createdAt` desc); `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` to get older messages (null on the last page). Read-only: does not mark messages read (socket `chat.room.enter` does). New messages arrive live through socket `chat.message.received`.",
+        "parameters": [
+          {
+            "name": "roomId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListRoomMessagesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: CHAT_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "CHAT_NOT_ROOM_MEMBER",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CHAT_ROOM_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chat"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -2174,6 +2336,21 @@
         "required": [
           "oldPassword",
           "newPassword"
+        ]
+      },
+      "IssueRealtimeTicketResponse": {
+        "type": "object",
+        "properties": {
+          "ticket": {
+            "type": "string"
+          },
+          "expiresIn": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "ticket",
+          "expiresIn"
         ]
       },
       "AvatarFileDto": {
@@ -3196,6 +3373,49 @@
         "required": [
           "totalUnread",
           "rooms",
+          "nextCursor"
+        ]
+      },
+      "RoomMessageResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "senderId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "senderId",
+          "message",
+          "createdAt"
+        ]
+      },
+      "ListRoomMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoomMessageResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "messages",
           "nextCursor"
         ]
       }
