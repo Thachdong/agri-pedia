@@ -11,5 +11,5 @@ Non-breaking: giữ `otherUserId`, chỉ thêm field. No event, no migration.
 
 - [x] 1. [use-case]        ListMyChatRooms: + IUserQueryPort, IMediaQueryPort → otherUsername, otherUserAvatar
 - [x] 2. [http]            GET /chat/rooms: response + e2e
-- [ ] 3. [api-docs]        GET /chat/rooms
-- [ ] 4. [boundary-review]
+- [x] 3. [api-docs]        GET /chat/rooms
+- [x] 4. [boundary-review]
