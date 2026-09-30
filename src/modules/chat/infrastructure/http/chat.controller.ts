@@ -49,6 +49,8 @@ export class ChatController {
       rooms: rooms.map((room) => ({
         roomId: room.roomId,
         otherUserId: room.otherUserId,
+        otherUsername: room.otherUsername,
+        otherUserAvatar: room.otherUserAvatar,
         lastMessage: room.lastMessage && {
           messageId: room.lastMessage.messageId,
           senderId: room.lastMessage.senderId,

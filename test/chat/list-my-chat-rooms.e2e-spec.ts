@@ -4,6 +4,7 @@ import {
   ACCESS_TOKEN_SERVICE,
   IAccessTokenService,
 } from '@shared/access-token';
+import { FILE_STORAGE, InMemoryFileStorage } from '@shared/storage';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../src/app.module';
@@ -27,7 +28,10 @@ describe('GET /chat/rooms (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(FILE_STORAGE)
+      .useValue(new InMemoryFileStorage())
+      .compile();
     moduleRef.useLogger(false);
     app = moduleRef.createNestApplication();
     await app.init();
@@ -40,6 +44,11 @@ describe('GET /chat/rooms (e2e)', () => {
   beforeEach(async () => {
     await dataSource.query('DELETE FROM chat_messages');
     await dataSource.query('DELETE FROM chat_rooms');
+    await dataSource.query('DELETE FROM media');
+    await dataSource.query('DELETE FROM refresh_tokens');
+    await dataSource.query('DELETE FROM addresses');
+    await dataSource.query('DELETE FROM users');
+    await dataSource.query('DELETE FROM otps');
   });
 
   afterAll(async () => {
@@ -118,6 +127,8 @@ describe('GET /chat/rooms (e2e)', () => {
         {
           roomId: rooms[1],
           otherUserId: shopB,
+          otherUsername: null, // not a registered user in this test
+          otherUserAvatar: null,
           lastMessage: {
             messageId: newest,
             senderId: shopB,
@@ -129,6 +140,8 @@ describe('GET /chat/rooms (e2e)', () => {
         {
           roomId: rooms[0],
           otherUserId: shopA,
+          otherUsername: null,
+          otherUserAvatar: null,
           lastMessage: expect.objectContaining({ message: 'Còn hàng' }),
           lastMessageAt: '2026-09-02T01:00:00.000Z',
           unreadCount: 2,
@@ -136,6 +149,80 @@ describe('GET /chat/rooms (e2e)', () => {
       ],
       nextCursor: null,
     });
+  });
+
+  /** Registers the user; returns its id. */
+  const signUp = async (body: object): Promise<string> => {
+    await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(body)
+      .expect(201);
+    const [{ id }] = await dataSource.query(
+      'SELECT id FROM users ORDER BY created_at DESC LIMIT 1',
+    );
+    return id;
+  };
+
+  const insertAvatar = (userId: string) =>
+    dataSource.query(
+      `INSERT INTO media (id, type, extension, filename, source, owner_type, owner_id, sort_order)
+       VALUES (gen_random_uuid(), 'IMAGE', 'png', 'me.png', $1, 'USER_AVATAR', $2, NULL)`,
+      [`users/${userId}/avatar.png`, userId],
+    );
+
+  const address = {
+    province: 'can_tho',
+    ward: 'phuong_ninh_kieu',
+    houseNumber: '12',
+    lat: 10.03,
+    long: 105.78,
+  };
+
+  it("returns the other member's username and avatar", async () => {
+    const shop = await signUp({
+      loginType: 'PHONE',
+      identifier: '0912345678',
+      password: 'secret123',
+      username: 'Seed Shop',
+      role: 'DISTRIBUTOR',
+      bussinessType: 'SEEDS_SEEDLINGS',
+      address,
+    });
+    const farmer = await signUp({
+      loginType: 'EMAIL',
+      identifier: 'farmer@mail.com',
+      password: 'secret123',
+      username: 'Farmer',
+      role: 'FARMER',
+      bussinessType: null,
+      address,
+    });
+    await insertAvatar(shop);
+    await insertRoom(rooms[0], me, shop, '2026-09-03T00:00:00Z');
+    await insertRoom(rooms[1], farmer, me, '2026-09-02T00:00:00Z');
+
+    const res = await list().expect(200);
+
+    expect(
+      res.body.rooms.map(
+        (room: {
+          otherUserId: string;
+          otherUsername: string | null;
+          otherUserAvatar: string | null;
+        }) => ({
+          otherUserId: room.otherUserId,
+          otherUsername: room.otherUsername,
+          otherUserAvatar: room.otherUserAvatar,
+        }),
+      ),
+    ).toEqual([
+      {
+        otherUserId: shop,
+        otherUsername: 'Seed Shop',
+        otherUserAvatar: `https://storage.test/users/${shop}/avatar.png?signed=read`,
+      },
+      { otherUserId: farmer, otherUsername: 'Farmer', otherUserAvatar: null },
+    ]);
   });
 
   it('pages with nextCursor; totalUnread stays over all rooms', async () => {

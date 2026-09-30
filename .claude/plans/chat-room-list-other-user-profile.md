@@ -10,6 +10,6 @@ Giống precedent review.ListDistributorReviews. Cả hai query port đã có �
 Non-breaking: giữ `otherUserId`, chỉ thêm field. No event, no migration.
 
 - [x] 1. [use-case]        ListMyChatRooms: + IUserQueryPort, IMediaQueryPort → otherUsername, otherUserAvatar
-- [ ] 2. [http]            GET /chat/rooms: response + e2e
+- [x] 2. [http]            GET /chat/rooms: response + e2e
 - [ ] 3. [api-docs]        GET /chat/rooms
 - [ ] 4. [boundary-review]

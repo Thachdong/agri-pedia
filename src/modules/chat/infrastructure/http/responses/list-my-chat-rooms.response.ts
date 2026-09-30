@@ -7,6 +7,10 @@ export class ChatRoomLastMessageResponse {
 export class ChatRoomResponse {
   roomId: string;
   otherUserId: string;
+  /** Null when the other user no longer exists. */
+  otherUsername: string | null;
+  /** Signed read URL of the other user's avatar (expires); null when none. */
+  otherUserAvatar: string | null;
   /** Null only for a room without messages. */
   lastMessage: ChatRoomLastMessageResponse | null;
   lastMessageAt: Date;
