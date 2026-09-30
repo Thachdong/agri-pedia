@@ -10,7 +10,7 @@ Ticket không dùng được làm access token (và ngược lại). No cross-mo
 
 - [x] 1. [config-group]    `auth`: realtime ticket TTL (seconds, default 30)
 - [x] 2. [shared-wrapper]  realtime: IRealtimeTicketService (sign/verify, tách biệt access token) + fake; gateway handshake nhận `auth.ticket`
-- [ ] 3. [use-case]        user: IssueRealtimeTicket (owner ACTIVE → { ticket, expiresIn })
+- [x] 3. [use-case]        user: IssueRealtimeTicket (owner ACTIVE → { ticket, expiresIn })
 - [ ] 4. [http]            POST /auth/realtime-ticket (AccessTokenGuard)
 - [ ] 5. [api-docs]        POST /auth/realtime-ticket
 - [ ] 6. [boundary-review]
