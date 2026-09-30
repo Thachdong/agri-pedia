@@ -22,10 +22,17 @@ defineApiDocs(ChatController, {
     },
     listMessages: {
       summary: 'List the messages of a chat room',
+      description:
+        'Caller must be a member of the room. Newest message first (`createdAt` desc); ' +
+        '`limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` to get older messages ' +
+        '(null on the last page). Read-only: does not mark messages read (socket `chat.room.enter` does). ' +
+        'New messages arrive live through socket `chat.message.received`.',
       validation: true,
       auth: true,
       errors: [
         { type: EDomainErrorType.VALIDATION, code: 'CHAT_INVALID_CURSOR' },
+        { type: EDomainErrorType.FORBIDDEN, code: 'CHAT_NOT_ROOM_MEMBER' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'CHAT_ROOM_NOT_FOUND' },
       ],
     },
   },

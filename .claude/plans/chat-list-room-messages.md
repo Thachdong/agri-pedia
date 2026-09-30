@@ -12,5 +12,5 @@ Domain + exceptions đã có; index `(room_id, created_at)` đã có → không 
 - [x] 1. [use-case]        ListRoomMessages; IChatMessageRepository + findPageByRoom
 - [x] 2. [persistence]     PgChatMessageRepository.findPageByRoom (không migration)
 - [x] 3. [http]            GET /chat/rooms/:roomId/messages
-- [ ] 4. [api-docs]        GET /chat/rooms/:roomId/messages
-- [ ] 5. [boundary-review]
+- [x] 4. [api-docs]        GET /chat/rooms/:roomId/messages
+- [x] 5. [boundary-review]
