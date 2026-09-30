@@ -226,14 +226,46 @@ describe('GET /distributors/nearby (e2e)', () => {
     expect(body.code).toBe('USER_LOCATION_INVALID');
   });
 
-  it('401 AUTH_INVALID_ACCESS_TOKEN: no token', async () => {
-    const { body } = await http().get('/distributors/nearby').expect(401);
-    expect(body.code).toBe('AUTH_INVALID_ACCESS_TOKEN');
+  describe('guest (no token)', () => {
+    beforeEach(async () => {
+      await signUp('DISTRIBUTOR', 'an', SHOP_AN);
+      await signUp('DISTRIBUTOR', 'cuong', SHOP_CUONG);
+    });
+
+    it('200: no location → every distributor by name', async () => {
+      const { body } = await http().get('/distributors/nearby').expect(200);
+
+      expect(body).toMatchObject({
+        scope: 'nationwide',
+        source: 'none',
+        total: 2,
+      });
+      expect(names(body)).toEqual(['an', 'cuong']);
+    });
+
+    it('200: point → within the radius', async () => {
+      const { body } = await http()
+        .get('/distributors/nearby')
+        .query({ lat: 10.03, long: 105.78 })
+        .expect(200);
+
+      expect(body).toMatchObject({ scope: 'radius', source: 'query_point' });
+      expect(names(body)).toEqual(['an']);
+    });
   });
 
-  it('403 USER_NEARBY_SEARCH_FARMER_ONLY: caller is a distributor', async () => {
-    const token = await signUp('DISTRIBUTOR', 'shop', NINH_KIEU);
-    const { body } = await search({}, token).expect(403);
-    expect(body.code).toBe('USER_NEARBY_SEARCH_FARMER_ONLY');
+  it('200: distributor caller → around its own address', async () => {
+    await signUp('DISTRIBUTOR', 'an', SHOP_AN);
+    const token = await signUp('DISTRIBUTOR', 'shop', SHOP_CUONG);
+
+    const { body } = await search({}, token).expect(200);
+
+    expect(body).toMatchObject({ scope: 'radius', source: 'address' });
+    expect(names(body)).toEqual(['shop']);
+  });
+
+  it('401 AUTH_INVALID_ACCESS_TOKEN: invalid token', async () => {
+    const { body } = await search({}, 'garbage').expect(401);
+    expect(body.code).toBe('AUTH_INVALID_ACCESS_TOKEN');
   });
 });

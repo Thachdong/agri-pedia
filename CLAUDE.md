@@ -30,7 +30,7 @@ src/
 │   ├── logger/              # wraps nestjs-pino -> ILogger (LOGGER), useAppLogger()
 │   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
 │   ├── crypto/              # wraps node:crypto -> ICryptoService (CRYPTO_SERVICE): HMAC hash, AES-GCM, scrypt password
-│   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign/verify access tokens; AccessTokenGuard + @CurrentUser() for protected routes
+│   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign/verify access tokens; AccessTokenGuard + @CurrentUser() for protected routes; OptionalAccessTokenGuard + @OptionalCurrentUser() for public routes that use the caller when a token is sent
 │   ├── messaging/           # IMessageSender (MESSAGE_SENDER): email/SMS; currently log-only adapter
 │   ├── storage/             # wraps firebase-admin -> IFileStorage (FILE_STORAGE): presigned upload URLs, signed download URLs, move/delete objects (Firebase Storage / GCS)
 │   ├── realtime/            # wraps @nestjs/websockets + socket.io -> IRealtimePublisher (REALTIME_PUBLISHER): emitToUser; IRealtimeChannels (REALTIME_CHANNELS): join/leave/hasUser presence channels; handshake auth by access token; @RealtimeGateway() + @SocketUser() + @SocketConnectionId() for inbound gateways (errors/validation answered via ack)

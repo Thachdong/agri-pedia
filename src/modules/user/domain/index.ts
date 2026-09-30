@@ -13,7 +13,6 @@ export * from './exceptions/invalid-coordinates.exception';
 export * from './exceptions/invalid-credentials.exception';
 export * from './exceptions/invalid-location.exception';
 export * from './exceptions/invalid-refresh-token.exception';
-export * from './exceptions/nearby-search-farmer-only.exception';
 export * from './exceptions/user-identifier-already-used.exception';
 export * from './exceptions/user-not-active.exception';
 export * from './exceptions/user-not-found.exception';

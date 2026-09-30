@@ -7,10 +7,7 @@ import {
 import {
   Coordinates,
   EBusinessType,
-  EUserRole,
   InvalidLocationException,
-  NearbySearchFarmerOnlyException,
-  UserNotFoundException,
 } from '../../domain';
 import {
   ADDRESS_REPOSITORY,
@@ -22,12 +19,11 @@ import {
   TDistributorSearchPage,
   TDistributorSearchResult,
 } from '../ports/distributor-search.repository';
-import { IUserRepository, USER_REPOSITORY } from '../ports/user.repository';
 
 export type TFindNearbyDistributorsInput = {
-  /** Caller, from the access token. */
-  userId: string;
-  /** Omitted: the caller's primary address is used. */
+  /** Caller, from the access token; null for a guest. */
+  userId: string | null;
+  /** Omitted: the caller's primary address is used (a guest gets every distributor). */
   location?:
     | { kind: 'point'; lat: number; long: number }
     | { kind: 'area'; provinceCode: string; wardCode?: string };
@@ -82,14 +78,13 @@ type TStage = {
 };
 
 /**
- * Lists ACTIVE distributors for a FARMER. Location: point / area from the request,
- * else the caller's primary address. Stages run in order and the first one with any
+ * Lists ACTIVE distributors for anyone, guests included. Location: point / area from the request,
+ * else the caller's primary address (none for a guest). Stages run in order and the first one with any
  * match is paginated: point → radius, nationwide by distance; area → province, nationwide.
  */
 @Injectable()
 export class FindNearbyDistributorsUseCase {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly users: IUserRepository,
     @Inject(ADDRESS_REPOSITORY) private readonly addresses: IAddressRepository,
     @Inject(DISTRIBUTOR_SEARCH_REPOSITORY)
     private readonly distributors: IDistributorSearchRepository,
@@ -101,14 +96,6 @@ export class FindNearbyDistributorsUseCase {
   async execute(
     input: TFindNearbyDistributorsInput,
   ): Promise<TFindNearbyDistributorsOutput> {
-    const user = await this.users.findById(input.userId);
-    if (!user) {
-      throw new UserNotFoundException(input.userId);
-    }
-    if (user.role !== EUserRole.FARMER) {
-      throw new NearbySearchFarmerOnlyException(user.id);
-    }
-
     const page: TDistributorSearchPage = {
       offset: (input.page - 1) * input.limit,
       limit: input.limit,
@@ -185,7 +172,10 @@ export class FindNearbyDistributorsUseCase {
         ],
       };
     }
-    const address = await this.addresses.findPrimaryByUserId(input.userId);
+    const address =
+      input.userId === null
+        ? null
+        : await this.addresses.findPrimaryByUserId(input.userId);
     return address
       ? {
           source: EDistributorSearchSource.ADDRESS,

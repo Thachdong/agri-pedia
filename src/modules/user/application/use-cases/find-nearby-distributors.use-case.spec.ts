@@ -8,9 +8,7 @@ import {
   EUserRole,
   InvalidCoordinatesException,
   InvalidLocationException,
-  NearbySearchFarmerOnlyException,
   User,
-  UserNotFoundException,
 } from '../../domain';
 import {
   InMemoryAddressRepository,
@@ -97,7 +95,6 @@ describe('FindNearbyDistributorsUseCase', () => {
       get: () => ({ radiusKm }),
     } as unknown as IConfigService;
     useCase = new FindNearbyDistributorsUseCase(
-      users,
       addresses,
       new InMemoryDistributorSearchRepository(users, addresses),
       locationQuery,
@@ -300,21 +297,42 @@ describe('FindNearbyDistributorsUseCase', () => {
     });
   });
 
-  it('rejects a caller who is not a farmer', async () => {
-    const distributor = await addUser(
-      'shop',
-      EUserRole.DISTRIBUTOR,
-      true,
-      null,
-    );
-    await expect(
-      useCase.execute({ userId: distributor.id, page: 1, limit: 20 }),
-    ).rejects.toThrow(NearbySearchFarmerOnlyException);
+  describe('guest (no access token)', () => {
+    beforeEach(seedDistributors);
+
+    it('lists every distributor by name when no location is given', async () => {
+      const output = await run({ userId: null });
+
+      expect(output).toMatchObject({
+        scope: 'nationwide',
+        source: 'none',
+        total: 3,
+      });
+      expect(names(output)).toEqual(['an', 'binh', 'cuong']);
+    });
+
+    it('searches around a point from the request', async () => {
+      const output = await run({
+        userId: null,
+        location: { kind: 'point', ...NINH_KIEU },
+      });
+      expect(output).toMatchObject({ scope: 'radius', source: 'query_point' });
+      expect(names(output)).toEqual(['an', 'binh']);
+    });
   });
 
-  it('rejects an unknown caller', async () => {
-    await expect(
-      useCase.execute({ userId: 'missing', page: 1, limit: 20 }),
-    ).rejects.toThrow(UserNotFoundException);
+  it("searches around a distributor caller's own address", async () => {
+    await seedDistributors();
+    const shop = await addUser('shop', EUserRole.DISTRIBUTOR, true, {
+      province: 'ha_noi',
+      ward: 'phuong_ba_dinh',
+      lat: 21.03,
+      long: 105.85,
+    });
+
+    const output = await run({ userId: shop.id });
+
+    expect(output).toMatchObject({ scope: 'radius', source: 'address' });
+    expect(names(output)).toEqual(['cuong', 'shop']);
   });
 });

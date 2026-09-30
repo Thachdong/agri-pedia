@@ -1,6 +1,10 @@
 import { ExecutionContext } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AccessTokenGuard, TAuthenticatedRequest } from './access-token.guard';
+import {
+  AccessTokenGuard,
+  OptionalAccessTokenGuard,
+  TAuthenticatedRequest,
+} from './access-token.guard';
 import { InMemoryAccessTokenService } from './in-memory.access-token';
 import { InvalidAccessTokenException } from './invalid-access-token.exception';
 import { JwtAccessTokenService } from './jwt.access-token';
@@ -64,6 +68,37 @@ describe('AccessTokenGuard', () => {
   });
 
   it.each([undefined, '', 'access(user-1)', 'Basic abc', 'Bearer garbage'])(
+    'rejects authorization header %p',
+    async (authorization) => {
+      await expect(
+        guard.canActivate(contextFor({ headers: { authorization } })),
+      ).rejects.toThrow(InvalidAccessTokenException);
+    },
+  );
+});
+
+describe('OptionalAccessTokenGuard', () => {
+  const guard = new OptionalAccessTokenGuard(new InMemoryAccessTokenService());
+  const contextFor = (request: TAuthenticatedRequest) =>
+    ({
+      switchToHttp: () => ({ getRequest: () => request }),
+    }) as unknown as ExecutionContext;
+
+  it('lets a request without authorization header through as a guest', async () => {
+    const request: TAuthenticatedRequest = { headers: {} };
+    await expect(guard.canActivate(contextFor(request))).resolves.toBe(true);
+    expect(request.auth).toBeUndefined();
+  });
+
+  it('accepts a valid bearer token and exposes its payload', async () => {
+    const request: TAuthenticatedRequest = {
+      headers: { authorization: 'Bearer access(user-1)' },
+    };
+    await expect(guard.canActivate(contextFor(request))).resolves.toBe(true);
+    expect(request.auth).toEqual({ userId: 'user-1' });
+  });
+
+  it.each(['', 'Basic abc', 'Bearer garbage'])(
     'rejects authorization header %p',
     async (authorization) => {
       await expect(

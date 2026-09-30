@@ -6,11 +6,13 @@ defineApiDocs(DistributorController, {
   tag: 'Distributors',
   operations: {
     findNearby: {
-      summary: 'List distributors near the caller (FARMER only)',
+      summary: 'List distributors near a location (public)',
       description:
+        'No login needed; the access token is optional (an invalid one → 401). ' +
         'Location, first match wins: `lat` + `long` (GPS or a point picked on the map); ' +
         '`provinceCode` [+ `wardCode`] (codenames from GET /provinces and GET /provinces/{provinceCode}/wards); ' +
-        "none: the caller's primary address. A point and an area cannot be combined. " +
+        "none: the caller's primary address (guest, or no address: every distributor by username). " +
+        'A point and an area cannot be combined. ' +
         'Stages run in order and the first one with any distributor is paginated — ' +
         'point: `radius` (within DISTRIBUTOR_SEARCH_RADIUS_KM, default 30 km) → `nationwide_by_distance`, nearest first; ' +
         'area: `province` (the given ward first, then by username) → `nationwide`, by username. ' +
@@ -22,11 +24,6 @@ defineApiDocs(DistributorController, {
       errors: [
         { type: EDomainErrorType.VALIDATION, code: 'USER_INVALID_COORDINATES' },
         { type: EDomainErrorType.VALIDATION, code: 'USER_LOCATION_INVALID' },
-        {
-          type: EDomainErrorType.FORBIDDEN,
-          code: 'USER_NEARBY_SEARCH_FARMER_ONLY',
-        },
-        { type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' },
       ],
     },
   },

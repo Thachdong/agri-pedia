@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import {
-  AccessTokenGuard,
-  CurrentUser,
+  OptionalAccessTokenGuard,
+  OptionalCurrentUser,
   TAccessTokenPayload,
 } from '@shared/access-token';
 import {
@@ -20,10 +20,11 @@ export class DistributorController {
     private readonly findNearbyDistributors: FindNearbyDistributorsUseCase,
   ) {}
 
+  /** Public: the access token is optional (used for the caller's address). */
   @Get('nearby')
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(OptionalAccessTokenGuard)
   async findNearby(
-    @CurrentUser() caller: TAccessTokenPayload,
+    @OptionalCurrentUser() caller: TAccessTokenPayload | null,
     @Query() query: FindNearbyDistributorsQueryDto,
   ): Promise<FindNearbyDistributorsResponse> {
     let location: TFindNearbyDistributorsInput['location'];
@@ -37,7 +38,7 @@ export class DistributorController {
       };
     }
     const result = await this.findNearbyDistributors.execute({
-      userId: caller.userId,
+      userId: caller?.userId ?? null,
       location,
       page: query.page ?? 1,
       limit: query.limit ?? DEFAULT_NEARBY_PAGE_SIZE,
