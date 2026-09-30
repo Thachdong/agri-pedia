@@ -12,8 +12,8 @@ Ticket không dùng được làm access token (và ngược lại). No cross-mo
 - [x] 2. [shared-wrapper]  realtime: IRealtimeTicketService (sign/verify, tách biệt access token) + fake; gateway handshake nhận `auth.ticket`
 - [x] 3. [use-case]        user: IssueRealtimeTicket (owner ACTIVE → { ticket, expiresIn })
 - [x] 4. [http]            POST /auth/realtime-ticket (AccessTokenGuard)
-- [ ] 5. [api-docs]        POST /auth/realtime-ticket
-- [ ] 6. [boundary-review]
+- [x] 5. [api-docs]        POST /auth/realtime-ticket
+- [x] 6. [boundary-review]
 
 ## Decisions (approved)
 1. Handshake vẫn nhận access token (`auth.token` / `Authorization`) cho mobile/native; thêm `auth.ticket`.

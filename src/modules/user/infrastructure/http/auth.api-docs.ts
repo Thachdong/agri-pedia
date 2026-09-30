@@ -84,6 +84,12 @@ defineApiDocs(AuthController, {
     },
     realtimeTicket: {
       summary: 'Issue a realtime ticket for the caller',
+      description:
+        'For browsers behind a BFF that must not hold the access token: the BFF calls this with the access token ' +
+        'and hands only the ticket to the browser, which opens the socket.io connection with `auth: { ticket }`. ' +
+        'The ticket expires after `expiresIn` seconds (default 30) and only needs to be valid at the handshake; ' +
+        'fetch a new one for every connect/reconnect. It is not accepted as an access token. ' +
+        'An invalid or expired ticket fails the handshake with connect_error AUTH_INVALID_ACCESS_TOKEN.',
       auth: true,
       errors: [
         { type: EDomainErrorType.FORBIDDEN, code: 'USER_NOT_ACTIVE' },
