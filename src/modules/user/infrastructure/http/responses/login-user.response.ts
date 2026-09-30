@@ -1,6 +1,17 @@
 import { EBusinessType, ELoginType, EUserRole } from '../../../domain';
 
+export class LoginUserAddressResponse {
+  /** Province codename. */
+  province: string;
+  /** Ward codename. */
+  ward: string;
+  houseNumber: string;
+  lat: number;
+  long: number;
+}
+
 export class LoginUserProfileResponse {
+  id: string;
   loginType: ELoginType;
   username: string;
   role: EUserRole;
@@ -13,6 +24,8 @@ export class LoginUserProfileResponse {
   bio: string | null;
   createdAt: Date;
   updatedAt: Date;
+  /** Primary address (map marker); null if the user has none. */
+  address: LoginUserAddressResponse | null;
 }
 
 export class LoginUserResponse {

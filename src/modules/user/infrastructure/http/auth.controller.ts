@@ -71,6 +71,7 @@ export class AuthController {
       accessToken,
       refreshToken,
       user: {
+        id: user.id,
         loginType: user.loginType,
         username: user.username,
         role: user.role,
@@ -80,6 +81,13 @@ export class AuthController {
         bio: user.bio,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
+        address: user.address && {
+          province: user.address.province,
+          ward: user.address.ward,
+          houseNumber: user.address.houseNumber,
+          lat: user.address.lat,
+          long: user.address.long,
+        },
       },
     };
   }
