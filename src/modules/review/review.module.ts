@@ -7,6 +7,7 @@ import {
   CreateReviewUseCase,
   GetReviewSummaryUseCase,
   ListDistributorReviewsUseCase,
+  ListProductReviewsUseCase,
   UpdateReviewUseCase,
 } from './application/use-cases';
 import './infrastructure/http/review.api-docs';
@@ -20,6 +21,7 @@ import { PgReviewRepository } from './infrastructure/persistence/pg-review.repos
     CreateReviewUseCase,
     GetReviewSummaryUseCase,
     ListDistributorReviewsUseCase,
+    ListProductReviewsUseCase,
     UpdateReviewUseCase,
     { provide: REVIEW_REPOSITORY, useClass: PgReviewRepository },
   ],

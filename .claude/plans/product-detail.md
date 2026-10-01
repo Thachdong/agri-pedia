@@ -34,7 +34,7 @@ No event, no migration, no new module.
 - [x] 7. [persistence]  review: PgReviewRepository.summarizeByTarget (no migration)
 - [x] 8. [http]         GET /reviews/summary (public): query DTO, response + e2e
 - [x] 9. [api-docs]     GET /reviews/summary (gộp vào bước 8, cùng lý do bước 5)
-- [ ] 10. [use-case]    review: ListProductReviews (IProductQueryPort, IUserQueryPort, IMediaQueryPort, findByTargets — đều đã có)
+- [x] 10. [use-case]    review: ListProductReviews (IProductQueryPort, IUserQueryPort, IMediaQueryPort, findByTargets — đều đã có)
 - [ ] 11. [http]        GET /reviews/products/:productId (public): query DTO, response + e2e
 - [ ] 12. [api-docs]    GET /reviews/products/:productId
 - [ ] 13. [boundary-review]

@@ -5,34 +5,23 @@ import {
   PRODUCT_QUERY_PORT,
 } from '@modules/product/contracts';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
-import {
-  EReviewTargetType,
-  ReviewDistributorNotFoundException,
-} from '../../domain';
-import { decodeReviewCursor, encodeReviewCursor } from '../review-cursor';
-import { summarizeReviews, TReviewSummary } from '../review-summary';
+import { EReviewTargetType, ReviewTargetNotFoundException } from '../../domain';
 import {
   IReviewRepository,
   REVIEW_REPOSITORY,
-  TReviewTargets,
 } from '../ports/review.repository';
+import { decodeReviewCursor, encodeReviewCursor } from '../review-cursor';
 
-export type TListDistributorReviewsInput = {
-  distributorId: string;
-  /** Only reviews of the shop (USER) or of its products (PRODUCT); both when omitted. */
-  targetType?: EReviewTargetType;
+export type TListProductReviewsInput = {
+  productId: string;
   star?: number;
   /** `nextCursor` of the previous page (same filters); omitted for the first page. */
   cursor?: string;
   limit: number;
 };
 
-export type TDistributorReviewItem = {
+export type TProductReviewItem = {
   id: string;
-  targetType: EReviewTargetType;
-  targetId: string;
-  /** Name of the reviewed product; null for a review of the shop (USER). */
-  productName: string | null;
   star: number;
   content: string;
   createdAt: Date;
@@ -45,57 +34,47 @@ export type TDistributorReviewItem = {
   };
 };
 
-export type TListDistributorReviewsOutput = {
-  /** Over every review of the shop, ignoring filters and cursor. */
-  summary: TReviewSummary;
-  reviews: TDistributorReviewItem[];
+export type TListProductReviewsOutput = {
+  reviews: TProductReviewItem[];
   /** Pass back as `cursor` to get the next page; null on the last page. */
   nextCursor: string | null;
 };
 
-/** Public reviews of a distributor's shop: of the distributor itself and of any product it ever listed. */
+/** Public reviews of one product (not deleted), newest first, with each reviewer's profile; keyset-paginated. */
 @Injectable()
-export class ListDistributorReviewsUseCase {
+export class ListProductReviewsUseCase {
   constructor(
     @Inject(REVIEW_REPOSITORY) private readonly reviews: IReviewRepository,
-    @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(PRODUCT_QUERY_PORT)
     private readonly productQuery: IProductQueryPort,
+    @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   async execute(
-    input: TListDistributorReviewsInput,
-  ): Promise<TListDistributorReviewsOutput> {
+    input: TListProductReviewsInput,
+  ): Promise<TListProductReviewsOutput> {
     const after =
       input.cursor !== undefined ? decodeReviewCursor(input.cursor) : undefined;
 
-    const distributor = await this.userQuery.findProfileById(
-      input.distributorId,
-    );
-    if (!distributor || distributor.role !== 'DISTRIBUTOR') {
-      throw new ReviewDistributorNotFoundException(input.distributorId);
+    const product = await this.productQuery.findOwnerById(input.productId);
+    if (!product) {
+      throw new ReviewTargetNotFoundException(
+        EReviewTargetType.PRODUCT,
+        input.productId,
+      );
     }
 
-    const products = await this.productQuery.listBySeller(input.distributorId);
-    const productNames = new Map(
-      products.map((product) => [product.productId, product.name]),
-    );
-    const targets: TReviewTargets = {
-      userId: input.distributorId,
-      productIds: [...productNames.keys()],
-    };
-
     // One extra row tells whether a next page exists.
-    const [starCounts, rows] = await Promise.all([
-      this.reviews.summarizeByTargets(targets),
-      this.reviews.findByTargets(targets, {
-        targetType: input.targetType,
+    const rows = await this.reviews.findByTargets(
+      { userId: product.userId, productIds: [product.productId] },
+      {
+        targetType: EReviewTargetType.PRODUCT,
         star: input.star,
         after,
         limit: input.limit + 1,
-      }),
-    ]);
+      },
+    );
     const page = rows.slice(0, input.limit);
     const last = page[page.length - 1];
     const nextCursor =
@@ -116,15 +95,8 @@ export class ListDistributorReviewsUseCase {
     );
 
     return {
-      summary: summarizeReviews(starCounts),
       reviews: page.map((review) => ({
         id: review.id,
-        targetType: review.targetType,
-        targetId: review.targetId,
-        productName:
-          review.targetType === EReviewTargetType.PRODUCT
-            ? (productNames.get(review.targetId) ?? null)
-            : null,
         star: review.star,
         content: review.content,
         createdAt: review.createdAt,
