@@ -23,4 +23,12 @@ export class PgAddressRepository
     const row = await this.repository.findOneBy({ userId, isPrimary: true });
     return row ? AddressMapper.toDomain(row) : null;
   }
+
+  async findAllByUserId(userId: string): Promise<Address[]> {
+    const rows = await this.repository.find({
+      where: { userId },
+      order: { isPrimary: 'DESC', id: 'ASC' },
+    });
+    return rows.map((row) => AddressMapper.toDomain(row));
+  }
 }

@@ -11,7 +11,7 @@ No migration, no event, no new module. Farmer profile (private) = later feature,
 
 - [x] 1. [domain-model]     user: error USER_DISTRIBUTOR_NOT_FOUND (NOT_FOUND)
 - [x] 2. [use-case]         user: GetDistributorProfile; port IAddressRepository.findAllByUserId (+ fake)
-- [ ] 3. [persistence]      user: PgAddressRepository.findAllByUserId (no migration)
+- [x] 3. [persistence]      user: PgAddressRepository.findAllByUserId (no migration)
 - [ ] 4. [http]             GET /distributors/:distributorId (public, uuid param), response class, e2e
 - [ ] 5. [api-docs]         GET /distributors/:distributorId (404 USER_DISTRIBUTOR_NOT_FOUND, 400 validation)
 - [ ] 6. [boundary-review]
