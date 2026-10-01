@@ -25,7 +25,7 @@ export type TGetDistributorProfileOutput = {
   /** Decrypted identifier when the distributor logs in by phone; otherwise null. */
   phone: string | null;
   username: string;
-  /** Media id. */
+  /** Signed read URL; null if none. */
   avatar: string | null;
   bio: string | null;
   businessType: EBusinessType | null;
@@ -74,7 +74,7 @@ export class GetDistributorProfileUseCase {
       email: contact.email,
       phone: contact.phone,
       username: user.username,
-      avatar: user.avatar,
+      avatar: contact.avatar,
       bio: user.bio,
       businessType: user.businessType,
       businessLicense: contact.businessLicense,

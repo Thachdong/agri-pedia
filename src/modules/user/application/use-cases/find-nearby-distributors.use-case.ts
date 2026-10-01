@@ -4,6 +4,7 @@ import {
   ILocationQueryPort,
   LOCATION_QUERY_PORT,
 } from '@modules/location/contracts';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
 import {
   Coordinates,
   EBusinessType,
@@ -51,7 +52,7 @@ export enum EDistributorSearchScope {
 export type TNearbyDistributor = {
   userId: string;
   username: string;
-  /** Media id. */
+  /** Signed read URL; null if none. */
   avatar: string | null;
   businessType: EBusinessType | null;
   address: {
@@ -91,6 +92,7 @@ export class FindNearbyDistributorsUseCase {
     @Inject(LOCATION_QUERY_PORT)
     private readonly locationQuery: ILocationQueryPort,
     @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   async execute(
@@ -112,6 +114,14 @@ export class FindNearbyDistributorsUseCase {
       }
     }
 
+    const avatars = await this.mediaQuery.findThumbnails(
+      'USER_AVATAR',
+      result.items.map(({ distributor }) => distributor.id),
+    );
+    const avatarByUserId = new Map(
+      avatars.map((avatar) => [avatar.ownerId, avatar.url]),
+    );
+
     return {
       scope,
       source,
@@ -119,7 +129,7 @@ export class FindNearbyDistributorsUseCase {
       items: result.items.map(({ distributor, address, distanceMeters }) => ({
         userId: distributor.id,
         username: distributor.username,
-        avatar: distributor.avatar,
+        avatar: avatarByUserId.get(distributor.id) ?? null,
         businessType: distributor.businessType,
         address: {
           province: address.province,

@@ -47,6 +47,7 @@ export type TLoginUserOutput = {
     businessType: EBusinessType | null;
     /** Signed read URL; null if none. */
     businessLicense: string | null;
+    /** Signed read URL; null if none. */
     avatar: string | null;
     bio: string | null;
     createdAt: Date;
@@ -124,7 +125,7 @@ export class LoginUserUseCase {
         role: user.role,
         businessType: user.businessType,
         businessLicense: contact.businessLicense,
-        avatar: user.avatar,
+        avatar: contact.avatar,
         bio: user.bio,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,

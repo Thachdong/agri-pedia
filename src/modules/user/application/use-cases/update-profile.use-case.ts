@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
   createIntegrationEvent,
@@ -31,7 +32,7 @@ export type TUpdateProfileInput = {
 
 export type TUpdateProfileOutput = {
   username: string;
-  /** Media id. */
+  /** Signed read URL; null if none (or its media could not be recorded). */
   avatar: string | null;
   bio: string | null;
   /** Media id. */
@@ -51,6 +52,7 @@ export class UpdateProfileUseCase {
     @Inject(USER_REPOSITORY) private readonly users: IUserRepository,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
     @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   async execute(input: TUpdateProfileInput): Promise<TUpdateProfileOutput> {
@@ -83,10 +85,14 @@ export class UpdateProfileUseCase {
         businessLicense,
       }),
     );
+    // The media module records the new avatar while the event is handled, so its URL is available here.
+    const [avatarUrl] = user.avatar
+      ? await this.mediaQuery.findUrls('USER_AVATAR', user.id, [user.avatar])
+      : [];
 
     return {
       username: user.username,
-      avatar: user.avatar,
+      avatar: avatarUrl?.url ?? null,
       bio: user.bio,
       businessLicense: user.businessLicense,
       businessType: user.businessType,

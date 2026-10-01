@@ -9,21 +9,29 @@ export type TUserContactDetails = {
   phone: string | null;
   /** Signed read URL of the business license; null if none (or its media is gone). */
   businessLicense: string | null;
+  /** Signed read URL of the avatar; null if none (or its media is gone). */
+  avatar: string | null;
 };
 
-/** Contact identifier and business license URL shown on a user profile. */
+/** Contact identifier and media URLs (business license, avatar) shown on a user profile. */
 export const readUserContactDetails = async (
   user: User,
   crypto: ICryptoService,
   mediaQuery: IMediaQueryPort,
 ): Promise<TUserContactDetails> => {
   const identifier = crypto.decrypt(user.encryptedIdentifier);
-  const [license] = user.businessLicense
-    ? await mediaQuery.findUrls('USER_LICENSE', user.id, [user.businessLicense])
-    : [];
+  const [[license], [avatar]] = await Promise.all([
+    user.businessLicense
+      ? mediaQuery.findUrls('USER_LICENSE', user.id, [user.businessLicense])
+      : [],
+    user.avatar
+      ? mediaQuery.findUrls('USER_AVATAR', user.id, [user.avatar])
+      : [],
+  ]);
   return {
     email: user.loginType === ELoginType.EMAIL ? identifier : null,
     phone: user.loginType === ELoginType.PHONE ? identifier : null,
     businessLicense: license?.url ?? null,
+    avatar: avatar?.url ?? null,
   };
 };

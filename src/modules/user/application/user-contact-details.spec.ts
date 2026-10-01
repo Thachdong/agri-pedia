@@ -12,7 +12,7 @@ describe('readUserContactDetails', () => {
     findUrls: async (ownerType, ownerId, mediaIds) => {
       requests.push([ownerType, ownerId, mediaIds]);
       return mediaIds
-        .filter((id) => id === 'license-1')
+        .filter((id) => id === 'license-1' || id === 'avatar-1')
         .map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` }));
     },
   };
@@ -32,9 +32,9 @@ describe('readUserContactDetails', () => {
     requests = [];
   });
 
-  it('returns the decrypted email and the license URL', async () => {
+  it('returns the decrypted email, the license URL and the avatar URL', async () => {
     const user = register(ELoginType.EMAIL, 'shop@mail.com');
-    user.updateProfile({ businessLicense: 'license-1' });
+    user.updateProfile({ businessLicense: 'license-1', avatar: 'avatar-1' });
 
     await expect(
       readUserContactDetails(user, crypto, mediaQuery),
@@ -42,11 +42,15 @@ describe('readUserContactDetails', () => {
       email: 'shop@mail.com',
       phone: null,
       businessLicense: 'https://signed/license-1',
+      avatar: 'https://signed/avatar-1',
     });
-    expect(requests).toEqual([['USER_LICENSE', user.id, ['license-1']]]);
+    expect(requests).toEqual([
+      ['USER_LICENSE', user.id, ['license-1']],
+      ['USER_AVATAR', user.id, ['avatar-1']],
+    ]);
   });
 
-  it('returns the decrypted phone and no license without querying media', async () => {
+  it('returns the decrypted phone and no license or avatar without querying media', async () => {
     const user = register(ELoginType.PHONE, '0912345678');
 
     await expect(
@@ -55,6 +59,7 @@ describe('readUserContactDetails', () => {
       email: null,
       phone: '0912345678',
       businessLicense: null,
+      avatar: null,
     });
     expect(requests).toEqual([]);
   });

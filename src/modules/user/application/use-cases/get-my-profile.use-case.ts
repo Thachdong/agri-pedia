@@ -62,12 +62,9 @@ export class GetMyProfileUseCase {
     if (!user) {
       throw new UserNotFoundException(input.userId);
     }
-    const [address, contact, [avatar]] = await Promise.all([
+    const [address, contact] = await Promise.all([
       this.addresses.findPrimaryByUserId(user.id),
       readUserContactDetails(user, this.crypto, this.mediaQuery),
-      user.avatar
-        ? this.mediaQuery.findUrls('USER_AVATAR', user.id, [user.avatar])
-        : [],
     ]);
 
     return {
@@ -79,7 +76,7 @@ export class GetMyProfileUseCase {
       role: user.role,
       businessType: user.businessType,
       businessLicense: contact.businessLicense,
-      avatar: avatar?.url ?? null,
+      avatar: contact.avatar,
       bio: user.bio,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

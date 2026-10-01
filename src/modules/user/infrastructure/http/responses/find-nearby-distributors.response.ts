@@ -17,7 +17,7 @@ export class NearbyDistributorAddressResponse {
 export class NearbyDistributorResponse {
   userId: string;
   username: string;
-  /** Media id. */
+  /** Signed read URL (expires); null if none. */
   avatar: string | null;
   /** Spelling follows the API contract. */
   bussinessType: EBusinessType | null;

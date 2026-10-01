@@ -1,5 +1,6 @@
 import { IConfigService } from '@shared/config';
 import { ILocationQueryPort } from '@modules/location/contracts';
+import { IMediaQueryPort } from '@modules/media/contracts';
 import {
   Address,
   Coordinates,
@@ -30,6 +31,17 @@ const locationQuery: ILocationQueryPort = {
   provinceExists: async (provinceCode) => provinceCode in wardsByProvince,
   wardBelongsToProvince: async (provinceCode, wardCode) =>
     wardsByProvince[provinceCode]?.includes(wardCode) ?? false,
+};
+
+// Users that have an avatar image recorded in the media module.
+const usersWithAvatar = new Set<string>();
+const mediaQuery: IMediaQueryPort = {
+  listByOwner: async () => [],
+  findUrls: async () => [],
+  findThumbnails: async (_, ownerIds) =>
+    ownerIds
+      .filter((ownerId) => usersWithAvatar.has(ownerId))
+      .map((ownerId) => ({ ownerId, url: `https://signed/${ownerId}` })),
 };
 
 const NINH_KIEU = { lat: 10.03, long: 105.78 };
@@ -88,6 +100,7 @@ describe('FindNearbyDistributorsUseCase', () => {
     output.items.map((item) => item.username);
 
   beforeEach(async () => {
+    usersWithAvatar.clear();
     users = new InMemoryUserRepository();
     addresses = new InMemoryAddressRepository();
     radiusKm = 30;
@@ -99,6 +112,7 @@ describe('FindNearbyDistributorsUseCase', () => {
       new InMemoryDistributorSearchRepository(users, addresses),
       locationQuery,
       config,
+      mediaQuery,
     );
     farmer = await addUser('farmer', EUserRole.FARMER, true, {
       province: 'can_tho',
@@ -167,6 +181,18 @@ describe('FindNearbyDistributorsUseCase', () => {
         avatar: null,
         businessType: EBusinessType.SEEDS_SEEDLINGS,
       });
+    });
+
+    it('returns the avatar of each distributor as a signed URL', async () => {
+      const an = [...users.items.values()].find((u) => u.username === 'an');
+      usersWithAvatar.add(an!.id);
+
+      const output = await run({ location: { kind: 'point', ...NINH_KIEU } });
+
+      expect(output.items.map((item) => item.avatar)).toEqual([
+        `https://signed/${an!.id}`,
+        null,
+      ]);
     });
 
     it('uses the configured radius', async () => {
