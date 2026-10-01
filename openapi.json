@@ -76,7 +76,7 @@
       "post": {
         "operationId": "AuthController_login",
         "summary": "Log in with identifier and password",
-        "description": "Responds 200 with an access token (JWT), a refresh token and the user profile. Unknown identifier, login type mismatch and wrong password all return USER_INVALID_CREDENTIALS. USER_NOT_ACTIVE (distributor not activated yet) is returned only after the password matched.",
+        "description": "Responds 200 with an access token (JWT), a refresh token and the user profile (same shape as GET /users/me: `email` / `phone` login identifier, `bussinessLicense` signed URL). Unknown identifier, login type mismatch and wrong password all return USER_INVALID_CREDENTIALS. USER_NOT_ACTIVE (distributor not activated yet) is returned only after the password matched.",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -369,7 +369,7 @@
       "get": {
         "operationId": "UserController_getMe",
         "summary": "Get the profile of the caller",
-        "description": "Profile as returned by POST /auth/login (user), including the primary address (null if none). Works for any user with a valid access token, whatever its status.",
+        "description": "Profile as returned by POST /auth/login (user), including the primary address (null if none). `email` / `phone`: the login identifier (the other one is null). `bussinessLicense`: signed read URL of the business license (expires; null if none). Works for any user with a valid access token, whatever its status.",
         "parameters": [],
         "responses": {
           "200": {
@@ -850,7 +850,7 @@
       "get": {
         "operationId": "DistributorController_getProfile",
         "summary": "Get the public profile of a distributor (public)",
-        "description": "No login needed. Returns the distributor with its primary address (null if none); the full address list is GET /users/me/addresses (owner only). `avatar` is a media id. Unknown id, not a DISTRIBUTOR, or not ACTIVE → 404 USER_DISTRIBUTOR_NOT_FOUND.",
+        "description": "No login needed. Returns the distributor with its primary address (null if none); the full address list is GET /users/me/addresses (owner only). `email` / `phone`: the login identifier (the other one is null). `bussinessLicense`: signed read URL of the business license (expires; null if none). `avatar` is a media id. Unknown id, not a DISTRIBUTOR, or not ACTIVE → 404 USER_DISTRIBUTOR_NOT_FOUND.",
         "parameters": [
           {
             "name": "distributorId",
@@ -971,6 +971,71 @@
         },
         "tags": [
           "Location"
+        ]
+      }
+    },
+    "/media/presign-url": {
+      "post": {
+        "operationId": "MediaController_presignUrl",
+        "summary": "Get signed URLs to upload 1..10 files to TMP storage",
+        "description": "Send 1..10 `files`; returns one `items` entry per file, in the same order. Allowed extensions: IMAGE jpg/jpeg/png/webp, VIDEO mp4/mov, FILE pdf (case-insensitive, leading dot ignored). All-or-nothing: if any file has an extension not allowed for its type, responds 400 `MEDIA_INVALID_EXTENSION` with `details.files: [{ index, type, extension, allowed }]` listing every invalid file, and no URL is issued. Upload each file with `PUT <presignUrl>` sending exactly its `headers` (Content-Type and `x-goog-content-length-range`); the storage rejects a different Content-Type, a file over 10 MB, or an expired URL. Keep each `key` to confirm the upload later.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPresignUrlDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPresignUrlResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: MEDIA_INVALID_EXTENSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Media"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
         ]
       }
     },
@@ -1229,71 +1294,6 @@
         },
         "tags": [
           "Auth"
-        ]
-      }
-    },
-    "/media/presign-url": {
-      "post": {
-        "operationId": "MediaController_presignUrl",
-        "summary": "Get signed URLs to upload 1..10 files to TMP storage",
-        "description": "Send 1..10 `files`; returns one `items` entry per file, in the same order. Allowed extensions: IMAGE jpg/jpeg/png/webp, VIDEO mp4/mov, FILE pdf (case-insensitive, leading dot ignored). All-or-nothing: if any file has an extension not allowed for its type, responds 400 `MEDIA_INVALID_EXTENSION` with `details.files: [{ index, type, extension, allowed }]` listing every invalid file, and no URL is issued. Upload each file with `PUT <presignUrl>` sending exactly its `headers` (Content-Type and `x-goog-content-length-range`); the storage rejects a different Content-Type, a file over 10 MB, or an expired URL. Keep each `key` to confirm the upload later.",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetPresignUrlDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetPresignUrlResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Request validation failed, or: MEDIA_INVALID_EXTENSION",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ValidationErrorResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/DomainErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "AUTH_INVALID_ACCESS_TOKEN",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DomainErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Media"
-        ],
-        "security": [
-          {
-            "access-token": []
-          }
         ]
       }
     },
@@ -2500,6 +2500,14 @@
             ],
             "type": "string"
           },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
           "username": {
             "type": "string"
           },
@@ -2551,6 +2559,8 @@
         "required": [
           "id",
           "loginType",
+          "email",
+          "phone",
           "username",
           "role",
           "bussinessType",
@@ -3004,6 +3014,14 @@
           "id": {
             "type": "string"
           },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
           "username": {
             "type": "string"
           },
@@ -3024,6 +3042,10 @@
               "AQUACULTURE_SEEDLINGS"
             ]
           },
+          "bussinessLicense": {
+            "type": "string",
+            "nullable": true
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -3039,10 +3061,13 @@
         },
         "required": [
           "id",
+          "email",
+          "phone",
           "username",
           "avatar",
           "bio",
           "bussinessType",
+          "bussinessLicense",
           "createdAt",
           "address"
         ]
@@ -3088,6 +3113,81 @@
         },
         "required": [
           "wards"
+        ]
+      },
+      "PresignFileDto": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "extension": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "IMAGE",
+              "VIDEO",
+              "FILE"
+            ]
+          }
+        },
+        "required": [
+          "filename",
+          "extension",
+          "type"
+        ]
+      },
+      "GetPresignUrlDto": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PresignFileDto"
+            }
+          }
+        },
+        "required": [
+          "files"
+        ]
+      },
+      "PresignedMediaResponse": {
+        "type": "object",
+        "properties": {
+          "presignUrl": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "presignUrl",
+          "key",
+          "headers"
+        ]
+      },
+      "GetPresignUrlResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PresignedMediaResponse"
+            }
+          }
+        },
+        "required": [
+          "items"
         ]
       },
       "ActivateAccountDto": {
@@ -3168,81 +3268,6 @@
           "identifier",
           "code",
           "newPassword"
-        ]
-      },
-      "PresignFileDto": {
-        "type": "object",
-        "properties": {
-          "filename": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 255
-          },
-          "extension": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 10
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "IMAGE",
-              "VIDEO",
-              "FILE"
-            ]
-          }
-        },
-        "required": [
-          "filename",
-          "extension",
-          "type"
-        ]
-      },
-      "GetPresignUrlDto": {
-        "type": "object",
-        "properties": {
-          "files": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PresignFileDto"
-            }
-          }
-        },
-        "required": [
-          "files"
-        ]
-      },
-      "PresignedMediaResponse": {
-        "type": "object",
-        "properties": {
-          "presignUrl": {
-            "type": "string"
-          },
-          "key": {
-            "type": "string"
-          },
-          "headers": {
-            "type": "object"
-          }
-        },
-        "required": [
-          "presignUrl",
-          "key",
-          "headers"
-        ]
-      },
-      "GetPresignUrlResponse": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PresignedMediaResponse"
-            }
-          }
-        },
-        "required": [
-          "items"
         ]
       },
       "DistributorProductResponse": {

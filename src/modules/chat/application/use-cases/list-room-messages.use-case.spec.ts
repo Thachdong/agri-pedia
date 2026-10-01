@@ -1,3 +1,5 @@
+import { IMediaQueryPort, TMediaThumbnail } from '@modules/media/contracts';
+import { IUserQueryPort, TUserProfileSummary } from '@modules/user/contracts';
 import {
   ChatMessage,
   ChatNotRoomMemberException,
@@ -22,11 +24,38 @@ describe('ListRoomMessagesUseCase', () => {
   let messages: InMemoryChatMessageRepository;
   let rooms: InMemoryChatRoomRepository;
   let useCase: ListRoomMessagesUseCase;
+  let profiles: TUserProfileSummary[];
+  let avatars: TMediaThumbnail[];
+  let profileLookups: string[][];
 
   beforeEach(() => {
     messages = new InMemoryChatMessageRepository();
     rooms = new InMemoryChatRoomRepository(messages);
-    useCase = new ListRoomMessagesUseCase(rooms, messages);
+    profiles = [];
+    avatars = [];
+    profileLookups = [];
+    const userQuery: IUserQueryPort = {
+      findByIdentifier: async () => null,
+      findRoleById: async () => null,
+      findProfileById: async () => null,
+      listProfilesByIds: async (userIds) => {
+        profileLookups.push(userIds);
+        return profiles.filter((profile) => userIds.includes(profile.userId));
+      },
+    };
+    const mediaQuery: IMediaQueryPort = {
+      findUrls: async () => [],
+      findThumbnails: async (ownerType, ownerIds) =>
+        ownerType === 'USER_AVATAR'
+          ? avatars.filter((avatar) => ownerIds.includes(avatar.ownerId))
+          : [],
+    };
+    useCase = new ListRoomMessagesUseCase(
+      rooms,
+      messages,
+      userQuery,
+      mediaQuery,
+    );
     for (const id of [roomId, otherRoomId]) {
       rooms.items.set(
         id,
@@ -54,6 +83,11 @@ describe('ListRoomMessagesUseCase', () => {
   };
 
   it('lists the messages of the room newest first', async () => {
+    profiles.push(
+      { userId: 'farmer', username: 'Farmer A', role: 'FARMER' },
+      { userId: 'shop', username: 'Shop B', role: 'DISTRIBUTOR' },
+    );
+    avatars.push({ ownerId: 'shop', url: 'https://cdn/shop.jpg' });
     post(1, roomId, 'farmer', at(2));
     post(2, roomId, 'shop', at(3));
     post(3, otherRoomId, 'farmer', at(4));
@@ -69,18 +103,40 @@ describe('ListRoomMessagesUseCase', () => {
         {
           id: messageId(2),
           senderId: 'shop',
+          senderUsername: 'Shop B',
+          senderAvatar: 'https://cdn/shop.jpg',
           message: 'msg 2',
           createdAt: at(3),
         },
         {
           id: messageId(1),
           senderId: 'farmer',
+          senderUsername: 'Farmer A',
+          senderAvatar: null,
           message: 'msg 1',
           createdAt: at(2),
         },
       ],
       nextCursor: null,
     });
+  });
+
+  it('looks up each sender once and returns null profile for a missing sender', async () => {
+    post(1, roomId, 'farmer', at(2));
+    post(2, roomId, 'farmer', at(3));
+
+    const output = await useCase.execute({ userId: 'shop', roomId, limit: 10 });
+
+    expect(profileLookups).toEqual([['farmer']]);
+    expect(
+      output.messages.map(({ senderUsername, senderAvatar }) => ({
+        senderUsername,
+        senderAvatar,
+      })),
+    ).toEqual([
+      { senderUsername: null, senderAvatar: null },
+      { senderUsername: null, senderAvatar: null },
+    ]);
   });
 
   it('pages with the cursor, ties on createdAt broken by id', async () => {

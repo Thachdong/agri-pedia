@@ -1,4 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
+import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import {
   ChatRoomNotFoundException,
   InvalidChatCursorException,
@@ -24,6 +26,10 @@ export type TListRoomMessagesInput = {
 export type TRoomMessageItem = {
   id: string;
   senderId: string;
+  /** Null when the sender no longer exists. */
+  senderUsername: string | null;
+  /** Signed read URL of the sender's avatar; null when none. */
+  senderAvatar: string | null;
   message: string;
   createdAt: Date;
 };
@@ -61,13 +67,15 @@ const decodeCursor = (cursor: string): TChatMessagePageKey => {
   }
 };
 
-/** Messages of a room the caller is a member of, newest first; keyset-paginated. Does not mark them read. */
+/** Messages of a room the caller is a member of, newest first, with each sender's profile; keyset-paginated. Does not mark them read. */
 @Injectable()
 export class ListRoomMessagesUseCase {
   constructor(
     @Inject(CHAT_ROOM_REPOSITORY) private readonly rooms: IChatRoomRepository,
     @Inject(CHAT_MESSAGE_REPOSITORY)
     private readonly messages: IChatMessageRepository,
+    @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   async execute(
@@ -93,10 +101,24 @@ export class ListRoomMessagesUseCase {
         ? encodeCursor({ createdAt: last.createdAt, id: last.id })
         : null;
 
+    const senderIds = [...new Set(page.map((message) => message.senderId))];
+    const [profiles, avatars] = await Promise.all([
+      this.userQuery.listProfilesByIds(senderIds),
+      this.mediaQuery.findThumbnails('USER_AVATAR', senderIds),
+    ]);
+    const usernames = new Map(
+      profiles.map((profile) => [profile.userId, profile.username]),
+    );
+    const avatarUrls = new Map(
+      avatars.map((avatar) => [avatar.ownerId, avatar.url]),
+    );
+
     return {
       messages: page.map((message) => ({
         id: message.id,
         senderId: message.senderId,
+        senderUsername: usernames.get(message.senderId) ?? null,
+        senderAvatar: avatarUrls.get(message.senderId) ?? null,
         message: message.message,
         createdAt: message.createdAt,
       })),

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-01T03:27:22.609Z",
+  "generatedAt": "2026-10-01T03:53:34.181Z",
   "users": [
     {
-      "id": "167b307d-165c-4219-be30-c6c2fadc5e26",
+      "id": "2c950fc3-ffa4-41e6-a574-214fc4b11639",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Thuốc BVTV Huỳnh Lợi",
@@ -20,7 +20,7 @@
       "productCount": 22
     },
     {
-      "id": "d5a6e856-b52a-4c22-99c6-b20103188b36",
+      "id": "ef6dbd17-6328-469d-bc17-99871113c823",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Vườn ươm Huỳnh Phú",
@@ -38,7 +38,7 @@
       "productCount": 28
     },
     {
-      "id": "aabdbd03-e563-4d08-ac66-4885e72639ed",
+      "id": "1a2579d9-c64a-4de6-9c5b-7af335107ba9",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Cơ sở Giống thủy sản Đặng Xanh",
@@ -56,7 +56,7 @@
       "productCount": 12
     },
     {
-      "id": "71215249-3b92-405a-a5bd-950a84121a95",
+      "id": "51a43c18-262f-4755-996c-59e1ec74bf09",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Thuốc BVTV Dương Hưng",
@@ -74,7 +74,7 @@
       "productCount": 16
     },
     {
-      "id": "67949890-92d8-4f8b-a083-75cdce54f8b9",
+      "id": "a726b3f0-e833-4701-888e-89ed6916b90e",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Nhà vườn Ngô Thịnh",
@@ -92,7 +92,7 @@
       "productCount": 23
     },
     {
-      "id": "ad4df835-bc41-4d7d-b6ab-5856aa795b8d",
+      "id": "cbb03007-17fa-4995-acf5-22706e23b9bf",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại giống Thủy sản Đỗ Thịnh",
@@ -110,7 +110,7 @@
       "productCount": 26
     },
     {
-      "id": "559c1e6f-ee0e-4972-9520-b2fe461922ac",
+      "id": "e3cd80df-3164-4f9d-b7c3-40bb250bb7db",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Cửa hàng Vật tư Nông nghiệp Huỳnh Thành",
@@ -128,7 +128,7 @@
       "productCount": 16
     },
     {
-      "id": "84cd9cea-4553-46e7-b44b-d8070a6d3232",
+      "id": "9f7f76fb-183e-460c-b4f4-6857b5b02626",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Nhà vườn Phan Việt",
@@ -146,7 +146,7 @@
       "productCount": 26
     },
     {
-      "id": "e0355120-18a0-49dc-bb0b-3c57d373e299",
+      "id": "56f93039-d3cf-4c70-9021-fea76f15b27d",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Cơ sở Giống thủy sản Bùi Phát",
@@ -164,7 +164,7 @@
       "productCount": 26
     },
     {
-      "id": "79b7335b-f2cc-4de8-b4e4-5831e489c71c",
+      "id": "ed6a76c6-58b3-4981-ab30-2b2aad009e76",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Thuốc BVTV Lý Lợi",
@@ -182,7 +182,7 @@
       "productCount": 18
     },
     {
-      "id": "37bb2183-c798-4d53-a155-69aa3d75db6c",
+      "id": "3aba6228-1b01-439c-93d1-3c03e6da422f",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Trại giống cây Nguyễn Phú",
@@ -200,7 +200,7 @@
       "productCount": 30
     },
     {
-      "id": "99bdf31d-0f21-4b83-b478-06ddb91bfbf9",
+      "id": "64aad18e-a51d-48d3-b541-d1d54aef501f",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Cơ sở Giống thủy sản Lý Thành",
@@ -218,7 +218,7 @@
       "productCount": 22
     },
     {
-      "id": "fdeebc94-cfba-4121-b548-85cb71e7efec",
+      "id": "8bfabf5c-f79b-483a-86c5-0c299173bac4",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Thuốc BVTV Ngô Phú",
@@ -236,7 +236,7 @@
       "productCount": 26
     },
     {
-      "id": "3baab91d-384a-4f9c-852c-e6892e08fca3",
+      "id": "f8bf1f5b-003c-4068-9e2f-d3605266532d",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Trại giống cây Trương Thành",
@@ -254,7 +254,7 @@
       "productCount": 16
     },
     {
-      "id": "f6ecf234-65f1-478d-b5f8-1f9a695409d6",
+      "id": "e290b284-0fde-46d7-9cff-df9694d33e66",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại giống Thủy sản Nguyễn Hưng",
@@ -272,7 +272,7 @@
       "productCount": 10
     },
     {
-      "id": "6db89f04-6d9f-49cd-afa2-38897f157f6a",
+      "id": "b5187f11-273f-447c-b7dc-ee3d77fc525d",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Thuốc BVTV Dương Việt",
@@ -290,7 +290,7 @@
       "productCount": 17
     },
     {
-      "id": "fbf459d2-92d1-48b6-a706-27d5b1759d01",
+      "id": "ede4e235-0216-40ae-b072-498489601582",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Nhà vườn Bùi Thịnh",
@@ -308,7 +308,7 @@
       "productCount": 29
     },
     {
-      "id": "0756b51f-4f66-4267-99c3-189df9643116",
+      "id": "97acde7e-0893-469a-b7bc-fd701d5eac35",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại cá giống Đặng Nông",
@@ -326,7 +326,7 @@
       "productCount": 26
     },
     {
-      "id": "d3a146f2-f4f4-419c-a7cd-3d5023c003f9",
+      "id": "cc7d51d4-0921-4836-885d-3d657d78b44a",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Thuốc BVTV Đặng Phú",
@@ -344,7 +344,7 @@
       "productCount": 20
     },
     {
-      "id": "2b1b0b48-cfe8-46b7-9920-535f2c933647",
+      "id": "5bc49f60-4b20-4ad9-8461-d873e7fe7c92",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Vườn ươm Phan Lợi",
@@ -362,7 +362,7 @@
       "productCount": 13
     },
     {
-      "id": "1fb8f618-fa25-4188-ad6c-f432f04eddbe",
+      "id": "4f01efe3-8b40-4469-80e1-f47e4385222b",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Cơ sở Giống thủy sản Trần Thành",
@@ -380,7 +380,7 @@
       "productCount": 25
     },
     {
-      "id": "033e5ca5-e722-4ea5-98e5-c9d322e0888d",
+      "id": "0e2f37c6-74e8-447d-af7a-4153cdd33a14",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Phân bón Hoàng Xanh",
@@ -398,7 +398,7 @@
       "productCount": 25
     },
     {
-      "id": "b5368d53-12f1-4a25-b0db-887d9f4d6f61",
+      "id": "94bff895-3379-43e1-a8f2-4bf231de0fab",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Nhà vườn Trần Thành",
@@ -416,7 +416,7 @@
       "productCount": 25
     },
     {
-      "id": "8e26af0a-d097-4ca9-bacd-b9ec87864b9e",
+      "id": "99bf2fce-d7df-4bc2-aa8b-c606246b12d2",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại cá giống Hoàng Phát",
@@ -434,7 +434,7 @@
       "productCount": 22
     },
     {
-      "id": "cb3180dc-1786-4356-bbc8-31d028cc12ef",
+      "id": "94b360a5-3389-4ac4-b7c3-a3104ac94d09",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Cửa hàng Vật tư Nông nghiệp Bùi Xanh",
@@ -452,7 +452,7 @@
       "productCount": 23
     },
     {
-      "id": "ad84bf72-b440-4fe4-979c-0d22e40a468f",
+      "id": "8e7e9f9b-d226-4e6b-bb77-f4de3d9425e0",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Vườn ươm Đỗ Hưng",
@@ -470,7 +470,7 @@
       "productCount": 25
     },
     {
-      "id": "9ba52d0f-be02-435f-a773-172498bfc1ce",
+      "id": "e452e71d-0a73-412d-9e29-c3639b888d98",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại cá giống Phan Nông",
@@ -488,7 +488,7 @@
       "productCount": 21
     },
     {
-      "id": "f26ca92f-b93d-405a-96ce-5c577bf9400e",
+      "id": "e11432e2-0239-420f-a939-345fb3cacf24",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Phân bón Phan Lợi",
@@ -506,7 +506,7 @@
       "productCount": 28
     },
     {
-      "id": "7e3d31a9-7bda-49b0-9c19-29ef133af6bf",
+      "id": "2a191e4e-5080-4a74-bf08-2637219f826c",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Nhà vườn Đỗ Phú",
@@ -524,7 +524,7 @@
       "productCount": 21
     },
     {
-      "id": "e3123ac9-482e-468a-89bb-092765721685",
+      "id": "bb2a6c03-b9fb-4390-90e5-d535ec7b8e80",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại cá giống Dương Thịnh",
@@ -542,7 +542,7 @@
       "productCount": 21
     },
     {
-      "id": "1e08d6bd-511e-473c-9c38-5a2526e00b30",
+      "id": "b0c3c579-2f6a-4115-8396-533b98818ddc",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Cửa hàng Vật tư Nông nghiệp Bùi Phát",
@@ -560,7 +560,7 @@
       "productCount": 27
     },
     {
-      "id": "ea72d2a1-944e-4d46-b361-6c65f9acc705",
+      "id": "ca1d3ea3-76f7-4133-ba47-0e589e2720f6",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Nhà vườn Phan An",
@@ -578,7 +578,7 @@
       "productCount": 26
     },
     {
-      "id": "6b4b1a9d-8952-4a7d-8137-07e0a5f6a19b",
+      "id": "fd567cf6-30e6-4e69-941e-796ed3179a80",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại giống Thủy sản Trương Thịnh",
@@ -596,7 +596,7 @@
       "productCount": 15
     },
     {
-      "id": "2e930008-e3f3-4f3d-b9c0-da41f0f53b0d",
+      "id": "1a0c4331-519c-4fd7-81f0-c3887349b0d4",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Cửa hàng Vật tư Nông nghiệp Huỳnh Nông",
@@ -614,7 +614,7 @@
       "productCount": 20
     },
     {
-      "id": "ba2d02fd-cefc-49bf-8daf-faa79c0bd438",
+      "id": "6e9dd1bf-7d65-4430-a91e-abc74840218a",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Cửa hàng Giống cây trồng Hoàng Lợi",
@@ -632,7 +632,7 @@
       "productCount": 23
     },
     {
-      "id": "001d1d94-8e63-415e-8e1f-72186cbf64a0",
+      "id": "a00acc62-98fd-43cb-88d4-098430f502b6",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại tôm giống Trương Hưng",
@@ -650,7 +650,7 @@
       "productCount": 29
     },
     {
-      "id": "77736d31-149e-4671-af56-bd036f2d8b3e",
+      "id": "e3d80ddf-e706-4e05-930d-2d6b6f4aca05",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Thuốc BVTV Trần An",
@@ -668,7 +668,7 @@
       "productCount": 12
     },
     {
-      "id": "41975afc-20ff-4079-9418-b1033e0d3d89",
+      "id": "3f2931e4-ded8-48bd-836f-db6bc0c84d2b",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Trại giống cây Phạm Lợi",
@@ -686,7 +686,7 @@
       "productCount": 14
     },
     {
-      "id": "bbe9a472-7c26-42ad-ad15-dca828213fec",
+      "id": "472e3312-cba1-4bf1-bd52-5f90927efdb8",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại giống Thủy sản Đặng Thịnh",
@@ -704,7 +704,7 @@
       "productCount": 14
     },
     {
-      "id": "bd4cd3d9-870a-4142-ba40-a546478c70fe",
+      "id": "5069f526-4ac3-4c37-88ab-433c5456c05b",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Cửa hàng Vật tư Nông nghiệp Lý Việt",
@@ -722,7 +722,7 @@
       "productCount": 29
     },
     {
-      "id": "4851830d-a017-4c2f-a595-b6958c2cb138",
+      "id": "ce04bece-4cfa-48d2-b421-d73175eaa57c",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Trại giống cây Võ Việt",
@@ -740,7 +740,7 @@
       "productCount": 11
     },
     {
-      "id": "5359a026-1a41-4eb8-814a-77eedd2c8597",
+      "id": "a1cebda1-d19f-4bbb-91c9-6d59b59fbef7",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Cơ sở Giống thủy sản Lý Nông",
@@ -758,7 +758,7 @@
       "productCount": 23
     },
     {
-      "id": "3d46fa52-6e01-49d2-b0d9-125911a289a7",
+      "id": "7ef8faa7-6ba1-406b-91b1-09d1d2073757",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý VTNN Ngô Việt",
@@ -776,7 +776,7 @@
       "productCount": 17
     },
     {
-      "id": "f60c419e-c9b2-42d8-94f5-71387468eafe",
+      "id": "c140af3d-4de3-4dce-a1b0-f232905e2562",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Cửa hàng Giống cây trồng Lý Nông",
@@ -794,7 +794,7 @@
       "productCount": 14
     },
     {
-      "id": "d6eb18e7-3310-4496-b298-ea32e3531391",
+      "id": "b55e4ecd-f0fb-4dcf-b2a5-667bbce7c132",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại tôm giống Võ Phát",
@@ -812,7 +812,7 @@
       "productCount": 14
     },
     {
-      "id": "5c637af0-6f4f-44f6-8df8-8caa4058d280",
+      "id": "9aca7d9b-da58-4658-866c-e6517d8ecc04",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Cửa hàng Vật tư Nông nghiệp Đỗ An",
@@ -830,7 +830,7 @@
       "productCount": 26
     },
     {
-      "id": "7149fd9c-a268-4073-8bd4-03f5592e143a",
+      "id": "6ee39b11-226e-4856-b6ab-8822ab22b3d5",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Trại giống cây Nguyễn Phú",
@@ -848,7 +848,7 @@
       "productCount": 29
     },
     {
-      "id": "93be37b4-05fc-4a89-8526-0c43b10bd031",
+      "id": "a7200b30-8cbb-47fd-88aa-af071858d2f6",
       "role": "DISTRIBUTOR",
       "businessType": "AQUACULTURE_SEEDLINGS",
       "username": "Trại cá giống Lê Phát",
@@ -866,7 +866,7 @@
       "productCount": 12
     },
     {
-      "id": "4ce44163-f88f-473c-8756-2c084ebce4ff",
+      "id": "29bd3597-ab0d-4ce1-85a9-588bee89fa59",
       "role": "DISTRIBUTOR",
       "businessType": "AGRICULTURAL_CHEMICAL_SUPPLIES",
       "username": "Đại lý Phân bón Đỗ Thành",
@@ -884,7 +884,7 @@
       "productCount": 16
     },
     {
-      "id": "32218dea-e705-47dd-b41d-80f62eea581b",
+      "id": "427f0fc1-ad41-4c86-8c31-3e6f2e6fa768",
       "role": "DISTRIBUTOR",
       "businessType": "SEEDS_SEEDLINGS",
       "username": "Trại giống cây Bùi Hưng",
@@ -902,7 +902,7 @@
       "productCount": 10
     },
     {
-      "id": "7c1a67a5-86ee-4f71-892e-8055db7e533d",
+      "id": "168b20f9-d017-48c0-a669-51cbd1c9a552",
       "role": "FARMER",
       "businessType": null,
       "username": "Bùi Đức Dũng",
@@ -920,7 +920,7 @@
       "productCount": 0
     },
     {
-      "id": "34721929-e32e-4ddd-ab6a-71282cf0676c",
+      "id": "559055d1-5c08-4b03-9adc-c23e142bd897",
       "role": "FARMER",
       "businessType": null,
       "username": "Nguyễn Đức Tuấn",
@@ -938,7 +938,7 @@
       "productCount": 0
     },
     {
-      "id": "7262e74b-5c90-4c3d-ad25-793e8c9f5bc8",
+      "id": "a894b7ce-5cb9-4fe7-9e60-100604113d7d",
       "role": "FARMER",
       "businessType": null,
       "username": "Võ Đức Trung",
@@ -956,7 +956,7 @@
       "productCount": 0
     },
     {
-      "id": "f744f4e9-2421-4bec-80f5-90f16a09ef65",
+      "id": "5877446a-ca6b-4013-aaa7-49564bf698c0",
       "role": "FARMER",
       "businessType": null,
       "username": "Lý Thanh Trang",
@@ -974,7 +974,7 @@
       "productCount": 0
     },
     {
-      "id": "421a0863-4a44-4bb1-96b4-83059f7709ca",
+      "id": "da4e5aef-bfb0-4041-8fcb-54407a0cb189",
       "role": "FARMER",
       "businessType": null,
       "username": "Đặng Thị Tuấn",
@@ -992,7 +992,7 @@
       "productCount": 0
     },
     {
-      "id": "895bba8b-4859-4169-ad2b-ab057f6756c5",
+      "id": "cac231dc-5e59-48a5-9681-bb7ce3c9aef2",
       "role": "FARMER",
       "businessType": null,
       "username": "Phạm Thị Kim Dũng",
@@ -1010,7 +1010,7 @@
       "productCount": 0
     },
     {
-      "id": "167b684b-4484-4551-ae69-4b3f335207e4",
+      "id": "04319357-5b61-420d-b90c-4f1b1c9d9a54",
       "role": "FARMER",
       "businessType": null,
       "username": "Trương Văn Quang",
@@ -1028,7 +1028,7 @@
       "productCount": 0
     },
     {
-      "id": "48b2517a-34bf-4e9f-976d-b8176cfdafe3",
+      "id": "31feb8e9-b6bb-45d0-b80d-f6a244877d6f",
       "role": "FARMER",
       "businessType": null,
       "username": "Trương Văn Hòa",
@@ -1046,7 +1046,7 @@
       "productCount": 0
     },
     {
-      "id": "876e6aaf-272d-4c2d-a141-4356d890d154",
+      "id": "6f1b7b10-dc79-4021-b00d-91f4faef60a9",
       "role": "FARMER",
       "businessType": null,
       "username": "Trương Thị Hải",
@@ -1064,7 +1064,7 @@
       "productCount": 0
     },
     {
-      "id": "952408ad-e30e-49df-bdba-df88f9511fa5",
+      "id": "63ba90c5-565e-4328-99ee-eb1d2b7b1499",
       "role": "FARMER",
       "businessType": null,
       "username": "Đặng Ngọc Trang",
@@ -1082,7 +1082,7 @@
       "productCount": 0
     },
     {
-      "id": "8cbbd224-1e01-45b2-a7af-f386a11d04c5",
+      "id": "12a31441-d519-46f6-ba15-4bed71908d57",
       "role": "FARMER",
       "businessType": null,
       "username": "Võ Đức Tuấn",
@@ -1100,7 +1100,7 @@
       "productCount": 0
     },
     {
-      "id": "0ce1e358-044f-46b3-a2d9-50ea08927247",
+      "id": "c9188b60-3bd0-4396-9846-48a1e3dbf996",
       "role": "FARMER",
       "businessType": null,
       "username": "Lý Thị Kim Hà",
@@ -1118,7 +1118,7 @@
       "productCount": 0
     },
     {
-      "id": "7fb49a39-36bf-4b79-b871-89e3634b99af",
+      "id": "5be899ad-2b61-4245-a5ad-1b6de1407636",
       "role": "FARMER",
       "businessType": null,
       "username": "Nguyễn Thị Hòa",
@@ -1136,7 +1136,7 @@
       "productCount": 0
     },
     {
-      "id": "bd114bea-e187-451b-9c1c-02577ff68a26",
+      "id": "ed2ab22c-991e-472a-9ff0-c8e1018d4b34",
       "role": "FARMER",
       "businessType": null,
       "username": "Dương Minh Trang",
@@ -1154,7 +1154,7 @@
       "productCount": 0
     },
     {
-      "id": "fc03a9d7-c50a-4d2c-86aa-1c6244ce51bc",
+      "id": "147a8a02-bc64-436d-baec-d55679e46303",
       "role": "FARMER",
       "businessType": null,
       "username": "Phan Minh Lộc",
@@ -1172,7 +1172,7 @@
       "productCount": 0
     },
     {
-      "id": "e878c5e8-0c6f-4f96-8156-d1b9eb949dd1",
+      "id": "bf5090ef-5ad1-4b24-945c-ef766c8c2f5f",
       "role": "FARMER",
       "businessType": null,
       "username": "Trương Thanh An",
@@ -1190,7 +1190,7 @@
       "productCount": 0
     },
     {
-      "id": "a2d36edd-e590-4954-bfa3-eccacbd8618f",
+      "id": "4331905c-e3f1-43f8-bf49-606e4466a8a9",
       "role": "FARMER",
       "businessType": null,
       "username": "Ngô Hoàng Trang",
@@ -1208,7 +1208,7 @@
       "productCount": 0
     },
     {
-      "id": "1457f257-0acf-4607-b954-c205205a5b14",
+      "id": "7ed1476a-5af5-457e-91ae-bd9b8f5bc7c6",
       "role": "FARMER",
       "businessType": null,
       "username": "Bùi Minh An",
@@ -1226,7 +1226,7 @@
       "productCount": 0
     },
     {
-      "id": "6c0b07b8-939d-4542-91d7-2dcea0547ea8",
+      "id": "d1020a76-3845-4977-8019-9250882c444d",
       "role": "FARMER",
       "businessType": null,
       "username": "Phạm Thị Kim Lộc",
@@ -1244,7 +1244,7 @@
       "productCount": 0
     },
     {
-      "id": "6ce27ddc-33d9-4431-956f-2e742e95a0a1",
+      "id": "95786f89-adb6-4a14-b239-a76dbebb362f",
       "role": "FARMER",
       "businessType": null,
       "username": "Hoàng Thị Kim Yến",
@@ -1262,7 +1262,7 @@
       "productCount": 0
     },
     {
-      "id": "0892ee26-b296-43ab-aa81-5757aaa8dea5",
+      "id": "f005a179-4c5c-4c53-b3a2-2d676320ea15",
       "role": "FARMER",
       "businessType": null,
       "username": "Lê Thị Sơn",
@@ -1280,7 +1280,7 @@
       "productCount": 0
     },
     {
-      "id": "2ba13de9-d933-44c0-8c20-5524f4bb7ee3",
+      "id": "85038d87-7e96-4dde-8ae7-efb25ec8046d",
       "role": "FARMER",
       "businessType": null,
       "username": "Lý Hoàng Trung",
@@ -1298,7 +1298,7 @@
       "productCount": 0
     },
     {
-      "id": "56f75a37-5af9-49c4-96fb-3f5195251456",
+      "id": "49cd0dd2-64b3-46f9-9640-22f481083a34",
       "role": "FARMER",
       "businessType": null,
       "username": "Hoàng Thị Yến",
@@ -1316,7 +1316,7 @@
       "productCount": 0
     },
     {
-      "id": "cd063768-c2d0-4c06-aeff-ffcd411085a8",
+      "id": "0f274036-3148-45de-b012-b9a7a24a81be",
       "role": "FARMER",
       "businessType": null,
       "username": "Lý Thị Trang",
@@ -1334,7 +1334,7 @@
       "productCount": 0
     },
     {
-      "id": "3e6f9a2e-31be-4f91-8685-48047f363c5c",
+      "id": "42889bb3-778c-41f4-97c9-d488ba7d46b4",
       "role": "FARMER",
       "businessType": null,
       "username": "Hoàng Quốc Phúc",
@@ -1352,7 +1352,7 @@
       "productCount": 0
     },
     {
-      "id": "98c40c15-d400-45d7-86eb-567713d7b08c",
+      "id": "ff7b9e31-9d6a-4bab-bf58-c3cd382b58ba",
       "role": "FARMER",
       "businessType": null,
       "username": "Huỳnh Ngọc Nam",
@@ -1370,7 +1370,7 @@
       "productCount": 0
     },
     {
-      "id": "e67d13a2-08c6-45ad-8bbc-05d5dc2321af",
+      "id": "2718be77-0b30-4061-a276-c3ba6213ae2d",
       "role": "FARMER",
       "businessType": null,
       "username": "Huỳnh Ngọc Bình",
@@ -1388,7 +1388,7 @@
       "productCount": 0
     },
     {
-      "id": "2a79616e-66fa-4abe-b368-6bbd2b9e2507",
+      "id": "498000f8-b083-47a5-88c3-f33f93f2c870",
       "role": "FARMER",
       "businessType": null,
       "username": "Đặng Thanh Tài",
@@ -1406,7 +1406,7 @@
       "productCount": 0
     },
     {
-      "id": "0e560197-cd1c-4389-943a-07b627abe059",
+      "id": "2ae4fb99-334f-4351-af43-25f9825341fa",
       "role": "FARMER",
       "businessType": null,
       "username": "Phan Thị Lan",
@@ -1424,7 +1424,7 @@
       "productCount": 0
     },
     {
-      "id": "24b59dfd-7a43-4c2f-a3d2-07098c14d5ff",
+      "id": "aae97f55-c094-432d-94a9-6b848b668546",
       "role": "FARMER",
       "businessType": null,
       "username": "Huỳnh Ngọc Lan",
@@ -1442,7 +1442,7 @@
       "productCount": 0
     },
     {
-      "id": "97ffef0e-3423-4f36-97ad-e3fce2feb4f8",
+      "id": "e20786c4-53fb-4d8e-b41b-25ed5f85006c",
       "role": "FARMER",
       "businessType": null,
       "username": "Trần Thanh Hà",
@@ -1460,7 +1460,7 @@
       "productCount": 0
     },
     {
-      "id": "965db4cc-6214-4340-b247-6fef81923d58",
+      "id": "04220a04-17b1-4fc9-a120-a164292a959f",
       "role": "FARMER",
       "businessType": null,
       "username": "Lê Thị Phúc",
@@ -1478,7 +1478,7 @@
       "productCount": 0
     },
     {
-      "id": "735f25f7-2cda-4bc8-b00d-d3a7d8333fb8",
+      "id": "446a324c-95c3-4183-8ed5-2441095f29e5",
       "role": "FARMER",
       "businessType": null,
       "username": "Trần Quốc Tâm",
@@ -1496,7 +1496,7 @@
       "productCount": 0
     },
     {
-      "id": "cb19c6a3-d6a5-4116-baad-ce6230236829",
+      "id": "5354ccf9-8a16-41f9-a3e4-6603d3ee8f73",
       "role": "FARMER",
       "businessType": null,
       "username": "Võ Thị Hải",
@@ -1514,7 +1514,7 @@
       "productCount": 0
     },
     {
-      "id": "b2a92926-8ff9-40de-8219-88d484e7fb44",
+      "id": "d8a772f0-c713-44dc-a468-7d91b8c2dddc",
       "role": "FARMER",
       "businessType": null,
       "username": "Ngô Quốc Tâm",
@@ -1532,7 +1532,7 @@
       "productCount": 0
     },
     {
-      "id": "129ee606-24cf-4632-94c9-ed64277e5d30",
+      "id": "96d43cac-62fb-4a75-b2d0-fca198967bd2",
       "role": "FARMER",
       "businessType": null,
       "username": "Đỗ Thanh Nam",
@@ -1550,7 +1550,7 @@
       "productCount": 0
     },
     {
-      "id": "c149364a-f297-4ff5-be46-eb82160124bf",
+      "id": "af8a4bf0-4064-48bd-8d49-a7b23fe63f3a",
       "role": "FARMER",
       "businessType": null,
       "username": "Trương Đức Tài",
@@ -1568,7 +1568,7 @@
       "productCount": 0
     },
     {
-      "id": "b014cf55-cfb0-4db6-b4e3-45d21d54adde",
+      "id": "48ea74e7-4f78-4a50-afc0-47c0101284c4",
       "role": "FARMER",
       "businessType": null,
       "username": "Đặng Hữu Tâm",
@@ -1586,7 +1586,7 @@
       "productCount": 0
     },
     {
-      "id": "0d01f5ec-f94b-47ab-9ffc-a338c50ee4ee",
+      "id": "7f8c7bd2-0769-4346-b37c-4db73fede086",
       "role": "FARMER",
       "businessType": null,
       "username": "Huỳnh Quốc Phúc",
@@ -1604,7 +1604,7 @@
       "productCount": 0
     },
     {
-      "id": "cc6d2c62-8879-4620-9fa6-6f943532bd12",
+      "id": "da9fc162-5292-4be8-be9a-4a6da0d44105",
       "role": "FARMER",
       "businessType": null,
       "username": "Nguyễn Thị Kim Cường",
@@ -1622,7 +1622,7 @@
       "productCount": 0
     },
     {
-      "id": "23728685-4372-4dcd-9306-34a6b561f5c5",
+      "id": "6b309b27-2e4c-4ec6-a309-1ca7b61e86cd",
       "role": "FARMER",
       "businessType": null,
       "username": "Trần Hữu Hải",
@@ -1640,7 +1640,7 @@
       "productCount": 0
     },
     {
-      "id": "6e7009f3-ae70-4243-9a8e-4beda4eee1d9",
+      "id": "a39e1089-1da9-4e98-ab57-3ed9f762dd96",
       "role": "FARMER",
       "businessType": null,
       "username": "Phan Ngọc Phúc",
@@ -1658,7 +1658,7 @@
       "productCount": 0
     },
     {
-      "id": "847c7000-f274-4a43-82c7-1829201a78fd",
+      "id": "1c7dd57f-f970-4ba8-9e87-06f81343a194",
       "role": "FARMER",
       "businessType": null,
       "username": "Lý Văn Vy",
@@ -1676,7 +1676,7 @@
       "productCount": 0
     },
     {
-      "id": "2d5667af-1ff8-4e10-a874-1533de471af4",
+      "id": "be6a63bc-7212-4fc3-84c0-8445736cbdca",
       "role": "FARMER",
       "businessType": null,
       "username": "Nguyễn Thanh Long",
@@ -1694,7 +1694,7 @@
       "productCount": 0
     },
     {
-      "id": "15cf869c-64fe-4bfc-ba17-d52ea554ce71",
+      "id": "3baaa244-548f-47e3-99af-52462aef71b1",
       "role": "FARMER",
       "businessType": null,
       "username": "Lê Hữu Trang",
@@ -1712,7 +1712,7 @@
       "productCount": 0
     },
     {
-      "id": "aca881b9-087e-4835-aa80-5e873c51bb98",
+      "id": "7b342727-1a39-49e3-8d7f-52d785bd0954",
       "role": "FARMER",
       "businessType": null,
       "username": "Dương Thị Yến",
@@ -1730,7 +1730,7 @@
       "productCount": 0
     },
     {
-      "id": "0f0c4e0f-fe7e-4782-b835-a8a0d92e82c6",
+      "id": "58100ea7-de9f-4c7b-be1e-65e888db88b5",
       "role": "FARMER",
       "businessType": null,
       "username": "Đỗ Văn Bình",
@@ -1748,7 +1748,7 @@
       "productCount": 0
     },
     {
-      "id": "dc6deb3c-cf61-45c3-9392-856423c5cec5",
+      "id": "fb4a1cd9-f06a-4488-b47e-19641bbeff77",
       "role": "FARMER",
       "businessType": null,
       "username": "Võ Văn Vy",
@@ -1766,7 +1766,7 @@
       "productCount": 0
     },
     {
-      "id": "4cd2c9b4-f48b-419b-84bc-02b757ccc467",
+      "id": "87365025-72f6-46af-b312-c764a8e7d90f",
       "role": "FARMER",
       "businessType": null,
       "username": "Lê Quốc Sơn",
@@ -1784,7 +1784,7 @@
       "productCount": 0
     },
     {
-      "id": "5f961fe9-ae90-4aca-9695-1d3c9ec535d5",
+      "id": "719513a7-d800-4e89-b7a1-20a52ec1fd5c",
       "role": "FARMER",
       "businessType": null,
       "username": "Dương Thanh Hùng",
