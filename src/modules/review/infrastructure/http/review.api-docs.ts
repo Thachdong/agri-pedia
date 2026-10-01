@@ -24,6 +24,14 @@ defineApiDocs(ReviewController, {
         },
       ],
     },
+    summary: {
+      summary: 'Get the rating of a product or a distributor (public)',
+      description:
+        'No login needed. `targetType=PRODUCT`: reviews of that product. `targetType=USER`: reviews of the ' +
+        'distributor itself only (not of its products; the whole shop summary is in `GET /reviews`). `avgRating` has ' +
+        '1 decimal and is 0 when there is no review. A target without reviews, or that does not exist, returns all zero.',
+      validation: true,
+    },
     create: {
       summary:
         'Review a distributor or one of its products (ACTIVE farmer only)',

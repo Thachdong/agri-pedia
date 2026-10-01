@@ -16,16 +16,19 @@ import {
 } from '@shared/access-token';
 import {
   CreateReviewUseCase,
+  GetReviewSummaryUseCase,
   ListDistributorReviewsUseCase,
   UpdateReviewUseCase,
 } from '../../application/use-cases';
 import {
   CreateReviewDto,
   DEFAULT_REVIEW_PAGE_SIZE,
+  GetReviewSummaryQueryDto,
   ListDistributorReviewsQueryDto,
   UpdateReviewDto,
 } from './dto';
 import { CreateReviewResponse } from './responses/create-review.response';
+import { GetReviewSummaryResponse } from './responses/get-review-summary.response';
 import { ListDistributorReviewsResponse } from './responses/list-distributor-reviews.response';
 
 @Controller('reviews')
@@ -34,6 +37,7 @@ export class ReviewController {
     private readonly createReview: CreateReviewUseCase,
     private readonly listDistributorReviews: ListDistributorReviewsUseCase,
     private readonly updateReview: UpdateReviewUseCase,
+    private readonly getReviewSummary: GetReviewSummaryUseCase,
   ) {}
 
   /** Public: no access token needed. */
@@ -70,6 +74,26 @@ export class ReviewController {
         },
       })),
       nextCursor,
+    };
+  }
+
+  /** Public: no access token needed. */
+  @Get('summary')
+  async summary(
+    @Query() query: GetReviewSummaryQueryDto,
+  ): Promise<GetReviewSummaryResponse> {
+    const summary = await this.getReviewSummary.execute({
+      targetType: query.targetType,
+      targetId: query.targetId,
+    });
+    return {
+      avgRating: summary.avgRating,
+      reviewCount: summary.reviewCount,
+      oneStarCount: summary.oneStarCount,
+      twoStarCount: summary.twoStarCount,
+      threeStarCount: summary.threeStarCount,
+      fourStarCount: summary.fourStarCount,
+      fiveStarCount: summary.fiveStarCount,
     };
   }
 

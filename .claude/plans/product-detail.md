@@ -31,9 +31,9 @@ No event, no migration, no new module.
 - [x] 4. [http]         GET /products/:productId (public): response + e2e
 - [x] 5. [api-docs]     GET /products/:productId (gộp vào bước 4: defineApiDocs bắt buộc entry cho mỗi handler, build fail nếu thiếu)
 - [x] 6. [use-case]     review: GetReviewSummary; port IReviewRepository.summarizeByTarget (+ fake)
-- [ ] 7. [persistence]  review: PgReviewRepository.summarizeByTarget (no migration)
-- [ ] 8. [http]         GET /reviews/summary (public): query DTO, response + e2e
-- [ ] 9. [api-docs]     GET /reviews/summary
+- [x] 7. [persistence]  review: PgReviewRepository.summarizeByTarget (no migration)
+- [x] 8. [http]         GET /reviews/summary (public): query DTO, response + e2e
+- [x] 9. [api-docs]     GET /reviews/summary (gộp vào bước 8, cùng lý do bước 5)
 - [ ] 10. [use-case]    review: ListProductReviews (IProductQueryPort, IUserQueryPort, IMediaQueryPort, findByTargets — đều đã có)
 - [ ] 11. [http]        GET /reviews/products/:productId (public): query DTO, response + e2e
 - [ ] 12. [api-docs]    GET /reviews/products/:productId
