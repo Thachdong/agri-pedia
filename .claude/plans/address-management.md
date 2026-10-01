@@ -24,7 +24,7 @@ No migration, no event, no new module.
 
 - [x] 1. [domain-model]     user: Address.create (isPrimary tuỳ chọn), markPrimary(), unmarkPrimary();
                              errors USER_ADDRESS_NOT_FOUND (NOT_FOUND), USER_ADDRESS_PRIMARY_NOT_DELETABLE (CONFLICT)
-- [ ] 2. [use-case]         CreateAddress (ILocationQueryPort đã có; IAddressRepository.save / findPrimaryByUserId đã có)
+- [x] 2. [use-case]         CreateAddress (ILocationQueryPort đã có; IAddressRepository.save / findPrimaryByUserId đã có)
 - [ ] 3. [use-case]         SetPrimaryAddress; port IAddressRepository.findById (+ fake)
 - [ ] 4. [use-case]         DeleteAddress; port IAddressRepository.delete (+ fake)
 - [ ] 5. [persistence]      PgAddressRepository.findById, delete (no migration)

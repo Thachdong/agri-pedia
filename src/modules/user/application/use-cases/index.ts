@@ -11,3 +11,4 @@ export * from './get-my-profile.use-case';
 export * from './issue-realtime-ticket.use-case';
 export * from './get-distributor-profile.use-case';
 export * from './list-my-addresses.use-case';
+export * from './create-address.use-case';
