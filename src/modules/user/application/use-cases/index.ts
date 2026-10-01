@@ -9,3 +9,4 @@ export * from './update-profile.use-case';
 export * from './find-nearby-distributors.use-case';
 export * from './get-my-profile.use-case';
 export * from './issue-realtime-ticket.use-case';
+export * from './get-distributor-profile.use-case';

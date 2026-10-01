@@ -9,8 +9,8 @@ Flow: `GET /distributors/:distributorId` (public, no guard) (user module)
 
 No migration, no event, no new module. Farmer profile (private) = later feature, not in scope.
 
-- [ ] 1. [domain-model]     user: error USER_DISTRIBUTOR_NOT_FOUND (NOT_FOUND)
-- [ ] 2. [use-case]         user: GetDistributorProfile; port IAddressRepository.findAllByUserId (+ fake)
+- [x] 1. [domain-model]     user: error USER_DISTRIBUTOR_NOT_FOUND (NOT_FOUND)
+- [x] 2. [use-case]         user: GetDistributorProfile; port IAddressRepository.findAllByUserId (+ fake)
 - [ ] 3. [persistence]      user: PgAddressRepository.findAllByUserId (no migration)
 - [ ] 4. [http]             GET /distributors/:distributorId (public, uuid param), response class, e2e
 - [ ] 5. [api-docs]         GET /distributors/:distributorId (404 USER_DISTRIBUTOR_NOT_FOUND, 400 validation)
@@ -23,6 +23,4 @@ No migration, no event, no new module. Farmer profile (private) = later feature,
 - Route nằm trong DistributorController sẵn có; `:distributorId` không đè `nearby` (route `nearby` khai báo trước + ParseUUIDPipe).
 
 ## Open questions
-- avatar: (a) media id như /users/me + /distributors/nearby (không thêm dependency), hay
-  (b) signed read URL qua IMediaQueryPort.findThumbnails('USER_AVATAR') như chat rooms
-  → (b) thêm wiring user → media contracts; media đã import user contracts (event user.profile.updated) ⇒ vòng phụ thuộc contracts 2 chiều. Mặc định: (a).
+- none (avatar = media id, như /users/me + /distributors/nearby)

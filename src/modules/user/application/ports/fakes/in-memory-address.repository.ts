@@ -15,4 +15,14 @@ export class InMemoryAddressRepository implements IAddressRepository {
       ) ?? null
     );
   }
+
+  async findAllByUserId(userId: string): Promise<Address[]> {
+    return [...this.items.values()]
+      .filter((address) => address.userId === userId)
+      .sort(
+        (a, b) =>
+          Number(b.isPrimary) - Number(a.isPrimary) ||
+          (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+      );
+  }
 }
