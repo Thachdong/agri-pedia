@@ -36,6 +36,17 @@ defineApiDocs(UserController, {
         { type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' },
       ],
     },
+    setMyPrimaryAddress: {
+      summary: "Set one of the caller's addresses as primary",
+      description:
+        'The current primary becomes a normal address. Already primary: 200, nothing changes. ' +
+        'An address of another user answers 404 like an unknown one.',
+      validation: true,
+      auth: true,
+      errors: [
+        { type: EDomainErrorType.NOT_FOUND, code: 'USER_ADDRESS_NOT_FOUND' },
+      ],
+    },
     updateMe: {
       summary: 'Update the profile of the caller',
       description:

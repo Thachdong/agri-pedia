@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   AccessTokenGuard,
   CurrentUser,
@@ -8,6 +17,7 @@ import {
   CreateAddressUseCase,
   GetMyProfileUseCase,
   ListMyAddressesUseCase,
+  SetPrimaryAddressUseCase,
   UpdateProfileUseCase,
 } from '../../application/use-cases';
 import { CreateAddressDto, UpdateProfileDto } from './dto';
@@ -23,6 +33,7 @@ export class UserController {
     private readonly updateProfile: UpdateProfileUseCase,
     private readonly listMyAddresses: ListMyAddressesUseCase,
     private readonly createAddress: CreateAddressUseCase,
+    private readonly setPrimaryAddress: SetPrimaryAddressUseCase,
   ) {}
 
   @Get('me')
@@ -79,6 +90,16 @@ export class UserController {
       isPrimary: dto.isPrimary,
     });
     return { addressId };
+  }
+
+  @Patch('me/addresses/:addressId/primary')
+  @UseGuards(AccessTokenGuard)
+  async setMyPrimaryAddress(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Param('addressId', ParseUUIDPipe) addressId: string,
+  ): Promise<null> {
+    await this.setPrimaryAddress.execute({ userId: caller.userId, addressId });
+    return null;
   }
 
   @Patch('me')
