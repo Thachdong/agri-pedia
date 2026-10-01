@@ -486,6 +486,257 @@
         ]
       }
     },
+    "/users/me/addresses": {
+      "get": {
+        "operationId": "UserController_getMyAddresses",
+        "summary": "List the addresses of the caller",
+        "description": "Every address of the caller, primary first. Works for any user with a valid access token, whatever its status.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListMyAddressesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "UserController_createMyAddress",
+        "summary": "Add an address for the caller",
+        "description": "Responds 201 with the new address id. `province` = a province `codename` from GET /provinces; `ward` = a ward `codename` of that province from GET /provinces/{provinceCode}/wards. `isPrimary` (default false): true makes it the primary address and the current primary becomes a normal one.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAddressDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAddressResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: USER_INVALID_COORDINATES, USER_LOCATION_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/users/me/addresses/{addressId}/primary": {
+      "patch": {
+        "operationId": "UserController_setMyPrimaryAddress",
+        "summary": "Set one of the caller's addresses as primary",
+        "description": "The current primary becomes a normal address. Already primary: 200, nothing changes. An address of another user answers 404 like an unknown one.",
+        "parameters": [
+          {
+            "name": "addressId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_ADDRESS_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/users/me/addresses/{addressId}": {
+      "delete": {
+        "operationId": "UserController_deleteMyAddress",
+        "summary": "Delete one of the caller's addresses",
+        "description": "Hard delete. The primary address cannot be deleted: set another address as primary first (PATCH /users/me/addresses/{addressId}/primary), so a user always keeps one. An address of another user answers 404 like an unknown one.",
+        "parameters": [
+          {
+            "name": "addressId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_ADDRESS_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "USER_ADDRESS_PRIMARY_NOT_DELETABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
     "/distributors/nearby": {
       "get": {
         "operationId": "DistributorController_findNearby",
@@ -592,6 +843,58 @@
           {
             "access-token": []
           }
+        ]
+      }
+    },
+    "/distributors/{distributorId}": {
+      "get": {
+        "operationId": "DistributorController_getProfile",
+        "summary": "Get the public profile of a distributor (public)",
+        "description": "No login needed. Returns the distributor with its primary address (null if none); the full address list is GET /users/me/addresses (owner only). `avatar` is a media id. Unknown id, not a DISTRIBUTOR, or not ACTIVE → 404 USER_DISTRIBUTOR_NOT_FOUND.",
+        "parameters": [
+          {
+            "name": "distributorId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistributorProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "USER_DISTRIBUTOR_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Distributors"
         ]
       }
     },
@@ -2353,6 +2656,99 @@
           "expiresIn"
         ]
       },
+      "MyAddressResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "ward": {
+            "type": "string"
+          },
+          "houseNumber": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "long": {
+            "type": "number"
+          },
+          "isPrimary": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "province",
+          "ward",
+          "houseNumber",
+          "lat",
+          "long",
+          "isPrimary"
+        ]
+      },
+      "ListMyAddressesResponse": {
+        "type": "object",
+        "properties": {
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MyAddressResponse"
+            }
+          }
+        },
+        "required": [
+          "addresses"
+        ]
+      },
+      "CreateAddressDto": {
+        "type": "object",
+        "properties": {
+          "province": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "ward": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "houseNumber": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "lat": {
+            "type": "number"
+          },
+          "long": {
+            "type": "number"
+          },
+          "isPrimary": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "province",
+          "ward",
+          "houseNumber",
+          "lat",
+          "long"
+        ]
+      },
+      "CreateAddressResponse": {
+        "type": "object",
+        "properties": {
+          "addressId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "addressId"
+        ]
+      },
       "AvatarFileDto": {
         "type": "object",
         "properties": {
@@ -2600,6 +2996,55 @@
           "source",
           "items",
           "total"
+        ]
+      },
+      "DistributorProfileResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "bio": {
+            "type": "string",
+            "nullable": true
+          },
+          "bussinessType": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "AGRICULTURAL_CHEMICAL_SUPPLIES",
+              "SEEDS_SEEDLINGS",
+              "AQUACULTURE_SEEDLINGS"
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "address": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserAddressResponse"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "avatar",
+          "bio",
+          "bussinessType",
+          "createdAt",
+          "address"
         ]
       },
       "LocationItemResponse": {

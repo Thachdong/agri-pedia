@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LocationModule } from '@modules/location/location.module';
+import { MediaModule } from '@modules/media/media.module';
 import {
   ADDRESS_REPOSITORY,
   DISTRIBUTOR_SEARCH_REPOSITORY,
@@ -40,7 +41,7 @@ import { PgUserRepository } from './infrastructure/persistence/pg-user.repositor
 import { UserQueryService } from './infrastructure/queries/user-query.service';
 
 @Module({
-  imports: [LocationModule],
+  imports: [LocationModule, MediaModule],
   controllers: [AuthController, UserController, DistributorController],
   providers: [
     RegisterUserUseCase,

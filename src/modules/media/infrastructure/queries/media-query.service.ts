@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { FILE_STORAGE, IFileStorage } from '@shared/storage';
 import { IMediaRepository, MEDIA_REPOSITORY } from '../../application/ports';
-import { IMediaQueryPort, TMediaThumbnail } from '../../contracts';
+import { IMediaQueryPort, TMediaThumbnail, TMediaUrl } from '../../contracts';
 import { EMediaOwnerType } from '../../domain';
 
 @Injectable()
@@ -26,6 +26,27 @@ export class MediaQueryService implements IMediaQueryPort {
       images.map(async (image) => ({
         ownerId: image.ownerId,
         url: await this.storage.createDownloadUrl(image.source),
+      })),
+    );
+  }
+
+  async findUrls(
+    ownerType: 'USER_LICENSE',
+    ownerId: string,
+    mediaIds: string[],
+  ): Promise<TMediaUrl[]> {
+    if (mediaIds.length === 0) {
+      return [];
+    }
+    const items = await this.media.findByOwner(
+      ownerType as EMediaOwnerType,
+      ownerId,
+      mediaIds,
+    );
+    return Promise.all(
+      items.map(async (item) => ({
+        mediaId: item.id,
+        url: await this.storage.createDownloadUrl(item.source),
       })),
     );
   }

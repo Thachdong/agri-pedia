@@ -56,6 +56,7 @@ describe('ListDistributorProductsUseCase', () => {
       listProfilesByIds: async () => [],
     };
     const mediaQuery: IMediaQueryPort = {
+      findUrls: async () => [],
       findThumbnails: async (_, ownerIds) => {
         thumbnailRequests.push(ownerIds);
         return thumbnails.filter((t) => ownerIds.includes(t.ownerId));

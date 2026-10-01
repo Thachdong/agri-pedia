@@ -40,6 +40,7 @@ describe('ListMyChatRoomsUseCase', () => {
         profiles.filter((profile) => userIds.includes(profile.userId)),
     };
     const mediaQuery: IMediaQueryPort = {
+      findUrls: async () => [],
       findThumbnails: async (ownerType, ownerIds) =>
         ownerType === 'USER_AVATAR'
           ? avatars.filter((avatar) => ownerIds.includes(avatar.ownerId))
