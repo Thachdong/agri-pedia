@@ -1,16 +1,5 @@
 import { EBusinessType } from '../../../domain';
-
-export class DistributorProfileAddressResponse {
-  id: string;
-  /** Province codename. */
-  province: string;
-  /** Ward codename. */
-  ward: string;
-  houseNumber: string;
-  lat: number;
-  long: number;
-  isPrimary: boolean;
-}
+import { UserAddressResponse } from './user-profile.response';
 
 export class DistributorProfileResponse {
   id: string;
@@ -21,6 +10,6 @@ export class DistributorProfileResponse {
   /** Spelling follows the API contract. */
   bussinessType: EBusinessType | null;
   createdAt: Date;
-  /** Primary first, then by id. */
-  addresses: DistributorProfileAddressResponse[];
+  /** Primary address; null if the distributor has none. */
+  address: UserAddressResponse | null;
 }

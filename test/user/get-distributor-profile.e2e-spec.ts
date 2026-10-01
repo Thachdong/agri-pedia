@@ -77,7 +77,7 @@ describe('GET /distributors/:distributorId (e2e)', () => {
   const getProfile = (distributorId: string) =>
     http().get(`/distributors/${distributorId}`);
 
-  it('200: returns the profile with every address, primary first, without a token', async () => {
+  it('200: returns the profile with the primary address only, without a token', async () => {
     const id = await signUp('DISTRIBUTOR');
     // No endpoint adds a second address yet: insert it directly.
     await dataSource.query(
@@ -95,26 +95,13 @@ describe('GET /distributors/:distributorId (e2e)', () => {
       bio: 'seed shop',
       bussinessType: 'SEEDS_SEEDLINGS',
       createdAt: expect.any(String),
-      addresses: [
-        {
-          id: expect.any(String),
-          province: 'can_tho',
-          ward: 'phuong_ninh_kieu',
-          houseNumber: '12',
-          lat: 10.03,
-          long: 105.78,
-          isPrimary: true,
-        },
-        {
-          id: expect.any(String),
-          province: 'ha_noi',
-          ward: 'phuong_ba_dinh',
-          houseNumber: '5',
-          lat: 21.03,
-          long: 105.85,
-          isPrimary: false,
-        },
-      ],
+      address: {
+        province: 'can_tho',
+        ward: 'phuong_ninh_kieu',
+        houseNumber: '12',
+        lat: 10.03,
+        long: 105.78,
+      },
     });
   });
 

@@ -83,7 +83,7 @@ export class DistributorController {
       bio: profile.bio,
       bussinessType: profile.businessType,
       createdAt: profile.createdAt,
-      addresses: profile.addresses,
+      address: profile.address,
     };
   }
 }

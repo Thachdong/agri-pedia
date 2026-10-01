@@ -24,7 +24,7 @@ No migration, no event, no new module. Farmer profile (private) = later feature,
 
 ## Part 2 — profile chỉ trả primary address; API address riêng (login)
 - [x] 6. [use-case]         GetDistributorProfile: `addresses[]` → `address` (primary, findPrimaryByUserId) | null
-- [ ] 7. [http + api-docs]  GET /distributors/:distributorId: response `address`; e2e + docs cập nhật
+- [x] 7. [http + api-docs]  GET /distributors/:distributorId: response `address`; e2e + docs cập nhật
 - [ ] 8. [use-case]         user: ListMyAddresses (IUserRepository.findById, IAddressRepository.findAllByUserId — đã có)
 - [ ] 9. [http + api-docs]  GET /users/me/addresses (AccessTokenGuard, UserController), response, e2e; docs auth: true, 404 USER_NOT_FOUND
 - [ ] 10. [boundary-review]

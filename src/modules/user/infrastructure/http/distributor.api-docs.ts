@@ -29,7 +29,8 @@ defineApiDocs(DistributorController, {
     getProfile: {
       summary: 'Get the public profile of a distributor (public)',
       description:
-        'No login needed. Returns the distributor with every address (primary first). ' +
+        'No login needed. Returns the distributor with its primary address (null if none); ' +
+        'the full address list is GET /users/me/addresses (owner only). ' +
         '`avatar` is a media id. Unknown id, not a DISTRIBUTOR, or not ACTIVE → 404 USER_DISTRIBUTOR_NOT_FOUND.',
       validation: true,
       errors: [
