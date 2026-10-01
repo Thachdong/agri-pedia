@@ -83,6 +83,8 @@ describe('POST /auth/login (e2e)', () => {
     expect(res.body.user).toEqual({
       id: user.id,
       loginType: 'EMAIL',
+      email: 'farmer@mail.com',
+      phone: null,
       username: 'farmer@mail.com',
       role: 'FARMER',
       bussinessType: null,

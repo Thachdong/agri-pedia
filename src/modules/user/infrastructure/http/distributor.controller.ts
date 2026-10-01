@@ -78,10 +78,13 @@ export class DistributorController {
     });
     return {
       id: profile.id,
+      email: profile.email,
+      phone: profile.phone,
       username: profile.username,
       avatar: profile.avatar,
       bio: profile.bio,
       bussinessType: profile.businessType,
+      bussinessLicense: profile.businessLicense,
       createdAt: profile.createdAt,
       address: profile.address,
     };

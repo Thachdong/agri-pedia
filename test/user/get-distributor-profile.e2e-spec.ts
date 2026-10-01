@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
+import { FILE_STORAGE, InMemoryFileStorage } from '@shared/storage';
 import { AppModule } from '../../src/app.module';
 
 const address = {
@@ -20,7 +21,10 @@ describe('GET /distributors/:distributorId (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(FILE_STORAGE)
+      .useValue(new InMemoryFileStorage())
+      .compile();
     moduleRef.useLogger(false);
     app = moduleRef.createNestApplication();
     await app.init();
@@ -28,6 +32,7 @@ describe('GET /distributors/:distributorId (e2e)', () => {
   });
 
   beforeEach(async () => {
+    await dataSource.query('DELETE FROM media');
     await dataSource.query('DELETE FROM refresh_tokens');
     await dataSource.query('DELETE FROM addresses');
     await dataSource.query('DELETE FROM users');
@@ -74,6 +79,22 @@ describe('GET /distributors/:distributorId (e2e)', () => {
     return id;
   };
 
+  /** Seeds a business license media for the user and links it; returns its storage key. */
+  const attachLicense = async (userId: string) => {
+    const mediaId = randomUUID();
+    const source = `users/${userId}/${mediaId}.pdf`;
+    await dataSource.query(
+      `INSERT INTO media (id, type, extension, filename, source, owner_type, owner_id, sort_order)
+       VALUES ($1, 'FILE', 'pdf', 'license.pdf', $2, 'USER_LICENSE', $3, NULL)`,
+      [mediaId, source, userId],
+    );
+    await dataSource.query(
+      'UPDATE users SET business_license = $1 WHERE id = $2',
+      [mediaId, userId],
+    );
+    return source;
+  };
+
   const getProfile = (distributorId: string) =>
     http().get(`/distributors/${distributorId}`);
 
@@ -90,10 +111,13 @@ describe('GET /distributors/:distributorId (e2e)', () => {
 
     expect(res.body).toEqual({
       id,
+      email: expect.stringMatching(/^user\d+@mail\.com$/),
+      phone: null,
       username: expect.any(String),
       avatar: null,
       bio: 'seed shop',
       bussinessType: 'SEEDS_SEEDLINGS',
+      bussinessLicense: null,
       createdAt: expect.any(String),
       address: {
         province: 'can_tho',
@@ -103,6 +127,17 @@ describe('GET /distributors/:distributorId (e2e)', () => {
         long: 105.78,
       },
     });
+  });
+
+  it('200: returns the business license as a signed URL', async () => {
+    const id = await signUp('DISTRIBUTOR');
+    const source = await attachLicense(id);
+
+    const res = await getProfile(id).expect(200);
+
+    expect(res.body.bussinessLicense).toBe(
+      `https://storage.test/${source}?signed=read`,
+    );
   });
 
   it('404: unknown id', async () => {

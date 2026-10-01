@@ -9,6 +9,8 @@ defineApiDocs(UserController, {
       summary: 'Get the profile of the caller',
       description:
         'Profile as returned by POST /auth/login (user), including the primary address (null if none). ' +
+        '`email` / `phone`: the login identifier (the other one is null). ' +
+        '`bussinessLicense`: signed read URL of the business license (expires; null if none). ' +
         'Works for any user with a valid access token, whatever its status.',
       auth: true,
       errors: [{ type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' }],

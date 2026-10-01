@@ -5,6 +5,7 @@ import {
   ACCESS_TOKEN_SERVICE,
   IAccessTokenService,
 } from '@shared/access-token';
+import { FILE_STORAGE, InMemoryFileStorage } from '@shared/storage';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../src/app.module';
@@ -46,7 +47,10 @@ describe('GET /users/me (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(FILE_STORAGE)
+      .useValue(new InMemoryFileStorage())
+      .compile();
     moduleRef.useLogger(false);
     app = moduleRef.createNestApplication();
     await app.init();
@@ -54,6 +58,7 @@ describe('GET /users/me (e2e)', () => {
   });
 
   beforeEach(async () => {
+    await dataSource.query('DELETE FROM media');
     await dataSource.query('DELETE FROM refresh_tokens');
     await dataSource.query('DELETE FROM addresses');
     await dataSource.query('DELETE FROM users');
@@ -77,6 +82,22 @@ describe('GET /users/me (e2e)', () => {
     return { id: id as string, token: await tokenFor(id) };
   };
 
+  /** Seeds a business license media for the user and links it; returns its storage key. */
+  const attachLicense = async (userId: string) => {
+    const mediaId = randomUUID();
+    const source = `users/${userId}/${mediaId}.pdf`;
+    await dataSource.query(
+      `INSERT INTO media (id, type, extension, filename, source, owner_type, owner_id, sort_order)
+       VALUES ($1, 'FILE', 'pdf', 'license.pdf', $2, 'USER_LICENSE', $3, NULL)`,
+      [mediaId, source, userId],
+    );
+    await dataSource.query(
+      'UPDATE users SET business_license = $1 WHERE id = $2',
+      [mediaId, userId],
+    );
+    return source;
+  };
+
   const getMe = (token: string | null) => {
     const req = http().get('/users/me');
     if (token !== null) {
@@ -93,6 +114,8 @@ describe('GET /users/me (e2e)', () => {
     expect(res.body).toEqual({
       id: user.id,
       loginType: 'EMAIL',
+      email: 'farmer@mail.com',
+      phone: null,
       username: 'Farmer',
       role: 'FARMER',
       bussinessType: null,
@@ -119,6 +142,19 @@ describe('GET /users/me (e2e)', () => {
     expect(res.body.id).toBe(user.id);
     expect(res.body.role).toBe('DISTRIBUTOR');
     expect(res.body.bussinessType).toBe('SEEDS_SEEDLINGS');
+  });
+
+  it('returns the phone and the business license as a signed URL', async () => {
+    const user = await signUp(distributor);
+    const source = await attachLicense(user.id);
+
+    const res = await getMe(user.token).expect(200);
+
+    expect(res.body.email).toBeNull();
+    expect(res.body.phone).toBe('0912345678');
+    expect(res.body.bussinessLicense).toBe(
+      `https://storage.test/${source}?signed=read`,
+    );
   });
 
   it('returns 404 when the user of the token no longer exists', async () => {

@@ -33,7 +33,8 @@ defineApiDocs(AuthController, {
     login: {
       summary: 'Log in with identifier and password',
       description:
-        'Responds 200 with an access token (JWT), a refresh token and the user profile. ' +
+        'Responds 200 with an access token (JWT), a refresh token and the user profile ' +
+        '(same shape as GET /users/me: `email` / `phone` login identifier, `bussinessLicense` signed URL). ' +
         'Unknown identifier, login type mismatch and wrong password all return USER_INVALID_CREDENTIALS. ' +
         'USER_NOT_ACTIVE (distributor not activated yet) is returned only after the password matched.',
       validation: true,

@@ -48,6 +48,8 @@ export class UserController {
     return {
       id: profile.id,
       loginType: profile.loginType,
+      email: profile.email,
+      phone: profile.phone,
       username: profile.username,
       role: profile.role,
       bussinessType: profile.businessType,

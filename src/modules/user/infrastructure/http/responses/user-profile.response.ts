@@ -13,11 +13,15 @@ export class UserAddressResponse {
 export class UserProfileResponse {
   id: string;
   loginType: ELoginType;
+  /** Set when loginType is EMAIL; otherwise null. */
+  email: string | null;
+  /** Set when loginType is PHONE; otherwise null. */
+  phone: string | null;
   username: string;
   role: EUserRole;
   /** Spelling follows the API contract. */
   bussinessType: EBusinessType | null;
-  /** Media id. Spelling follows the API contract. */
+  /** Signed read URL (expires); null if none. Spelling follows the API contract. */
   bussinessLicense: string | null;
   /** Media id. */
   avatar: string | null;
