@@ -26,5 +26,18 @@ defineApiDocs(DistributorController, {
         { type: EDomainErrorType.VALIDATION, code: 'USER_LOCATION_INVALID' },
       ],
     },
+    getProfile: {
+      summary: 'Get the public profile of a distributor (public)',
+      description:
+        'No login needed. Returns the distributor with every address (primary first). ' +
+        '`avatar` is a media id. Unknown id, not a DISTRIBUTOR, or not ACTIVE → 404 USER_DISTRIBUTOR_NOT_FOUND.',
+      validation: true,
+      errors: [
+        {
+          type: EDomainErrorType.NOT_FOUND,
+          code: 'USER_DISTRIBUTOR_NOT_FOUND',
+        },
+      ],
+    },
   },
 });

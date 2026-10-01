@@ -59,11 +59,10 @@ describe('GetDistributorProfileUseCase', () => {
     useCase = new GetDistributorProfileUseCase(users, addresses);
   });
 
-  it('returns the profile with all addresses, primary first', async () => {
+  it('returns the profile with the primary address only', async () => {
     const user = register(EUserRole.DISTRIBUTOR);
-    await addAddress(user.id, { id: 'a-2', isPrimary: false });
-    await addAddress(user.id, { id: 'a-3', isPrimary: true });
     await addAddress(user.id, { id: 'a-1', isPrimary: false });
+    await addAddress(user.id, { id: 'a-2', isPrimary: true });
     const other = register(EUserRole.DISTRIBUTOR);
     await addAddress(other.id, { id: 'a-0', isPrimary: true });
 
@@ -76,28 +75,23 @@ describe('GetDistributorProfileUseCase', () => {
       bio: 'bio',
       businessType: EBusinessType.SEEDS_SEEDLINGS,
       createdAt: user.createdAt,
-      addresses: [
-        {
-          id: 'a-3',
-          province: 'ha_noi',
-          ward: 'phuong_ba_dinh',
-          houseNumber: 'house a-3',
-          lat: 21.03,
-          long: 105.82,
-          isPrimary: true,
-        },
-        expect.objectContaining({ id: 'a-1', isPrimary: false }),
-        expect.objectContaining({ id: 'a-2', isPrimary: false }),
-      ],
+      address: {
+        province: 'ha_noi',
+        ward: 'phuong_ba_dinh',
+        houseNumber: 'house a-2',
+        lat: 21.03,
+        long: 105.82,
+      },
     });
   });
 
-  it('returns an empty address list when the distributor has none', async () => {
+  it('returns a null address when the distributor has no primary address', async () => {
     const user = register(EUserRole.DISTRIBUTOR);
+    await addAddress(user.id, { id: 'a-1', isPrimary: false });
 
     const output = await useCase.execute({ distributorId: user.id });
 
-    expect(output.addresses).toEqual([]);
+    expect(output.address).toBeNull();
   });
 
   it('rejects an unknown id', async () => {

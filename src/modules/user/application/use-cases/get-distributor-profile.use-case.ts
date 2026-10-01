@@ -23,19 +23,17 @@ export type TGetDistributorProfileOutput = {
   bio: string | null;
   businessType: EBusinessType | null;
   createdAt: Date;
-  /** Primary first, then by id. */
-  addresses: {
-    id: string;
+  /** Primary address; null if the distributor has none. */
+  address: {
     province: string;
     ward: string;
     houseNumber: string;
     lat: number;
     long: number;
-    isPrimary: boolean;
-  }[];
+  } | null;
 };
 
-/** Public profile of an ACTIVE distributor with all its addresses. */
+/** Public profile of an ACTIVE distributor with its primary address. */
 @Injectable()
 export class GetDistributorProfileUseCase {
   constructor(
@@ -55,7 +53,7 @@ export class GetDistributorProfileUseCase {
     ) {
       throw new DistributorNotFoundException(input.distributorId);
     }
-    const addresses = await this.addresses.findAllByUserId(user.id);
+    const address = await this.addresses.findPrimaryByUserId(user.id);
 
     return {
       id: user.id,
@@ -64,15 +62,13 @@ export class GetDistributorProfileUseCase {
       bio: user.bio,
       businessType: user.businessType,
       createdAt: user.createdAt,
-      addresses: addresses.map((address) => ({
-        id: address.id,
+      address: address && {
         province: address.province,
         ward: address.ward,
         houseNumber: address.houseNumber,
         lat: address.coordinates.lat,
         long: address.coordinates.long,
-        isPrimary: address.isPrimary,
-      })),
+      },
     };
   }
 }
