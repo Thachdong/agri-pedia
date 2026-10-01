@@ -23,7 +23,7 @@ export class UserProfileResponse {
   bussinessType: EBusinessType | null;
   /** Signed read URL (expires); null if none. Spelling follows the API contract. */
   bussinessLicense: string | null;
-  /** Media id. */
+  /** Signed read URL (expires); null if none. */
   avatar: string | null;
   bio: string | null;
   createdAt: Date;

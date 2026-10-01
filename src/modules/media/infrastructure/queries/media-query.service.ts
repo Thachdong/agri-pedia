@@ -36,7 +36,7 @@ export class MediaQueryService implements IMediaQueryPort {
   }
 
   async findUrls(
-    ownerType: 'USER_LICENSE',
+    ownerType: 'USER_LICENSE' | 'USER_AVATAR',
     ownerId: string,
     mediaIds: string[],
   ): Promise<TMediaUrl[]> {

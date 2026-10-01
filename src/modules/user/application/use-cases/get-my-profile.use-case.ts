@@ -31,7 +31,7 @@ export type TGetMyProfileOutput = {
   businessType: EBusinessType | null;
   /** Signed read URL; null if none. */
   businessLicense: string | null;
-  /** Media id. */
+  /** Signed read URL; null if none (or its media is not recorded yet). */
   avatar: string | null;
   bio: string | null;
   createdAt: Date;
@@ -62,9 +62,12 @@ export class GetMyProfileUseCase {
     if (!user) {
       throw new UserNotFoundException(input.userId);
     }
-    const [address, contact] = await Promise.all([
+    const [address, contact, [avatar]] = await Promise.all([
       this.addresses.findPrimaryByUserId(user.id),
       readUserContactDetails(user, this.crypto, this.mediaQuery),
+      user.avatar
+        ? this.mediaQuery.findUrls('USER_AVATAR', user.id, [user.avatar])
+        : [],
     ]);
 
     return {
@@ -76,7 +79,7 @@ export class GetMyProfileUseCase {
       role: user.role,
       businessType: user.businessType,
       businessLicense: contact.businessLicense,
-      avatar: user.avatar,
+      avatar: avatar?.url ?? null,
       bio: user.bio,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

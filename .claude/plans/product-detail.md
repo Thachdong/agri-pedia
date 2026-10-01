@@ -37,4 +37,4 @@ No event, no migration, no new module.
 - [x] 10. [use-case]    review: ListProductReviews (IProductQueryPort, IUserQueryPort, IMediaQueryPort, findByTargets — đều đã có)
 - [x] 11. [http]        GET /reviews/products/:productId (public): query DTO, response + e2e
 - [x] 12. [api-docs]    GET /reviews/products/:productId (gộp vào bước 11)
-- [ ] 13. [boundary-review]
+- [x] 13. [boundary-review]

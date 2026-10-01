@@ -109,6 +109,15 @@ describe('GetMyProfileUseCase', () => {
     expect(output.businessLicense).toBe('https://signed/license-1');
   });
 
+  it('returns the avatar as a signed URL', async () => {
+    const user = register(EUserRole.FARMER);
+    user.updateProfile({ avatar: 'avatar-1' });
+
+    const output = await useCase.execute({ userId: user.id });
+
+    expect(output.avatar).toBe('https://signed/avatar-1');
+  });
+
   it('returns a null address when the user has no primary address', async () => {
     const user = register(EUserRole.FARMER);
 

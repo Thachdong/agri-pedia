@@ -31,7 +31,7 @@ export interface IMediaQueryPort {
    * Ids of other owners or unknown ids are left out.
    */
   findUrls(
-    ownerType: 'USER_LICENSE',
+    ownerType: 'USER_LICENSE' | 'USER_AVATAR',
     ownerId: string,
     mediaIds: string[],
   ): Promise<TMediaUrl[]>;

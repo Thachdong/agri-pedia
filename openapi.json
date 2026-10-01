@@ -1460,6 +1460,56 @@
       }
     },
     "/products/{productId}": {
+      "get": {
+        "operationId": "ProductController_getDetail",
+        "summary": "Get a product detail (public)",
+        "description": "No login needed. Returns the product in any status (ACTIVE / INACTIVE / OUT_OF_STOCK) with its seller `distributorId` and every media (IMAGE / VIDEO / FILE) ordered by `sortOrder`. Each `url` is a signed URL (expires after the configured TTL, default 1h). A deleted product → 404. Rating: `GET /reviews/summary`.",
+        "parameters": [
+          {
+            "name": "productId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProductDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PRODUCT_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      },
       "patch": {
         "operationId": "ProductController_update",
         "summary": "Update own product (ACTIVE distributor only)",
@@ -1840,6 +1890,149 @@
         ]
       }
     },
+    "/reviews/summary": {
+      "get": {
+        "operationId": "ReviewController_summary",
+        "summary": "Get the rating of a product or a distributor (public)",
+        "description": "No login needed. `targetType=PRODUCT`: reviews of that product. `targetType=USER`: reviews of the distributor itself only (not of its products; the whole shop summary is in `GET /reviews`). `avgRating` has 1 decimal and is 0 when there is no review. A target without reviews, or that does not exist, returns all zero.",
+        "parameters": [
+          {
+            "name": "targetType",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "PRODUCT",
+                "USER"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetReviewSummaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Review"
+        ]
+      }
+    },
+    "/reviews/products/{productId}": {
+      "get": {
+        "operationId": "ReviewController_listByProduct",
+        "summary": "List reviews of a product (public)",
+        "description": "No login needed. Reviews of one product (any status; a deleted or unknown product → 404), newest first. Filter with `star`. `limit` 1..50, default 20. To get the next page pass the returned `nextCursor` as `cursor` with the same `star`; `nextCursor` is null on the last page. `user.avatar` is a signed URL (expires after the configured TTL, default 1h), or null. Rating of the product: `GET /reviews/summary`.",
+        "parameters": [
+          {
+            "name": "productId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "star",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 5,
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListProductReviewsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: REVIEW_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "REVIEW_TARGET_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Review"
+        ]
+      }
+    },
     "/reviews/{reviewId}": {
       "patch": {
         "operationId": "ReviewController_update",
@@ -2174,7 +2367,7 @@
       "get": {
         "operationId": "ChatController_listMessages",
         "summary": "List the messages of a chat room",
-        "description": "Caller must be a member of the room. Newest message first (`createdAt` desc); `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` to get older messages (null on the last page). Read-only: does not mark messages read (socket `chat.room.enter` does). New messages arrive live through socket `chat.message.received`.",
+        "description": "Caller must be a member of the room. Newest message first (`createdAt` desc); `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` to get older messages (null on the last page). Each message carries its sender's `senderUsername` (null when the user no longer exists) and `senderAvatar` (signed read URL that expires; null when none). Read-only: does not mark messages read (socket `chat.room.enter` does). New messages arrive live through socket `chat.message.received` (same sender fields).",
         "parameters": [
           {
             "name": "roomId",
@@ -3338,6 +3531,89 @@
           "nextCursor"
         ]
       },
+      "ProductMediaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "object"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "url"
+        ]
+      },
+      "GetProductDetailResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ]
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "OUT_OF_STOCK"
+            ]
+          },
+          "distributorId": {
+            "type": "string"
+          },
+          "media": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductMediaResponse"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "price",
+          "quantity",
+          "unit",
+          "categoryId",
+          "status",
+          "distributorId",
+          "media"
+        ]
+      },
       "ProductMediaDto": {
         "type": "object",
         "properties": {
@@ -3662,6 +3938,88 @@
           "nextCursor"
         ]
       },
+      "GetReviewSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "avgRating": {
+            "type": "number"
+          },
+          "reviewCount": {
+            "type": "number"
+          },
+          "oneStarCount": {
+            "type": "number"
+          },
+          "twoStarCount": {
+            "type": "number"
+          },
+          "threeStarCount": {
+            "type": "number"
+          },
+          "fourStarCount": {
+            "type": "number"
+          },
+          "fiveStarCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "avgRating",
+          "reviewCount",
+          "oneStarCount",
+          "twoStarCount",
+          "threeStarCount",
+          "fourStarCount",
+          "fiveStarCount"
+        ]
+      },
+      "ProductReviewResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "star": {
+            "type": "number"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/ReviewerResponse"
+          }
+        },
+        "required": [
+          "id",
+          "star",
+          "content",
+          "createdAt",
+          "user"
+        ]
+      },
+      "ListProductReviewsResponse": {
+        "type": "object",
+        "properties": {
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductReviewResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "reviews",
+          "nextCursor"
+        ]
+      },
       "CreateReviewDto": {
         "type": "object",
         "properties": {
@@ -3865,6 +4223,14 @@
           "senderId": {
             "type": "string"
           },
+          "senderUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "senderAvatar": {
+            "type": "string",
+            "nullable": true
+          },
           "message": {
             "type": "string"
           },
@@ -3876,6 +4242,8 @@
         "required": [
           "id",
           "senderId",
+          "senderUsername",
+          "senderAvatar",
           "message",
           "createdAt"
         ]
