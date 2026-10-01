@@ -7,6 +7,7 @@ describe('readUserContactDetails', () => {
   const crypto = new InMemoryCryptoService();
   let requests: unknown[][];
   const mediaQuery: IMediaQueryPort = {
+    listByOwner: async () => [],
     findThumbnails: async () => [],
     findUrls: async (ownerType, ownerId, mediaIds) => {
       requests.push([ownerType, ownerId, mediaIds]);

@@ -26,6 +26,7 @@ const config = {
 } as unknown as IConfigService;
 
 const mediaQuery: IMediaQueryPort = {
+  listByOwner: async () => [],
   findThumbnails: async () => [],
   findUrls: async (_, __, mediaIds) =>
     mediaIds.map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` })),

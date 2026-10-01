@@ -16,6 +16,7 @@ import {
 import { GetDistributorProfileUseCase } from './get-distributor-profile.use-case';
 
 const mediaQuery: IMediaQueryPort = {
+  listByOwner: async () => [],
   findThumbnails: async () => [],
   findUrls: async (_, __, mediaIds) =>
     mediaIds.map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` })),

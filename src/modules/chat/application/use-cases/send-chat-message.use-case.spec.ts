@@ -66,6 +66,7 @@ describe('SendChatMessageUseCase', () => {
       listProfilesByIds: async () => [],
     };
     const mediaQuery: IMediaQueryPort = {
+      listByOwner: async () => [],
       findUrls: async () => [],
       findThumbnails: async (ownerType, ownerIds) =>
         ownerType === 'USER_AVATAR'
