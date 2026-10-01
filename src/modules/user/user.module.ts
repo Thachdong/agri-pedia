@@ -20,6 +20,7 @@ import {
   RefreshAccessTokenUseCase,
   RegisterUserUseCase,
   ResetPasswordUseCase,
+  SetPrimaryAddressUseCase,
   UpdateProfileUseCase,
 } from './application/use-cases';
 import { USER_QUERY_PORT } from './contracts';
@@ -54,6 +55,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
     GetDistributorProfileUseCase,
     ListMyAddressesUseCase,
     CreateAddressUseCase,
+    SetPrimaryAddressUseCase,
     IssueRealtimeTicketUseCase,
     { provide: USER_REPOSITORY, useClass: PgUserRepository },
     { provide: ADDRESS_REPOSITORY, useClass: PgAddressRepository },

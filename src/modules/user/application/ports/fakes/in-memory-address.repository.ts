@@ -8,6 +8,10 @@ export class InMemoryAddressRepository implements IAddressRepository {
     this.items.set(address.id, address);
   }
 
+  async findById(id: string): Promise<Address | null> {
+    return this.items.get(id) ?? null;
+  }
+
   async findPrimaryByUserId(userId: string): Promise<Address | null> {
     return (
       [...this.items.values()].find(
