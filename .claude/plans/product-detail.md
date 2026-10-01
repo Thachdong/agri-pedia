@@ -28,8 +28,8 @@ No event, no migration, no new module.
 - [x] 1. [persistence]  media: IMediaRepository.findAllByOwner(ownerType, ownerId) theo sortOrder (+ fake) — method đã có, chỉ thêm order
 - [x] 2. [query-port]   media: IMediaQueryPort.listByOwner('PRODUCT', ownerId) → [{ mediaId, type, url }]
 - [x] 3. [use-case]     product: GetProductDetail (+ distributorId; IProductRepository.findById, PRODUCT_NOT_FOUND đã có)
-- [ ] 4. [http]         GET /products/:productId (public): response + e2e
-- [ ] 5. [api-docs]     GET /products/:productId
+- [x] 4. [http]         GET /products/:productId (public): response + e2e
+- [x] 5. [api-docs]     GET /products/:productId (gộp vào bước 4: defineApiDocs bắt buộc entry cho mỗi handler, build fail nếu thiếu)
 - [ ] 6. [use-case]     review: GetReviewSummary; port IReviewRepository.summarizeByTarget (+ fake)
 - [ ] 7. [persistence]  review: PgReviewRepository.summarizeByTarget (no migration)
 - [ ] 8. [http]         GET /reviews/summary (public): query DTO, response + e2e

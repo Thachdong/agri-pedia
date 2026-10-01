@@ -22,6 +22,15 @@ defineApiDocs(ProductController, {
         },
       ],
     },
+    getDetail: {
+      summary: 'Get a product detail (public)',
+      description:
+        'No login needed. Returns the product in any status (ACTIVE / INACTIVE / OUT_OF_STOCK) with its seller ' +
+        '`distributorId` and every media (IMAGE / VIDEO / FILE) ordered by `sortOrder`. Each `url` is a signed URL ' +
+        '(expires after the configured TTL, default 1h). A deleted product → 404. Rating: `GET /reviews/summary`.',
+      validation: true,
+      errors: [{ type: EDomainErrorType.NOT_FOUND, code: 'PRODUCT_NOT_FOUND' }],
+    },
     create: {
       summary: 'Create a product (ACTIVE distributor only)',
       description:
