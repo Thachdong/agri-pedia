@@ -5,6 +5,7 @@ import { UserModule } from '@modules/user/user.module';
 import { REVIEW_REPOSITORY } from './application/ports';
 import {
   CreateReviewUseCase,
+  GetReviewSummaryUseCase,
   ListDistributorReviewsUseCase,
   UpdateReviewUseCase,
 } from './application/use-cases';
@@ -17,6 +18,7 @@ import { PgReviewRepository } from './infrastructure/persistence/pg-review.repos
   controllers: [ReviewController],
   providers: [
     CreateReviewUseCase,
+    GetReviewSummaryUseCase,
     ListDistributorReviewsUseCase,
     UpdateReviewUseCase,
     { provide: REVIEW_REPOSITORY, useClass: PgReviewRepository },

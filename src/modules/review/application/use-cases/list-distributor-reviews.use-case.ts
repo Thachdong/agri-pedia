@@ -10,11 +10,11 @@ import {
   InvalidReviewCursorException,
   ReviewDistributorNotFoundException,
 } from '../../domain';
+import { summarizeReviews, TReviewSummary } from '../review-summary';
 import {
   IReviewRepository,
   REVIEW_REPOSITORY,
   TReviewPageKey,
-  TReviewStarCounts,
   TReviewTargets,
 } from '../ports/review.repository';
 
@@ -26,13 +26,6 @@ export type TListDistributorReviewsInput = {
   /** `nextCursor` of the previous page (same filters); omitted for the first page. */
   cursor?: string;
   limit: number;
-};
-
-export type TReviewSummary = {
-  /** Average star, 1 decimal; 0 when there is no review. */
-  avgRating: number;
-  reviewCount: number;
-  starCounts: TReviewStarCounts;
 };
 
 export type TDistributorReviewItem = {
@@ -85,17 +78,6 @@ const decodeCursor = (cursor: string): TReviewPageKey => {
   } catch {
     throw new InvalidReviewCursorException();
   }
-};
-
-const summarize = (starCounts: TReviewStarCounts): TReviewSummary => {
-  const stars = [1, 2, 3, 4, 5] as const;
-  const reviewCount = stars.reduce((sum, star) => sum + starCounts[star], 0);
-  const total = stars.reduce((sum, star) => sum + star * starCounts[star], 0);
-  return {
-    avgRating: reviewCount ? Math.round((total / reviewCount) * 10) / 10 : 0,
-    reviewCount,
-    starCounts,
-  };
 };
 
 /** Public reviews of a distributor's shop: of the distributor itself and of any product it ever listed. */
@@ -161,7 +143,7 @@ export class ListDistributorReviewsUseCase {
     );
 
     return {
-      summary: summarize(starCounts),
+      summary: summarizeReviews(starCounts),
       reviews: page.map((review) => ({
         id: review.id,
         targetType: review.targetType,

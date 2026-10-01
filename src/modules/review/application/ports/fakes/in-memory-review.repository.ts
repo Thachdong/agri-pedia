@@ -14,6 +14,14 @@ const isOfTargets = (review: Review, targets: TReviewTargets) =>
     ? review.targetId === targets.userId
     : targets.productIds.includes(review.targetId);
 
+const countStars = (reviews: Review[]): TReviewStarCounts => {
+  const counts: TReviewStarCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  reviews.forEach((review) => {
+    counts[review.star as keyof TReviewStarCounts] += 1;
+  });
+  return counts;
+};
+
 export class InMemoryReviewRepository implements IReviewRepository {
   readonly items = new Map<string, Review>();
 
@@ -59,13 +67,21 @@ export class InMemoryReviewRepository implements IReviewRepository {
   async summarizeByTargets(
     targets: TReviewTargets,
   ): Promise<TReviewStarCounts> {
-    const counts: TReviewStarCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-    [...this.items.values()]
-      .filter((review) => isOfTargets(review, targets))
-      .forEach((review) => {
-        counts[review.star as keyof TReviewStarCounts] += 1;
-      });
-    return counts;
+    return countStars(
+      [...this.items.values()].filter((review) => isOfTargets(review, targets)),
+    );
+  }
+
+  async summarizeByTarget(
+    targetType: EReviewTargetType,
+    targetId: string,
+  ): Promise<TReviewStarCounts> {
+    return countStars(
+      [...this.items.values()].filter(
+        (review) =>
+          review.targetType === targetType && review.targetId === targetId,
+      ),
+    );
   }
 
   async save(review: Review): Promise<void> {
