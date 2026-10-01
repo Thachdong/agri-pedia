@@ -21,6 +21,21 @@ defineApiDocs(UserController, {
       auth: true,
       errors: [{ type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' }],
     },
+    createMyAddress: {
+      summary: 'Add an address for the caller',
+      description:
+        'Responds 201 with the new address id. ' +
+        '`province` = a province `codename` from GET /provinces; ' +
+        '`ward` = a ward `codename` of that province from GET /provinces/{provinceCode}/wards. ' +
+        '`isPrimary` (default false): true makes it the primary address and the current primary becomes a normal one.',
+      validation: true,
+      auth: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'USER_INVALID_COORDINATES' },
+        { type: EDomainErrorType.VALIDATION, code: 'USER_LOCATION_INVALID' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' },
+      ],
+    },
     updateMe: {
       summary: 'Update the profile of the caller',
       description:

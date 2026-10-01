@@ -19,6 +19,15 @@ export class PgAddressRepository
     await this.repository.save(AddressMapper.toOrm(address));
   }
 
+  async findById(id: string): Promise<Address | null> {
+    const row = await this.repository.findOneBy({ id });
+    return row ? AddressMapper.toDomain(row) : null;
+  }
+
+  async delete(address: Address): Promise<void> {
+    await this.repository.delete({ id: address.id });
+  }
+
   async findPrimaryByUserId(userId: string): Promise<Address | null> {
     const row = await this.repository.findOneBy({ userId, isPrimary: true });
     return row ? AddressMapper.toDomain(row) : null;

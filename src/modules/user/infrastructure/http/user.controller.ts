@@ -1,15 +1,17 @@
-import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import {
   AccessTokenGuard,
   CurrentUser,
   TAccessTokenPayload,
 } from '@shared/access-token';
 import {
+  CreateAddressUseCase,
   GetMyProfileUseCase,
   ListMyAddressesUseCase,
   UpdateProfileUseCase,
 } from '../../application/use-cases';
-import { UpdateProfileDto } from './dto';
+import { CreateAddressDto, UpdateProfileDto } from './dto';
+import { CreateAddressResponse } from './responses/create-address.response';
 import { ListMyAddressesResponse } from './responses/list-my-addresses.response';
 import { UpdateProfileResponse } from './responses/update-profile.response';
 import { UserProfileResponse } from './responses/user-profile.response';
@@ -20,6 +22,7 @@ export class UserController {
     private readonly getMyProfile: GetMyProfileUseCase,
     private readonly updateProfile: UpdateProfileUseCase,
     private readonly listMyAddresses: ListMyAddressesUseCase,
+    private readonly createAddress: CreateAddressUseCase,
   ) {}
 
   @Get('me')
@@ -58,6 +61,24 @@ export class UserController {
       userId: caller.userId,
     });
     return { addresses };
+  }
+
+  @Post('me/addresses')
+  @UseGuards(AccessTokenGuard)
+  async createMyAddress(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Body() dto: CreateAddressDto,
+  ): Promise<CreateAddressResponse> {
+    const { addressId } = await this.createAddress.execute({
+      userId: caller.userId,
+      province: dto.province,
+      ward: dto.ward,
+      houseNumber: dto.houseNumber,
+      lat: dto.lat,
+      long: dto.long,
+      isPrimary: dto.isPrimary,
+    });
+    return { addressId };
   }
 
   @Patch('me')

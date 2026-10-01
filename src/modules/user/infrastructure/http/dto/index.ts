@@ -7,3 +7,4 @@ export * from './change-password.dto';
 export * from './profile-file.dto';
 export * from './update-profile.dto';
 export * from './find-nearby-distributors.query.dto';
+export * from './create-address.dto';
