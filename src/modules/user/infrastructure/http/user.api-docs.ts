@@ -47,6 +47,22 @@ defineApiDocs(UserController, {
         { type: EDomainErrorType.NOT_FOUND, code: 'USER_ADDRESS_NOT_FOUND' },
       ],
     },
+    deleteMyAddress: {
+      summary: "Delete one of the caller's addresses",
+      description:
+        'Hard delete. The primary address cannot be deleted: set another address as primary first ' +
+        '(PATCH /users/me/addresses/{addressId}/primary), so a user always keeps one. ' +
+        'An address of another user answers 404 like an unknown one.',
+      validation: true,
+      auth: true,
+      errors: [
+        { type: EDomainErrorType.NOT_FOUND, code: 'USER_ADDRESS_NOT_FOUND' },
+        {
+          type: EDomainErrorType.CONFLICT,
+          code: 'USER_ADDRESS_PRIMARY_NOT_DELETABLE',
+        },
+      ],
+    },
     updateMe: {
       summary: 'Update the profile of the caller',
       description:

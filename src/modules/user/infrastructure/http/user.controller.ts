@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -15,6 +16,7 @@ import {
 } from '@shared/access-token';
 import {
   CreateAddressUseCase,
+  DeleteAddressUseCase,
   GetMyProfileUseCase,
   ListMyAddressesUseCase,
   SetPrimaryAddressUseCase,
@@ -34,6 +36,7 @@ export class UserController {
     private readonly listMyAddresses: ListMyAddressesUseCase,
     private readonly createAddress: CreateAddressUseCase,
     private readonly setPrimaryAddress: SetPrimaryAddressUseCase,
+    private readonly deleteAddress: DeleteAddressUseCase,
   ) {}
 
   @Get('me')
@@ -99,6 +102,16 @@ export class UserController {
     @Param('addressId', ParseUUIDPipe) addressId: string,
   ): Promise<null> {
     await this.setPrimaryAddress.execute({ userId: caller.userId, addressId });
+    return null;
+  }
+
+  @Delete('me/addresses/:addressId')
+  @UseGuards(AccessTokenGuard)
+  async deleteMyAddress(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Param('addressId', ParseUUIDPipe) addressId: string,
+  ): Promise<null> {
+    await this.deleteAddress.execute({ userId: caller.userId, addressId });
     return null;
   }
 

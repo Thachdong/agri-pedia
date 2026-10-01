@@ -30,8 +30,8 @@ No migration, no event, no new module.
 - [x] 5. [persistence]      PgAddressRepository.findById, delete (no migration)
 - [x] 6. [http + api-docs]  POST /users/me/addresses → 201 { addressId }, e2e
 - [x] 7. [http + api-docs]  PATCH /users/me/addresses/:addressId/primary → 200 null, e2e
-- [ ] 8. [http + api-docs]  DELETE /users/me/addresses/:addressId → 200 null, e2e
-- [ ] 9. [boundary-review]
+- [x] 8. [http + api-docs]  DELETE /users/me/addresses/:addressId → 200 null, e2e
+- [x] 9. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - Address của user khác → 404 USER_ADDRESS_NOT_FOUND (không lộ address tồn tại), không 403.
