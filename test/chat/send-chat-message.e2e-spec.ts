@@ -144,6 +144,8 @@ describe('socket chat.message.send (e2e)', () => {
       messageId: ack.messageId,
       roomId: ack.roomId,
       senderId: farmer.id,
+      senderUsername: 'farmer@mail.com', // username defaults to the identifier
+      senderAvatar: null,
       message: 'Còn lúa giống OM18 không?',
       createdAt: ack.createdAt,
     });

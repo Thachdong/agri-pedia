@@ -1,4 +1,9 @@
-import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
+import { IMediaQueryPort, TMediaThumbnail } from '@modules/media/contracts';
+import {
+  IUserQueryPort,
+  TUserProfileSummary,
+  TUserRoleSummary,
+} from '@modules/user/contracts';
 import { InMemoryUnitOfWork } from '@shared/database';
 import {
   InMemoryRealtimeChannels,
@@ -36,6 +41,8 @@ describe('SendChatMessageUseCase', () => {
   let realtime: InMemoryRealtimePublisher;
   let channels: InMemoryRealtimeChannels;
   let roles: Map<string, TUserRoleSummary>;
+  let profiles: TUserProfileSummary[];
+  let avatars: TMediaThumbnail[];
   let useCase: SendChatMessageUseCase;
 
   beforeEach(() => {
@@ -49,16 +56,27 @@ describe('SendChatMessageUseCase', () => {
       summary('distributor-1', 'DISTRIBUTOR'),
       summary('distributor-pending', 'DISTRIBUTOR', false),
     ]);
+    profiles = [{ userId: 'farmer-1', username: 'Farmer A', role: 'FARMER' }];
+    avatars = [{ ownerId: 'farmer-1', url: 'https://cdn/farmer-1.jpg' }];
     const userQuery: IUserQueryPort = {
       findByIdentifier: async () => null,
       findRoleById: async (id) => roles.get(id) ?? null,
-      findProfileById: async () => null,
+      findProfileById: async (id) =>
+        profiles.find((profile) => profile.userId === id) ?? null,
       listProfilesByIds: async () => [],
+    };
+    const mediaQuery: IMediaQueryPort = {
+      findUrls: async () => [],
+      findThumbnails: async (ownerType, ownerIds) =>
+        ownerType === 'USER_AVATAR'
+          ? avatars.filter((avatar) => ownerIds.includes(avatar.ownerId))
+          : [],
     };
     useCase = new SendChatMessageUseCase(
       rooms,
       messages,
       userQuery,
+      mediaQuery,
       new InMemoryUnitOfWork(),
       realtime,
       channels,
@@ -96,6 +114,8 @@ describe('SendChatMessageUseCase', () => {
           messageId: output.messageId,
           roomId: output.roomId,
           senderId: 'farmer-1',
+          senderUsername: 'Farmer A',
+          senderAvatar: 'https://cdn/farmer-1.jpg',
           message: 'Chào anh',
           createdAt: output.createdAt.toISOString(),
         },
@@ -170,6 +190,22 @@ describe('SendChatMessageUseCase', () => {
     expect(output.roomId).toBe(room.id);
     expect(messages.items.size).toBe(1);
     expect(realtime.emitted[0].userId).toBe('farmer-1');
+  });
+
+  it('pushes null username and avatar when the sender has neither', async () => {
+    const room = seedRoom();
+
+    await useCase.execute({
+      senderId: 'distributor-1',
+      roomId: room.id,
+      message: 'Hi',
+    });
+
+    expect(realtime.emitted[0].payload).toMatchObject({
+      senderId: 'distributor-1',
+      senderUsername: null,
+      senderAvatar: null,
+    });
   });
 
   it('prefers roomId over receiverId', async () => {

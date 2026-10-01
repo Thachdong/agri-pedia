@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
@@ -33,6 +34,10 @@ export type TChatMessageReceivedRealtimePayload = {
   messageId: string;
   roomId: string;
   senderId: string;
+  /** Null when the sender no longer exists. */
+  senderUsername: string | null;
+  /** Signed read URL of the sender's avatar; null when none. */
+  senderAvatar: string | null;
   message: string;
   /** ISO 8601. */
   createdAt: string;
@@ -53,7 +58,8 @@ export type TSendChatMessageOutput = {
 };
 
 /**
- * An ACTIVE user messages the other member of a FARMER <-> DISTRIBUTOR room, then pushes it to them in realtime.
+ * An ACTIVE user messages the other member of a FARMER <-> DISTRIBUTOR room, then pushes it to them in realtime
+ * together with the sender's username and avatar.
  * The message is read by the receiver right away if they have the room open (entered), unread otherwise.
  */
 @Injectable()
@@ -63,6 +69,7 @@ export class SendChatMessageUseCase {
     @Inject(CHAT_MESSAGE_REPOSITORY)
     private readonly messages: IChatMessageRepository,
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
     @Inject(REALTIME_PUBLISHER) private readonly realtime: IRealtimePublisher,
     @Inject(REALTIME_CHANNELS) private readonly channels: IRealtimeChannels,
@@ -98,6 +105,10 @@ export class SendChatMessageUseCase {
         return { room, message, otherMemberId };
       });
 
+    const [senderProfile, [senderAvatar]] = await Promise.all([
+      this.userQuery.findProfileById(senderId),
+      this.mediaQuery.findThumbnails('USER_AVATAR', [senderId]),
+    ]);
     this.realtime.emitToUser(
       otherMemberId,
       CHAT_MESSAGE_RECEIVED_REALTIME_EVENT,
@@ -105,6 +116,8 @@ export class SendChatMessageUseCase {
         messageId: message.id,
         roomId: room.id,
         senderId,
+        senderUsername: senderProfile?.username ?? null,
+        senderAvatar: senderAvatar?.url ?? null,
         message: message.message,
         createdAt: message.createdAt.toISOString(),
       } satisfies TChatMessageReceivedRealtimePayload,
