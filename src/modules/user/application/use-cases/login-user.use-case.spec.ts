@@ -1,3 +1,4 @@
+import { IMediaQueryPort } from '@modules/media/contracts';
 import { InMemoryAccessTokenService } from '@shared/access-token';
 import { IConfigService } from '@shared/config';
 import { InMemoryCryptoService } from '@shared/crypto';
@@ -23,6 +24,12 @@ import { LoginUserUseCase, TLoginUserInput } from './login-user.use-case';
 const config = {
   get: () => ({ refreshTokenTtlSeconds: 3600 }),
 } as unknown as IConfigService;
+
+const mediaQuery: IMediaQueryPort = {
+  findThumbnails: async () => [],
+  findUrls: async (_, __, mediaIds) =>
+    mediaIds.map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` })),
+};
 
 const input: TLoginUserInput = {
   loginType: ELoginType.EMAIL,
@@ -70,6 +77,7 @@ describe('LoginUserUseCase', () => {
       accessTokens,
       config,
       new InMemoryUnitOfWork(),
+      mediaQuery,
     );
   });
 
@@ -93,6 +101,8 @@ describe('LoginUserUseCase', () => {
     expect(output.user).toEqual({
       id: user.id,
       loginType: ELoginType.EMAIL,
+      email: 'farmer@mail.com',
+      phone: null,
       username: 'farmer01',
       role: EUserRole.FARMER,
       businessType: null,
@@ -117,6 +127,30 @@ describe('LoginUserUseCase', () => {
     const output = await useCase.execute(input);
 
     expect(output.user.address).toBeNull();
+  });
+
+  it('returns the phone and business license URL of a phone account', async () => {
+    const user = register({
+      loginType: ELoginType.PHONE,
+      hashedIdentifier: 'hash(0912345678)',
+      encryptedIdentifier: 'enc(0912345678)',
+      role: EUserRole.DISTRIBUTOR,
+      businessType: EBusinessType.SEEDS_SEEDLINGS,
+    });
+    user.activate();
+    user.updateProfile({ businessLicense: 'license-1' });
+
+    const output = await useCase.execute({
+      loginType: ELoginType.PHONE,
+      identifier: '0912 345 678',
+      password: 'secret123',
+    });
+
+    expect(output.user).toMatchObject({
+      email: null,
+      phone: '0912345678',
+      businessLicense: 'https://signed/license-1',
+    });
   });
 
   it('stores only the hash of the refresh token', async () => {

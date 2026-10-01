@@ -1,3 +1,5 @@
+import { IMediaQueryPort } from '@modules/media/contracts';
+import { InMemoryCryptoService } from '@shared/crypto';
 import {
   Address,
   Coordinates,
@@ -12,6 +14,12 @@ import {
   InMemoryUserRepository,
 } from '../ports/fakes';
 import { GetDistributorProfileUseCase } from './get-distributor-profile.use-case';
+
+const mediaQuery: IMediaQueryPort = {
+  findThumbnails: async () => [],
+  findUrls: async (_, __, mediaIds) =>
+    mediaIds.map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` })),
+};
 
 describe('GetDistributorProfileUseCase', () => {
   let users: InMemoryUserRepository;
@@ -56,7 +64,12 @@ describe('GetDistributorProfileUseCase', () => {
   beforeEach(() => {
     users = new InMemoryUserRepository();
     addresses = new InMemoryAddressRepository();
-    useCase = new GetDistributorProfileUseCase(users, addresses);
+    useCase = new GetDistributorProfileUseCase(
+      users,
+      addresses,
+      new InMemoryCryptoService(),
+      mediaQuery,
+    );
   });
 
   it('returns the profile with the primary address only', async () => {
@@ -70,10 +83,13 @@ describe('GetDistributorProfileUseCase', () => {
 
     expect(output).toEqual({
       id: user.id,
+      email: 'user@mail.com',
+      phone: null,
       username: 'seed-shop',
       avatar: null,
       bio: 'bio',
       businessType: EBusinessType.SEEDS_SEEDLINGS,
+      businessLicense: null,
       createdAt: user.createdAt,
       address: {
         province: 'ha_noi',
@@ -92,6 +108,15 @@ describe('GetDistributorProfileUseCase', () => {
     const output = await useCase.execute({ distributorId: user.id });
 
     expect(output.address).toBeNull();
+  });
+
+  it('returns the business license as a signed URL', async () => {
+    const user = register(EUserRole.DISTRIBUTOR);
+    user.updateProfile({ businessLicense: 'license-1' });
+
+    const output = await useCase.execute({ distributorId: user.id });
+
+    expect(output.businessLicense).toBe('https://signed/license-1');
   });
 
   it('rejects an unknown id', async () => {

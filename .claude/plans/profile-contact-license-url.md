@@ -16,7 +16,7 @@ Cross-module: user → media qua `IMediaQueryPort` (contracts), UserModule impor
 No migration, no event, no new module.
 
 - [x] 1. [query-port]       media: IMediaQueryPort.findUrls(ownerType 'USER_LICENSE', ownerId, mediaIds) → `{ mediaId, url }[]` (dùng IMediaRepository.findByOwner sẵn có, mọi media type); wire vào user module
-- [ ] 2. [use-case]         user: GetMyProfile + GetDistributorProfile + LoginUser output thêm `email`, `phone`, `businessLicense` = URL (inject CRYPTO_SERVICE, MEDIA_QUERY_PORT)
+- [x] 2. [use-case]         user: GetMyProfile + GetDistributorProfile + LoginUser output thêm `email`, `phone`, `businessLicense` = URL (inject CRYPTO_SERVICE, MEDIA_QUERY_PORT)
 - [ ] 3. [http + api-docs]  GET /users/me + GET /distributors/:distributorId + POST /auth/login: response thêm `email`, `phone`, `bussinessLicense` (URL); e2e + docs cập nhật
 - [ ] 4. [boundary-review]
 

@@ -1,3 +1,5 @@
+import { IMediaQueryPort } from '@modules/media/contracts';
+import { InMemoryCryptoService } from '@shared/crypto';
 import {
   Address,
   Coordinates,
@@ -12,6 +14,12 @@ import {
   InMemoryUserRepository,
 } from '../ports/fakes';
 import { GetMyProfileUseCase } from './get-my-profile.use-case';
+
+const mediaQuery: IMediaQueryPort = {
+  findThumbnails: async () => [],
+  findUrls: async (_, __, mediaIds) =>
+    mediaIds.map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` })),
+};
 
 describe('GetMyProfileUseCase', () => {
   let users: InMemoryUserRepository;
@@ -37,7 +45,12 @@ describe('GetMyProfileUseCase', () => {
   beforeEach(() => {
     users = new InMemoryUserRepository();
     addresses = new InMemoryAddressRepository();
-    useCase = new GetMyProfileUseCase(users, addresses);
+    useCase = new GetMyProfileUseCase(
+      users,
+      addresses,
+      new InMemoryCryptoService(),
+      mediaQuery,
+    );
   });
 
   it('returns the profile with the primary address', async () => {
@@ -57,6 +70,8 @@ describe('GetMyProfileUseCase', () => {
     expect(output).toEqual({
       id: user.id,
       loginType: ELoginType.EMAIL,
+      email: 'user@mail.com',
+      phone: null,
       username: 'seed-shop',
       role: EUserRole.FARMER,
       businessType: null,
@@ -82,6 +97,15 @@ describe('GetMyProfileUseCase', () => {
 
     expect(output.id).toBe(user.id);
     expect(output.businessType).toBe(EBusinessType.SEEDS_SEEDLINGS);
+  });
+
+  it('returns the business license as a signed URL', async () => {
+    const user = register(EUserRole.DISTRIBUTOR);
+    user.updateProfile({ businessLicense: 'license-1' });
+
+    const output = await useCase.execute({ userId: user.id });
+
+    expect(output.businessLicense).toBe('https://signed/license-1');
   });
 
   it('returns a null address when the user has no primary address', async () => {

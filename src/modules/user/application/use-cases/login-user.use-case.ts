@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
 import {
   ACCESS_TOKEN_SERVICE,
   IAccessTokenService,
@@ -23,6 +24,7 @@ import {
   REFRESH_TOKEN_REPOSITORY,
 } from '../ports/refresh-token.repository';
 import { IUserRepository, USER_REPOSITORY } from '../ports/user.repository';
+import { readUserContactDetails } from '../user-contact-details';
 
 export type TLoginUserInput = {
   loginType: ELoginType;
@@ -36,9 +38,14 @@ export type TLoginUserOutput = {
   user: {
     id: string;
     loginType: ELoginType;
+    /** Decrypted identifier when loginType is EMAIL; otherwise null. */
+    email: string | null;
+    /** Decrypted identifier when loginType is PHONE; otherwise null. */
+    phone: string | null;
     username: string;
     role: EUserRole;
     businessType: EBusinessType | null;
+    /** Signed read URL; null if none. */
     businessLicense: string | null;
     avatar: string | null;
     bio: string | null;
@@ -68,6 +75,7 @@ export class LoginUserUseCase {
     private readonly accessTokens: IAccessTokenService,
     @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   /**
@@ -99,7 +107,10 @@ export class LoginUserUseCase {
       ),
     );
     const accessToken = await this.accessTokens.sign({ userId: user.id });
-    const address = await this.addresses.findPrimaryByUserId(user.id);
+    const [address, contact] = await Promise.all([
+      this.addresses.findPrimaryByUserId(user.id),
+      readUserContactDetails(user, this.crypto, this.mediaQuery),
+    ]);
 
     return {
       accessToken,
@@ -107,10 +118,12 @@ export class LoginUserUseCase {
       user: {
         id: user.id,
         loginType: user.loginType,
+        email: contact.email,
+        phone: contact.phone,
         username: user.username,
         role: user.role,
         businessType: user.businessType,
-        businessLicense: user.businessLicense,
+        businessLicense: contact.businessLicense,
         avatar: user.avatar,
         bio: user.bio,
         createdAt: user.createdAt,

@@ -1,4 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
+import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import {
   EBusinessType,
   ELoginType,
@@ -10,6 +12,7 @@ import {
   IAddressRepository,
 } from '../ports/address.repository';
 import { IUserRepository, USER_REPOSITORY } from '../ports/user.repository';
+import { readUserContactDetails } from '../user-contact-details';
 
 export type TGetMyProfileInput = {
   /** Caller, from the access token. */
@@ -19,10 +22,14 @@ export type TGetMyProfileInput = {
 export type TGetMyProfileOutput = {
   id: string;
   loginType: ELoginType;
+  /** Decrypted identifier when loginType is EMAIL; otherwise null. */
+  email: string | null;
+  /** Decrypted identifier when loginType is PHONE; otherwise null. */
+  phone: string | null;
   username: string;
   role: EUserRole;
   businessType: EBusinessType | null;
-  /** Media id. */
+  /** Signed read URL; null if none. */
   businessLicense: string | null;
   /** Media id. */
   avatar: string | null;
@@ -46,6 +53,8 @@ export class GetMyProfileUseCase {
     @Inject(USER_REPOSITORY) private readonly users: IUserRepository,
     @Inject(ADDRESS_REPOSITORY)
     private readonly addresses: IAddressRepository,
+    @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   async execute(input: TGetMyProfileInput): Promise<TGetMyProfileOutput> {
@@ -53,15 +62,20 @@ export class GetMyProfileUseCase {
     if (!user) {
       throw new UserNotFoundException(input.userId);
     }
-    const address = await this.addresses.findPrimaryByUserId(user.id);
+    const [address, contact] = await Promise.all([
+      this.addresses.findPrimaryByUserId(user.id),
+      readUserContactDetails(user, this.crypto, this.mediaQuery),
+    ]);
 
     return {
       id: user.id,
       loginType: user.loginType,
+      email: contact.email,
+      phone: contact.phone,
       username: user.username,
       role: user.role,
       businessType: user.businessType,
-      businessLicense: user.businessLicense,
+      businessLicense: contact.businessLicense,
       avatar: user.avatar,
       bio: user.bio,
       createdAt: user.createdAt,

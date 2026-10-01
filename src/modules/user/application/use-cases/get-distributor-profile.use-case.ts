@@ -1,4 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
+import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
 import {
   DistributorNotFoundException,
   EBusinessType,
@@ -10,6 +12,7 @@ import {
   IAddressRepository,
 } from '../ports/address.repository';
 import { IUserRepository, USER_REPOSITORY } from '../ports/user.repository';
+import { readUserContactDetails } from '../user-contact-details';
 
 export type TGetDistributorProfileInput = {
   distributorId: string;
@@ -17,11 +20,17 @@ export type TGetDistributorProfileInput = {
 
 export type TGetDistributorProfileOutput = {
   id: string;
+  /** Decrypted identifier when the distributor logs in by email; otherwise null. */
+  email: string | null;
+  /** Decrypted identifier when the distributor logs in by phone; otherwise null. */
+  phone: string | null;
   username: string;
   /** Media id. */
   avatar: string | null;
   bio: string | null;
   businessType: EBusinessType | null;
+  /** Signed read URL; null if none. */
+  businessLicense: string | null;
   createdAt: Date;
   /** Primary address; null if the distributor has none. */
   address: {
@@ -40,6 +49,8 @@ export class GetDistributorProfileUseCase {
     @Inject(USER_REPOSITORY) private readonly users: IUserRepository,
     @Inject(ADDRESS_REPOSITORY)
     private readonly addresses: IAddressRepository,
+    @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   async execute(
@@ -53,14 +64,20 @@ export class GetDistributorProfileUseCase {
     ) {
       throw new DistributorNotFoundException(input.distributorId);
     }
-    const address = await this.addresses.findPrimaryByUserId(user.id);
+    const [address, contact] = await Promise.all([
+      this.addresses.findPrimaryByUserId(user.id),
+      readUserContactDetails(user, this.crypto, this.mediaQuery),
+    ]);
 
     return {
       id: user.id,
+      email: contact.email,
+      phone: contact.phone,
       username: user.username,
       avatar: user.avatar,
       bio: user.bio,
       businessType: user.businessType,
+      businessLicense: contact.businessLicense,
       createdAt: user.createdAt,
       address: address && {
         province: address.province,
