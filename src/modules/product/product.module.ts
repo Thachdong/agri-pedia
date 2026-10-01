@@ -4,6 +4,7 @@ import { UserModule } from '@modules/user/user.module';
 import {
   CreateProductUseCase,
   DeleteProductUseCase,
+  GetProductDetailUseCase,
   ListCategoriesUseCase,
   ListDistributorProductsUseCase,
   UpdateProductUseCase,
@@ -24,6 +25,7 @@ import { ProductQueryService } from './infrastructure/queries/product-query.serv
   providers: [
     CreateProductUseCase,
     DeleteProductUseCase,
+    GetProductDetailUseCase,
     ListCategoriesUseCase,
     ListDistributorProductsUseCase,
     UpdateProductUseCase,

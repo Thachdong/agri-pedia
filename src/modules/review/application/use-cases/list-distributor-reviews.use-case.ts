@@ -7,14 +7,13 @@ import {
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import {
   EReviewTargetType,
-  InvalidReviewCursorException,
   ReviewDistributorNotFoundException,
 } from '../../domain';
+import { decodeReviewCursor, encodeReviewCursor } from '../review-cursor';
+import { summarizeReviews, TReviewSummary } from '../review-summary';
 import {
   IReviewRepository,
   REVIEW_REPOSITORY,
-  TReviewPageKey,
-  TReviewStarCounts,
   TReviewTargets,
 } from '../ports/review.repository';
 
@@ -26,13 +25,6 @@ export type TListDistributorReviewsInput = {
   /** `nextCursor` of the previous page (same filters); omitted for the first page. */
   cursor?: string;
   limit: number;
-};
-
-export type TReviewSummary = {
-  /** Average star, 1 decimal; 0 when there is no review. */
-  avgRating: number;
-  reviewCount: number;
-  starCounts: TReviewStarCounts;
 };
 
 export type TDistributorReviewItem = {
@@ -61,43 +53,6 @@ export type TListDistributorReviewsOutput = {
   nextCursor: string | null;
 };
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-/** Opaque cursor: base64url JSON `{ c: createdAt ISO, i: id }`. */
-const encodeCursor = (key: TReviewPageKey): string =>
-  Buffer.from(
-    JSON.stringify({ c: key.createdAt.toISOString(), i: key.id }),
-  ).toString('base64url');
-
-const decodeCursor = (cursor: string): TReviewPageKey => {
-  try {
-    const { c, i } = JSON.parse(Buffer.from(cursor, 'base64url').toString());
-    const createdAt = new Date(c);
-    if (
-      typeof c !== 'string' ||
-      Number.isNaN(createdAt.getTime()) ||
-      typeof i !== 'string' ||
-      !UUID.test(i)
-    ) {
-      throw new Error('bad cursor');
-    }
-    return { createdAt, id: i };
-  } catch {
-    throw new InvalidReviewCursorException();
-  }
-};
-
-const summarize = (starCounts: TReviewStarCounts): TReviewSummary => {
-  const stars = [1, 2, 3, 4, 5] as const;
-  const reviewCount = stars.reduce((sum, star) => sum + starCounts[star], 0);
-  const total = stars.reduce((sum, star) => sum + star * starCounts[star], 0);
-  return {
-    avgRating: reviewCount ? Math.round((total / reviewCount) * 10) / 10 : 0,
-    reviewCount,
-    starCounts,
-  };
-};
-
 /** Public reviews of a distributor's shop: of the distributor itself and of any product it ever listed. */
 @Injectable()
 export class ListDistributorReviewsUseCase {
@@ -113,7 +68,7 @@ export class ListDistributorReviewsUseCase {
     input: TListDistributorReviewsInput,
   ): Promise<TListDistributorReviewsOutput> {
     const after =
-      input.cursor !== undefined ? decodeCursor(input.cursor) : undefined;
+      input.cursor !== undefined ? decodeReviewCursor(input.cursor) : undefined;
 
     const distributor = await this.userQuery.findProfileById(
       input.distributorId,
@@ -145,7 +100,7 @@ export class ListDistributorReviewsUseCase {
     const last = page[page.length - 1];
     const nextCursor =
       rows.length > input.limit && last
-        ? encodeCursor({ createdAt: last.createdAt, id: last.id })
+        ? encodeReviewCursor({ createdAt: last.createdAt, id: last.id })
         : null;
 
     const reviewerIds = [...new Set(page.map((review) => review.userId))];
@@ -161,7 +116,7 @@ export class ListDistributorReviewsUseCase {
     );
 
     return {
-      summary: summarize(starCounts),
+      summary: summarizeReviews(starCounts),
       reviews: page.map((review) => ({
         id: review.id,
         targetType: review.targetType,

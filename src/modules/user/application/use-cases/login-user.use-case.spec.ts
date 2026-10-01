@@ -1,8 +1,11 @@
+import { IMediaQueryPort } from '@modules/media/contracts';
 import { InMemoryAccessTokenService } from '@shared/access-token';
 import { IConfigService } from '@shared/config';
 import { InMemoryCryptoService } from '@shared/crypto';
 import { InMemoryUnitOfWork } from '@shared/database';
 import {
+  Address,
+  Coordinates,
   EBusinessType,
   ELoginType,
   ERefreshTokenStatus,
@@ -12,6 +15,7 @@ import {
   UserNotActiveException,
 } from '../../domain';
 import {
+  InMemoryAddressRepository,
   InMemoryRefreshTokenRepository,
   InMemoryUserRepository,
 } from '../ports/fakes';
@@ -21,6 +25,13 @@ const config = {
   get: () => ({ refreshTokenTtlSeconds: 3600 }),
 } as unknown as IConfigService;
 
+const mediaQuery: IMediaQueryPort = {
+  listByOwner: async () => [],
+  findThumbnails: async () => [],
+  findUrls: async (_, __, mediaIds) =>
+    mediaIds.map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` })),
+};
+
 const input: TLoginUserInput = {
   loginType: ELoginType.EMAIL,
   identifier: ' Farmer@Mail.com ',
@@ -29,6 +40,7 @@ const input: TLoginUserInput = {
 
 describe('LoginUserUseCase', () => {
   let users: InMemoryUserRepository;
+  let addresses: InMemoryAddressRepository;
   let refreshTokens: InMemoryRefreshTokenRepository;
   let crypto: InMemoryCryptoService;
   let accessTokens: InMemoryAccessTokenService;
@@ -53,22 +65,34 @@ describe('LoginUserUseCase', () => {
 
   beforeEach(() => {
     users = new InMemoryUserRepository();
+    addresses = new InMemoryAddressRepository();
     refreshTokens = new InMemoryRefreshTokenRepository();
     crypto = new InMemoryCryptoService();
     crypto.nextToken = 'raw-refresh';
     accessTokens = new InMemoryAccessTokenService();
     useCase = new LoginUserUseCase(
       users,
+      addresses,
       refreshTokens,
       crypto,
       accessTokens,
       config,
       new InMemoryUnitOfWork(),
+      mediaQuery,
     );
   });
 
   it('issues tokens and returns the profile of an active user', async () => {
     const user = register({});
+    await addresses.save(
+      Address.createPrimary({
+        userId: user.id,
+        province: 'ha_noi',
+        ward: 'phuong_ba_dinh',
+        houseNumber: '12 Kim Ma',
+        coordinates: Coordinates.create(21.03, 105.82),
+      }),
+    );
 
     const output = await useCase.execute(input);
 
@@ -76,7 +100,10 @@ describe('LoginUserUseCase', () => {
     expect(accessTokens.signed).toEqual([{ userId: user.id }]);
     expect(output.refreshToken).toBe('raw-refresh');
     expect(output.user).toEqual({
+      id: user.id,
       loginType: ELoginType.EMAIL,
+      email: 'farmer@mail.com',
+      phone: null,
       username: 'farmer01',
       role: EUserRole.FARMER,
       businessType: null,
@@ -85,6 +112,45 @@ describe('LoginUserUseCase', () => {
       bio: null,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
+      address: {
+        province: 'ha_noi',
+        ward: 'phuong_ba_dinh',
+        houseNumber: '12 Kim Ma',
+        lat: 21.03,
+        long: 105.82,
+      },
+    });
+  });
+
+  it('returns a null address when the user has no primary address', async () => {
+    register({});
+
+    const output = await useCase.execute(input);
+
+    expect(output.user.address).toBeNull();
+  });
+
+  it('returns the phone and business license URL of a phone account', async () => {
+    const user = register({
+      loginType: ELoginType.PHONE,
+      hashedIdentifier: 'hash(0912345678)',
+      encryptedIdentifier: 'enc(0912345678)',
+      role: EUserRole.DISTRIBUTOR,
+      businessType: EBusinessType.SEEDS_SEEDLINGS,
+    });
+    user.activate();
+    user.updateProfile({ businessLicense: 'license-1' });
+
+    const output = await useCase.execute({
+      loginType: ELoginType.PHONE,
+      identifier: '0912 345 678',
+      password: 'secret123',
+    });
+
+    expect(output.user).toMatchObject({
+      email: null,
+      phone: '0912345678',
+      businessLicense: 'https://signed/license-1',
     });
   });
 

@@ -94,3 +94,102 @@ describe('MediaQueryService.findThumbnails', () => {
     await expect(service.findThumbnails('PRODUCT', [])).resolves.toEqual([]);
   });
 });
+
+describe('MediaQueryService.findUrls', () => {
+  let repository: InMemoryMediaRepository;
+  let service: MediaQueryService;
+
+  beforeEach(() => {
+    repository = new InMemoryMediaRepository();
+    service = new MediaQueryService(repository, new InMemoryFileStorage());
+  });
+
+  it('returns a signed URL of each given media of the owner, any media type', async () => {
+    const pdf = media(
+      'u1',
+      EMediaType.FILE,
+      'pdf',
+      undefined,
+      EMediaOwnerType.USER_LICENSE,
+    );
+    await repository.save(pdf);
+
+    await expect(
+      service.findUrls('USER_LICENSE', 'u1', [pdf.id]),
+    ).resolves.toEqual([
+      {
+        mediaId: pdf.id,
+        url: `https://storage.test/${pdf.source}?signed=read`,
+      },
+    ]);
+  });
+
+  it('leaves out unknown ids, other owners and other owner types', async () => {
+    const otherOwner = media(
+      'u2',
+      EMediaType.IMAGE,
+      'png',
+      undefined,
+      EMediaOwnerType.USER_LICENSE,
+    );
+    const avatar = media(
+      'u1',
+      EMediaType.IMAGE,
+      'png',
+      undefined,
+      EMediaOwnerType.USER_AVATAR,
+    );
+    await repository.save(otherOwner);
+    await repository.save(avatar);
+
+    await expect(
+      service.findUrls('USER_LICENSE', 'u1', [
+        otherOwner.id,
+        avatar.id,
+        'unknown',
+      ]),
+    ).resolves.toEqual([]);
+  });
+
+  it('returns nothing for no ids', async () => {
+    await expect(service.findUrls('USER_LICENSE', 'u1', [])).resolves.toEqual(
+      [],
+    );
+  });
+});
+
+describe('MediaQueryService.listByOwner', () => {
+  let repository: InMemoryMediaRepository;
+  let service: MediaQueryService;
+
+  beforeEach(() => {
+    repository = new InMemoryMediaRepository();
+    service = new MediaQueryService(repository, new InMemoryFileStorage());
+  });
+
+  it('returns every media of the owner by sortOrder (null last), any type, with a signed URL', async () => {
+    const unsorted = media('p1', EMediaType.FILE, 'pdf');
+    const second = media('p1', EMediaType.VIDEO, 'mp4', 2);
+    const first = media('p1', EMediaType.IMAGE, 'png', 1);
+    for (const item of [unsorted, second, first]) {
+      await repository.save(item);
+    }
+
+    await expect(service.listByOwner('PRODUCT', 'p1')).resolves.toEqual(
+      [first, second, unsorted].map((item) => ({
+        mediaId: item.id,
+        type: item.type,
+        url: `https://storage.test/${item.source}?signed=read`,
+      })),
+    );
+  });
+
+  it('leaves out other owners and other owner types', async () => {
+    await repository.save(media('p2', EMediaType.IMAGE, 'png'));
+    await repository.save(
+      media('p1', EMediaType.IMAGE, 'png', 0, EMediaOwnerType.USER_AVATAR),
+    );
+
+    await expect(service.listByOwner('PRODUCT', 'p1')).resolves.toEqual([]);
+  });
+});

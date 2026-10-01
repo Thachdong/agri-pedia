@@ -7,6 +7,7 @@ NestJS 10 (TypeScript) backend. Postgres 16 via `docker-compose.yml` (pgAdmin on
 - `docker compose up -d` — start Postgres + pgAdmin
 - `npm run start:dev` — dev server (watch)
 - `npm run build` — compile to `dist/`
+- `npm run openapi:export [-- <path>]` — build + write OpenAPI document (default `openapi.json`), no DB needed
 - `npm run lint` / `npm run format` — ESLint (auto-fix) / Prettier
 - `npm test` — unit tests (`*.spec.ts` under `src/`)
 - `npm run test:e2e` — e2e tests (`test/`)
@@ -30,9 +31,10 @@ src/
 │   ├── logger/              # wraps nestjs-pino -> ILogger (LOGGER), useAppLogger()
 │   ├── event-bus/           # wraps @nestjs/event-emitter -> IEventBus (EVENT_BUS), @OnIntegrationEvent
 │   ├── crypto/              # wraps node:crypto -> ICryptoService (CRYPTO_SERVICE): HMAC hash, AES-GCM, scrypt password
-│   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign/verify access tokens; AccessTokenGuard + @CurrentUser() for protected routes
+│   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign/verify access tokens; AccessTokenGuard + @CurrentUser() for protected routes; OptionalAccessTokenGuard + @OptionalCurrentUser() for public routes that use the caller when a token is sent
 │   ├── messaging/           # IMessageSender (MESSAGE_SENDER): email/SMS; currently log-only adapter
 │   ├── storage/             # wraps firebase-admin -> IFileStorage (FILE_STORAGE): presigned upload URLs, signed download URLs, move/delete objects (Firebase Storage / GCS)
+│   ├── realtime/            # wraps @nestjs/websockets + socket.io -> IRealtimePublisher (REALTIME_PUBLISHER): emitToUser; IRealtimeChannels (REALTIME_CHANNELS): join/leave/hasUser presence channels; IRealtimeTicketService (REALTIME_TICKET_SERVICE): short-lived socket-only tickets for browsers behind a BFF; handshake auth by `auth.ticket` or access token; @RealtimeGateway() + @SocketUser() + @SocketConnectionId() for inbound gateways (errors/validation answered via ack)
 │   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean)
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
 │   └── http/                # global ValidationPipe + DomainExceptionFilter

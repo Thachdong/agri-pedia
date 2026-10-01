@@ -9,8 +9,8 @@ import {
 } from '@shared/access-token';
 
 const address = {
-  province: 'Can Tho',
-  ward: 'Ninh Kieu',
+  province: 'can_tho',
+  ward: 'phuong_ninh_kieu',
   houseNumber: '12',
   lat: 10.03,
   long: 105.78,
@@ -81,7 +81,10 @@ describe('POST /auth/login (e2e)', () => {
     expect(payload).toEqual({ userId: user.id });
     expect(res.body.refreshToken).toEqual(expect.any(String));
     expect(res.body.user).toEqual({
+      id: user.id,
       loginType: 'EMAIL',
+      email: 'farmer@mail.com',
+      phone: null,
       username: 'farmer@mail.com',
       role: 'FARMER',
       bussinessType: null,
@@ -90,6 +93,13 @@ describe('POST /auth/login (e2e)', () => {
       bio: 'rice farmer',
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
+      address: {
+        province: 'can_tho',
+        ward: 'phuong_ninh_kieu',
+        houseNumber: '12',
+        lat: 10.03,
+        long: 105.78,
+      },
     });
 
     const tokens = await dataSource.query(

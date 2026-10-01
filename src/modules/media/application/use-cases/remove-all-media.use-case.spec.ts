@@ -69,13 +69,15 @@ describe('RemoveAllMediaUseCase', () => {
 
     await expect(removeAll()).resolves.toBeUndefined();
 
+    // Owner's media come by sortOrder then id: the first one hits the failure.
+    const [first] = [...own].sort((a, b) => a.id.localeCompare(b.id));
     expect([...media.items.keys()]).toEqual([other.id]);
     expect(storage.files.size).toBe(2);
     expect(logger.entries).toEqual([
       expect.objectContaining({
         level: 'error',
         message: 'Media file delete failed',
-        meta: { mediaId: own[0].id, source: own[0].source },
+        meta: { mediaId: first.id, source: first.source },
       }),
     ]);
   });

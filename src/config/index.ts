@@ -1,6 +1,10 @@
 import { appConfig, TAppConfig } from './app.config';
 import { authConfig, TAuthConfig } from './auth.config';
 import { databaseConfig, TDatabaseConfig } from './database.config';
+import {
+  distributorSearchConfig,
+  TDistributorSearchConfig,
+} from './distributor-search.config';
 import { loggerConfig, TLoggerConfig } from './logger.config';
 import { otpConfig, TOtpConfig } from './otp.config';
 import { securityConfig, TSecurityConfig } from './security.config';
@@ -9,6 +13,7 @@ import { storageConfig, TStorageConfig } from './storage.config';
 export * from './app.config';
 export * from './auth.config';
 export * from './database.config';
+export * from './distributor-search.config';
 export * from './logger.config';
 export * from './otp.config';
 export * from './security.config';
@@ -23,6 +28,7 @@ export const configGroups = [
   otpConfig,
   authConfig,
   storageConfig,
+  distributorSearchConfig,
 ];
 
 /** Namespace -> type map used by IConfigService.get(). Keep in sync with configGroups. */
@@ -34,4 +40,5 @@ export type TConfigMap = {
   otp: TOtpConfig;
   auth: TAuthConfig;
   storage: TStorageConfig;
+  distributorSearch: TDistributorSearchConfig;
 };

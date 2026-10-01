@@ -16,17 +16,23 @@ import {
 } from '@shared/access-token';
 import {
   CreateReviewUseCase,
+  GetReviewSummaryUseCase,
   ListDistributorReviewsUseCase,
+  ListProductReviewsUseCase,
   UpdateReviewUseCase,
 } from '../../application/use-cases';
 import {
   CreateReviewDto,
   DEFAULT_REVIEW_PAGE_SIZE,
+  GetReviewSummaryQueryDto,
   ListDistributorReviewsQueryDto,
+  ListProductReviewsQueryDto,
   UpdateReviewDto,
 } from './dto';
 import { CreateReviewResponse } from './responses/create-review.response';
+import { GetReviewSummaryResponse } from './responses/get-review-summary.response';
 import { ListDistributorReviewsResponse } from './responses/list-distributor-reviews.response';
+import { ListProductReviewsResponse } from './responses/list-product-reviews.response';
 
 @Controller('reviews')
 export class ReviewController {
@@ -34,6 +40,8 @@ export class ReviewController {
     private readonly createReview: CreateReviewUseCase,
     private readonly listDistributorReviews: ListDistributorReviewsUseCase,
     private readonly updateReview: UpdateReviewUseCase,
+    private readonly getReviewSummary: GetReviewSummaryUseCase,
+    private readonly listProductReviews: ListProductReviewsUseCase,
   ) {}
 
   /** Public: no access token needed. */
@@ -60,6 +68,54 @@ export class ReviewController {
         targetType: review.targetType,
         targetId: review.targetId,
         productName: review.productName,
+        star: review.star,
+        content: review.content,
+        createdAt: review.createdAt,
+        user: {
+          id: review.user.id,
+          username: review.user.username,
+          avatar: review.user.avatar,
+        },
+      })),
+      nextCursor,
+    };
+  }
+
+  /** Public: no access token needed. */
+  @Get('summary')
+  async summary(
+    @Query() query: GetReviewSummaryQueryDto,
+  ): Promise<GetReviewSummaryResponse> {
+    const summary = await this.getReviewSummary.execute({
+      targetType: query.targetType,
+      targetId: query.targetId,
+    });
+    return {
+      avgRating: summary.avgRating,
+      reviewCount: summary.reviewCount,
+      oneStarCount: summary.oneStarCount,
+      twoStarCount: summary.twoStarCount,
+      threeStarCount: summary.threeStarCount,
+      fourStarCount: summary.fourStarCount,
+      fiveStarCount: summary.fiveStarCount,
+    };
+  }
+
+  /** Public: no access token needed. */
+  @Get('products/:productId')
+  async listByProduct(
+    @Param('productId', ParseUUIDPipe) productId: string,
+    @Query() query: ListProductReviewsQueryDto,
+  ): Promise<ListProductReviewsResponse> {
+    const { reviews, nextCursor } = await this.listProductReviews.execute({
+      productId,
+      star: query.star,
+      cursor: query.cursor,
+      limit: query.limit ?? DEFAULT_REVIEW_PAGE_SIZE,
+    });
+    return {
+      reviews: reviews.map((review) => ({
+        id: review.id,
         star: review.star,
         content: review.content,
         createdAt: review.createdAt,

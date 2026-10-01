@@ -35,7 +35,13 @@ export class PgMediaRepository
     ownerType: EMediaOwnerType,
     ownerId: string,
   ): Promise<Media[]> {
-    const rows = await this.repository.findBy({ ownerType, ownerId });
+    const rows = await this.repository
+      .createQueryBuilder('media')
+      .where('media.owner_type = :ownerType', { ownerType })
+      .andWhere('media.owner_id = :ownerId', { ownerId })
+      .orderBy('media.sort_order', 'ASC', 'NULLS LAST')
+      .addOrderBy('media.id', 'ASC')
+      .getMany();
     return rows.map((row) => MediaMapper.toDomain(row));
   }
 

@@ -74,6 +74,8 @@ describe('ListDistributorReviewsUseCase', () => {
       listBySeller: async (sellerId) => (sellerId === SHOP ? products : []),
     };
     const mediaQuery: IMediaQueryPort = {
+      listByOwner: async () => [],
+      findUrls: async () => [],
       findThumbnails: async (ownerType, ownerIds) =>
         ownerType === 'USER_AVATAR'
           ? avatars.filter((avatar) => ownerIds.includes(avatar.ownerId))

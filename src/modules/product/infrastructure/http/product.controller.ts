@@ -18,6 +18,7 @@ import {
 import {
   CreateProductUseCase,
   DeleteProductUseCase,
+  GetProductDetailUseCase,
   ListDistributorProductsUseCase,
   UpdateProductUseCase,
 } from '../../application/use-cases';
@@ -29,6 +30,7 @@ import {
   UpdateProductDto,
 } from './dto';
 import { CreateProductResponse } from './responses/create-product.response';
+import { GetProductDetailResponse } from './responses/get-product-detail.response';
 import { ListDistributorProductsResponse } from './responses/list-distributor-products.response';
 
 const toMediaInput = (file: ProductMediaDto) => ({
@@ -46,6 +48,7 @@ export class ProductController {
     private readonly updateProduct: UpdateProductUseCase,
     private readonly deleteProduct: DeleteProductUseCase,
     private readonly listDistributorProducts: ListDistributorProductsUseCase,
+    private readonly getProductDetail: GetProductDetailUseCase,
   ) {}
 
   /** Public: no access token needed. */
@@ -72,6 +75,30 @@ export class ProductController {
         distributorName: product.distributorName,
       })),
       nextCursor,
+    };
+  }
+
+  /** Public: no access token needed. */
+  @Get(':productId')
+  async getDetail(
+    @Param('productId', ParseUUIDPipe) productId: string,
+  ): Promise<GetProductDetailResponse> {
+    const product = await this.getProductDetail.execute({ productId });
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      quantity: product.quantity,
+      unit: product.unit,
+      categoryId: product.categoryId,
+      status: product.status,
+      distributorId: product.distributorId,
+      media: product.media.map((item) => ({
+        id: item.id,
+        type: item.type,
+        url: item.url,
+      })),
     };
   }
 

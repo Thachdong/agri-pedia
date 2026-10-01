@@ -12,8 +12,8 @@ const distributor = {
   role: 'DISTRIBUTOR',
   bussinessType: 'SEEDS_SEEDLINGS',
   address: {
-    province: 'Can Tho',
-    ward: 'Ninh Kieu',
+    province: 'can_tho',
+    ward: 'phuong_ninh_kieu',
     houseNumber: '12',
     lat: 10.03,
     long: 105.78,

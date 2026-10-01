@@ -1,6 +1,10 @@
 import { EMediaOwnerType, EMediaType, Media } from '../../../domain';
 import { IMediaRepository } from '../media.repository';
 
+const bySortOrder = (a: Media, b: Media) =>
+  (a.sortOrder ?? Infinity) - (b.sortOrder ?? Infinity) ||
+  a.id.localeCompare(b.id);
+
 export class InMemoryMediaRepository implements IMediaRepository {
   readonly items = new Map<string, Media>();
 
@@ -23,18 +27,17 @@ export class InMemoryMediaRepository implements IMediaRepository {
     ownerType: EMediaOwnerType,
     ownerId: string,
   ): Promise<Media[]> {
-    return [...this.items.values()].filter(
-      (media) => media.ownerType === ownerType && media.ownerId === ownerId,
-    );
+    return [...this.items.values()]
+      .filter(
+        (media) => media.ownerType === ownerType && media.ownerId === ownerId,
+      )
+      .sort(bySortOrder);
   }
 
   async findFirstImagesByOwners(
     ownerType: EMediaOwnerType,
     ownerIds: string[],
   ): Promise<Media[]> {
-    const order = (a: Media, b: Media) =>
-      (a.sortOrder ?? Infinity) - (b.sortOrder ?? Infinity) ||
-      a.id.localeCompare(b.id);
     return ownerIds.flatMap((ownerId) => {
       const [first] = [...this.items.values()]
         .filter(
@@ -43,7 +46,7 @@ export class InMemoryMediaRepository implements IMediaRepository {
             media.ownerId === ownerId &&
             media.type === EMediaType.IMAGE,
         )
-        .sort(order);
+        .sort(bySortOrder);
       return first ? [first] : [];
     });
   }

@@ -36,6 +36,11 @@ export interface IReviewRepository {
   ): Promise<Review[]>;
   /** Star counts over every review of the targets (no filter). */
   summarizeByTargets(targets: TReviewTargets): Promise<TReviewStarCounts>;
+  /** Star counts over every review of this one target. */
+  summarizeByTarget(
+    targetType: EReviewTargetType,
+    targetId: string,
+  ): Promise<TReviewStarCounts>;
   save(review: Review): Promise<void>;
 }
 

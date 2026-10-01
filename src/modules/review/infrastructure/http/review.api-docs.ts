@@ -24,6 +24,27 @@ defineApiDocs(ReviewController, {
         },
       ],
     },
+    summary: {
+      summary: 'Get the rating of a product or a distributor (public)',
+      description:
+        'No login needed. `targetType=PRODUCT`: reviews of that product. `targetType=USER`: reviews of the ' +
+        'distributor itself only (not of its products; the whole shop summary is in `GET /reviews`). `avgRating` has ' +
+        '1 decimal and is 0 when there is no review. A target without reviews, or that does not exist, returns all zero.',
+      validation: true,
+    },
+    listByProduct: {
+      summary: 'List reviews of a product (public)',
+      description:
+        'No login needed. Reviews of one product (any status; a deleted or unknown product → 404), newest first. ' +
+        'Filter with `star`. `limit` 1..50, default 20. To get the next page pass the returned `nextCursor` as ' +
+        '`cursor` with the same `star`; `nextCursor` is null on the last page. `user.avatar` is a signed URL ' +
+        '(expires after the configured TTL, default 1h), or null. Rating of the product: `GET /reviews/summary`.',
+      validation: true,
+      errors: [
+        { type: EDomainErrorType.VALIDATION, code: 'REVIEW_INVALID_CURSOR' },
+        { type: EDomainErrorType.NOT_FOUND, code: 'REVIEW_TARGET_NOT_FOUND' },
+      ],
+    },
     create: {
       summary:
         'Review a distributor or one of its products (ACTIVE farmer only)',

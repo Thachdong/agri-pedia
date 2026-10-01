@@ -7,6 +7,7 @@ export interface IMediaRepository {
     ownerId: string,
     ids: string[],
   ): Promise<Media[]>;
+  /** Every media of the owner, by sortOrder (null last, then id). */
   findAllByOwner(ownerType: EMediaOwnerType, ownerId: string): Promise<Media[]>;
   /** Per owner, its first IMAGE by sortOrder (null last, then id); owners without an image are left out. */
   findFirstImagesByOwners(

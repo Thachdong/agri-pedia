@@ -12,3 +12,9 @@ export const CurrentUser = createParamDecorator(
     return auth;
   },
 );
+
+/** Payload of the caller's access token, or null for a guest. For handlers behind OptionalAccessTokenGuard. */
+export const OptionalCurrentUser = createParamDecorator(
+  (_data: unknown, context: ExecutionContext): TAccessTokenPayload | null =>
+    context.switchToHttp().getRequest<TAuthenticatedRequest>().auth ?? null,
+);

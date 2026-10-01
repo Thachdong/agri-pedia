@@ -37,3 +37,18 @@ export class AccessTokenGuard implements CanActivate {
     return true;
   }
 }
+
+/**
+ * Like AccessTokenGuard, but a request without an Authorization header passes as a guest
+ * (read the caller with @OptionalCurrentUser()). A header that is present must hold a valid token.
+ */
+@Injectable()
+export class OptionalAccessTokenGuard extends AccessTokenGuard {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<TAuthenticatedRequest>();
+    if (request.headers.authorization === undefined) {
+      return true;
+    }
+    return super.canActivate(context);
+  }
+}

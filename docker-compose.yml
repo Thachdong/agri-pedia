@@ -1,6 +1,7 @@
 services:
   postgres:
-    image: postgres:16
+    # Postgres 16 + PostGIS (distributor search). 16-3.4: last tag with an arm64 build.
+    image: postgis/postgis:16-3.4
     container_name: agri-media-postgres
     restart: unless-stopped
     environment:

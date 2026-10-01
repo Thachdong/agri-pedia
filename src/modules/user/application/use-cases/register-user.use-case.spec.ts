@@ -1,6 +1,7 @@
 import { InMemoryCryptoService } from '@shared/crypto';
 import { InMemoryUnitOfWork } from '@shared/database';
 import { InMemoryEventBus } from '@shared/event-bus';
+import { ILocationQueryPort } from '@modules/location/contracts';
 import { USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT } from '../../contracts';
 import {
   BusinessTypeNotAllowedException,
@@ -10,6 +11,7 @@ import {
   EUserRole,
   EUserStatus,
   InvalidCoordinatesException,
+  InvalidLocationException,
   UserIdentifierAlreadyUsedException,
 } from '../../domain';
 import {
@@ -27,12 +29,19 @@ const farmerInput: TRegisterUserInput = {
   password: 'secret123',
   role: EUserRole.FARMER,
   address: {
-    province: 'Can Tho',
-    ward: 'Ninh Kieu',
+    province: 'can_tho',
+    ward: 'phuong_ninh_kieu',
     houseNumber: '12',
     lat: 10.03,
     long: 105.78,
   },
+};
+
+// Only this ward exists in the stubbed master data.
+const locationQuery: ILocationQueryPort = {
+  provinceExists: async (provinceCode) => provinceCode === 'can_tho',
+  wardBelongsToProvince: async (provinceCode, wardCode) =>
+    provinceCode === 'can_tho' && wardCode === 'phuong_ninh_kieu',
 };
 
 describe('RegisterUserUseCase', () => {
@@ -51,6 +60,7 @@ describe('RegisterUserUseCase', () => {
       new InMemoryCryptoService(),
       new InMemoryUnitOfWork(),
       eventBus,
+      locationQuery,
     );
   });
 
@@ -139,4 +149,38 @@ describe('RegisterUserUseCase', () => {
     expect(addresses.items.size).toBe(0);
     expect(eventBus.published).toEqual([]);
   });
+
+  it('stores trimmed province/ward codenames', async () => {
+    await useCase.execute({
+      ...farmerInput,
+      address: {
+        ...farmerInput.address,
+        province: ' can_tho ',
+        ward: ' phuong_ninh_kieu ',
+      },
+    });
+
+    const [address] = [...addresses.items.values()];
+    expect(address.province).toBe('can_tho');
+    expect(address.ward).toBe('phuong_ninh_kieu');
+  });
+
+  it.each([
+    ['can_tho', 'phuong_unknown'],
+    ['ha_noi', 'phuong_ninh_kieu'],
+    ['Can Tho', 'Ninh Kieu'],
+  ])(
+    'rejects unknown location (%p, %p) before writing anything',
+    async (province, ward) => {
+      await expect(
+        useCase.execute({
+          ...farmerInput,
+          address: { ...farmerInput.address, province, ward },
+        }),
+      ).rejects.toThrow(InvalidLocationException);
+      expect(users.items.size).toBe(0);
+      expect(addresses.items.size).toBe(0);
+      expect(eventBus.published).toEqual([]);
+    },
+  );
 });

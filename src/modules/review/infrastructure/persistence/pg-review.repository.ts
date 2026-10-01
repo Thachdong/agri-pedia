@@ -74,16 +74,19 @@ export class PgReviewRepository
   async summarizeByTargets(
     targets: TReviewTargets,
   ): Promise<TReviewStarCounts> {
-    const rows = await this.ofTargets(targets)
-      .select('review.star', 'star')
-      .addSelect('COUNT(*)', 'count')
-      .groupBy('review.star')
-      .getRawMany<{ star: number; count: string }>();
-    const counts: TReviewStarCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-    rows.forEach((row) => {
-      counts[row.star as keyof TReviewStarCounts] = Number(row.count);
-    });
-    return counts;
+    return this.countStars(this.ofTargets(targets));
+  }
+
+  async summarizeByTarget(
+    targetType: EReviewTargetType,
+    targetId: string,
+  ): Promise<TReviewStarCounts> {
+    return this.countStars(
+      this.repository
+        .createQueryBuilder('review')
+        .where('review.target_type = :targetType', { targetType })
+        .andWhere('review.target_id = :targetId', { targetId }),
+    );
   }
 
   async save(review: Review): Promise<void> {
@@ -102,6 +105,21 @@ export class PgReviewRepository
   }
 
   /** Reviews of the distributor itself (USER) or of any of its products (PRODUCT). */
+  private async countStars(
+    query: SelectQueryBuilder<ReviewOrmEntity>,
+  ): Promise<TReviewStarCounts> {
+    const rows = await query
+      .select('review.star', 'star')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy('review.star')
+      .getRawMany<{ star: number; count: string }>();
+    const counts: TReviewStarCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    rows.forEach((row) => {
+      counts[row.star as keyof TReviewStarCounts] = Number(row.count);
+    });
+    return counts;
+  }
+
   private ofTargets({
     userId,
     productIds,

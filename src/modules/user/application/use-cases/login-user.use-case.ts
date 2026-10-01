@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
 import {
   ACCESS_TOKEN_SERVICE,
   IAccessTokenService,
@@ -15,10 +16,15 @@ import {
   RefreshToken,
 } from '../../domain';
 import {
+  ADDRESS_REPOSITORY,
+  IAddressRepository,
+} from '../ports/address.repository';
+import {
   IRefreshTokenRepository,
   REFRESH_TOKEN_REPOSITORY,
 } from '../ports/refresh-token.repository';
 import { IUserRepository, USER_REPOSITORY } from '../ports/user.repository';
+import { readUserContactDetails } from '../user-contact-details';
 
 export type TLoginUserInput = {
   loginType: ELoginType;
@@ -30,15 +36,30 @@ export type TLoginUserOutput = {
   accessToken: string;
   refreshToken: string;
   user: {
+    id: string;
     loginType: ELoginType;
+    /** Decrypted identifier when loginType is EMAIL; otherwise null. */
+    email: string | null;
+    /** Decrypted identifier when loginType is PHONE; otherwise null. */
+    phone: string | null;
     username: string;
     role: EUserRole;
     businessType: EBusinessType | null;
+    /** Signed read URL; null if none. */
     businessLicense: string | null;
+    /** Signed read URL; null if none. */
     avatar: string | null;
     bio: string | null;
     createdAt: Date;
     updatedAt: Date;
+    /** Primary address; null if the user has none. */
+    address: {
+      province: string;
+      ward: string;
+      houseNumber: string;
+      lat: number;
+      long: number;
+    } | null;
   };
 };
 
@@ -46,6 +67,8 @@ export type TLoginUserOutput = {
 export class LoginUserUseCase {
   constructor(
     @Inject(USER_REPOSITORY) private readonly users: IUserRepository,
+    @Inject(ADDRESS_REPOSITORY)
+    private readonly addresses: IAddressRepository,
     @Inject(REFRESH_TOKEN_REPOSITORY)
     private readonly refreshTokens: IRefreshTokenRepository,
     @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
@@ -53,6 +76,7 @@ export class LoginUserUseCase {
     private readonly accessTokens: IAccessTokenService,
     @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(MEDIA_QUERY_PORT) private readonly mediaQuery: IMediaQueryPort,
   ) {}
 
   /**
@@ -84,20 +108,34 @@ export class LoginUserUseCase {
       ),
     );
     const accessToken = await this.accessTokens.sign({ userId: user.id });
+    const [address, contact] = await Promise.all([
+      this.addresses.findPrimaryByUserId(user.id),
+      readUserContactDetails(user, this.crypto, this.mediaQuery),
+    ]);
 
     return {
       accessToken,
       refreshToken,
       user: {
+        id: user.id,
         loginType: user.loginType,
+        email: contact.email,
+        phone: contact.phone,
         username: user.username,
         role: user.role,
         businessType: user.businessType,
-        businessLicense: user.businessLicense,
-        avatar: user.avatar,
+        businessLicense: contact.businessLicense,
+        avatar: contact.avatar,
         bio: user.bio,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
+        address: address && {
+          province: address.province,
+          ward: address.ward,
+          houseNumber: address.houseNumber,
+          lat: address.coordinates.lat,
+          long: address.coordinates.long,
+        },
       },
     };
   }

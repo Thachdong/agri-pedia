@@ -1,3 +1,4 @@
+import { IMediaQueryPort } from '@modules/media/contracts';
 import { InMemoryUnitOfWork } from '@shared/database';
 import { InMemoryEventBus } from '@shared/event-bus';
 import { USER_PROFILE_UPDATED_EVENT } from '../../contracts';
@@ -14,6 +15,13 @@ import { InMemoryUserRepository } from '../ports/fakes';
 import { UpdateProfileUseCase } from './update-profile.use-case';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+const mediaQuery: IMediaQueryPort = {
+  listByOwner: async () => [],
+  findThumbnails: async () => [],
+  findUrls: async (_, __, mediaIds) =>
+    mediaIds.map((mediaId) => ({ mediaId, url: `https://signed/${mediaId}` })),
+};
 
 const file = (name: string) => ({
   key: `tmp/u/${name}.png`,
@@ -50,10 +58,11 @@ describe('UpdateProfileUseCase', () => {
       users,
       new InMemoryUnitOfWork(),
       eventBus,
+      mediaQuery,
     );
   });
 
-  it('updates the given fields and assigns new media ids', async () => {
+  it('updates the given fields, assigns new media ids and returns the avatar as a signed URL', async () => {
     const user = registerUser(EUserRole.DISTRIBUTOR);
 
     const output = await useCase.execute({
@@ -67,15 +76,16 @@ describe('UpdateProfileUseCase', () => {
 
     expect(output).toEqual({
       username: 'new-name',
-      avatar: expect.stringMatching(UUID),
+      avatar: expect.stringMatching(/^https:\/\/signed\//),
       bio: 'new bio',
       businessLicense: expect.stringMatching(UUID),
       businessType: EBusinessType.AQUACULTURE_SEEDLINGS,
       updatedAt: expect.any(Date),
     });
-    expect(output.avatar).not.toBe(output.businessLicense);
     const saved = users.items.get(user.id);
-    expect(saved?.avatar).toBe(output.avatar);
+    expect(saved?.avatar).toMatch(UUID);
+    expect(saved?.avatar).not.toBe(output.businessLicense);
+    expect(output.avatar).toBe(`https://signed/${saved?.avatar}`);
     expect(saved?.businessLicense).toBe(output.businessLicense);
     expect(saved?.username).toBe('new-name');
     expect(eventBus.published).toEqual([
@@ -84,7 +94,7 @@ describe('UpdateProfileUseCase', () => {
         occurredAt: expect.any(String),
         payload: {
           userId: user.id,
-          avatar: { ...file('avatar'), mediaId: output.avatar },
+          avatar: { ...file('avatar'), mediaId: saved?.avatar },
           businessLicense: {
             ...file('license'),
             mediaId: output.businessLicense,
