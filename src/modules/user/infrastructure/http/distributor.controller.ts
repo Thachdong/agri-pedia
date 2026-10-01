@@ -1,4 +1,11 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import {
   OptionalAccessTokenGuard,
   OptionalCurrentUser,
@@ -6,18 +13,21 @@ import {
 } from '@shared/access-token';
 import {
   FindNearbyDistributorsUseCase,
+  GetDistributorProfileUseCase,
   TFindNearbyDistributorsInput,
 } from '../../application/use-cases';
 import {
   DEFAULT_NEARBY_PAGE_SIZE,
   FindNearbyDistributorsQueryDto,
 } from './dto';
+import { DistributorProfileResponse } from './responses/distributor-profile.response';
 import { FindNearbyDistributorsResponse } from './responses/find-nearby-distributors.response';
 
 @Controller('distributors')
 export class DistributorController {
   constructor(
     private readonly findNearbyDistributors: FindNearbyDistributorsUseCase,
+    private readonly getDistributorProfile: GetDistributorProfileUseCase,
   ) {}
 
   /** Public: the access token is optional (used for the caller's address). */
@@ -55,6 +65,25 @@ export class DistributorController {
         address: item.address,
         distanceMeters: item.distanceMeters,
       })),
+    };
+  }
+
+  /** Public. Declared after `nearby` so that path is not taken as an id. */
+  @Get(':distributorId')
+  async getProfile(
+    @Param('distributorId', ParseUUIDPipe) distributorId: string,
+  ): Promise<DistributorProfileResponse> {
+    const profile = await this.getDistributorProfile.execute({
+      distributorId,
+    });
+    return {
+      id: profile.id,
+      username: profile.username,
+      avatar: profile.avatar,
+      bio: profile.bio,
+      bussinessType: profile.businessType,
+      createdAt: profile.createdAt,
+      addresses: profile.addresses,
     };
   }
 }
