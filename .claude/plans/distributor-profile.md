@@ -26,8 +26,8 @@ No migration, no event, no new module. Farmer profile (private) = later feature,
 - [x] 6. [use-case]         GetDistributorProfile: `addresses[]` → `address` (primary, findPrimaryByUserId) | null
 - [x] 7. [http + api-docs]  GET /distributors/:distributorId: response `address`; e2e + docs cập nhật
 - [x] 8. [use-case]         user: ListMyAddresses (IUserRepository.findById, IAddressRepository.findAllByUserId — đã có)
-- [ ] 9. [http + api-docs]  GET /users/me/addresses (AccessTokenGuard, UserController), response, e2e; docs auth: true, 404 USER_NOT_FOUND
-- [ ] 10. [boundary-review]
+- [x] 9. [http + api-docs]  GET /users/me/addresses (AccessTokenGuard, UserController), response, e2e; docs auth: true, 404 USER_NOT_FOUND
+- [x] 10. [boundary-review]
 
 ## Decisions (defaults — change if wrong)
 - Unknown id / not DISTRIBUTOR / not ACTIVE (PENDING) → cùng 404 USER_DISTRIBUTOR_NOT_FOUND (không lộ user tồn tại).

@@ -6,9 +6,11 @@ import {
 } from '@shared/access-token';
 import {
   GetMyProfileUseCase,
+  ListMyAddressesUseCase,
   UpdateProfileUseCase,
 } from '../../application/use-cases';
 import { UpdateProfileDto } from './dto';
+import { ListMyAddressesResponse } from './responses/list-my-addresses.response';
 import { UpdateProfileResponse } from './responses/update-profile.response';
 import { UserProfileResponse } from './responses/user-profile.response';
 
@@ -17,6 +19,7 @@ export class UserController {
   constructor(
     private readonly getMyProfile: GetMyProfileUseCase,
     private readonly updateProfile: UpdateProfileUseCase,
+    private readonly listMyAddresses: ListMyAddressesUseCase,
   ) {}
 
   @Get('me')
@@ -44,6 +47,17 @@ export class UserController {
         long: profile.address.long,
       },
     };
+  }
+
+  @Get('me/addresses')
+  @UseGuards(AccessTokenGuard)
+  async getMyAddresses(
+    @CurrentUser() caller: TAccessTokenPayload,
+  ): Promise<ListMyAddressesResponse> {
+    const { addresses } = await this.listMyAddresses.execute({
+      userId: caller.userId,
+    });
+    return { addresses };
   }
 
   @Patch('me')

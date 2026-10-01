@@ -13,6 +13,14 @@ defineApiDocs(UserController, {
       auth: true,
       errors: [{ type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' }],
     },
+    getMyAddresses: {
+      summary: 'List the addresses of the caller',
+      description:
+        'Every address of the caller, primary first. ' +
+        'Works for any user with a valid access token, whatever its status.',
+      auth: true,
+      errors: [{ type: EDomainErrorType.NOT_FOUND, code: 'USER_NOT_FOUND' }],
+    },
     updateMe: {
       summary: 'Update the profile of the caller',
       description:
