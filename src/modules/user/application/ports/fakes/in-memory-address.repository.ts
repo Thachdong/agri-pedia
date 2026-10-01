@@ -12,6 +12,10 @@ export class InMemoryAddressRepository implements IAddressRepository {
     return this.items.get(id) ?? null;
   }
 
+  async delete(address: Address): Promise<void> {
+    this.items.delete(address.id);
+  }
+
   async findPrimaryByUserId(userId: string): Promise<Address | null> {
     return (
       [...this.items.values()].find(

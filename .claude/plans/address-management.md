@@ -26,7 +26,7 @@ No migration, no event, no new module.
                              errors USER_ADDRESS_NOT_FOUND (NOT_FOUND), USER_ADDRESS_PRIMARY_NOT_DELETABLE (CONFLICT)
 - [x] 2. [use-case]         CreateAddress (ILocationQueryPort đã có; IAddressRepository.save / findPrimaryByUserId đã có)
 - [x] 3. [use-case]         SetPrimaryAddress; port IAddressRepository.findById (+ fake)
-- [ ] 4. [use-case]         DeleteAddress; port IAddressRepository.delete (+ fake)
+- [x] 4. [use-case]         DeleteAddress; port IAddressRepository.delete (+ fake)
 - [ ] 5. [persistence]      PgAddressRepository.findById, delete (no migration)
 - [ ] 6. [http + api-docs]  POST /users/me/addresses → 201 { addressId }, e2e
 - [ ] 7. [http + api-docs]  PATCH /users/me/addresses/:addressId/primary → 200 null, e2e
