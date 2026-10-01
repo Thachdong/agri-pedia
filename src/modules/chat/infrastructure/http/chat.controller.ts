@@ -81,6 +81,8 @@ export class ChatController {
       messages: messages.map((message) => ({
         id: message.id,
         senderId: message.senderId,
+        senderUsername: message.senderUsername,
+        senderAvatar: message.senderAvatar,
         message: message.message,
         createdAt: message.createdAt,
       })),

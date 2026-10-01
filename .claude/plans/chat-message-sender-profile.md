@@ -15,6 +15,6 @@ Cả hai query port đã có, ChatModule đã import UserModule + MediaModule �
 
 - [x] 1. [use-case]        ListRoomMessages: + IUserQueryPort, IMediaQueryPort → senderUsername, senderAvatar
 - [x] 2. [use-case]        SendChatMessage: realtime payload `chat.message.received` + senderUsername, senderAvatar
-- [ ] 3. [http]            GET /chat/rooms/:roomId/messages: response + e2e
-- [ ] 4. [api-docs]        GET /chat/rooms/:roomId/messages
-- [ ] 5. [boundary-review]
+- [x] 3. [http]            GET /chat/rooms/:roomId/messages: response + e2e
+- [x] 4. [api-docs]        GET /chat/rooms/:roomId/messages
+- [x] 5. [boundary-review]

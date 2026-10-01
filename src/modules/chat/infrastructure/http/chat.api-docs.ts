@@ -27,8 +27,10 @@ defineApiDocs(ChatController, {
       description:
         'Caller must be a member of the room. Newest message first (`createdAt` desc); ' +
         '`limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` to get older messages ' +
-        '(null on the last page). Read-only: does not mark messages read (socket `chat.room.enter` does). ' +
-        'New messages arrive live through socket `chat.message.received`.',
+        "(null on the last page). Each message carries its sender's `senderUsername` (null when the user " +
+        'no longer exists) and `senderAvatar` (signed read URL that expires; null when none). ' +
+        'Read-only: does not mark messages read (socket `chat.room.enter` does). ' +
+        'New messages arrive live through socket `chat.message.received` (same sender fields).',
       validation: true,
       auth: true,
       errors: [

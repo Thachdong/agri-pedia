@@ -4,6 +4,7 @@ import {
   ACCESS_TOKEN_SERVICE,
   IAccessTokenService,
 } from '@shared/access-token';
+import { FILE_STORAGE, InMemoryFileStorage } from '@shared/storage';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../src/app.module';
@@ -22,7 +23,10 @@ describe('GET /chat/rooms/:roomId/messages (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(FILE_STORAGE)
+      .useValue(new InMemoryFileStorage())
+      .compile();
     moduleRef.useLogger(false);
     app = moduleRef.createNestApplication();
     await app.init();
@@ -32,6 +36,11 @@ describe('GET /chat/rooms/:roomId/messages (e2e)', () => {
   beforeEach(async () => {
     await dataSource.query('DELETE FROM chat_messages');
     await dataSource.query('DELETE FROM chat_rooms');
+    await dataSource.query('DELETE FROM media');
+    await dataSource.query('DELETE FROM refresh_tokens');
+    await dataSource.query('DELETE FROM addresses');
+    await dataSource.query('DELETE FROM users');
+    await dataSource.query('DELETE FROM otps');
     await insertRoom(room, me, shop);
     await insertRoom(otherRoom, stranger, shop);
   });
@@ -102,18 +111,99 @@ describe('GET /chat/rooms/:roomId/messages (e2e)', () => {
         {
           id: second,
           senderId: shop,
+          senderUsername: null, // not a registered user in this test
+          senderAvatar: null,
           message: 'Còn hàng',
           createdAt: '2026-09-02T01:00:00.000Z',
         },
         {
           id: first,
           senderId: me,
+          senderUsername: null,
+          senderAvatar: null,
           message: 'Chào anh',
           createdAt: '2026-09-02T00:00:00.000Z',
         },
       ],
       nextCursor: null,
     });
+  });
+
+  /** Registers the user; returns its id. */
+  const signUp = async (body: object): Promise<string> => {
+    await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(body)
+      .expect(201);
+    const [{ id }] = await dataSource.query(
+      'SELECT id FROM users ORDER BY created_at DESC LIMIT 1',
+    );
+    return id;
+  };
+
+  const insertAvatar = (userId: string) =>
+    dataSource.query(
+      `INSERT INTO media (id, type, extension, filename, source, owner_type, owner_id, sort_order)
+       VALUES (gen_random_uuid(), 'IMAGE', 'png', 'me.png', $1, 'USER_AVATAR', $2, NULL)`,
+      [`users/${userId}/avatar.png`, userId],
+    );
+
+  const address = {
+    province: 'can_tho',
+    ward: 'phuong_ninh_kieu',
+    houseNumber: '12',
+    lat: 10.03,
+    long: 105.78,
+  };
+
+  it("returns each sender's username and avatar", async () => {
+    const seedShop = await signUp({
+      loginType: 'PHONE',
+      identifier: '0912345678',
+      password: 'secret123',
+      username: 'Seed Shop',
+      role: 'DISTRIBUTOR',
+      bussinessType: 'SEEDS_SEEDLINGS',
+      address,
+    });
+    const farmer = await signUp({
+      loginType: 'EMAIL',
+      identifier: 'farmer@mail.com',
+      password: 'secret123',
+      username: 'Farmer',
+      role: 'FARMER',
+      bussinessType: null,
+      address,
+    });
+    await insertAvatar(seedShop);
+    const pairRoom = '00000000-0000-4000-8000-000000000003';
+    await insertRoom(pairRoom, farmer, seedShop);
+    await insertMessage(pairRoom, farmer, 'Chào anh', '2026-09-02T00:00:00Z');
+    await insertMessage(pairRoom, seedShop, 'Còn hàng', '2026-09-02T01:00:00Z');
+
+    const res = await list(pairRoom, {}, farmer);
+
+    expect(res.status).toBe(200);
+    expect(
+      res.body.messages.map(
+        (message: {
+          senderId: string;
+          senderUsername: string | null;
+          senderAvatar: string | null;
+        }) => ({
+          senderId: message.senderId,
+          senderUsername: message.senderUsername,
+          senderAvatar: message.senderAvatar,
+        }),
+      ),
+    ).toEqual([
+      {
+        senderId: seedShop,
+        senderUsername: 'Seed Shop',
+        senderAvatar: `https://storage.test/users/${seedShop}/avatar.png?signed=read`,
+      },
+      { senderId: farmer, senderUsername: 'Farmer', senderAvatar: null },
+    ]);
   });
 
   it('pages older messages with nextCursor', async () => {
