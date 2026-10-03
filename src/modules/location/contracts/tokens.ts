@@ -1,0 +1,1 @@
+export const LOCATION_QUERY_PORT = Symbol('LOCATION_QUERY_PORT');

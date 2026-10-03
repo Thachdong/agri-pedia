@@ -1,0 +1,218 @@
+import { randomUUID } from 'node:crypto';
+import { AggregateRoot } from '@shared/domain';
+import { EBusinessType } from '../enums/business-type.enum';
+import { ELoginType } from '../enums/login-type.enum';
+import { EUserRole } from '../enums/user-role.enum';
+import { EUserStatus } from '../enums/user-status.enum';
+import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
+import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
+import { UserNotActiveException } from '../exceptions/user-not-active.exception';
+import { userIdentifierVerificationRequested } from '../events/user-identifier-verification-requested.domain-event';
+
+export type TUserProps = {
+  loginType: ELoginType;
+  hashedIdentifier: string;
+  encryptedIdentifier: string;
+  passwordHash: string;
+  username: string;
+  role: EUserRole;
+  businessType: EBusinessType | null;
+  status: EUserStatus;
+  identifierVerifiedAt: Date | null;
+  /** Media id. */
+  avatar: string | null;
+  bio: string | null;
+  /** Media id. */
+  businessLicense: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type TRegisterUserProps = {
+  loginType: ELoginType;
+  hashedIdentifier: string;
+  encryptedIdentifier: string;
+  passwordHash: string;
+  username: string;
+  role: EUserRole;
+  businessType: EBusinessType | null;
+  bio?: string | null;
+};
+
+/** Fields left undefined stay unchanged. */
+export type TUpdateUserProfileProps = {
+  username?: string;
+  bio?: string;
+  businessType?: EBusinessType | null;
+  /** Media id. */
+  avatar?: string;
+  /** Media id. */
+  businessLicense?: string;
+};
+
+export class User extends AggregateRoot {
+  private constructor(
+    id: string,
+    private props: TUserProps,
+  ) {
+    super(id);
+  }
+
+  /**
+   * Registers a new user. Only DISTRIBUTOR has (and must have) a business type.
+   * FARMER is active immediately; DISTRIBUTOR stays PENDING and records
+   * UserIdentifierVerificationRequested so an activation code gets sent.
+   */
+  static register(input: TRegisterUserProps): User {
+    User.assertBusinessType(input.role, input.businessType);
+    const now = new Date();
+    const user = new User(randomUUID(), {
+      loginType: input.loginType,
+      hashedIdentifier: input.hashedIdentifier,
+      encryptedIdentifier: input.encryptedIdentifier,
+      passwordHash: input.passwordHash,
+      username: input.username.trim(),
+      role: input.role,
+      businessType: input.businessType,
+      status:
+        input.role === EUserRole.FARMER
+          ? EUserStatus.ACTIVE
+          : EUserStatus.PENDING,
+      identifierVerifiedAt: null,
+      avatar: null,
+      bio: input.bio ?? null,
+      businessLicense: null,
+      createdAt: now,
+      updatedAt: now,
+    });
+    if (user.status === EUserStatus.PENDING) {
+      user.addEvent(
+        userIdentifierVerificationRequested({
+          userId: user.id,
+          loginType: user.loginType,
+        }),
+      );
+    }
+    return user;
+  }
+
+  static restore(id: string, props: TUserProps): User {
+    return new User(id, { ...props });
+  }
+
+  /** Identifier ownership proven: PENDING becomes ACTIVE. Already ACTIVE is a no-op. */
+  activate(now: Date = new Date()): void {
+    if (this.props.status === EUserStatus.ACTIVE) {
+      return;
+    }
+    this.props.status = EUserStatus.ACTIVE;
+    this.props.identifierVerifiedAt = now;
+    this.props.updatedAt = now;
+  }
+
+  /** Replaces the password; `passwordHash` is already hashed by the caller. */
+  changePassword(passwordHash: string, now: Date = new Date()): void {
+    this.props.passwordHash = passwordHash;
+    this.props.updatedAt = now;
+  }
+
+  /** Applies the given fields. A business type change follows the same rule as registration. */
+  updateProfile(input: TUpdateUserProfileProps, now: Date = new Date()): void {
+    if (input.businessType !== undefined) {
+      User.assertBusinessType(this.props.role, input.businessType);
+      this.props.businessType = input.businessType;
+    }
+    if (input.username !== undefined) {
+      this.props.username = input.username.trim();
+    }
+    if (input.bio !== undefined) {
+      this.props.bio = input.bio;
+    }
+    if (input.avatar !== undefined) {
+      this.props.avatar = input.avatar;
+    }
+    if (input.businessLicense !== undefined) {
+      this.props.businessLicense = input.businessLicense;
+    }
+    this.props.updatedAt = now;
+  }
+
+  /** Only ACTIVE users may log in or keep a session (a DISTRIBUTOR stays PENDING until activated). */
+  canLogin(): boolean {
+    return this.props.status === EUserStatus.ACTIVE;
+  }
+
+  assertCanLogin(): void {
+    if (!this.canLogin()) {
+      throw new UserNotActiveException(this.id, this.props.status);
+    }
+  }
+
+  private static assertBusinessType(
+    role: EUserRole,
+    businessType: EBusinessType | null,
+  ): void {
+    if (role === EUserRole.DISTRIBUTOR && businessType === null) {
+      throw new BusinessTypeRequiredException(role);
+    }
+    if (role !== EUserRole.DISTRIBUTOR && businessType !== null) {
+      throw new BusinessTypeNotAllowedException(role);
+    }
+  }
+
+  get loginType(): ELoginType {
+    return this.props.loginType;
+  }
+
+  get hashedIdentifier(): string {
+    return this.props.hashedIdentifier;
+  }
+
+  get encryptedIdentifier(): string {
+    return this.props.encryptedIdentifier;
+  }
+
+  get passwordHash(): string {
+    return this.props.passwordHash;
+  }
+
+  get username(): string {
+    return this.props.username;
+  }
+
+  get role(): EUserRole {
+    return this.props.role;
+  }
+
+  get businessType(): EBusinessType | null {
+    return this.props.businessType;
+  }
+
+  get status(): EUserStatus {
+    return this.props.status;
+  }
+
+  get identifierVerifiedAt(): Date | null {
+    return this.props.identifierVerifiedAt;
+  }
+
+  get avatar(): string | null {
+    return this.props.avatar;
+  }
+
+  get bio(): string | null {
+    return this.props.bio;
+  }
+
+  get businessLicense(): string | null {
+    return this.props.businessLicense;
+  }
+
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
+}

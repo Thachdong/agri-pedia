@@ -1,0 +1,130 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { CRYPTO_SERVICE, ICryptoService } from '@shared/crypto';
+import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
+import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
+import {
+  ILocationQueryPort,
+  LOCATION_QUERY_PORT,
+} from '@modules/location/contracts';
+import {
+  TUserIdentifierVerificationRequestedEventPayload,
+  USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
+} from '../../contracts';
+import {
+  Address,
+  Coordinates,
+  EBusinessType,
+  ELoginType,
+  EUserRole,
+  Identifier,
+  InvalidLocationException,
+  TUserIdentifierVerificationRequestedDomainEvent,
+  User,
+  USER_IDENTIFIER_VERIFICATION_REQUESTED,
+  UserIdentifierAlreadyUsedException,
+} from '../../domain';
+import {
+  ADDRESS_REPOSITORY,
+  IAddressRepository,
+} from '../ports/address.repository';
+import { IUserRepository, USER_REPOSITORY } from '../ports/user.repository';
+
+export type TRegisterUserInput = {
+  loginType: ELoginType;
+  identifier: string;
+  password: string;
+  /** Defaults to the normalized identifier. */
+  username?: string | null;
+  role: EUserRole;
+  businessType?: EBusinessType | null;
+  bio?: string | null;
+  /** First address; always stored as primary. */
+  address: {
+    /** Province codename (location master data). */
+    province: string;
+    /** Ward codename, must belong to `province`. */
+    ward: string;
+    houseNumber: string;
+    lat: number;
+    long: number;
+  };
+};
+
+@Injectable()
+export class RegisterUserUseCase {
+  constructor(
+    @Inject(USER_REPOSITORY) private readonly users: IUserRepository,
+    @Inject(ADDRESS_REPOSITORY) private readonly addresses: IAddressRepository,
+    @Inject(CRYPTO_SERVICE) private readonly crypto: ICryptoService,
+    @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
+    @Inject(LOCATION_QUERY_PORT)
+    private readonly locationQuery: ILocationQueryPort,
+  ) {}
+
+  async execute(input: TRegisterUserInput): Promise<void> {
+    const identifier = Identifier.create(input.loginType, input.identifier);
+    const coordinates = Coordinates.create(
+      input.address.lat,
+      input.address.long,
+    );
+    const province = input.address.province.trim();
+    const ward = input.address.ward.trim();
+    if (!(await this.locationQuery.wardBelongsToProvince(province, ward))) {
+      throw new InvalidLocationException(province, ward);
+    }
+    const hashedIdentifier = this.crypto.hash(identifier.value);
+    const passwordHash = await this.crypto.hashPassword(input.password);
+
+    const user = await this.unitOfWork.runInTransaction(async () => {
+      if (await this.users.existsByHashedIdentifier(hashedIdentifier)) {
+        throw new UserIdentifierAlreadyUsedException();
+      }
+      const created = User.register({
+        loginType: identifier.loginType,
+        hashedIdentifier,
+        encryptedIdentifier: this.crypto.encrypt(identifier.value),
+        passwordHash,
+        username: input.username?.trim() || identifier.value,
+        role: input.role,
+        businessType: input.businessType ?? null,
+        bio: input.bio,
+      });
+      await this.users.save(created);
+      await this.addresses.save(
+        Address.createPrimary({
+          userId: created.id,
+          province,
+          ward,
+          houseNumber: input.address.houseNumber,
+          coordinates,
+        }),
+      );
+      return created;
+    });
+
+    // Public contract carries the plain normalized identifier, which the aggregate never holds.
+    await this.eventBus.publishAll(
+      user
+        .pullEvents()
+        .filter(
+          (event): event is TUserIdentifierVerificationRequestedDomainEvent =>
+            event.name === USER_IDENTIFIER_VERIFICATION_REQUESTED,
+        )
+        .map(({ payload }) =>
+          createIntegrationEvent<
+            typeof USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT,
+            TUserIdentifierVerificationRequestedEventPayload
+          >(USER_IDENTIFIER_VERIFICATION_REQUESTED_EVENT, {
+            userId: payload.userId,
+            loginType: payload.loginType,
+            identifier: identifier.value,
+          }),
+        ),
+    );
+  }
+}

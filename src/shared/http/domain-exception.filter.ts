@@ -7,7 +7,8 @@ import {
 import { Response } from 'express';
 import { DomainException, EDomainErrorType } from '../domain';
 
-const STATUS_BY_TYPE: Record<EDomainErrorType, HttpStatus> = {
+/** Single source of truth for domain error -> HTTP status (also used by API docs). */
+export const DOMAIN_ERROR_HTTP_STATUS: Record<EDomainErrorType, HttpStatus> = {
   [EDomainErrorType.VALIDATION]: HttpStatus.BAD_REQUEST,
   [EDomainErrorType.NOT_FOUND]: HttpStatus.NOT_FOUND,
   [EDomainErrorType.CONFLICT]: HttpStatus.CONFLICT,
@@ -19,7 +20,7 @@ const STATUS_BY_TYPE: Record<EDomainErrorType, HttpStatus> = {
 @Catch(DomainException)
 export class DomainExceptionFilter implements ExceptionFilter {
   catch(exception: DomainException, host: ArgumentsHost): void {
-    const statusCode = STATUS_BY_TYPE[exception.type];
+    const statusCode = DOMAIN_ERROR_HTTP_STATUS[exception.type];
     host.switchToHttp().getResponse<Response>().status(statusCode).json({
       statusCode,
       code: exception.code,

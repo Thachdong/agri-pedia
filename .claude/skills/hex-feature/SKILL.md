@@ -25,7 +25,8 @@ Feature: <name>
 6. [integration-event]  RegisterUser emits `user.account.registered`
 7. [event-handler]      notification: `user.account.registered` → SendWelcomeEmail
 8. [http]               POST /users
-9. [boundary-review]
+9. [api-docs]           POST /users
+10. [boundary-review]
 Open questions: <only if any>
 ```
 Chains across modules should read as a flow: `use case E → emits F → module G handles → use case H`.
@@ -46,7 +47,8 @@ Fixed skill order (skip what the plan doesn't need; a step may repeat per module
 8. `hex-query-port`
 9. `hex-event-handler` (subscriber's own use case must exist — plan `hex-use-case` for it before this)
 10. `hex-http-adapter`
-11. `hex-boundary-review` (always last)
+11. `hex-api-docs` (after every `hex-http-adapter` step)
+12. `hex-boundary-review` (always last)
 
 For each step:
 1. Invoke the step's skill (Skill tool, `hex-<name>`) and follow it. Stay inside that skill's scope.
