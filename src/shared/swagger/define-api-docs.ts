@@ -1,6 +1,8 @@
 import { HttpStatus } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
   ApiExtraModels,
   ApiOperation,
   ApiResponse,
@@ -34,7 +36,42 @@ export type TApiOperationDoc = {
   errors?: TApiErrorDoc[];
   /** Behind AccessTokenGuard: documents the bearer scheme and AUTH_INVALID_ACCESS_TOKEN (401). */
   auth?: boolean;
+  /** multipart/form-data body (file uploads): replaces the JSON body schema. */
+  multipart?: TApiMultipartDoc;
 };
+
+/** One form field: `files` = one or more uploaded files under the same name. */
+export type TApiMultipartField = {
+  kind: 'text' | 'files';
+  description?: string;
+};
+
+export type TApiMultipartDoc = {
+  fields: Record<string, TApiMultipartField>;
+  required?: string[];
+};
+
+const multipartBody = (doc: TApiMultipartDoc): MethodDecorator[] => [
+  ApiConsumes('multipart/form-data'),
+  ApiBody({
+    schema: {
+      type: 'object',
+      required: doc.required,
+      properties: Object.fromEntries(
+        Object.entries(doc.fields).map(([name, field]) => [
+          name,
+          field.kind === 'files'
+            ? {
+                type: 'array',
+                items: { type: 'string', format: 'binary' },
+                description: field.description,
+              }
+            : { type: 'string', description: field.description },
+        ]),
+      ),
+    },
+  }),
+];
 
 type TControllerMethod<T> = {
   [K in keyof T]: T[K] extends (...args: never[]) => unknown ? K : never;
@@ -118,6 +155,7 @@ export const defineApiDocs = <T>(
       ApiOperation({ summary: doc.summary, description: doc.description }),
       ...errorResponses(doc),
       ...(doc.auth ? [ApiBearerAuth(ACCESS_TOKEN_SCHEME)] : []),
+      ...(doc.multipart ? multipartBody(doc.multipart) : []),
     ];
     for (const decorate of decorators) {
       decorate(controller.prototype, method, descriptor);

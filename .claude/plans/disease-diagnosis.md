@@ -32,7 +32,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 21. [integration-event] ProcessDiagnosis emits `diagnosis.images.stored`
 - [x] 22. [event-handler]     media: `diagnosis.images.stored` → RegisterStoredMedia
 - [x] 23. [http]              POST /diagnoses (multipart), GET /diagnoses/:diagnosisId, GET /diagnoses, POST /diagnoses/:diagnosisId/feedback
-- [ ] 24. [api-docs]          4 endpoint diagnosis
+- [x] 24. [api-docs]          4 endpoint diagnosis
 - [ ] 25. [boundary-review]
 
 ## Package mới

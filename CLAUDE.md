@@ -36,7 +36,7 @@ src/
 │   ├── storage/             # wraps firebase-admin -> IFileStorage (FILE_STORAGE): presigned upload URLs, signed download URLs, server-side upload, move/delete objects (Firebase Storage / GCS)
 │   ├── ai/                  # wraps Vercel AI SDK (`ai` + `@ai-sdk/<provider>`) -> IAiClientFactory (AI_CLIENT_FACTORY): create({ provider, apiKey }) -> IAiClient.generateObject (system + text/image content, zod schema structured output; throws AiGenerationError REQUEST | INVALID_OUTPUT, no retry inside)
 │   ├── realtime/            # wraps @nestjs/websockets + socket.io -> IRealtimePublisher (REALTIME_PUBLISHER): emitToUser; IRealtimeChannels (REALTIME_CHANNELS): join/leave/hasUser presence channels; IRealtimeTicketService (REALTIME_TICKET_SERVICE): short-lived socket-only tickets for browsers behind a BFF; handshake auth by `auth.ticket` or access token; @RealtimeGateway() + @SocketUser() + @SocketConnectionId() for inbound gateways (errors/validation answered via ack)
-│   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean)
+│   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean; `multipart` option for file uploads)
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
 │   └── http/                # global ValidationPipe + DomainExceptionFilter
 └── modules/

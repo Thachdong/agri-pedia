@@ -16,6 +16,7 @@ import {
   IMAGE_PROCESSOR,
   VISION_DIAGNOSIS_PROVIDER,
 } from './application/ports';
+import './infrastructure/http/diagnosis.api-docs';
 import { DiagnosisController } from './infrastructure/http/diagnosis.controller';
 import { SharpImageProcessor } from './infrastructure/image/sharp-image.processor';
 import { DiagnosisStartup } from './infrastructure/jobs/diagnosis-startup';
