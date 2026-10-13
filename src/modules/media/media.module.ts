@@ -3,6 +3,7 @@ import {
   ConfirmMediaUseCase,
   GetPresignUrlUseCase,
   RemoveAllMediaUseCase,
+  RegisterStoredMediaUseCase,
   RemoveMediaUseCase,
   ReplaceMediaUseCase,
 } from './application/use-cases';
@@ -24,6 +25,7 @@ import { PgMediaRepository } from './infrastructure/persistence/pg-media.reposit
     ConfirmMediaUseCase,
     GetPresignUrlUseCase,
     RemoveAllMediaUseCase,
+    RegisterStoredMediaUseCase,
     RemoveMediaUseCase,
     ReplaceMediaUseCase,
     ProductCreatedHandler,
