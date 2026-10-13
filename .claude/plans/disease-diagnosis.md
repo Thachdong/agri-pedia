@@ -14,7 +14,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 7. [persistence]        PgKnowledgeRepository, bảng `crops`, `diseases`; copy seed JSON vào `infrastructure/seed/`; seed chạy lúc app khởi động
 - [x] 8. [query-port]         IKnowledgeQueryPort: findDiagnosisCrop (enabled + kbVersion), findCandidates, getDiseaseCards, getDiseaseNames; export feature enums trong contracts (nguồn cho zod schema B1)
 - [x] 9. [http]               GET /knowledge/crops, GET /knowledge/diseases, GET /knowledge/diseases/:code
-- [ ] 10. [api-docs]          3 endpoint knowledge
+- [x] 10. [api-docs]          3 endpoint knowledge
 
 ## Module media (sửa)
 - [ ] 11. [domain-model]      EMediaOwnerType.DIAGNOSIS, folder `diagnoses`

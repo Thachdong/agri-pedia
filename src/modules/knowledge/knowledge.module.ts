@@ -10,6 +10,7 @@ import {
   SeedKnowledgeBaseUseCase,
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
+import './infrastructure/http/knowledge.api-docs';
 import { KnowledgeController } from './infrastructure/http/knowledge.controller';
 import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';
 import { PgKnowledgeRepository } from './infrastructure/persistence/pg-knowledge.repository';
