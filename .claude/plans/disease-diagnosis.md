@@ -26,7 +26,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 15. [domain-model]      aggregate Diagnosis + DiagnosisImage; enums status/imageStatus/plantPart/feedback/confidenceLevel; hàm thuần: lọc vùng B1, confidence + gộp B4 (vùng → ảnh → summary); errors DiagnosisUserNotAllowed, DiagnosisCropNotSupported, DiagnosisInvalidImage, DiagnosisDailyLimitExceeded, DiagnosisNotFound, DiagnosisNotCompleted, DiagnosisInvalidCursor, DiagnosisNotProcessing (thêm: chặn ghi kết quả khi ca đã COMPLETED/FAILED, vd bị FailStale đánh FAILED)
 - [x] 16. [use-case]          CreateDiagnosis (validate, normalize, limit, lưu PROCESSING, kick nền); ports IDiagnosisRepository, IImageProcessor, IDiagnosisJobRunner (chạy nền), IVisionDiagnosisProvider.info (provider/model/promptVersion); dùng IUserQueryPort, IKnowledgeQueryPort
 - [x] 17. [use-case]          ProcessDiagnosis (B1~B4 song song theo ảnh, retry 1 lần, upload ảnh, COMPLETED/FAILED, realtime `diagnosis.completed`); port IVisionDiagnosisProvider (FakeVisionProvider)
-- [ ] 18. [use-case]          GetDiagnosis, ListMyDiagnoses, SubmitDiagnosisFeedback, FailStaleDiagnoses (lúc khởi động)
+- [x] 18. [use-case]          GetDiagnosis, ListMyDiagnoses, SubmitDiagnosisFeedback, FailStaleDiagnoses (lúc khởi động)
 - [ ] 19. [persistence]       PgDiagnosisRepository, bảng `diagnoses`, `diagnosis_images`
 - [ ] 20. [outbound-adapter]  SharpImageProcessor (normalize/crop/thumbnail) + AiVisionProvider (dùng IAiClientFactory với DIAGNOSIS_PROVIDER/API_KEY, model riêng B1/B3, prompts d1/v1, zod schema, giới hạn CONCURRENCY) — không có skill riêng, theo quy ước hex-persistence-adapter
 - [ ] 21. [integration-event] ProcessDiagnosis emits `diagnosis.images.stored`
