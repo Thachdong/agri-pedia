@@ -9,6 +9,7 @@ import {
 } from './application/use-cases';
 import { MEDIA_REPOSITORY } from './application/ports';
 import { MEDIA_QUERY_PORT } from './contracts';
+import { DiagnosisImagesStoredHandler } from './infrastructure/handlers/diagnosis-images-stored.handler';
 import { ProductCreatedHandler } from './infrastructure/handlers/product-created.handler';
 import { ProductDeletedHandler } from './infrastructure/handlers/product-deleted.handler';
 import { ProductUpdatedHandler } from './infrastructure/handlers/product-updated.handler';
@@ -28,6 +29,7 @@ import { PgMediaRepository } from './infrastructure/persistence/pg-media.reposit
     RegisterStoredMediaUseCase,
     RemoveMediaUseCase,
     ReplaceMediaUseCase,
+    DiagnosisImagesStoredHandler,
     ProductCreatedHandler,
     ProductDeletedHandler,
     ProductUpdatedHandler,
