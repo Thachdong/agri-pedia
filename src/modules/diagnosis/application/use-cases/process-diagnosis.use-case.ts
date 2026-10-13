@@ -6,6 +6,11 @@ import {
   TKnowledgePlantPart,
 } from '@modules/knowledge/contracts';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
+import {
+  createIntegrationEvent,
+  EVENT_BUS,
+  IEventBus,
+} from '@shared/event-bus';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import { ILogger, LOGGER } from '@shared/logger';
 import { IRealtimePublisher, REALTIME_PUBLISHER } from '@shared/realtime';
@@ -25,6 +30,10 @@ import {
   TRegionCandidate,
 } from '../../domain';
 import { TDiagnosisJob } from '../ports/diagnosis-job-runner';
+import {
+  DIAGNOSIS_IMAGES_STORED_EVENT,
+  TDiagnosisImagesStoredEventPayload,
+} from '../../contracts';
 import {
   DIAGNOSIS_REPOSITORY,
   IDiagnosisRepository,
@@ -66,7 +75,8 @@ const PLANT_PARTS = Object.values(EPlantPart) as string[];
 /**
  * Background pipeline of one diagnosis: per image (in parallel) B1 describe -> prepare regions ->
  * B2 knowledge candidates -> B3 verify -> B4 confidence; then stores the images, completes
- * (or fails when every image failed at the AI) and notifies the owner in realtime.
+ * (or fails when every image failed at the AI), asks media to record the stored images
+ * (`diagnosis.images.stored`) and notifies the owner in realtime.
  */
 @Injectable()
 export class ProcessDiagnosisUseCase {
@@ -84,6 +94,7 @@ export class ProcessDiagnosisUseCase {
     @Inject(REALTIME_PUBLISHER) private readonly realtime: IRealtimePublisher,
     @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
+    @Inject(EVENT_BUS) private readonly eventBus: IEventBus,
     @Inject(LOGGER) logger: ILogger,
   ) {
     this.logger = logger.withContext(ProcessDiagnosisUseCase.name);
@@ -133,6 +144,24 @@ export class ProcessDiagnosisUseCase {
         diagnosisId: diagnosis.id,
       });
       return { status: null, storedFiles: [] };
+    }
+    if (storedFiles.length > 0) {
+      await this.eventBus.publish(
+        createIntegrationEvent<
+          typeof DIAGNOSIS_IMAGES_STORED_EVENT,
+          TDiagnosisImagesStoredEventPayload
+        >(DIAGNOSIS_IMAGES_STORED_EVENT, {
+          diagnosisId: finished.id,
+          userId: finished.userId,
+          files: storedFiles.map((file) => ({
+            mediaId: file.mediaId,
+            key: file.key,
+            extension: 'jpg',
+            filename: `image-${file.sortOrder + 1}.jpg`,
+            sortOrder: file.sortOrder,
+          })),
+        }),
+      );
     }
     this.realtime.emitToUser(
       finished.userId,

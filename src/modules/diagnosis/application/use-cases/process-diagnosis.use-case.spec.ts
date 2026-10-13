@@ -4,6 +4,7 @@ import {
 } from '@modules/knowledge/contracts';
 import { IConfigService } from '@shared/config';
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryEventBus } from '@shared/event-bus';
 import { InMemoryLogger } from '@shared/logger';
 import { InMemoryRealtimePublisher } from '@shared/realtime';
 import { InMemoryFileStorage } from '@shared/storage';
@@ -88,6 +89,7 @@ describe('ProcessDiagnosisUseCase', () => {
   let vision: FakeVisionDiagnosisProvider;
   let storage: InMemoryFileStorage;
   let realtime: InMemoryRealtimePublisher;
+  let eventBus: InMemoryEventBus;
   let candidateRequests: TFindCandidatesInput[];
   let diagnosis: Diagnosis;
 
@@ -131,6 +133,7 @@ describe('ProcessDiagnosisUseCase', () => {
       realtime,
       config,
       new InMemoryUnitOfWork(),
+      eventBus,
       new InMemoryLogger(),
     );
 
@@ -145,6 +148,7 @@ describe('ProcessDiagnosisUseCase', () => {
     vision = new FakeVisionDiagnosisProvider();
     storage = new InMemoryFileStorage();
     realtime = new InMemoryRealtimePublisher();
+    eventBus = new InMemoryEventBus();
     candidateRequests = [];
     diagnosis = Diagnosis.create({
       userId: 'u1',
@@ -236,6 +240,22 @@ describe('ProcessDiagnosisUseCase', () => {
         payload: { id: diagnosis.id, status: EDiagnosisStatus.COMPLETED },
       },
     ]);
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        name: 'diagnosis.images.stored',
+        payload: {
+          diagnosisId: diagnosis.id,
+          userId: 'u1',
+          files: result.storedFiles.map((file) => ({
+            mediaId: file.mediaId,
+            key: file.key,
+            extension: 'jpg',
+            filename: `image-${file.sortOrder + 1}.jpg`,
+            sortOrder: file.sortOrder,
+          })),
+        },
+      }),
+    ]);
   });
 
   it('retries a failed AI step once', async () => {
@@ -318,6 +338,7 @@ describe('ProcessDiagnosisUseCase', () => {
     expect(result.status).toBe(EDiagnosisStatus.COMPLETED);
     expect(result.storedFiles).toEqual([]);
     expect(diagnosis.images.map((i) => i.mediaId)).toEqual([null, null]);
+    expect(eventBus.published).toEqual([]);
   });
 
   it('skips a diagnosis that is no longer processing', async () => {
@@ -328,5 +349,6 @@ describe('ProcessDiagnosisUseCase', () => {
     expect(result).toEqual({ status: null, storedFiles: [] });
     expect(vision.describeRequests).toHaveLength(0);
     expect(realtime.emitted).toHaveLength(0);
+    expect(eventBus.published).toEqual([]);
   });
 });
