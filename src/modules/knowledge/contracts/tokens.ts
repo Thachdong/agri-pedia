@@ -1,1 +1,1 @@
-export {};
+export const KNOWLEDGE_QUERY_PORT = Symbol('KNOWLEDGE_QUERY_PORT');

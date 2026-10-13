@@ -9,6 +9,8 @@ import {
   ListDiseasesUseCase,
   SeedKnowledgeBaseUseCase,
 } from './application/use-cases';
+import { KNOWLEDGE_QUERY_PORT } from './contracts';
+import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';
 import { PgKnowledgeRepository } from './infrastructure/persistence/pg-knowledge.repository';
 import { JsonKnowledgeBaseSource } from './infrastructure/seed/json-knowledge-base.source';
 import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
@@ -27,7 +29,8 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
       provide: KNOWLEDGE_BASE_SOURCE,
       useFactory: () => new JsonKnowledgeBaseSource(),
     },
+    { provide: KNOWLEDGE_QUERY_PORT, useClass: KnowledgeQueryService },
   ],
-  exports: [],
+  exports: [KNOWLEDGE_QUERY_PORT],
 })
 export class KnowledgeModule {}
