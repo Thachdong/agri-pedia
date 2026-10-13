@@ -10,6 +10,8 @@ import {
   ProcessDiagnosisUseCase,
   SubmitDiagnosisFeedbackUseCase,
 } from './application/use-cases';
+import { DIAGNOSIS_REPOSITORY } from './application/ports';
+import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis.repository';
 
 @Module({
   imports: [UserModule, KnowledgeModule, MediaModule],
@@ -21,6 +23,7 @@ import {
     ListMyDiagnosesUseCase,
     SubmitDiagnosisFeedbackUseCase,
     FailStaleDiagnosesUseCase,
+    { provide: DIAGNOSIS_REPOSITORY, useClass: PgDiagnosisRepository },
   ],
   exports: [],
 })

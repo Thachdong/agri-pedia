@@ -27,7 +27,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 16. [use-case]          CreateDiagnosis (validate, normalize, limit, lưu PROCESSING, kick nền); ports IDiagnosisRepository, IImageProcessor, IDiagnosisJobRunner (chạy nền), IVisionDiagnosisProvider.info (provider/model/promptVersion); dùng IUserQueryPort, IKnowledgeQueryPort
 - [x] 17. [use-case]          ProcessDiagnosis (B1~B4 song song theo ảnh, retry 1 lần, upload ảnh, COMPLETED/FAILED, realtime `diagnosis.completed`); port IVisionDiagnosisProvider (FakeVisionProvider)
 - [x] 18. [use-case]          GetDiagnosis, ListMyDiagnoses, SubmitDiagnosisFeedback, FailStaleDiagnoses (lúc khởi động)
-- [ ] 19. [persistence]       PgDiagnosisRepository, bảng `diagnoses`, `diagnosis_images`
+- [x] 19. [persistence]       PgDiagnosisRepository, bảng `diagnoses`, `diagnosis_images`
 - [ ] 20. [outbound-adapter]  SharpImageProcessor (normalize/crop/thumbnail) + AiVisionProvider (dùng IAiClientFactory với DIAGNOSIS_PROVIDER/API_KEY, model riêng B1/B3, prompts d1/v1, zod schema, giới hạn CONCURRENCY) — không có skill riêng, theo quy ước hex-persistence-adapter
 - [ ] 21. [integration-event] ProcessDiagnosis emits `diagnosis.images.stored`
 - [ ] 22. [event-handler]     media: `diagnosis.images.stored` → RegisterStoredMedia
