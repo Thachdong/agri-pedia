@@ -33,7 +33,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 22. [event-handler]     media: `diagnosis.images.stored` → RegisterStoredMedia
 - [x] 23. [http]              POST /diagnoses (multipart), GET /diagnoses/:diagnosisId, GET /diagnoses, POST /diagnoses/:diagnosisId/feedback
 - [x] 24. [api-docs]          4 endpoint diagnosis
-- [ ] 25. [boundary-review]
+- [x] 25. [boundary-review]
 
 ## Package mới
 `ai` v6 + `@ai-sdk/google` v3 (v7 chỉ có ESM, Jest/CJS không load được; peer zod ^3.25.76 khớp project), `sharp`, `@types/multer` (dev). AI SDK nhận zod schema trực tiếp cho structured output.
