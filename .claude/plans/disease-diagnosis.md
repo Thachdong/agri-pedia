@@ -5,7 +5,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 ## Shared + config
 - [x] 1. [config-group]       `diagnosis` (PROVIDER, API_KEY, DESCRIBE_MODEL, VERIFY_MODEL, TIMEOUT_MS, CONCURRENCY, MAX_IMAGE_BYTES, MAX_REGIONS_PER_IMAGE, CANDIDATES_PER_REGION, DAILY_LIMIT)
 - [x] 2. [shared-wrapper]     `shared/storage`: thêm `uploadFile(key, buffer, contentType)` vào IFileStorage
-- [ ] 3. [shared-wrapper]     `shared/ai`: bọc Vercel AI SDK (`ai` + `@ai-sdk/google`) → IAiClientFactory (AI_CLIENT_FACTORY): create({ provider, apiKey }) → IAiClient.generateObject (model, system prompt, parts text/ảnh, zod schema, temperature, timeout). Thêm provider khác = thêm `@ai-sdk/<x>` + 1 nhánh trong factory
+- [x] 3. [shared-wrapper]     `shared/ai`: bọc Vercel AI SDK (`ai` + `@ai-sdk/google`) → IAiClientFactory (AI_CLIENT_FACTORY): create({ provider, apiKey }) → IAiClient.generateObject (model, system prompt, parts text/ảnh, zod schema, temperature, timeout). Thêm provider khác = thêm `@ai-sdk/<x>` + 1 nhánh trong factory
 
 ## Module knowledge (mới)
 - [ ] 4. [module-scaffold]    module `knowledge`
@@ -36,7 +36,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [ ] 25. [boundary-review]
 
 ## Package mới
-`ai` (v7, peer zod ^3.25.76 khớp project), `@ai-sdk/google`, `sharp`, `@types/multer` (dev). AI SDK nhận zod schema trực tiếp cho structured output.
+`ai` v6 + `@ai-sdk/google` v3 (v7 chỉ có ESM, Jest/CJS không load được; peer zod ^3.25.76 khớp project), `sharp`, `@types/multer` (dev). AI SDK nhận zod schema trực tiếp cho structured output.
 
 ## Quyết định
 - Provider SDK: Vercel AI SDK (đa provider: Google, OpenAI, Anthropic, xAI...); giai đoạn 1 chỉ cài `@ai-sdk/google`.

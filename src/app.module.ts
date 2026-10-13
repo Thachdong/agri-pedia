@@ -6,6 +6,7 @@ import { CryptoModule } from '@shared/crypto';
 import { EventBusModule } from '@shared/event-bus';
 import { SharedLoggerModule } from '@shared/logger';
 import { MessagingModule } from '@shared/messaging';
+import { AiModule } from '@shared/ai';
 import { StorageModule } from '@shared/storage';
 import { RealtimeModule } from '@shared/realtime';
 import { SharedHttpModule } from '@shared/http';
@@ -31,6 +32,7 @@ import { AppService } from './app.service';
     AccessTokenModule,
     MessagingModule,
     StorageModule,
+    AiModule,
     RealtimeModule,
     SharedHttpModule,
     // business modules
