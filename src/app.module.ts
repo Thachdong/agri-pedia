@@ -19,6 +19,7 @@ import { UserModule } from '@modules/user/user.module';
 import { ChatModule } from '@modules/chat/chat.module';
 import { LocationModule } from '@modules/location/location.module';
 import { KnowledgeModule } from '@modules/knowledge/knowledge.module';
+import { DiagnosisModule } from '@modules/diagnosis/diagnosis.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -46,6 +47,7 @@ import { AppService } from './app.service';
     ChatModule,
     LocationModule,
     KnowledgeModule,
+    DiagnosisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

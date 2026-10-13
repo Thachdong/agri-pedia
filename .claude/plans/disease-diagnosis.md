@@ -22,7 +22,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 13. [query-port]        findUrls + findThumbnails nhận `DIAGNOSIS`
 
 ## Module diagnosis (mới)
-- [ ] 14. [module-scaffold]   module `diagnosis`
+- [x] 14. [module-scaffold]   module `diagnosis`
 - [ ] 15. [domain-model]      aggregate Diagnosis + DiagnosisImage; enums status/imageStatus/plantPart/feedback/confidenceLevel; hàm thuần: lọc vùng B1, confidence + gộp B4 (vùng → ảnh → summary); errors DiagnosisUserNotAllowed, DiagnosisCropNotSupported, DiagnosisInvalidImage, DiagnosisDailyLimitExceeded, DiagnosisNotFound, DiagnosisNotCompleted, DiagnosisInvalidCursor
 - [ ] 16. [use-case]          CreateDiagnosis (validate, normalize, limit, lưu PROCESSING, kick nền); ports IDiagnosisRepository, IImageProcessor; dùng IUserQueryPort, IKnowledgeQueryPort
 - [ ] 17. [use-case]          ProcessDiagnosis (B1~B4 song song theo ảnh, retry 1 lần, upload ảnh, COMPLETED/FAILED, realtime `diagnosis.completed`); port IVisionDiagnosisProvider (FakeVisionProvider)
