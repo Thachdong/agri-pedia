@@ -10,6 +10,7 @@ import {
   SeedKnowledgeBaseUseCase,
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
+import { KnowledgeController } from './infrastructure/http/knowledge.controller';
 import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';
 import { PgKnowledgeRepository } from './infrastructure/persistence/pg-knowledge.repository';
 import { JsonKnowledgeBaseSource } from './infrastructure/seed/json-knowledge-base.source';
@@ -17,7 +18,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [KnowledgeController],
   providers: [
     SeedKnowledgeBaseUseCase,
     ListCropsUseCase,
