@@ -18,6 +18,7 @@ import { NotificationModule } from '@modules/notification/notification.module';
 import { UserModule } from '@modules/user/user.module';
 import { ChatModule } from '@modules/chat/chat.module';
 import { LocationModule } from '@modules/location/location.module';
+import { KnowledgeModule } from '@modules/knowledge/knowledge.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -44,6 +45,7 @@ import { AppService } from './app.service';
     NotificationModule,
     ChatModule,
     LocationModule,
+    KnowledgeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

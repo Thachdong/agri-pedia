@@ -8,7 +8,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 3. [shared-wrapper]     `shared/ai`: bọc Vercel AI SDK (`ai` + `@ai-sdk/google`) → IAiClientFactory (AI_CLIENT_FACTORY): create({ provider, apiKey }) → IAiClient.generateObject (model, system prompt, parts text/ảnh, zod schema, temperature, timeout). Thêm provider khác = thêm `@ai-sdk/<x>` + 1 nhánh trong factory
 
 ## Module knowledge (mới)
-- [ ] 4. [module-scaffold]    module `knowledge`
+- [x] 4. [module-scaffold]    module `knowledge`
 - [ ] 5. [domain-model]       Crop, Disease (profile + variants), enums (category, agentType, plantPart, verification, feature enums); hàm thuần chấm điểm B2 (profile → raw → softmax top-N); errors KnowledgeCropNotFound, KnowledgeDiseaseNotFound
 - [ ] 6. [use-case]           SeedKnowledgeBase (idempotent upsert, check kbVersion profile = diseases), ListCrops, ListDiseases, GetDiseaseDetail; port IKnowledgeRepository
 - [ ] 7. [persistence]        PgKnowledgeRepository, bảng `crops`, `diseases`; copy seed JSON vào `infrastructure/seed/`; seed chạy lúc app khởi động
