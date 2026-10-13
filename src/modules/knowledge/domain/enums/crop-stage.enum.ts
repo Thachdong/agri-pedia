@@ -1,0 +1,8 @@
+export enum ECropStage {
+  SEEDLING = 'SEEDLING',
+  TILLERING = 'TILLERING',
+  BOOTING = 'BOOTING',
+  HEADING = 'HEADING',
+  MILK = 'MILK',
+  MATURITY = 'MATURITY',
+}

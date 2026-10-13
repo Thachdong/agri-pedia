@@ -1,0 +1,15 @@
+/** What causes the problem. */
+export enum EAgentType {
+  FUNGUS = 'FUNGUS',
+  BACTERIA = 'BACTERIA',
+  VIRUS = 'VIRUS',
+  NEMATODE = 'NEMATODE',
+  INSECT = 'INSECT',
+  MITE = 'MITE',
+  MOLLUSC = 'MOLLUSC',
+  VERTEBRATE = 'VERTEBRATE',
+  NUTRIENT = 'NUTRIENT',
+  ABIOTIC = 'ABIOTIC',
+  COMPLEX = 'COMPLEX',
+  UNKNOWN = 'UNKNOWN',
+}
