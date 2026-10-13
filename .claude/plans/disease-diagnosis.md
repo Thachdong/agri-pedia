@@ -4,7 +4,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 
 ## Shared + config
 - [x] 1. [config-group]       `diagnosis` (PROVIDER, API_KEY, DESCRIBE_MODEL, VERIFY_MODEL, TIMEOUT_MS, CONCURRENCY, MAX_IMAGE_BYTES, MAX_REGIONS_PER_IMAGE, CANDIDATES_PER_REGION, DAILY_LIMIT)
-- [ ] 2. [shared-wrapper]     `shared/storage`: thêm `uploadFile(key, buffer, contentType)` vào IFileStorage
+- [x] 2. [shared-wrapper]     `shared/storage`: thêm `uploadFile(key, buffer, contentType)` vào IFileStorage
 - [ ] 3. [shared-wrapper]     `shared/ai`: bọc Vercel AI SDK (`ai` + `@ai-sdk/google`) → IAiClientFactory (AI_CLIENT_FACTORY): create({ provider, apiKey }) → IAiClient.generateObject (model, system prompt, parts text/ảnh, zod schema, temperature, timeout). Thêm provider khác = thêm `@ai-sdk/<x>` + 1 nhánh trong factory
 
 ## Module knowledge (mới)

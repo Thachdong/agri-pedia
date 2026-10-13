@@ -72,6 +72,17 @@ export class FirebaseFileStorage implements IFileStorage {
     return url;
   }
 
+  async uploadFile(
+    key: string,
+    content: Buffer,
+    contentType: string,
+  ): Promise<void> {
+    await getStorage(this.app)
+      .bucket()
+      .file(key)
+      .save(content, { contentType, resumable: false });
+  }
+
   async moveFile(fromKey: string, toKey: string): Promise<void> {
     try {
       await getStorage(this.app).bucket().file(fromKey).move(toKey);

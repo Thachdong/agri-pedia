@@ -33,7 +33,7 @@ src/
 │   ├── crypto/              # wraps node:crypto -> ICryptoService (CRYPTO_SERVICE): HMAC hash, AES-GCM, scrypt password
 │   ├── access-token/        # wraps @nestjs/jwt -> IAccessTokenService (ACCESS_TOKEN_SERVICE): sign/verify access tokens; AccessTokenGuard + @CurrentUser() for protected routes; OptionalAccessTokenGuard + @OptionalCurrentUser() for public routes that use the caller when a token is sent
 │   ├── messaging/           # IMessageSender (MESSAGE_SENDER): email/SMS; currently log-only adapter
-│   ├── storage/             # wraps firebase-admin -> IFileStorage (FILE_STORAGE): presigned upload URLs, signed download URLs, move/delete objects (Firebase Storage / GCS)
+│   ├── storage/             # wraps firebase-admin -> IFileStorage (FILE_STORAGE): presigned upload URLs, signed download URLs, server-side upload, move/delete objects (Firebase Storage / GCS)
 │   ├── realtime/            # wraps @nestjs/websockets + socket.io -> IRealtimePublisher (REALTIME_PUBLISHER): emitToUser; IRealtimeChannels (REALTIME_CHANNELS): join/leave/hasUser presence channels; IRealtimeTicketService (REALTIME_TICKET_SERVICE): short-lived socket-only tickets for browsers behind a BFF; handshake auth by `auth.ticket` or access token; @RealtimeGateway() + @SocketUser() + @SocketConnectionId() for inbound gateways (errors/validation answered via ack)
 │   ├── swagger/             # wraps @nestjs/swagger -> setupSwagger(), defineApiDocs() (docs adapter, keeps controllers clean)
 │   ├── domain/              # pure-TS kernel: AggregateRoot, DomainException, EDomainErrorType, TDomainEvent
