@@ -17,7 +17,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 10. [api-docs]          3 endpoint knowledge
 
 ## Module media (sửa)
-- [ ] 11. [domain-model]      EMediaOwnerType.DIAGNOSIS, folder `diagnoses`
+- [x] 11. [domain-model]      EMediaOwnerType.DIAGNOSIS, folder `diagnoses`
 - [ ] 12. [use-case]          RegisterStoredMedia (tạo Media cho file đã có, không move)
 - [ ] 13. [query-port]        findUrls + findThumbnails nhận `DIAGNOSIS`
 
