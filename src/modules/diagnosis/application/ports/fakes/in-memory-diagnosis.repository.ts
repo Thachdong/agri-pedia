@@ -4,6 +4,10 @@ import { IDiagnosisRepository } from '../diagnosis.repository';
 export class InMemoryDiagnosisRepository implements IDiagnosisRepository {
   readonly items = new Map<string, Diagnosis>();
 
+  async findById(id: string): Promise<Diagnosis | null> {
+    return this.items.get(id) ?? null;
+  }
+
   async save(diagnosis: Diagnosis): Promise<void> {
     this.items.set(diagnosis.id, diagnosis);
   }

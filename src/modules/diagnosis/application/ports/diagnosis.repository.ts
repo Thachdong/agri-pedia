@@ -1,6 +1,7 @@
 import { Diagnosis } from '../../domain';
 
 export interface IDiagnosisRepository {
+  findById(id: string): Promise<Diagnosis | null>;
   /** Inserts or updates the diagnosis with its images. */
   save(diagnosis: Diagnosis): Promise<void>;
   /** Diagnoses the user created at or after `since`. */

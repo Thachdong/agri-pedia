@@ -1,3 +1,4 @@
+import { TBox } from '../../../domain';
 import {
   IImageProcessor,
   ImageUnreadableError,
@@ -16,5 +17,16 @@ export class FakeImageProcessor implements IImageProcessor {
       width: 1000,
       height: 800,
     };
+  }
+
+  async crop(image: TProcessedImage, box: TBox): Promise<TProcessedImage> {
+    return {
+      ...image,
+      data: Buffer.from(`crop:${box.x},${box.y}:${image.data.toString()}`),
+    };
+  }
+
+  async thumbnail(image: TProcessedImage): Promise<TProcessedImage> {
+    return { ...image, data: Buffer.from(`thumb:${image.data.toString()}`) };
   }
 }
