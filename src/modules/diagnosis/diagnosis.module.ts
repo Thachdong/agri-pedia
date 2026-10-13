@@ -16,6 +16,7 @@ import {
   IMAGE_PROCESSOR,
   VISION_DIAGNOSIS_PROVIDER,
 } from './application/ports';
+import { DiagnosisController } from './infrastructure/http/diagnosis.controller';
 import { SharpImageProcessor } from './infrastructure/image/sharp-image.processor';
 import { DiagnosisStartup } from './infrastructure/jobs/diagnosis-startup';
 import { InProcessDiagnosisJobRunner } from './infrastructure/jobs/in-process-diagnosis-job.runner';
@@ -24,7 +25,7 @@ import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis
 
 @Module({
   imports: [UserModule, KnowledgeModule, MediaModule],
-  controllers: [],
+  controllers: [DiagnosisController],
   providers: [
     CreateDiagnosisUseCase,
     ProcessDiagnosisUseCase,

@@ -31,7 +31,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 20. [outbound-adapter]  SharpImageProcessor (normalize/crop/thumbnail) + AiVisionProvider (dùng IAiClientFactory với DIAGNOSIS_PROVIDER/API_KEY, model riêng B1/B3, prompts d1/v1, zod schema, giới hạn CONCURRENCY) — không có skill riêng, theo quy ước hex-persistence-adapter
 - [x] 21. [integration-event] ProcessDiagnosis emits `diagnosis.images.stored`
 - [x] 22. [event-handler]     media: `diagnosis.images.stored` → RegisterStoredMedia
-- [ ] 23. [http]              POST /diagnoses (multipart), GET /diagnoses/:diagnosisId, GET /diagnoses, POST /diagnoses/:diagnosisId/feedback
+- [x] 23. [http]              POST /diagnoses (multipart), GET /diagnoses/:diagnosisId, GET /diagnoses, POST /diagnoses/:diagnosisId/feedback
 - [ ] 24. [api-docs]          4 endpoint diagnosis
 - [ ] 25. [boundary-review]
 
