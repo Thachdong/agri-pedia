@@ -10,7 +10,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 ## Module knowledge (mới)
 - [x] 4. [module-scaffold]    module `knowledge`
 - [x] 5. [domain-model]       Crop, Disease (profile + variants), enums (category, agentType, plantPart, verification, feature enums); hàm thuần chấm điểm B2 (profile → raw → softmax top-N); errors KnowledgeCropNotFound, KnowledgeDiseaseNotFound
-- [ ] 6. [use-case]           SeedKnowledgeBase (idempotent upsert, check kbVersion profile = diseases), ListCrops, ListDiseases, GetDiseaseDetail; port IKnowledgeRepository
+- [x] 6. [use-case]           SeedKnowledgeBase (idempotent upsert, check kbVersion profile = diseases), ListCrops, ListDiseases, GetDiseaseDetail; port IKnowledgeRepository
 - [ ] 7. [persistence]        PgKnowledgeRepository, bảng `crops`, `diseases`; copy seed JSON vào `infrastructure/seed/`; seed chạy lúc app khởi động
 - [ ] 8. [query-port]         IKnowledgeQueryPort: isCropEnabled (+ kbVersion), findCandidates, getDiseaseCards, getDiseaseNames; export feature enums trong contracts (nguồn cho zod schema B1)
 - [ ] 9. [http]               GET /knowledge/crops, GET /knowledge/diseases, GET /knowledge/diseases/:code
@@ -42,4 +42,4 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - Provider SDK: Vercel AI SDK (đa provider: Google, OpenAI, Anthropic, xAI...); giai đoạn 1 chỉ cài `@ai-sdk/google`.
 - Model theo bước: `DIAGNOSIS_DESCRIBE_MODEL` (B1), `DIAGNOSIS_VERIFY_MODEL` (B3), nhập từ .env; `Diagnosis.model` = `"<describe>+<verify>"`.
 - Key: `DIAGNOSIS_API_KEY` (dev tự quản lý .env), 1 key cho provider đang chọn.
-- Seed KB: chạy lúc app khởi động, upsert khi kbVersion đổi.
+- Seed KB: chạy lúc app khởi động, luôn upsert theo code (51 dòng, rẻ; profile.json đổi trọng số mà không đổi kbVersion vẫn được nạp), xoá mục đã bị bỏ khỏi KB.
