@@ -23,7 +23,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 
 ## Module diagnosis (mới)
 - [x] 14. [module-scaffold]   module `diagnosis`
-- [ ] 15. [domain-model]      aggregate Diagnosis + DiagnosisImage; enums status/imageStatus/plantPart/feedback/confidenceLevel; hàm thuần: lọc vùng B1, confidence + gộp B4 (vùng → ảnh → summary); errors DiagnosisUserNotAllowed, DiagnosisCropNotSupported, DiagnosisInvalidImage, DiagnosisDailyLimitExceeded, DiagnosisNotFound, DiagnosisNotCompleted, DiagnosisInvalidCursor
+- [x] 15. [domain-model]      aggregate Diagnosis + DiagnosisImage; enums status/imageStatus/plantPart/feedback/confidenceLevel; hàm thuần: lọc vùng B1, confidence + gộp B4 (vùng → ảnh → summary); errors DiagnosisUserNotAllowed, DiagnosisCropNotSupported, DiagnosisInvalidImage, DiagnosisDailyLimitExceeded, DiagnosisNotFound, DiagnosisNotCompleted, DiagnosisInvalidCursor, DiagnosisNotProcessing (thêm: chặn ghi kết quả khi ca đã COMPLETED/FAILED, vd bị FailStale đánh FAILED)
 - [ ] 16. [use-case]          CreateDiagnosis (validate, normalize, limit, lưu PROCESSING, kick nền); ports IDiagnosisRepository, IImageProcessor; dùng IUserQueryPort, IKnowledgeQueryPort
 - [ ] 17. [use-case]          ProcessDiagnosis (B1~B4 song song theo ảnh, retry 1 lần, upload ảnh, COMPLETED/FAILED, realtime `diagnosis.completed`); port IVisionDiagnosisProvider (FakeVisionProvider)
 - [ ] 18. [use-case]          GetDiagnosis, ListMyDiagnoses, SubmitDiagnosisFeedback, FailStaleDiagnoses (lúc khởi động)
