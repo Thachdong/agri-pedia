@@ -28,7 +28,7 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - [x] 17. [use-case]          ProcessDiagnosis (B1~B4 song song theo ảnh, retry 1 lần, upload ảnh, COMPLETED/FAILED, realtime `diagnosis.completed`); port IVisionDiagnosisProvider (FakeVisionProvider)
 - [x] 18. [use-case]          GetDiagnosis, ListMyDiagnoses, SubmitDiagnosisFeedback, FailStaleDiagnoses (lúc khởi động)
 - [x] 19. [persistence]       PgDiagnosisRepository, bảng `diagnoses`, `diagnosis_images`
-- [ ] 20. [outbound-adapter]  SharpImageProcessor (normalize/crop/thumbnail) + AiVisionProvider (dùng IAiClientFactory với DIAGNOSIS_PROVIDER/API_KEY, model riêng B1/B3, prompts d1/v1, zod schema, giới hạn CONCURRENCY) — không có skill riêng, theo quy ước hex-persistence-adapter
+- [x] 20. [outbound-adapter]  SharpImageProcessor (normalize/crop/thumbnail) + AiVisionProvider (dùng IAiClientFactory với DIAGNOSIS_PROVIDER/API_KEY, model riêng B1/B3, prompts d1/v1, zod schema, giới hạn CONCURRENCY) — không có skill riêng, theo quy ước hex-persistence-adapter
 - [ ] 21. [integration-event] ProcessDiagnosis emits `diagnosis.images.stored`
 - [ ] 22. [event-handler]     media: `diagnosis.images.stored` → RegisterStoredMedia
 - [ ] 23. [http]              POST /diagnoses (multipart), GET /diagnoses/:diagnosisId, GET /diagnoses, POST /diagnoses/:diagnosisId/feedback
@@ -43,3 +43,5 @@ Flow: POST /diagnoses → CreateDiagnosis (202) → ProcessDiagnosis nền (B1 G
 - Model theo bước: `DIAGNOSIS_DESCRIBE_MODEL` (B1), `DIAGNOSIS_VERIFY_MODEL` (B3), nhập từ .env; `Diagnosis.model` = `"<describe>+<verify>"`.
 - Key: `DIAGNOSIS_API_KEY` (dev tự quản lý .env), 1 key cho provider đang chọn.
 - Seed KB: chạy lúc app khởi động, luôn upsert theo code (51 dòng, rẻ; profile.json đổi trọng số mà không đổi kbVersion vẫn được nạp), xoá mục đã bị bỏ khỏi KB.
+- Model mặc định B1 + B3: `gemini-3-flash-preview`. Smoke test thật (13/10): `gemini-2.5-flash` bị Gemini API từ chối với key mới ("no longer available to new users"); đổi qua `DIAGNOSIS_*_MODEL` trong .env.
+- Box B1: model trả `box_2d` [ymin,xmin,ymax,xmax] 0..1000 (chuẩn Gemini), adapter đổi sang {x,y,w,h} 0..1.

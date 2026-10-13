@@ -10,7 +10,16 @@ import {
   ProcessDiagnosisUseCase,
   SubmitDiagnosisFeedbackUseCase,
 } from './application/use-cases';
-import { DIAGNOSIS_REPOSITORY } from './application/ports';
+import {
+  DIAGNOSIS_JOB_RUNNER,
+  DIAGNOSIS_REPOSITORY,
+  IMAGE_PROCESSOR,
+  VISION_DIAGNOSIS_PROVIDER,
+} from './application/ports';
+import { SharpImageProcessor } from './infrastructure/image/sharp-image.processor';
+import { DiagnosisStartup } from './infrastructure/jobs/diagnosis-startup';
+import { InProcessDiagnosisJobRunner } from './infrastructure/jobs/in-process-diagnosis-job.runner';
+import { AiVisionProvider } from './infrastructure/vision/ai-vision.provider';
 import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis.repository';
 
 @Module({
@@ -23,7 +32,11 @@ import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis
     ListMyDiagnosesUseCase,
     SubmitDiagnosisFeedbackUseCase,
     FailStaleDiagnosesUseCase,
+    DiagnosisStartup,
     { provide: DIAGNOSIS_REPOSITORY, useClass: PgDiagnosisRepository },
+    { provide: IMAGE_PROCESSOR, useClass: SharpImageProcessor },
+    { provide: VISION_DIAGNOSIS_PROVIDER, useClass: AiVisionProvider },
+    { provide: DIAGNOSIS_JOB_RUNNER, useClass: InProcessDiagnosisJobRunner },
   ],
   exports: [],
 })
