@@ -151,6 +151,32 @@ describe('MediaQueryService.findUrls', () => {
     ).resolves.toEqual([]);
   });
 
+  it('signs diagnosis images', async () => {
+    const image = media(
+      'd1',
+      EMediaType.IMAGE,
+      'jpg',
+      0,
+      EMediaOwnerType.DIAGNOSIS,
+    );
+    await repository.save(image);
+
+    await expect(
+      service.findUrls('DIAGNOSIS', 'd1', [image.id]),
+    ).resolves.toEqual([
+      {
+        mediaId: image.id,
+        url: `https://storage.test/diagnoses/d1/${image.id}.jpg?signed=read`,
+      },
+    ]);
+    await expect(service.findThumbnails('DIAGNOSIS', ['d1'])).resolves.toEqual([
+      {
+        ownerId: 'd1',
+        url: `https://storage.test/diagnoses/d1/${image.id}.jpg?signed=read`,
+      },
+    ]);
+  });
+
   it('returns nothing for no ids', async () => {
     await expect(service.findUrls('USER_LICENSE', 'u1', [])).resolves.toEqual(
       [],
