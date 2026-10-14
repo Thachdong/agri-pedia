@@ -23,7 +23,7 @@ Ngoài phạm vi: client (client chỉ gửi mã cây `cropType`, đã có trong
 - [x] 10. [seed-data]         crop pack DURIAN (`enabled: false`): diseases.json từ Design/desease-detection/Duriant-KB, profile-durian.json + normal/descriptionEn/hintsEn, crop.json, scenarios.json (22 tình huống); đổi specs/profile-durian*.json → specs/profiles/DURIAN*.json
 
 ## HTTP + docs
-- [ ] 11. [http]              GET /knowledge/crops thêm plantParts/cropStages; e2e: crops trả plantParts, POST /diagnoses DURIAN (tắt) → DIAGNOSIS_CROP_NOT_SUPPORTED, plantPart ngoài cây → DIAGNOSIS_INVALID_IMAGE
+- [x] 11. [http]              GET /knowledge/crops thêm plantParts/cropStages; e2e: crops trả plantParts, POST /diagnoses DURIAN (tắt) → DIAGNOSIS_CROP_NOT_SUPPORTED, plantPart ngoài cây → DIAGNOSIS_INVALID_IMAGE
 - [ ] 12. [api-docs]          GET /knowledge/crops, POST /diagnoses (lỗi plantPart); openapi:export; cập nhật specs api.md, entities.md, disease-diagnoses-plan.md 4.1/4.2/8
 
 - [ ] 13. [boundary-review]

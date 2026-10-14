@@ -22,10 +22,38 @@ describe('GET /knowledge/crops, /knowledge/diseases, /knowledge/diseases/:code (
 
   const http = () => request(app.getHttpServer());
 
-  it('lists enabled crops without login', async () => {
+  it('lists enabled crops with their plant parts and stages, without login', async () => {
     const res = await http().get('/knowledge/crops').expect(200);
 
-    expect(res.body).toEqual({ crops: [{ code: 'RICE', nameVi: 'Lúa' }] });
+    // DURIAN is seeded but disabled
+    expect(res.body.crops.map((c: { code: string }) => c.code)).toEqual([
+      'RICE',
+    ]);
+    expect(res.body.crops[0]).toEqual({
+      code: 'RICE',
+      nameVi: 'Lúa',
+      plantParts: [
+        { code: 'LEAF', nameVi: 'Lá' },
+        { code: 'SHEATH', nameVi: 'Bẹ lá' },
+        { code: 'STEM', nameVi: 'Thân' },
+        { code: 'PANICLE', nameVi: 'Bông' },
+        { code: 'ROOT', nameVi: 'Rễ' },
+        { code: 'WHOLE_PLANT', nameVi: 'Cả cây' },
+      ],
+      cropStages: [
+        { code: 'SEEDLING', nameVi: 'Mạ' },
+        { code: 'TILLERING', nameVi: 'Đẻ nhánh' },
+        { code: 'BOOTING', nameVi: 'Làm đòng' },
+        { code: 'HEADING', nameVi: 'Trổ bông' },
+        { code: 'MILK', nameVi: 'Ngậm sữa' },
+        { code: 'MATURITY', nameVi: 'Chín' },
+      ],
+    });
+  });
+
+  it('lists the diseases of a disabled crop', async () => {
+    const res = await http().get('/knowledge/diseases?crop=DURIAN').expect(200);
+    expect(res.body.diseases).toHaveLength(27);
   });
 
   it('lists the diseases of a crop, filtered by category and query', async () => {

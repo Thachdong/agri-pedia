@@ -9,6 +9,7 @@ import * as sharp from 'sharp';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../src/app.module';
+import { TKnowledgeDiagnosisCrop } from '../../src/modules/knowledge/contracts';
 import {
   IVisionDiagnosisProvider,
   TDescribeInput,
@@ -39,8 +40,12 @@ const farmerAccount = (identifier: string) => ({
 
 /** Stub AI: a blast-like lesion on every image; the verify step agrees. */
 class StubVision implements IVisionDiagnosisProvider {
-  info() {
-    return { provider: 'GEMINI', model: 'stub+stub', promptVersion: 'd1+v1' };
+  info(crop: TKnowledgeDiagnosisCrop) {
+    return {
+      provider: 'GEMINI',
+      model: 'stub+stub',
+      promptVersion: `stub/${crop.code}@${crop.kbVersion}`,
+    };
   }
 
   async describe(input: TDescribeInput): Promise<TDescribeOutput> {
@@ -305,6 +310,29 @@ describe('/diagnoses (e2e)', () => {
       png,
     ]).expect(400);
     expect(res.body.code).toBe('DIAGNOSIS_CROP_NOT_SUPPORTED');
+  });
+
+  it('returns DIAGNOSIS_CROP_NOT_SUPPORTED for a seeded but disabled crop (DURIAN)', async () => {
+    const token = await signUp('farmer@mail.com');
+    const res = await create(
+      token,
+      { cropType: 'DURIAN', images: [{ plantPart: 'FRUIT' }] },
+      [png],
+    ).expect(400);
+    expect(res.body.code).toBe('DIAGNOSIS_CROP_NOT_SUPPORTED');
+  });
+
+  it('returns DIAGNOSIS_INVALID_IMAGE for a plant part the crop does not have', async () => {
+    const token = await signUp('farmer@mail.com');
+    const res = await create(
+      token,
+      { cropType: 'RICE', images: [{ plantPart: 'FRUIT' }] },
+      [png],
+    ).expect(400);
+    expect(res.body.code).toBe('DIAGNOSIS_INVALID_IMAGE');
+    expect(res.body.details.images).toEqual([
+      { index: 0, reason: 'plantPart FRUIT is not a part of crop RICE' },
+    ]);
   });
 
   it('returns DIAGNOSIS_USER_NOT_ALLOWED for an inactive user', async () => {

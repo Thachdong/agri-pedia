@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ECropStage, EPlantPart } from '../../domain';
 import {
   IKnowledgeRepository,
   KNOWLEDGE_REPOSITORY,
@@ -9,9 +10,9 @@ export type TListCropsOutput = {
     code: string;
     nameVi: string;
     /** Parts a photo of this crop may show (diagnosis `plantPart`). */
-    plantParts: Array<{ code: string; nameVi: string }>;
+    plantParts: Array<{ code: EPlantPart; nameVi: string }>;
     /** Labels of the crop stage codes used by its diseases. */
-    cropStages: Array<{ code: string; nameVi: string }>;
+    cropStages: Array<{ code: ECropStage; nameVi: string }>;
   }>;
 };
 

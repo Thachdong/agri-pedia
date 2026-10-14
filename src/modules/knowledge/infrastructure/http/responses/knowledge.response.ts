@@ -6,9 +6,26 @@ import {
   EVerification,
 } from '../../../domain';
 
+export class CropPlantPartResponse {
+  /** Value for `images[].plantPart` of POST /diagnoses. */
+  code: EPlantPart;
+  nameVi: string;
+}
+
+export class CropStageResponse {
+  /** Code used in disease `cropStages`. */
+  code: ECropStage;
+  nameVi: string;
+}
+
 export class CropItemResponse {
+  /** Value for `cropType` of POST /diagnoses. */
   code: string;
   nameVi: string;
+  /** Parts a photo of this crop may show, in dropdown order. */
+  plantParts: CropPlantPartResponse[];
+  /** Labels of the crop's stage codes. */
+  cropStages: CropStageResponse[];
 }
 
 export class ListCropsResponse {
