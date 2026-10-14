@@ -1,0 +1,263 @@
+{
+  "note": "Tình huống kiểm tra profile-durian.json: quan sát B1 giả lập -> đơn vị đứng đầu (top-1) ở B2. Tự viết từ KB, chỉ kiểm tra tính nhất quán của trọng số, không đo độ chính xác.",
+  "scenarios": [
+    {
+      "name": "xì mủ thân",
+      "part": "TRUNK",
+      "observations": {
+        "sign": "GUM_OOZE",
+        "lesionShape": "BARK_PATCH_CANKER",
+        "centerColor": "REDDISH_BROWN",
+        "deformation": "CRACKED",
+        "position": "TRUNK"
+      },
+      "expectTop1": "DURIAN_PHYTOPHTHORA_CANKER__TRUNK"
+    },
+    {
+      "name": "thối cổ rễ",
+      "part": "COLLAR",
+      "observations": {
+        "sign": "GUM_OOZE",
+        "centerColor": "DARK_BROWN_BLACK",
+        "lesionShape": "IRREGULAR_BLOTCH",
+        "position": "TRUNK_BASE_COLLAR",
+        "deformation": "SOFT_ROT"
+      },
+      "expectTop1": "DURIAN_PHYTOPHTHORA_CANKER__COLLAR"
+    },
+    {
+      "name": "thối trái Phytophthora",
+      "part": "FRUIT",
+      "observations": {
+        "position": "FRUIT_HUSK",
+        "fruit": "HUSK_ROT",
+        "centerColor": "DARK_BROWN_BLACK",
+        "sign": "WHITE_MYCELIUM",
+        "deformation": "SOFT_ROT",
+        "size": "LARGE_GT_10MM"
+      },
+      "expectTop1": "DURIAN_PHYTOPHTHORA_FRUIT_ROT"
+    },
+    {
+      "name": "sâu đục trái",
+      "part": "FRUIT",
+      "observations": {
+        "position": "FRUIT_HUSK",
+        "fruit": "BORE_HOLES",
+        "sign": "FRASS_OR_HOLE",
+        "lesionShape": "BORE_HOLES"
+      },
+      "expectTop1": "DURIAN_FRUIT_BORER"
+    },
+    {
+      "name": "Phomopsis",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "ROUND_OVAL",
+        "halo": "YELLOW",
+        "size": "SMALL_LT_2MM",
+        "centerColor": "GRAY_WHITE",
+        "distribution": "SCATTERED",
+        "position": "LEAF_BLADE"
+      },
+      "expectTop1": "DURIAN_PHOMOPSIS_LEAF_SPOT"
+    },
+    {
+      "name": "thán thư",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "ZONATE_CONCENTRIC",
+        "position": "LEAF_MARGIN",
+        "centerColor": "REDDISH_BROWN",
+        "sign": "BLACK_FUNGAL_DOTS",
+        "margin": "SHARP"
+      },
+      "expectTop1": "DURIAN_ANTHRACNOSE"
+    },
+    {
+      "name": "Lasiodiplodia",
+      "part": "LEAF",
+      "observations": {
+        "position": "LEAF_TIP",
+        "centerColor": "WHITE_SILVERY",
+        "lesionShape": "TIP_OR_MARGIN_BURN",
+        "sign": "BLACK_FUNGAL_DOTS"
+      },
+      "expectTop1": "DURIAN_LASIODIPLODIA_LEAF_BLIGHT"
+    },
+    {
+      "name": "thiếu kali",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "TIP_OR_MARGIN_BURN",
+        "position": "LEAF_MARGIN",
+        "borderColor": "YELLOW",
+        "centerColor": "BROWN",
+        "sign": "NONE",
+        "discoloration": "OLD_LEAF_YELLOWING"
+      },
+      "expectTop1": "DURIAN_K_DEFICIENCY"
+    },
+    {
+      "name": "cháy mặn",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "TIP_OR_MARGIN_BURN",
+        "position": "LEAF_TIP",
+        "centerColor": "TAN",
+        "sign": "NONE",
+        "distribution": "WHOLE_ORGAN",
+        "discoloration": "BROWN_SCORCH",
+        "plantForm": "THIN_CANOPY_LEAF_DROP"
+      },
+      "expectTop1": "DURIAN_SALT_FERTILIZER_INJURY__SALINITY"
+    },
+    {
+      "name": "Rhizoctonia",
+      "part": "LEAF",
+      "observations": {
+        "sign": "MYCELIAL_WEBBING",
+        "centerColor": "TRANSLUCENT_WATER_SOAKED",
+        "lesionShape": "IRREGULAR_BLOTCH",
+        "position": "SHOOT_TIP",
+        "deformation": "CRINKLED_SHRIVELED"
+      },
+      "expectTop1": "DURIAN_RHIZOCTONIA_LEAF_BLIGHT"
+    },
+    {
+      "name": "cháy lá Phytophthora",
+      "part": "LEAF",
+      "observations": {
+        "centerColor": "TRANSLUCENT_WATER_SOAKED",
+        "halo": "PALE_GREEN",
+        "sign": "WHITE_MYCELIUM",
+        "lesionShape": "IRREGULAR_BLOTCH"
+      },
+      "expectTop1": "DURIAN_PHYTOPHTHORA_LEAF_BLIGHT"
+    },
+    {
+      "name": "đốm rong",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "RAISED_VELVETY",
+        "centerColor": "ORANGE_RUST",
+        "size": "MEDIUM_2_10MM",
+        "distribution": "SCATTERED"
+      },
+      "expectTop1": "DURIAN_ALGAL_SPOT"
+    },
+    {
+      "name": "rầy phấn",
+      "part": "SHOOT",
+      "observations": {
+        "pestsVisible": "PSYLLID",
+        "position": "SHOOT_TIP",
+        "deformation": "CURLED_DEFORMED",
+        "lesionShape": "TINY_DOTS_STIPPLING",
+        "sign": "INSECT_OR_EGGS"
+      },
+      "expectTop1": "DURIAN_PSYLLID"
+    },
+    {
+      "name": "nhện đỏ",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "TINY_DOTS_STIPPLING",
+        "centerColor": "WHITE_SILVERY",
+        "discoloration": "SILVERY_BRONZE",
+        "position": "LEAF_BLADE",
+        "pestsVisible": "UNSURE"
+      },
+      "expectTop1": "DURIAN_RED_MITE"
+    },
+    {
+      "name": "thiếu kẽm",
+      "part": "SHOOT",
+      "observations": {
+        "deformation": "SMALL_CROWDED_LEAVES",
+        "lesionShape": "INTERVEINAL_CHLOROSIS",
+        "discoloration": "YOUNG_LEAF_YELLOWING",
+        "position": "SHOOT_TIP"
+      },
+      "expectTop1": "DURIAN_ZN_DEFICIENCY"
+    },
+    {
+      "name": "thiếu Mg",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "INTERVEINAL_CHLOROSIS",
+        "centerColor": "YELLOW",
+        "discoloration": "OLD_LEAF_YELLOWING",
+        "distribution": "WHOLE_ORGAN"
+      },
+      "expectTop1": "DURIAN_MG_DEFICIENCY"
+    },
+    {
+      "name": "héo ngọn",
+      "part": "BRANCH",
+      "observations": {
+        "plantForm": "TIP_DIEBACK",
+        "position": "SHOOT_TIP",
+        "centerColor": "DARK_BROWN_BLACK",
+        "deformation": "DRIED_WITHERED",
+        "lesionShape": "NO_DISTINCT_LESION"
+      },
+      "expectTop1": "DURIAN_DIEBACK"
+    },
+    {
+      "name": "nấm hồng",
+      "part": "BRANCH",
+      "observations": {
+        "sign": "PINK_CRUST",
+        "centerColor": "PINK",
+        "position": "BRANCH_FORK"
+      },
+      "expectTop1": "DURIAN_PINK_DISEASE"
+    },
+    {
+      "name": "rệp sáp trái",
+      "part": "FRUIT",
+      "observations": {
+        "sign": "WHITE_WAX_COLONY",
+        "pestsVisible": "MEALYBUG",
+        "position": "FRUIT_HUSK",
+        "fruit": "SOOTY_OR_WAXY"
+      },
+      "expectTop1": "DURIAN_MEALYBUG__PLANOCOCCUS"
+    },
+    {
+      "name": "mọt đục thân",
+      "part": "TRUNK",
+      "observations": {
+        "lesionShape": "BORE_HOLES",
+        "sign": "FRASS_OR_HOLE",
+        "size": "SMALL_LT_2MM",
+        "distribution": "SCATTERED",
+        "position": "TRUNK"
+      },
+      "expectTop1": "DURIAN_SHOT_HOLE_BORER"
+    },
+    {
+      "name": "sượng/cháy múi",
+      "part": "ARIL",
+      "observations": {
+        "position": "ARIL_FLESH",
+        "fruit": "OPEN_ARIL_ABNORMAL",
+        "centerColor": "BROWN",
+        "lesionShape": "TIP_OR_MARGIN_BURN"
+      },
+      "expectTop1": "DURIAN_ARIL_DISORDER__TIP_BURN"
+    },
+    {
+      "name": "vàng lá thối rễ (cả cây)",
+      "part": "WHOLE_PLANT",
+      "observations": {
+        "lesionShape": "NO_DISTINCT_LESION",
+        "distribution": "WHOLE_ORGAN",
+        "discoloration": "GENERAL_YELLOWING",
+        "plantForm": "WILTING"
+      },
+      "expectTop1": "DURIAN_ROOT_ROT"
+    }
+  ]
+}

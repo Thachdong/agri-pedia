@@ -136,6 +136,31 @@ describe('JsonKnowledgeBaseSource (shipped crop packs)', () => {
     expect(blast?.profile?.base).toBeDefined();
   });
 
+  it('loads the DURIAN pack disabled, with its own parts, stages and features', async () => {
+    const snapshot = await new JsonKnowledgeBaseSource().load();
+
+    const durian = snapshot.crops.find((c) => c.code === 'DURIAN');
+    expect(durian).toBeDefined();
+    expect([durian.nameVi, durian.enabled, durian.kbVersion]).toEqual([
+      'Sầu riêng',
+      false,
+      '2026-10-15',
+    ]);
+    expect(durian.plantParts.map((p) => p.code)).toContain('ARIL');
+    expect(durian.cropStages.map((s) => s.code)).toContain('TREE_RECOVERY');
+    expect(durian.features.fruit.level).toBe('image');
+    expect(durian.features).not.toHaveProperty('panicle');
+
+    const diseases = snapshot.diseases.filter((d) => d.cropType === 'DURIAN');
+    expect(diseases).toHaveLength(27);
+    expect(diseases.every((d) => d.code.startsWith('DURIAN_'))).toBe(true);
+    expect(diseases.filter((d) => d.profile !== null)).toHaveLength(27);
+    expect(
+      diseases.filter((d) => d.verification === 'SECONDARY').length,
+    ).toBeGreaterThan(0);
+    expect(snapshot.crops.map((c) => c.code)).toEqual(['DURIAN', 'RICE']);
+  });
+
   it('scores the rice scenarios exactly as the single-crop loader did', async () => {
     const baseline = JSON.parse(
       await readFile(

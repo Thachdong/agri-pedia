@@ -1,0 +1,3891 @@
+{
+  "version": "2026-10-15",
+  "crop": "DURIAN",
+  "languageUse": {
+    "en": "retrieval / matching (RAG)",
+    "vn": "display to Vietnamese users"
+  },
+  "note": "Mỗi mục: một bệnh / sinh vật gây hại / rối loạn, các biến thể nằm trong 'variants'. Xem 'verification', 'unverifiedFields', 'reviewNotes' để biết mức kiểm chứng. Không lưu khuyến cáo hoạt chất.",
+  "dictionaries": {
+    "plantPart": {
+      "LEAF": {
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "SHOOT": {
+        "vn": "Đọt / lá non",
+        "en": "Shoot / young leaves"
+      },
+      "BRANCH": {
+        "vn": "Cành",
+        "en": "Branch"
+      },
+      "TRUNK": {
+        "vn": "Thân",
+        "en": "Trunk"
+      },
+      "COLLAR": {
+        "vn": "Gốc / cổ rễ",
+        "en": "Trunk base / collar"
+      },
+      "ROOT": {
+        "vn": "Rễ",
+        "en": "Root"
+      },
+      "FLOWER": {
+        "vn": "Hoa",
+        "en": "Flower"
+      },
+      "FRUIT": {
+        "vn": "Trái (vỏ trái)",
+        "en": "Fruit (husk)"
+      },
+      "ARIL": {
+        "vn": "Múi / cơm",
+        "en": "Aril / flesh"
+      },
+      "WHOLE_PLANT": {
+        "vn": "Toàn cây",
+        "en": "Whole plant"
+      }
+    },
+    "cropStage": {
+      "SEEDLING": {
+        "vn": "Cây con / vườn ươm",
+        "en": "Seedling / nursery"
+      },
+      "YOUNG_TREE": {
+        "vn": "Kiến thiết cơ bản",
+        "en": "Young non-bearing tree"
+      },
+      "FLUSHING": {
+        "vn": "Ra đọt (lộc non)",
+        "en": "Leaf flushing"
+      },
+      "FLOWERING": {
+        "vn": "Ra hoa",
+        "en": "Flowering"
+      },
+      "FRUIT_SET": {
+        "vn": "Đậu trái / trái non",
+        "en": "Fruit set / young fruit"
+      },
+      "FRUIT_DEVELOPMENT": {
+        "vn": "Nuôi trái",
+        "en": "Fruit development"
+      },
+      "HARVEST": {
+        "vn": "Thu hoạch / sau thu hoạch (trái)",
+        "en": "Harvest / postharvest (fruit)"
+      },
+      "TREE_RECOVERY": {
+        "vn": "Phục hồi cây sau thu hoạch",
+        "en": "Post-harvest tree recovery"
+      }
+    },
+    "season": {
+      "RAINY": {
+        "vn": "Mùa mưa",
+        "en": "Rainy season"
+      },
+      "DRY": {
+        "vn": "Mùa khô",
+        "en": "Dry season"
+      },
+      "YEAR_ROUND": {
+        "vn": "Quanh năm",
+        "en": "Year-round"
+      }
+    },
+    "category": {
+      "DISEASE": {
+        "vn": "Bệnh",
+        "en": "Disease"
+      },
+      "PEST": {
+        "vn": "Sinh vật gây hại",
+        "en": "Pest"
+      },
+      "DISORDER": {
+        "vn": "Rối loạn dinh dưỡng / sinh lý",
+        "en": "Nutrient / physiological disorder"
+      }
+    },
+    "agentType": {
+      "FUNGUS": {
+        "vn": "Nấm",
+        "en": "Fungus"
+      },
+      "OOMYCETE": {
+        "vn": "Noãn khuẩn (giống nấm)",
+        "en": "Oomycete (water mould)"
+      },
+      "ALGA": {
+        "vn": "Tảo",
+        "en": "Alga"
+      },
+      "COMPLEX": {
+        "vn": "Phức hợp nhiều tác nhân",
+        "en": "Complex of agents"
+      },
+      "NEMATODE": {
+        "vn": "Tuyến trùng",
+        "en": "Nematode"
+      },
+      "INSECT": {
+        "vn": "Côn trùng",
+        "en": "Insect"
+      },
+      "MITE": {
+        "vn": "Nhện hại",
+        "en": "Mite"
+      },
+      "NUTRIENT": {
+        "vn": "Dinh dưỡng",
+        "en": "Nutrient"
+      },
+      "ABIOTIC": {
+        "vn": "Phi sinh học",
+        "en": "Abiotic"
+      }
+    },
+    "verification": {
+      "SOURCED": "Viết lại từ tài liệu khoa học / cơ quan chuyên môn đã tải (xem references / durian_sources.json)",
+      "SECONDARY": "Nguồn thứ cấp (trang khuyến nông, doanh nghiệp, danh sách nước ngoài) hoặc suy ra từ cây khác — cần chuyên gia xác nhận"
+    }
+  },
+  "count": 27,
+  "diseases": [
+    {
+      "id": "DURIAN_PHYTOPHTHORA_CANKER",
+      "category": "DISEASE",
+      "agentType": "OOMYCETE",
+      "names": {
+        "vn": "Bệnh nứt thân xì mủ",
+        "en": "Phytophthora patch canker (stem canker)",
+        "scientific": "Phytophthora palmivora",
+        "aliasesVn": [
+          "Thối gốc chảy nhựa",
+          "Thối thân xì mủ",
+          "Thối vỏ chảy nhựa",
+          "Xì mủ nứt thân",
+          "Thối cổ rễ"
+        ],
+        "aliasesEn": [
+          "Patch canker",
+          "Stem canker",
+          "Bark rot",
+          "Collar rot",
+          "Gummosis"
+        ]
+      },
+      "nameVnSource": "Cục BVTV / SOFRI",
+      "affectedPart": {
+        "codes": [
+          "TRUNK",
+          "BRANCH",
+          "COLLAR"
+        ],
+        "vn": "Thân, Cành, Gốc / cổ rễ",
+        "en": "Trunk, Branch, Trunk base / collar"
+      },
+      "pathogens": {
+        "vn": [
+          "Noãn khuẩn (Oomycete) Phytophthora palmivora — thường gọi là \"nấm\" nhưng là vi sinh vật dạng sợi giống nấm (water mould), không phải nấm thật.",
+          "Ở Việt Nam còn ghi nhận P. citricola (Lâm Đồng) và P. heterospora (ĐBSCL)."
+        ],
+        "en": [
+          "Oomycete Phytophthora palmivora — commonly called a \"fungus\" but is a fungus-like water mould.",
+          "P. citricola (Lam Dong) and P. heterospora (Mekong Delta) have also been reported in Vietnam."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh đầu tiên là những mảng hơi ướt, đổi màu trên vỏ thân/cành, thường gần chạc cành hoặc sát mặt đất.",
+          "Vỏ nứt, chảy nhựa (mủ) màu nâu đỏ trên bề mặt vỏ.",
+          "Cạo vỏ thấy mô bên dưới chuyển từ màu kem/hồng sang nâu đỏ, mạch dẫn thâm đen; có sọc nâu chạy dọc gỗ.",
+          "Khi vết bệnh bao quanh thân/cành: lá vàng, héo, rụng sớm, khô cành từ ngọn, tán thưa; nặng thì chết cây."
+        ],
+        "en": [
+          "First sign: discrete wet-looking, discoloured patches on trunk/branch bark, often near branch crotches or the soil line.",
+          "Bark cracks and exudes a reddish-brown resinous gum.",
+          "Under the bark the cortex turns from cream/pink to reddish-brown; vascular tissue darkens with brown streaks along the wood.",
+          "When the lesion girdles trunk or branch: leaves yellow, wilt and drop, branches die back from the tip, canopy thins; severe cases kill the tree."
+        ]
+      },
+      "variants": [
+        {
+          "id": "DURIAN_PHYTOPHTHORA_CANKER__TRUNK",
+          "names": {
+            "vn": "Xì mủ trên thân, cành",
+            "en": "Trunk and branch canker"
+          },
+          "affectedPart": {
+            "codes": [
+              "TRUNK",
+              "BRANCH"
+            ],
+            "vn": "Thân, Cành",
+            "en": "Trunk, Branch"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết nứt chảy nhựa nâu đỏ dọc thân và cành chính; giai đoạn nặng vỏ thối mục, cành lớn khô."
+            ],
+            "en": [
+              "Cracks oozing reddish-brown gum along the trunk and main branches; in late stages the bark rots and large branches die."
+            ]
+          }
+        },
+        {
+          "id": "DURIAN_PHYTOPHTHORA_CANKER__COLLAR",
+          "names": {
+            "vn": "Thối cổ rễ, thối gốc",
+            "en": "Collar and foot rot"
+          },
+          "affectedPart": {
+            "codes": [
+              "COLLAR"
+            ],
+            "vn": "Gốc / cổ rễ",
+            "en": "Trunk base / collar"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết bệnh ở hoặc ngay dưới mặt đất, ban đầu sũng nước, sau khô dần, hơi lõm và nứt vỏ màu nâu sẫm; vỏ bệnh dễ tách khỏi gỗ; chảy nhựa tại chỗ bệnh."
+            ],
+            "en": [
+              "Lesion at or just below soil level, water-soaked at first, then drying, slightly sunken and cracked, dark brown; diseased bark separates easily from the wood; gum exudes at the lesion."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây qua nước tưới, nước mưa bắn đất lên cây, đất nhiễm bệnh bám chân người, dụng cụ, phương tiện và động vật; xâm nhập qua vết thương."
+          ],
+          "en": [
+            "Spread by irrigation water, rain splash from soil, infested soil on feet, tools, vehicles and animals; enters through wounds."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE",
+          "FLOWERING",
+          "FRUIT_DEVELOPMENT",
+          "TREE_RECOVERY"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa mưa, nặng nhất giữa và cuối mùa mưa (tháng 8–11 ở Tây Nguyên).",
+          "Vườn ngập úng, thoát nước kém, đất bão hòa nước kéo dài.",
+          "pH đất thấp, đất bạc màu, thiếu hữu cơ; bón thừa đạm.",
+          "Vết thương do chăm sóc, côn trùng, tuyến trùng; cây suy yếu do hạn hoặc ép nước xử lý ra hoa."
+        ],
+        "en": [
+          "Rainy season, most severe mid-to-late rainy season (Aug–Nov in the Central Highlands).",
+          "Waterlogged, poorly drained orchards; prolonged soil saturation.",
+          "Low soil pH, degraded soil, low organic matter; excess nitrogen.",
+          "Wounds from cultivation, insects or nematodes; trees weakened by drought or water stress used for flower induction."
+        ],
+        "temperature": "P. palmivora sinh trưởng 10–37 °C, tối ưu khoảng 25–30 °C"
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thiết kế mương, líp, mô cao để thoát nước; không để vườn đọng nước.",
+            "Dùng cây giống sạch bệnh; không trồng xen cây ký chủ của Phytophthora.",
+            "Cạo sạch phần vỏ bệnh khi vết bệnh còn nhỏ, thu gom tiêu hủy.",
+            "Tỉa cành thông thoáng vào ngày khô ráo; hạn chế gây vết thương.",
+            "Bón vôi nâng pH đất lên khoảng 5,5–6,5; quét vôi hoặc dung dịch Bordeaux quanh gốc và thân.",
+            "Tưới gốc, hạn chế tưới ướt thân và tán trên vườn có bệnh."
+          ],
+          "en": [
+            "Build drainage ditches and raised beds/mounds; avoid standing water.",
+            "Use disease-free planting material; do not intercrop with Phytophthora hosts.",
+            "Scrape out diseased bark while lesions are small and destroy the debris.",
+            "Prune for airflow on dry days; minimise wounding.",
+            "Lime the soil to raise pH to about 5.5–6.5; paint lime or Bordeaux mixture on the trunk base.",
+            "Water at the base; avoid wetting trunk and canopy in infected orchards."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Ủ chế phẩm chứa Trichoderma spp., Bacillus spp., Streptomyces spp. với phân chuồng hoai rồi bón vùng rễ trước mùa mưa."
+          ],
+          "en": [
+            "Compost Trichoderma spp., Bacillus spp. and Streptomyces spp. products with well-rotted manure and apply to the root zone before the rainy season."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân cân đối, tránh thừa đạm; tăng phân hữu cơ hoai mục, bổ sung trung vi lượng khi thiếu."
+          ],
+          "en": [
+            "Balanced fertilisation, avoid excess nitrogen; increase composted organic matter and supply secondary/micro-nutrients when deficient."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_SUDDEN_DEATH",
+            "distinguishingFeature": {
+              "vn": "Chết nhanh: thân biến vàng rồi nâu sẫm nhưng không chảy nhựa, có nhiều lỗ nhỏ li ti; xì mủ có vết nứt chảy nhựa nâu đỏ.",
+              "en": "Sudden death: bark yellows then dark-brown without gum, with many pinhead holes; canker shows cracks oozing reddish-brown gum."
+            }
+          },
+          {
+            "id": "DURIAN_SHOT_HOLE_BORER",
+            "distinguishingFeature": {
+              "vn": "Mọt đục: lỗ đục nhỏ có mùn gỗ/phân; xì mủ có mảng vỏ ướt thối nâu, có thể có mọt tấn công thứ cấp.",
+              "en": "Shot-hole borer: small bore holes with frass; canker shows wet rotting bark patches, borers may attack secondarily."
+            }
+          },
+          {
+            "id": "DURIAN_STEM_BORER",
+            "distinguishingFeature": {
+              "vn": "Xén tóc: lỗ đục lớn, mùn gỗ đùn ra, sâu non to trong gỗ; không có mảng vỏ thối sũng nước.",
+              "en": "Longhorn borer: large holes with extruded frass and big larvae in the wood; no water-soaked rotting bark patch."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "gum exudation",
+          "reddish-brown ooze",
+          "bark crack",
+          "wet bark patch",
+          "brown cortex under bark",
+          "trunk lesion",
+          "collar rot",
+          "branch dieback",
+          "yellowing canopy"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cục BVTV – TBKT 01-114:2021/BVTV: Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk (Viện BVTV)",
+          "url": "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
+        },
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Mai Văn Trị, Nguyễn Thị Thu Nga – Quản lý và giảm nhẹ nguy cơ bệnh hại trên vườn sầu riêng trong bối cảnh biến đổi khí hậu. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 135–144",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "O'Gara E., Guest D.I. và cs. (2004) – Phytophthora diseases of durian, and durian-decline syndrome in northern Queensland. ACIAR Monograph 114, ch. 6.6",
+          "url": "https://era.daf.qld.gov.au/id/eprint/10667/"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_ROOT_ROT",
+      "category": "DISEASE",
+      "agentType": "COMPLEX",
+      "names": {
+        "vn": "Bệnh thối rễ",
+        "en": "Root rot",
+        "scientific": "Phytophthora palmivora, Phytopythium (Pythium) vexans, Fusarium solani",
+        "aliasesVn": [
+          "Vàng lá thối rễ"
+        ],
+        "aliasesEn": [
+          "Feeder root rot",
+          "Yellow leaf root rot"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "ROOT",
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Rễ, Lá, Toàn cây",
+        "en": "Root, Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Noãn khuẩn Phytophthora palmivora (tác nhân chính).",
+          "Noãn khuẩn Phytopythium vexans (Pythium vexans) — ghi nhận lần đầu ở Việt Nam (Tây Nguyên).",
+          "Nấm Fusarium solani."
+        ],
+        "en": [
+          "Oomycete Phytophthora palmivora (main agent).",
+          "Oomycete Phytopythium vexans (Pythium vexans) — first reported in Vietnam (Central Highlands).",
+          "Fungus Fusarium solani."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá vàng cả gân và thịt lá, trên một vài nhánh hoặc cả cây; vàng từ lá già trước rồi tới lá non, dễ rụng khi có gió.",
+          "Cây mất vẻ tươi, héo như thiếu nước dù đất đủ ẩm; lá mới nhỏ, xanh nhạt.",
+          "Rễ tơ, rễ nhánh thối nâu đen, mềm, sũng nước, vỏ rễ dễ tuột khỏi lõi; thiếu đầu rễ trắng khỏe.",
+          "Cây con có thể chết trong vài tuần; cây lớn suy kiệt dần, khô cành, có thể chết."
+        ],
+        "en": [
+          "Leaves yellow including veins, on some branches or the whole tree; older leaves first, then young leaves, which drop easily in wind.",
+          "Tree loses vigour and wilts as if water-stressed even in moist soil; new leaves small and pale.",
+          "Feeder and lateral roots rot dark brown, soft and water-soaked; root cortex sloughs off easily; few healthy white root tips.",
+          "Seedlings may die within weeks; mature trees decline gradually with dieback and may die."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Mầm bệnh tồn tại trong đất, lây qua nước, đất nhiễm bệnh, cây giống; xâm nhập qua vết thương rễ do tuyến trùng, côn trùng."
+          ],
+          "en": [
+            "Soil-borne; spread by water, infested soil and nursery stock; enters via root wounds from nematodes and insects."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất đọng nước, thoát nước kém, nén chặt, thiếu oxy.",
+          "pH đất thấp, nghèo hữu cơ.",
+          "Trồng sâu làm vùi cổ rễ; rễ bị tuyến trùng, mối gây vết thương."
+        ],
+        "en": [
+          "Waterlogged, poorly drained, compacted, oxygen-poor soil.",
+          "Low soil pH, low organic matter.",
+          "Planting too deep (buried collar); root wounding by nematodes or termites."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Khai thông mương rãnh, không để đọng nước gốc.",
+            "Bón vôi định kỳ đầu và cuối mùa mưa; xới nhẹ mặt đất, không làm đứt rễ lớn.",
+            "Không dùng mắt ghép, cây giống từ vườn có bệnh."
+          ],
+          "en": [
+            "Clear drainage ditches; prevent water standing at the trunk base.",
+            "Lime at the start and end of the rainy season; loosen topsoil lightly without cutting large roots.",
+            "Do not use budwood or seedlings from infected orchards."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bón phân hữu cơ hoai mục kết hợp nấm rễ cộng sinh (Arbuscular mycorrhizae) hoặc Trichoderma, Streptomyces."
+          ],
+          "en": [
+            "Apply composted organic manure with arbuscular mycorrhizal fungi or Trichoderma and Streptomyces."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Ngưng bón đạm hóa học khi cây đang bệnh; phục hồi rễ bằng hữu cơ sau khi xử lý mầm bệnh."
+          ],
+          "en": [
+            "Stop chemical nitrogen while the tree is diseased; rebuild roots with organic matter after treating the pathogen."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_ROOT_NEMATODE",
+            "distinguishingFeature": {
+              "vn": "Tuyến trùng: triệu chứng không đặc trưng, cần phân tích mẫu đất/rễ; thối rễ có rễ mềm nhũn, tuột vỏ rõ.",
+              "en": "Nematodes: non-specific symptoms, need soil/root analysis; root rot shows soft roots with sloughing cortex."
+            }
+          },
+          {
+            "id": "DURIAN_PHYTOPHTHORA_CANKER",
+            "distinguishingFeature": {
+              "vn": "Xì mủ có vết nứt chảy nhựa trên thân; thối rễ thường chỉ thấy vàng lá, phải đào rễ để kiểm tra (hai bệnh hay đi cùng nhau).",
+              "en": "Canker shows gum-oozing cracks on the trunk; root rot shows only yellowing above ground — dig roots to confirm (both often occur together)."
+            }
+          },
+          {
+            "id": "DURIAN_K_DEFICIENCY"
+          }
+        ],
+        "visualKeywords": [
+          "uniform yellowing",
+          "yellow veins",
+          "wilting",
+          "leaf drop",
+          "black rotted roots",
+          "root cortex sloughing",
+          "tree decline"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Mai Văn Trị, Nguyễn Thị Thu Nga – Quản lý và giảm nhẹ nguy cơ bệnh hại trên vườn sầu riêng trong bối cảnh biến đổi khí hậu. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 135–144",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_PHYTOPHTHORA_FRUIT_ROT",
+      "category": "DISEASE",
+      "agentType": "OOMYCETE",
+      "names": {
+        "vn": "Bệnh thối trái Phytophthora",
+        "en": "Phytophthora fruit rot",
+        "scientific": "Phytophthora palmivora",
+        "aliasesVn": [
+          "Thối trái"
+        ],
+        "aliasesEn": [
+          "Pre- and postharvest fruit rot"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "FRUIT",
+          "ARIL"
+        ],
+        "vn": "Trái (vỏ trái), Múi / cơm",
+        "en": "Fruit (husk), Aril / flesh"
+      },
+      "pathogens": {
+        "vn": [
+          "Noãn khuẩn Phytophthora palmivora; nguồn bệnh từ đất bắn lên trái do mưa."
+        ],
+        "en": [
+          "Oomycete Phytophthora palmivora; inoculum splashed from soil onto fruit by rain."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Đốm nhỏ sũng nước, tâm nâu nhạt hoặc nâu xám trên vỏ trái, thấy sau 3–5 ngày nhiễm; thường bắt đầu ở trái gần mặt đất.",
+          "Vết bệnh lan nhanh thành vùng tròn hoặc loang lổ màu nâu tới nâu đen, có thể thối toàn trái và lan sang trái bên cạnh.",
+          "Ẩm độ cao: lớp tơ/bào tử màu trắng xám trên vết bệnh.",
+          "Thối ăn sâu vào cơm và hạt; trái nứt, rụng hoặc khô treo trên cây; trái nhiễm nhẹ tiếp tục thối sau thu hoạch."
+        ],
+        "en": [
+          "Small water-soaked spots with light-brown to grey-brown centres on the husk, visible 3–5 days after infection; often starts on fruit near the ground.",
+          "Lesions expand quickly into round or irregular brown to black-brown areas, may rot the whole fruit and spread to touching fruit.",
+          "In humid conditions a white-grey layer of mycelium/sporangia forms on the lesion.",
+          "Rot penetrates the aril and seed; fruit cracks, drops or mummifies on the tree; lightly infected fruit keep rotting after harvest."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Mưa bắn đất mang bào tử lên trái; lây từ trái bệnh sang trái chạm nhau; nhiễm trước thu hoạch gây thối sau thu hoạch."
+          ],
+          "en": [
+            "Rain splash carries spores from soil to fruit; spreads between touching fruit; preharvest infections cause postharvest rot."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_SET",
+          "FRUIT_DEVELOPMENT",
+          "HARVEST"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mưa nhiều, ẩm độ cao, sương mù kéo dài.",
+          "Trái treo thấp gần mặt đất, trái chùm chạm nhau, tán rậm."
+        ],
+        "en": [
+          "Heavy rain, high humidity, prolonged fog.",
+          "Fruit hanging low near the ground, clustered fruit touching, dense canopy."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Tỉa bớt trái chùm chạm nhau; nâng các cành xà thấp.",
+            "Thu gom, tiêu hủy trái bệnh (không để trên mặt vườn).",
+            "Quản lý chung như bệnh xì mủ: thoát nước, tỉa tán thông thoáng."
+          ],
+          "en": [
+            "Thin clustered fruit that touch; lift low-hanging branches.",
+            "Collect and destroy diseased fruit (do not leave them in the orchard).",
+            "General Phytophthora management as for canker: drainage and open canopy."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_FRUIT_BORER",
+            "distinguishingFeature": {
+              "vn": "Sâu đục trái: có lỗ đục và phân sâu đùn ra; thối Phytophthora bắt đầu từ đốm sũng nước, có tơ trắng.",
+              "en": "Fruit borer: entry holes with extruded frass; Phytophthora rot starts as water-soaked spots with white mycelium."
+            }
+          },
+          {
+            "id": "DURIAN_MEALYBUG"
+          }
+        ],
+        "visualKeywords": [
+          "water-soaked spot on husk",
+          "brown to black fruit lesion",
+          "white mycelium on fruit",
+          "fruit rot near ground",
+          "cracked rotten fruit",
+          "mummified fruit"
+        ]
+      },
+      "verification": "SOURCED",
+      "unverifiedFields": [
+        "treatments.nutrition"
+      ],
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Mai Văn Trị, Nguyễn Thị Thu Nga – Quản lý và giảm nhẹ nguy cơ bệnh hại trên vườn sầu riêng trong bối cảnh biến đổi khí hậu. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 135–144",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "O'Gara E., Guest D.I. và cs. (2004) – Phytophthora diseases of durian, and durian-decline syndrome in northern Queensland. ACIAR Monograph 114, ch. 6.6",
+          "url": "https://era.daf.qld.gov.au/id/eprint/10667/"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_PHYTOPHTHORA_LEAF_BLIGHT",
+      "category": "DISEASE",
+      "agentType": "OOMYCETE",
+      "names": {
+        "vn": "Bệnh cháy lá Phytophthora",
+        "en": "Phytophthora leaf blight",
+        "scientific": "Phytophthora palmivora",
+        "aliasesVn": [
+          "Thối lá Phytophthora",
+          "Chết cây con (vườn ươm)"
+        ],
+        "aliasesEn": [
+          "Foliar blight",
+          "Seedling blight",
+          "Seedling dieback"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "SHOOT"
+        ],
+        "vn": "Lá, Đọt / lá non",
+        "en": "Leaf, Shoot / young leaves"
+      },
+      "pathogens": {
+        "vn": [
+          "Noãn khuẩn Phytophthora palmivora."
+        ],
+        "en": [
+          "Oomycete Phytophthora palmivora."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Đốm nhỏ như bị bỏng nước, sau 3–5 ngày lan thành mảng lớn màu nâu tối đến đen, mô sũng nước rồi chết hoại.",
+          "Quanh vết bệnh có quầng mô màu xanh nhạt.",
+          "Ẩm độ cao: lớp tơ trắng mịn ở mép vết bệnh, chủ yếu mặt dưới lá — dấu hiệu phân biệt với các bệnh lá khác.",
+          "Lá bệnh khô cong, rụng sau vài ngày; cây con trong vườn ươm có thể cháy lá toàn bộ và chết từ ngọn."
+        ],
+        "en": [
+          "Small scald-like spots that within 3–5 days expand into large dark-brown to black, water-soaked necrotic patches.",
+          "Lesions surrounded by a pale-green halo.",
+          "In humid conditions a fine white mycelium forms at lesion edges, mainly on the leaf underside — distinguishes it from other leaf diseases.",
+          "Leaves curl, dry and drop within days; nursery seedlings may be blighted entirely and die from the top."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử nang theo gió, giọt mưa bắn từ đất lên lá thấp; lây nhanh sang lá kế cận."
+          ],
+          "en": [
+            "Sporangia spread by wind and rain splash from soil onto lower leaves; spreads quickly to neighbouring leaves."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mưa nhiều, ẩm độ cao; phổ biến ở vườn ươm, ở vườn lớn khi áp lực bệnh rất cao."
+        ],
+        "en": [
+          "Heavy rain and high humidity; common in nurseries, in orchards under very high disease pressure."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Cắt bỏ lá, cây con bệnh; giữ vườn ươm thông thoáng, tránh tưới phun lên tán.",
+            "Kiểm tra thân, rễ vì khi lá có triệu chứng thì các bộ phận khác thường đã nhiễm nặng."
+          ],
+          "en": [
+            "Remove diseased leaves and seedlings; keep the nursery ventilated, avoid overhead watering.",
+            "Inspect trunk and roots: by the time leaves show symptoms other organs are usually heavily infected."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_RHIZOCTONIA_LEAF_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Rhizoctonia: lá dính chùm bởi tơ nấm, lan dọc mép lá; Phytophthora: tơ trắng mịn mặt dưới lá, quầng xanh nhạt.",
+              "en": "Rhizoctonia: leaves webbed together by mycelium, spreads along margins; Phytophthora: fine white mycelium on underside, pale-green halo."
+            }
+          },
+          {
+            "id": "DURIAN_PHOMOPSIS_LEAF_SPOT"
+          }
+        ],
+        "visualKeywords": [
+          "scald-like spot",
+          "water-soaked leaf lesion",
+          "dark brown to black patch",
+          "pale green halo",
+          "white mycelium underside",
+          "seedling blight"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Mai Văn Trị, Nguyễn Thị Thu Nga – Quản lý và giảm nhẹ nguy cơ bệnh hại trên vườn sầu riêng trong bối cảnh biến đổi khí hậu. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 135–144",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "O'Gara E., Guest D.I. và cs. (2004) – Phytophthora diseases of durian, and durian-decline syndrome in northern Queensland. ACIAR Monograph 114, ch. 6.6",
+          "url": "https://era.daf.qld.gov.au/id/eprint/10667/"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_SUDDEN_DEATH",
+      "category": "DISEASE",
+      "agentType": "COMPLEX",
+      "names": {
+        "vn": "Bệnh chết nhanh",
+        "en": "Sudden death (quick decline)",
+        "scientific": "Phytophthora palmivora, Phytophthora sp., Fusarium oxysporum (kèm bọ cánh cứng Xyleborus spp.)",
+        "aliasesVn": [
+          "Chết nhanh sầu riêng"
+        ],
+        "aliasesEn": [
+          "Quick decline"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "TRUNK",
+          "BRANCH",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Thân, Cành, Toàn cây",
+        "en": "Trunk, Branch, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Noãn khuẩn Phytophthora palmivora, Phytophthora sp.",
+          "Nấm Fusarium oxysporum, thường đi cùng bọ cánh cứng Xyleborus spp. trong mạch dẫn."
+        ],
+        "en": [
+          "Oomycetes Phytophthora palmivora, Phytophthora sp.",
+          "Fungus Fusarium oxysporum, often with Xyleborus spp. ambrosia beetles in the vascular tissue."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Thân biến vàng giai đoạn đầu, sau lan rộng chuyển nâu sẫm, không chảy nhựa.",
+          "Trên thân xuất hiện nhiều lỗ nhỏ li ti như đầu cây nhang.",
+          "Cây héo, khô, rụng lá và chết rất nhanh; khi do Fusarium lá héo rũ, khô, rụng rất nhanh sau triệu chứng đầu tiên."
+        ],
+        "en": [
+          "Bark turns yellowish at first, then dark brown over a widening area, without gum exudation.",
+          "Many pinhead-sized holes appear on the trunk.",
+          "Tree wilts, dries, drops leaves and dies very quickly; with Fusarium, leaves droop, dry and fall soon after the first symptom."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Mầm bệnh trong đất; bọ cánh cứng đục mạch dẫn mang và mở đường cho nấm."
+          ],
+          "en": [
+            "Soil-borne pathogens; boring beetles carry fungi and open entry points in the vascular tissue."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT",
+          "TREE_RECOVERY"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa mưa, đất ẩm úng; cây suy yếu, có mọt đục thân cành."
+        ],
+        "en": [
+          "Rainy season, waterlogged soil; weakened trees with shot-hole borer infestation."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thăm vườn thường xuyên để phát hiện sớm; cạo bỏ phần vỏ thối nâu.",
+            "Rải vôi quanh tán, quét vôi gốc cao 70–90 cm (làm bất hoạt bào tử và hạn chế trứng bọ cánh cứng nở)."
+          ],
+          "en": [
+            "Inspect regularly for early detection; scrape away brown rotted bark.",
+            "Spread lime under the canopy and paint lime on the trunk to 70–90 cm (inactivates spores and limits beetle egg hatch)."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bón hữu cơ hoai mục kết hợp Trichoderma để giảm mầm bệnh Phytophthora."
+          ],
+          "en": [
+            "Apply composted organic matter with Trichoderma to suppress Phytophthora."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_PHYTOPHTHORA_CANKER",
+            "distinguishingFeature": {
+              "vn": "Xì mủ chảy nhựa nâu đỏ; chết nhanh không chảy nhựa, có lỗ li ti, cây chết trong thời gian ngắn.",
+              "en": "Canker oozes reddish-brown gum; sudden death has no gum, pinhead holes, and the tree dies quickly."
+            }
+          },
+          {
+            "id": "DURIAN_SHOT_HOLE_BORER"
+          }
+        ],
+        "visualKeywords": [
+          "sudden wilting",
+          "whole tree collapse",
+          "pinhead holes on trunk",
+          "dark brown bark without gum",
+          "dry leaves still attached"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_DIEBACK",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh héo ngọn (chết ngược cành)",
+        "en": "Dieback",
+        "scientific": "Diaporthe durionigena (chính), Lasiodiplodia theobromae, Colletotrichum sp.",
+        "aliasesVn": [
+          "Chết ngược cành",
+          "Héo ngọn chết cây",
+          "Khô cành"
+        ],
+        "aliasesEn": [
+          "Twig dieback",
+          "Branch dieback"
+        ]
+      },
+      "nameVnSource": "Cục BVTV",
+      "affectedPart": {
+        "codes": [
+          "BRANCH",
+          "SHOOT",
+          "LEAF",
+          "TRUNK"
+        ],
+        "vn": "Cành, Đọt / lá non, Lá, Thân",
+        "en": "Branch, Shoot / young leaves, Leaf, Trunk"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Diaporthe durionigena (loài mới, tác nhân chính ở Tây Nguyên).",
+          "Nấm Lasiodiplodia theobromae và Colletotrichum sp."
+        ],
+        "en": [
+          "Fungus Diaporthe durionigena (new species, main agent in the Central Highlands).",
+          "Fungi Lasiodiplodia theobromae and Colletotrichum sp."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá trên đầu ngọn rụng trước, kể cả khi lá còn xanh hoặc mới vàng nhạt.",
+          "Mạch dẫn và toàn bộ lớp vỏ cành, nhánh thâm đen, khô dần từ ngọn lan xuống thân chính.",
+          "Ẩm độ cao, ngày mát kéo dài: bệnh lan xuống thân chính và làm chết cây."
+        ],
+        "en": [
+          "Leaves at branch tips drop first, even while still green or pale yellow.",
+          "Vascular tissue and bark of twigs and branches blacken and dry progressively from the tip toward the main trunk.",
+          "Under prolonged high humidity and cool days the disease reaches the trunk and kills the tree."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử nấm phát tán nhờ gió và côn trùng."
+          ],
+          "en": [
+            "Spores dispersed by wind and insects."
+          ]
+        },
+        "cropStage": [
+          "FLUSHING",
+          "FLOWERING",
+          "TREE_RECOVERY"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Gây hại quanh năm, bùng phát mạnh tháng 11 đến tháng 2 (Tây Nguyên).",
+          "Ẩm độ cao, nhiệt độ ban ngày mát mẻ kéo dài."
+        ],
+        "en": [
+          "Occurs year-round, outbreaks Nov–Feb (Central Highlands).",
+          "High humidity and prolonged cool daytime temperatures."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Cắt bỏ, tiêu hủy cành khô, cành rụng lá, cây chết; cắt tỉa sau thu hoạch (khoảng tháng 9–10) vào ngày nắng.",
+            "Tỉa cành vượt, cành bị che bóng, tỉa tán cây trồng xen để vườn thông thoáng.",
+            "Đào hố giữa 4 cây để gom tàn dư, lá rụng trước mùa mưa."
+          ],
+          "en": [
+            "Cut out and destroy dead branches, defoliated branches and dead trees; prune after harvest (about Sep–Oct) on sunny days.",
+            "Remove water sprouts and shaded branches; thin intercrops to open the orchard.",
+            "Dig pits between four trees to collect debris and fallen leaves before the rainy season."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Phun phòng bằng chế phẩm sinh học chứa Trichoderma spp., Bacillus spp., Streptomyces spp. cuối mùa mưa (khoảng tháng 11)."
+          ],
+          "en": [
+            "Preventive sprays of biological products with Trichoderma spp., Bacillus spp., Streptomyces spp. at the end of the rainy season (about November)."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_RHIZOCTONIA_LEAF_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Rhizoctonia bắt đầu từ đốm sũng nước trên lá non, lá dính tơ nấm; héo ngọn bắt đầu rụng lá ngọn và vỏ cành thâm đen từ ngọn xuống.",
+              "en": "Rhizoctonia starts as water-soaked spots on young leaves with webbing; dieback starts with tip leaf drop and bark blackening from the tip down."
+            }
+          },
+          {
+            "id": "DURIAN_ANTHRACNOSE",
+            "distinguishingFeature": {
+              "vn": "Dễ nhầm với thán thư; thán thư tạo vết cháy từ mép/chóp lá có vòng đồng tâm, không làm thâm đen vỏ cành.",
+              "en": "Often confused with anthracnose; anthracnose burns from leaf margin/tip with concentric rings and does not blacken twig bark."
+            }
+          },
+          {
+            "id": "DURIAN_PINK_DISEASE"
+          }
+        ],
+        "visualKeywords": [
+          "tip leaf drop",
+          "blackened twig bark",
+          "dieback from tip",
+          "dark vascular streak",
+          "bare branch tips",
+          "progressive branch death"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cục BVTV – TBKT 01-114:2021/BVTV: Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk (Viện BVTV)",
+          "url": "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
+        },
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_RHIZOCTONIA_LEAF_BLIGHT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh cháy lá chết ngọn (Rhizoctonia)",
+        "en": "Rhizoctonia leaf blight",
+        "scientific": "Rhizoctonia solani",
+        "aliasesVn": [
+          "Cháy lá",
+          "Bạc lá sầu riêng",
+          "Khô lá",
+          "Cắt lá"
+        ],
+        "aliasesEn": [
+          "Leaf blight and leaf fall"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "SHOOT"
+        ],
+        "vn": "Lá, Đọt / lá non",
+        "en": "Leaf, Shoot / young leaves"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Rhizoctonia solani."
+        ],
+        "en": [
+          "Fungus Rhizoctonia solani."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh ban đầu là đốm nhỏ xanh tái hoặc nâu sũng nước, không có hình dạng rõ rệt.",
+          "Lan rộng dọc hai mép lá, chuyển nâu rồi xám; lá co dúm, không phát triển được.",
+          "Lá bệnh trên cành non dính chùm lại với nhau nhờ tơ nấm, khô dần và rụng hàng loạt.",
+          "Nặng: lá khô trắng; cây con cháy ngọn rồi chết; cây lớn khô lá non, chết ngọn, cành nhỏ."
+        ],
+        "en": [
+          "Initial lesions are small pale-green or brown water-soaked spots without a defined shape.",
+          "Lesions spread along both leaf margins, turning brown then grey; leaves crinkle and stop growing.",
+          "Diseased leaves on young shoots stick together with mycelial threads, then dry and drop en masse.",
+          "Severe: leaves dry to a whitish colour; seedlings burn at the top and die; on mature trees young leaves dry, shoot tips and small branches die."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Tơ nấm lan từ lá bệnh sang lá kề cận; lá bệnh rụng dưới gốc là nguồn bệnh cho vụ sau."
+          ],
+          "en": [
+            "Mycelium spreads from diseased to adjacent leaves; fallen leaves under the tree carry inoculum to the next season."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE",
+          "FLUSHING"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa mưa, ẩm độ và nhiệt độ cao.",
+          "Vườn trồng dày, thiếu nắng; lá non mềm do thừa đạm."
+        ],
+        "en": [
+          "Rainy season, high humidity and temperature.",
+          "Dense, shaded orchards; soft young leaves from excess nitrogen."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thu gom, tiêu hủy lá bệnh rụng dưới gốc.",
+            "Tỉa cành bệnh nặng, tạo vườn thông thoáng; vệ sinh vườn khoảng 2 tháng/lần.",
+            "Hạn chế tưới trực tiếp lên ngọn khi cây đang bệnh hoặc tưới vào buổi chiều."
+          ],
+          "en": [
+            "Collect and destroy fallen diseased leaves.",
+            "Prune heavily diseased branches and open the canopy; sanitise the orchard about every 2 months.",
+            "Avoid watering directly onto shoot tips of diseased trees or in the evening."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bón phân hữu cơ hoai mục kết hợp Trichoderma, Streptomyces hoặc nấm rễ cộng sinh."
+          ],
+          "en": [
+            "Apply composted organic manure with Trichoderma, Streptomyces or mycorrhizal fungi."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Hạn chế đạm khi cây ra đọt trong mùa mưa; bón vôi 1–2 lần/năm đầu và cuối mùa mưa."
+          ],
+          "en": [
+            "Limit nitrogen during rainy-season flushes; lime 1–2 times a year at the start and end of the rainy season."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_PHYTOPHTHORA_LEAF_BLIGHT"
+          },
+          {
+            "id": "DURIAN_PHOMOPSIS_LEAF_SPOT",
+            "distinguishingFeature": {
+              "vn": "Phomopsis: đốm nhỏ đầu kim có quầng vàng; Rhizoctonia: mảng sũng nước lớn, lá dính tơ nấm.",
+              "en": "Phomopsis: pinhead spots with yellow halo; Rhizoctonia: large water-soaked patches with leaves webbed by mycelium."
+            }
+          },
+          {
+            "id": "DURIAN_DIEBACK"
+          }
+        ],
+        "visualKeywords": [
+          "water-soaked patch",
+          "leaves stuck together",
+          "mycelial webbing",
+          "blight along leaf margin",
+          "crinkled young leaves",
+          "shoot tip dieback",
+          "whitish dried leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_PHOMOPSIS_LEAF_SPOT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh đốm lá mắt cua (Phomopsis)",
+        "en": "Phomopsis leaf spot",
+        "scientific": "Phomopsis durionis",
+        "aliasesVn": [
+          "Đốm mắt cua",
+          "Cháy lá Phomopsis",
+          "Thối đốm lá"
+        ],
+        "aliasesEn": [
+          "Phomopsis leaf blight"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Phomopsis durionis (xác định tại Tiền Giang bằng hình thái và giải trình tự ITS)."
+        ],
+        "en": [
+          "Fungus Phomopsis durionis (identified in Tien Giang by morphology and ITS sequencing)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh nhỏ bằng đầu kim, mỗi vết có quầng vàng xung quanh, hình oval (khoảng 1–10 mm).",
+          "Vết nặng có hình mắt cua màu tro hoặc nâu (về sau nâu đỏ), dọc theo gân chính lan dần vào phiến lá.",
+          "Toàn bộ lá có thể chuyển nâu; xuất hiện trên cả lá non và lá trưởng thành."
+        ],
+        "en": [
+          "Pinhead-sized lesions, each with a yellow halo, oval (about 1–10 mm).",
+          "Severe lesions look like crab eyes, ash-grey or brown (later red-brown), along the midrib and spreading into the blade.",
+          "The whole leaf may turn brown; occurs on both young and mature leaves."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Nấm có thể nhiễm tiềm ẩn trong lá và hoa chưa có triệu chứng."
+          ],
+          "en": [
+            "The fungus can infect latently in symptomless leaves and flowers."
+          ]
+        },
+        "cropStage": [
+          "FLUSHING",
+          "FLOWERING",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa mưa, ẩm độ cao; vườn rậm rạp."
+        ],
+        "en": [
+          "Rainy season, high humidity; dense orchards."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Vệ sinh tàn dư lá bệnh dưới gốc; tỉa tán thông thoáng.",
+            "Phun ngừa vào đầu mùa mưa và giai đoạn mẫn cảm (sau cắt tỉa thu hoạch, xử lý ra hoa vụ nghịch)."
+          ],
+          "en": [
+            "Remove diseased leaf litter; open the canopy.",
+            "Protect at the start of the rainy season and at susceptible stages (after post-harvest pruning, off-season flower induction)."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_LASIODIPLODIA_LEAF_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Lasiodiplodia: cháy đuôi lá màu trắng bạc trên lá già, có hạch nấm nâu đen; Phomopsis: đốm đầu kim có quầng vàng.",
+              "en": "Lasiodiplodia: silvery-white tip burn on old leaves with dark-brown fruiting bodies; Phomopsis: pinhead spots with yellow halo."
+            }
+          },
+          {
+            "id": "DURIAN_ALGAL_SPOT",
+            "distinguishingFeature": {
+              "vn": "Đốm rong nhô lên như nhung màu cam gạch; Phomopsis là đốm hoại tử phẳng có quầng vàng.",
+              "en": "Algal spot is raised, velvety, orange-rust; Phomopsis is a flat necrotic spot with yellow halo."
+            }
+          },
+          {
+            "id": "DURIAN_ANTHRACNOSE"
+          }
+        ],
+        "visualKeywords": [
+          "pinhead spot",
+          "yellow halo",
+          "oval lesion",
+          "crab-eye spot",
+          "ash grey center",
+          "red-brown spot",
+          "lesions along midrib"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Đặng Thị Kim Uyên và cs. – Nghiên cứu xác định nấm Phomopsis durionis và Lasiodiplodia theobromae gây bệnh cháy lá trên sầu riêng. Tạp chí KHCN Nông nghiệp Việt Nam",
+          "url": "https://tapchi.vaas.vn/vi/tap-chi/nghien-cuu-xac-dinh-nam-phomopsis-durionis-va-lasiodiplodia-theobromae-gay-benh-chay-la"
+        },
+        {
+          "title": "Tongsri V., Songkumarn P., Sangchote S. (2016) – Leaf spot characteristics of Phomopsis durionis on durian and latent infection. Acta Univ. Agric. Silvic. Mendel. Brun. 64(1): 185–193",
+          "url": "https://acta.mendelu.cz/artkey/acu-201601-0022_leaf-spot-characteristics-of-phomopsis-durionis-on-durian-durio-zibethinus-murray-and-latent-infection-of-the.php"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_LASIODIPLODIA_LEAF_BLIGHT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh cháy lá Lasiodiplodia",
+        "en": "Lasiodiplodia leaf scorch",
+        "scientific": "Lasiodiplodia theobromae",
+        "aliasesVn": [
+          "Cháy đuôi lá"
+        ],
+        "aliasesEn": [
+          "Leaf tip scorch"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Lasiodiplodia theobromae (cũng gây thối trái, khô cành)."
+        ],
+        "en": [
+          "Fungus Lasiodiplodia theobromae (also causes fruit rot and dieback)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh nhỏ ngay giữa lá; lá vàng nhạt rồi vàng đậm, sau chuyển xám đen.",
+          "Cháy ở đuôi (chóp) lá màu trắng bạc, thường trên lá già.",
+          "Trên vết bệnh cũ có nhiều hạch nấm màu nâu đen."
+        ],
+        "en": [
+          "Small lesion in the middle of the leaf; leaf turns pale then deep yellow, later grey-black.",
+          "Silvery-white scorch at the leaf tip, usually on older leaves.",
+          "Many dark-brown fungal bodies on old lesions."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử lây qua mưa, gió; nấm tồn tại trên tàn dư."
+          ],
+          "en": [
+            "Spores spread by rain and wind; survives on plant debris."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "TREE_RECOVERY"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Cây suy yếu, lá già."
+        ],
+        "en": [
+          "Weakened trees, old leaves."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thu gom lá bệnh; tỉa bỏ cành bệnh nặng; chăm sóc cây khỏe."
+          ],
+          "en": [
+            "Collect diseased leaves; prune heavily affected branches; keep trees vigorous."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_PHOMOPSIS_LEAF_SPOT"
+          },
+          {
+            "id": "DURIAN_ANTHRACNOSE",
+            "distinguishingFeature": {
+              "vn": "Thán thư: cháy nâu đỏ từ mép/chóp có vòng đồng tâm và chấm đen li ti; Lasiodiplodia: chóp lá cháy trắng bạc, hạch nấm nâu đen.",
+              "en": "Anthracnose: red-brown burn from margin/tip with concentric rings and tiny black dots; Lasiodiplodia: silvery-white tip with dark-brown fungal bodies."
+            }
+          },
+          {
+            "id": "DURIAN_SALT_FERTILIZER_INJURY",
+            "distinguishingFeature": {
+              "vn": "Ngộ độc mặn/phân: cháy chóp, mép đồng loạt nhiều cây, không có hạch nấm.",
+              "en": "Salt/fertiliser injury: tip and margin burn on many trees at once, no fungal bodies."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "silvery white leaf tip",
+          "tip scorch on old leaves",
+          "yellow then grey-black leaf",
+          "dark brown fungal bodies",
+          "black pycnidia"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Đặng Thị Kim Uyên và cs. – Nghiên cứu xác định nấm Phomopsis durionis và Lasiodiplodia theobromae gây bệnh cháy lá trên sầu riêng. Tạp chí KHCN Nông nghiệp Việt Nam",
+          "url": "https://tapchi.vaas.vn/vi/tap-chi/nghien-cuu-xac-dinh-nam-phomopsis-durionis-va-lasiodiplodia-theobromae-gay-benh-chay-la"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_ANTHRACNOSE",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh thán thư",
+        "en": "Anthracnose",
+        "scientific": "Colletotrichum zibethinum, Colletotrichum gloeosporioides",
+        "aliasesVn": [
+          "Cháy lá thán thư"
+        ],
+        "aliasesEn": [
+          "Colletotrichum leaf blight"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Colletotrichum zibethinum và Colletotrichum gloeosporioides."
+        ],
+        "en": [
+          "Fungi Colletotrichum zibethinum and Colletotrichum gloeosporioides."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh bắt đầu từ mép lá hoặc chóp lá, lan dần vào phiến lá thành mảng cháy màu nâu đậm đến nâu đỏ.",
+          "Trên vết bệnh có các vòng gợn sóng nâu thẫm tương đối đồng tâm; ranh giới rõ với phần lá xanh.",
+          "Bề mặt vết bệnh có chấm đen li ti (ổ bào tử).",
+          "Thường trên lá già, lá bánh tẻ; nặng thì cháy toàn lá, rụng sớm."
+        ],
+        "en": [
+          "Lesions start at the leaf margin or tip and spread into the blade as dark-brown to red-brown blighted areas.",
+          "Wavy, roughly concentric dark-brown rings on the lesion; sharp border with the green tissue.",
+          "Tiny black dots (spore masses) on the lesion surface.",
+          "Mostly on old and mid-age leaves; severe cases burn whole leaves which drop early."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Nấm tồn tại trên lá bệnh dạng sợi và bào tử; lây qua mưa, gió."
+          ],
+          "en": [
+            "Survives on diseased leaves as mycelium and spores; spread by rain and wind."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "TREE_RECOVERY"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Gây hại quanh năm; nguồn SOFRI ghi nặng ở cây kém phát triển trong mùa nắng hoặc sau thu hoạch, nguồn khác ghi nặng trong mùa mưa dầm.",
+          "Vườn trồng dày, thiếu chăm sóc."
+        ],
+        "en": [
+          "Year-round; SOFRI notes it on weak trees in the dry season or after harvest, other sources note worst in prolonged rainy periods.",
+          "Dense, poorly maintained orchards."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thu gom lá bệnh; tỉa tán thông thoáng; chăm sóc cây khỏe sau thu hoạch."
+          ],
+          "en": [
+            "Collect diseased leaves; open the canopy; keep trees vigorous after harvest."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Chế phẩm Trichoderma asperellum có khả năng ức chế Colletotrichum trên lá (thử nghiệm Thái Lan); xạ khuẩn đang được nghiên cứu."
+          ],
+          "en": [
+            "Trichoderma asperellum formulations inhibited Colletotrichum on leaves (Thai trial); actinomycetes under study."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_LASIODIPLODIA_LEAF_BLIGHT"
+          },
+          {
+            "id": "DURIAN_K_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu kali: cháy chóp/mép lá già không có vòng đồng tâm và chấm đen.",
+              "en": "Potassium deficiency: tip/margin burn on old leaves without concentric rings or black dots."
+            }
+          },
+          {
+            "id": "DURIAN_DIEBACK"
+          }
+        ],
+        "visualKeywords": [
+          "margin blight",
+          "tip blight",
+          "concentric rings",
+          "red-brown lesion",
+          "tiny black dots",
+          "sharp lesion border",
+          "old leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "unverifiedFields": [
+        "affectedPart.FLOWER",
+        "affectedPart.FRUIT"
+      ],
+      "reviewNotes": {
+        "vn": "Bản nháp ghi thán thư hại hoa, trái non và trái lớn; nguồn SOFRI/ĐH Nông Lâm chỉ mô tả trên lá. Chưa đưa hoa/trái vào affectedPart — cần chuyên gia xác nhận.",
+        "en": "The draft listed flowers and fruit; SOFRI/NLU sources describe leaves only. Flower/fruit not included pending expert review."
+      },
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_PINK_DISEASE",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh nấm hồng",
+        "en": "Pink disease",
+        "scientific": "Erythricium salmonicolor (Corticium salmonicolor)"
+      },
+      "nameVnSource": "SOFRI / ĐH Nông Lâm TP.HCM",
+      "affectedPart": {
+        "codes": [
+          "BRANCH",
+          "TRUNK"
+        ],
+        "vn": "Cành, Thân",
+        "en": "Branch, Trunk"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Erythricium salmonicolor (tên cũ Corticium salmonicolor)."
+        ],
+        "en": [
+          "Fungus Erythricium salmonicolor (syn. Corticium salmonicolor)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Ban đầu là các sợi tơ nấm màu trắng mịn trên vỏ cành non hoặc chạc cành.",
+          "Sau đó phát triển thành lớp tơ/mảng phấn màu hồng trên vỏ cành; đôi khi có gai màu hồng mọc từ vết nứt vỏ.",
+          "Vỏ dưới lớp nấm khô, nứt; lá trên cành héo khô từng đốm; cành bệnh nặng khô và chết."
+        ],
+        "en": [
+          "First, fine white mycelial threads on young branch bark or in branch forks.",
+          "Then a pink crust/powdery layer forms on the bark; pink pustules sometimes emerge from bark cracks.",
+          "Bark beneath dries and cracks; leaves on the branch wilt in patches; heavily infected branches dry and die."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử lây qua mưa, gió trong tán."
+          ],
+          "en": [
+            "Spores spread by rain and wind within the canopy."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT",
+          "TREE_RECOVERY"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mưa nhiều, ẩm độ cao.",
+          "Cây trên 4 năm tuổi, cành lá rậm rạp, chạc cành ít ánh sáng."
+        ],
+        "en": [
+          "Heavy rain and high humidity.",
+          "Trees older than 4 years with dense foliage and shaded branch forks."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Phát hiện sớm; cắt bỏ, tiêu hủy cành bệnh nặng.",
+            "Tỉa cành che khuất để ánh sáng vào trong tán."
+          ],
+          "en": [
+            "Detect early; cut out and destroy heavily infected branches.",
+            "Thin shading branches to let light into the canopy."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_ALGAL_SPOT",
+            "distinguishingFeature": {
+              "vn": "Đốm rong trên cành là mảng tơ mịn xanh rêu, giữa đỏ nâu; nấm hồng là lớp hồng phủ quanh cành, cành phía trên khô chết.",
+              "en": "Algal spot on branches is a moss-green velvet patch with red-brown centre; pink disease is a pink crust around the branch with dieback above."
+            }
+          },
+          {
+            "id": "DURIAN_DIEBACK"
+          }
+        ],
+        "visualKeywords": [
+          "pink crust on branch",
+          "white mycelium on bark",
+          "pink pustules",
+          "branch fork infection",
+          "branch dieback",
+          "cracked bark"
+        ]
+      },
+      "verification": "SOURCED",
+      "reviewNotes": {
+        "vn": "Bản nháp đề xuất Bacillus thuringiensis cho nấm hồng — Bt là chế phẩm trừ sâu, không trừ nấm; đã bỏ.",
+        "en": "The draft proposed Bacillus thuringiensis for pink disease — Bt is an insecticide, not a fungicide; removed."
+      },
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Mai Văn Trị, Nguyễn Thị Thu Nga – Quản lý và giảm nhẹ nguy cơ bệnh hại trên vườn sầu riêng trong bối cảnh biến đổi khí hậu. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 135–144",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_ALGAL_SPOT",
+      "category": "DISEASE",
+      "agentType": "ALGA",
+      "names": {
+        "vn": "Bệnh đốm rong",
+        "en": "Algal leaf spot (red rust)",
+        "scientific": "Cephaleuros virescens",
+        "aliasesVn": [
+          "Tảo đỏ",
+          "Rong đỏ"
+        ],
+        "aliasesEn": [
+          "Red rust",
+          "Algal spot"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "BRANCH",
+          "TRUNK"
+        ],
+        "vn": "Lá, Cành, Thân",
+        "en": "Leaf, Branch, Trunk"
+      },
+      "pathogens": {
+        "vn": [
+          "Tảo ký sinh Cephaleuros virescens."
+        ],
+        "en": [
+          "Parasitic alga Cephaleuros virescens."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Trên mặt lá: đốm tròn 3–5 mm hơi nhô lên như lớp nhung mịn, màu xanh xám hoặc đỏ nâu/cam gạch; đốm cũ xám nâu.",
+          "Mặt dưới vết bệnh thấy mô lá hoại và sợi tảo đỏ nâu; nặng thì đốm dày đặc phủ kín mặt lá.",
+          "Thường trên lá trưởng thành; trên thân, cành già trong tán: đốm xanh tròn/bầu dục lớn dần thành mảng tơ mịn xanh rêu, giữa đỏ nâu."
+        ],
+        "en": [
+          "On the upper leaf: round 3–5 mm slightly raised velvety spots, grey-green or red-brown/orange-rust; old spots grey-brown.",
+          "Necrotic tissue and red-brown algal filaments beneath the spot; severe cases cover the leaf with dense spots.",
+          "Usually on mature leaves; on trunk and old inner branches: green round/oval spots growing into moss-green velvety patches with red-brown centres."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử tảo lây qua nước mưa, gió."
+          ],
+          "en": [
+            "Algal spores spread by rain and wind."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT",
+          "TREE_RECOVERY"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ẩm độ cao, vườn thiếu sáng, kém thông thoáng.",
+          "Không vệ sinh cây sau thu hoạch."
+        ],
+        "en": [
+          "High humidity, shaded and poorly ventilated orchards.",
+          "No tree sanitation after harvest."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Cắt tỉa, tiêu hủy cành bệnh; tỉa tán cho nắng chiếu vào trong.",
+            "Rửa cây bằng nước áp lực cao sau thu hoạch."
+          ],
+          "en": [
+            "Prune and destroy infected branches; open the canopy to sunlight.",
+            "Wash trees with high-pressure water after harvest."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân cân đối giúp cây phục hồi ở vườn cằn cỗi."
+          ],
+          "en": [
+            "Balanced fertilisation to restore vigour in depleted orchards."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_PHOMOPSIS_LEAF_SPOT"
+          },
+          {
+            "id": "DURIAN_PINK_DISEASE"
+          }
+        ],
+        "visualKeywords": [
+          "raised velvety spot",
+          "orange rust spot",
+          "red-brown circular spot",
+          "grey-green velvet",
+          "moss-green patch on branch",
+          "upper leaf surface"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Trần Thị Thu Hà (ĐH Nông Lâm TP.HCM) – Tổng quan nấm bệnh gây hại cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 126–134",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_SOOTY_MOLD",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh bồ hóng",
+        "en": "Sooty mould",
+        "scientific": "Capnodium sp. (Capnodium moniliforme), Meliola durionis",
+        "aliasesVn": [
+          "Muội đen"
+        ],
+        "aliasesEn": [
+          "Black mildew"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "FRUIT"
+        ],
+        "vn": "Lá, Trái (vỏ trái)",
+        "en": "Leaf, Fruit (husk)"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm hoại sinh Capnodium sp. phát triển trên mật ngọt do rệp sáp, rầy tiết ra; Meliola durionis (muội đen)."
+        ],
+        "en": [
+          "Saprophytic Capnodium sp. growing on honeydew from mealybugs and psyllids; Meliola durionis (black mildew)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lớp muội màu đen bẩn phủ trên mặt lá, vỏ trái; lau được.",
+          "Thường đi kèm rệp sáp, rầy phấn, kiến."
+        ],
+        "en": [
+          "Dirty black sooty layer on leaf surfaces and fruit husk; can be wiped off.",
+          "Usually accompanied by mealybugs, psyllids and ants."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Thứ cấp, phát sinh trên mật ngọt của côn trùng chích hút."
+          ],
+          "en": [
+            "Secondary, develops on honeydew from sap-sucking insects."
+          ]
+        },
+        "cropStage": [
+          "FLUSHING",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mật số rệp sáp, rầy cao."
+        ],
+        "en": [
+          "High mealybug and psyllid populations."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Quản lý côn trùng chích hút (rệp sáp, rầy) và kiến cộng sinh.",
+            "Phun nước rửa trôi trên trái."
+          ],
+          "en": [
+            "Manage sap-sucking insects (mealybugs, psyllids) and tending ants.",
+            "Wash fruit with water sprays."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_MEALYBUG",
+            "distinguishingFeature": {
+              "vn": "Bồ hóng là hậu quả của rệp sáp/rầy — tìm côn trùng để xử lý gốc rễ.",
+              "en": "Sooty mould results from mealybugs/psyllids — look for the insects."
+            }
+          },
+          {
+            "id": "DURIAN_PSYLLID"
+          }
+        ],
+        "visualKeywords": [
+          "black sooty coating",
+          "wipeable black layer",
+          "honeydew",
+          "ants present",
+          "blackened fruit husk"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Mai Văn Trị, Nguyễn Thị Thu Nga – Quản lý và giảm nhẹ nguy cơ bệnh hại trên vườn sầu riêng trong bối cảnh biến đổi khí hậu. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 135–144",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_ROOT_NEMATODE",
+      "category": "PEST",
+      "agentType": "NEMATODE",
+      "names": {
+        "vn": "Tuyến trùng hại rễ",
+        "en": "Root nematodes",
+        "scientific": "Pratylenchus coffeae, Radopholus duriophilus, Helicotylenchus crenacauda",
+        "aliasesVn": [
+          "Tuyến trùng rễ"
+        ],
+        "aliasesEn": [
+          "Lesion nematode",
+          "Burrowing nematode"
+        ]
+      },
+      "nameVnSource": "ĐH Cần Thơ",
+      "affectedPart": {
+        "codes": [
+          "ROOT",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Rễ, Toàn cây",
+        "en": "Root, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Tuyến trùng nội ký sinh di động Pratylenchus coffeae (phổ biến nhất, mật số cao ở cây 1–3 năm).",
+          "Radopholus duriophilus — mô tả lần đầu từ Tây Nguyên, có thể làm chết cây con và suy tàn vườn.",
+          "Helicotylenchus crenacauda (bán nội ký sinh)."
+        ],
+        "en": [
+          "Migratory endoparasitic Pratylenchus coffeae (most common, high density on 1–3 year-old trees).",
+          "Radopholus duriophilus — first described from the Central Highlands, can kill seedlings and cause orchard decline.",
+          "Helicotylenchus crenacauda (semi-endoparasitic)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Triệu chứng không đặc trưng: cây sinh trưởng kém, đọt chậm phát triển, lá vàng, suy kiệt — cần phân tích mẫu đất và rễ để xác định.",
+          "Rễ bị tổn thương, tạo vết thương mở đường cho Phytophthora, Fusarium xâm nhiễm."
+        ],
+        "en": [
+          "Non-specific: poor growth, slow flushing, yellowing, decline — soil and root analysis needed to confirm.",
+          "Root damage creates wounds that let Phytophthora and Fusarium infect."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây qua đất, nước, cây giống nhiễm tuyến trùng."
+          ],
+          "en": [
+            "Spread through soil, water and infested nursery stock."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nhiệt độ đất 26–30 °C (vòng đời Pratylenchus dưới 1 tháng).",
+          "Vườn trồng lâu năm, tích tụ mật số theo thời gian."
+        ],
+        "en": [
+          "Soil temperature 26–30 °C (Pratylenchus life cycle under one month).",
+          "Long-term orchards accumulating populations over time."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng cây giống sạch tuyến trùng; kiểm tra mẫu đất, rễ trước khi xử lý (ngưỡng tham khảo: Pratylenchus 500–1.000 con/100 ml đất)."
+          ],
+          "en": [
+            "Use nematode-free planting material; test soil and roots before treating (reference threshold: Pratylenchus 500–1,000 per 100 ml soil)."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Tăng phân hữu cơ hoai mục để tăng vi sinh vật đối kháng."
+          ],
+          "en": [
+            "Increase composted organic matter to boost antagonistic microbes."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_ROOT_ROT"
+          },
+          {
+            "id": "DURIAN_ZN_DEFICIENCY"
+          }
+        ],
+        "visualKeywords": [
+          "stunted growth",
+          "slow flushing",
+          "general yellowing",
+          "root lesions",
+          "tree decline"
+        ]
+      },
+      "verification": "SOURCED",
+      "unverifiedFields": [
+        "treatments.nutrition"
+      ],
+      "reviewNotes": {
+        "vn": "Bản nháp ghi rễ sưng u bướu do Meloidogyne. Theo ĐH Cần Thơ (2024), Meloidogyne có mật số rất thấp và chưa có nghiên cứu ghi nhận gây hại trên sầu riêng — đã bỏ triệu chứng u bướu. Bản nháp cũng gộp 'cúc vạn thọ' với Neem/Azadirachtin (hai cây khác nhau) — đã bỏ.",
+        "en": "The draft cited root galls from Meloidogyne. Can Tho University (2024) found Meloidogyne at very low density with no recorded damage on durian — gall symptom removed. The draft also conflated marigold with neem/azadirachtin — removed."
+      },
+      "references": [
+        {
+          "title": "Trần Vũ Phến và cs. (ĐH Cần Thơ) – Một số kết quả nghiên cứu về tuyến trùng hại rễ cây sầu riêng. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 76–88",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_PSYLLID",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rầy phấn (rầy nhảy)",
+        "en": "Durian psyllid",
+        "scientific": "Allocaridara malayensis",
+        "aliasesVn": [
+          "Rầy nhảy",
+          "Rầy trắng"
+        ],
+        "aliasesEn": [
+          "Durian jumping plant louse"
+        ]
+      },
+      "nameVnSource": "Cục BVTV / SOFRI",
+      "affectedPart": {
+        "codes": [
+          "SHOOT",
+          "LEAF"
+        ],
+        "vn": "Đọt / lá non, Lá",
+        "en": "Shoot / young leaves, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Côn trùng chích hút Allocaridara malayensis (Hemiptera: Psyllidae); trưởng thành dài 3–4 mm, màu nâu nhạt, cánh trong suốt."
+        ],
+        "en": [
+          "Sap-sucking insect Allocaridara malayensis (Hemiptera: Psyllidae); adults 3–4 mm, light brown with clear wings."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rầy non tập trung trong lá non còn xếp lại; trưởng thành ở mặt dưới lá non; rầy non di chuyển rất nhanh khi bị động.",
+          "Lá bị hại có chấm nhỏ màu vàng hoặc nâu, quăn queo, biến dạng, không xòe được.",
+          "Nặng: lá khô, rụng hàng loạt, cành phát triển kém, ảnh hưởng ra hoa đậu trái.",
+          "Rầy tiết mật ngọt tạo điều kiện cho nấm bồ hóng."
+        ],
+        "en": [
+          "Nymphs cluster inside folded young leaves; adults on the underside of young leaves; nymphs move fast when disturbed.",
+          "Damaged leaves show small yellow or brown dots, curl, deform and fail to unfold.",
+          "Severe: leaves dry and drop en masse, poor branch growth, reduced flowering and fruit set.",
+          "Honeydew favours sooty mould."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Trứng đẻ thành ổ 12–14 trứng trong mô lá non còn xếp; ấu trùng 5 tuổi."
+          ],
+          "en": [
+            "Eggs laid in batches of 12–14 inside folded young leaf tissue; 5 nymphal instars."
+          ]
+        },
+        "cropStage": [
+          "FLUSHING"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa khô, mùa nắng; mật số rất cao trong các đợt ra đọt non (ĐBSCL khoảng tháng 6–9)."
+        ],
+        "en": [
+          "Dry season; very high density during flushes (Mekong Delta about Jun–Sep)."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Điều khiển cây ra đọt đồng loạt để dễ quản lý.",
+            "Phun nước áp lực cao có chất bám dính; treo bẫy dính màu vàng.",
+            "Vườn thông thoáng; theo dõi giai đoạn ra lộc (ngưỡng tham khảo: >50% chồi có rầy hoặc >20% chồi có trứng)."
+          ],
+          "en": [
+            "Synchronise flushing for easier management.",
+            "High-pressure water sprays with a sticker; hang yellow sticky traps.",
+            "Keep the orchard open; monitor flushes (reference threshold: >50% shoots infested or >20% shoots with eggs)."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bảo tồn thiên địch: ong ký sinh, bọ rùa, bọ mắt vàng (cánh lưới), nhện ăn thịt.",
+            "Chế phẩm nấm Beauveria bassiana, Metarhizium anisopliae."
+          ],
+          "en": [
+            "Conserve natural enemies: parasitoid wasps, ladybirds, lacewings, predatory spiders.",
+            "Beauveria bassiana and Metarhizium anisopliae products."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_LEAFHOPPER",
+            "distinguishingFeature": {
+              "vn": "Rầy xanh: côn trùng màu xanh, lá hoại cháy, cong; rầy phấn: màu nâu nhạt, có sáp/mật ngọt, lá chấm vàng nâu.",
+              "en": "Leafhopper: green insect, leaves necrotic and curled; psyllid: light brown, waxy honeydew, yellow-brown dots on leaves."
+            }
+          },
+          {
+            "id": "DURIAN_RED_MITE"
+          },
+          {
+            "id": "DURIAN_THRIPS"
+          }
+        ],
+        "visualKeywords": [
+          "curled young leaves",
+          "deformed leaves not unfolding",
+          "yellow dots on leaves",
+          "insects inside folded leaves",
+          "mass leaf drop on flush",
+          "honeydew"
+        ]
+      },
+      "verification": "SOURCED",
+      "reviewNotes": {
+        "vn": "Bản nháp mục 'chổi rồng' ghi 'rầy chổng cánh' là môi giới — rầy chổng cánh (Diaphorina citri) hại cây có múi; trên sầu riêng là rầy phấn Allocaridara malayensis.",
+        "en": "The draft 'witches' broom' entry named the citrus psyllid (Diaphorina citri) as vector; the durian psyllid is Allocaridara malayensis."
+      },
+      "references": [
+        {
+          "title": "Cục BVTV – TBKT 01-114:2021/BVTV: Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk (Viện BVTV)",
+          "url": "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
+        },
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_LEAFHOPPER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rầy xanh",
+        "en": "Durian leafhopper",
+        "scientific": "Amrasca spp. (A. biguttula, A. splendens, A. durianae)",
+        "aliasesVn": [
+          "Rầy xanh hai chấm",
+          "Rầy xanh bốn chấm"
+        ],
+        "aliasesEn": [
+          "Green leafhopper"
+        ]
+      },
+      "nameVnSource": "SOFRI / ĐH Cần Thơ",
+      "affectedPart": {
+        "codes": [
+          "SHOOT",
+          "LEAF"
+        ],
+        "vn": "Đọt / lá non, Lá",
+        "en": "Shoot / young leaves, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Rầy xanh Amrasca biguttula (2 chấm), A. splendens (4 chấm) ghi nhận bùng phát ở Bến Tre; A. durianae ở Thái Lan."
+        ],
+        "en": [
+          "Leafhoppers Amrasca biguttula (two-spot), A. splendens (four-spot) outbreaking in Ben Tre; A. durianae in Thailand."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Ấu trùng tập trung trong lá non còn xếp, trưởng thành ở mặt dưới lá.",
+          "Lá bị hại hoại chết, khô, cong, biến dạng; tán lá không phát triển."
+        ],
+        "en": [
+          "Nymphs inside folded young leaves, adults on the leaf underside.",
+          "Damaged leaves become necrotic, dry, curled and deformed; canopy fails to develop."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Rầy di chuyển nhanh, lây từ cây sang cây; có ký chủ phụ đậu bắp, cà tím, cà pháo, bông gòn, cỏ dại."
+          ],
+          "en": [
+            "Mobile, spreads tree to tree; alternate hosts okra, eggplant, Solanum minimum, kapok, weeds."
+          ]
+        },
+        "cropStage": [
+          "FLUSHING"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Thời điểm ít mưa, cây có lá non."
+        ],
+        "en": [
+          "Low-rainfall periods with young leaves present."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Loại bỏ ký chủ phụ (đậu bắp, cà tím, cà pháo, bông gòn) khỏi vườn.",
+            "Tạo vườn thông thoáng; điều khiển ra đọt tập trung."
+          ],
+          "en": [
+            "Remove alternate hosts (okra, eggplant, kapok) from the orchard.",
+            "Open the orchard; synchronise flushing."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bảo tồn thiên địch: nhện, bọ rùa, bọ xít ăn sâu, bọ cánh lưới."
+          ],
+          "en": [
+            "Conserve natural enemies: spiders, ladybirds, predatory bugs, lacewings."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_PSYLLID"
+          },
+          {
+            "id": "DURIAN_THRIPS"
+          }
+        ],
+        "visualKeywords": [
+          "green insects on leaf underside",
+          "curled necrotic young leaves",
+          "leaf edge burn on flush",
+          "deformed new leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Lại Tiến Dũng và cs. (Viện BVTV) – Các loài rầy xanh gây hại trên cây sầu riêng tại Bến Tre và biện pháp phòng chống. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 89–100",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_RED_MITE",
+      "category": "PEST",
+      "agentType": "MITE",
+      "names": {
+        "vn": "Nhện đỏ",
+        "en": "Red mite",
+        "scientific": "Eutetranychus sp. (E. africanus), Oligonychus biharensis, Tetranychus fijiensis",
+        "aliasesEn": [
+          "Spider mite"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "SHOOT",
+          "FLOWER"
+        ],
+        "vn": "Lá, Đọt / lá non, Hoa",
+        "en": "Leaf, Shoot / young leaves, Flower"
+      },
+      "pathogens": {
+        "vn": [
+          "Nhện hại Eutetranychus sp. và một số loài Oligonychus, Tetranychus."
+        ],
+        "en": [
+          "Mites Eutetranychus sp. and some Oligonychus and Tetranychus species."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Nhện ở mặt dưới lá, chỗ khuất; tấn công lá non vừa mở, lá bánh tẻ, đọt non.",
+          "Chấm trắng/vàng li ti trên lá; nhẹ: lá vàng như bị phủ bụi; nặng: lá trắng bạc ('lá bạc'), săn lại, khô cháy, rụng sớm.",
+          "Cây còi cọc; trên bông có thể giảm thụ phấn, đậu trái."
+        ],
+        "en": [
+          "Mites on leaf undersides and sheltered spots; attack newly opened and mid-age leaves and shoots.",
+          "Tiny white/yellow stippling; light: leaves yellowish as if dusty; severe: silvery leaves, puckered, scorched and dropping early.",
+          "Stunted trees; on flowers may reduce pollination and fruit set."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Vòng đời ngắn, sinh sản cao; lây qua gió và tiếp xúc tán."
+          ],
+          "en": [
+            "Short life cycle, high reproduction; spread by wind and canopy contact."
+          ]
+        },
+        "cropStage": [
+          "FLUSHING",
+          "FLOWERING"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Khô nóng, ít hoặc không mưa, nắng kéo dài."
+        ],
+        "en": [
+          "Hot, dry weather with little or no rain."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Tưới phun mưa lên tán, giữ ẩm vườn trong mùa khô.",
+            "Thăm vườn phát hiện sớm khi mật số còn thấp; tỉa tán thông thoáng."
+          ],
+          "en": [
+            "Overhead misting of the canopy; keep the orchard humid in the dry season.",
+            "Scout to detect early while populations are low; open the canopy."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bảo tồn nhện nhỏ bắt mồi và thiên địch khác."
+          ],
+          "en": [
+            "Conserve predatory mites and other natural enemies."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_THRIPS"
+          },
+          {
+            "id": "DURIAN_MG_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Dễ nhầm với thiếu dinh dưỡng hoặc cháy nắng; soi mặt dưới lá bằng kính lúp thấy nhện và trứng.",
+              "en": "Often confused with nutrient deficiency or sun scorch; check leaf underside with a hand lens for mites and eggs."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "fine stippling",
+          "silvery leaves",
+          "dusty yellow leaves",
+          "tiny red mites underside",
+          "leaf bronzing",
+          "dry season damage"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Báo Nông nghiệp và Môi trường (25/05/2026) – Chủ động quản lý nhện đỏ trên sầu riêng mùa nắng nóng",
+          "url": "https://nongnghiepmoitruong.vn/chu-dong-quan-ly-nhen-do-tren-sau-rieng-mua-nang-nong-d812571.html"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_THRIPS",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Bọ trĩ",
+        "en": "Thrips",
+        "scientific": "Scirtothrips dorsalis, Thrips hawaiiensis",
+        "aliasesVn": [
+          "Bù lạch"
+        ],
+        "aliasesEn": [
+          "Chilli thrips"
+        ]
+      },
+      "nameVnSource": "Cục BVTV (chỉ nêu tên)",
+      "affectedPart": {
+        "codes": [
+          "SHOOT",
+          "LEAF",
+          "FLOWER",
+          "FRUIT"
+        ],
+        "vn": "Đọt / lá non, Lá, Hoa, Trái (vỏ trái)",
+        "en": "Shoot / young leaves, Leaf, Flower, Fruit (husk)"
+      },
+      "pathogens": {
+        "vn": [
+          "Côn trùng chích hút rất nhỏ Scirtothrips dorsalis, Thrips hawaiiensis."
+        ],
+        "en": [
+          "Tiny rasping-sucking insects Scirtothrips dorsalis, Thrips hawaiiensis."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá non, đọt non bạc màu, biến dạng; trái non có thể bị nám, méo (suy ra từ cây trồng khác — cần xác nhận trên sầu riêng)."
+        ],
+        "en": [
+          "Young leaves and shoots silvered and deformed; young fruit may be scarred and misshapen (inferred from other crops — needs confirmation on durian)."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bay, lây theo gió."
+          ],
+          "en": [
+            "Flies and drifts with wind."
+          ]
+        },
+        "cropStage": [
+          "FLUSHING",
+          "FLOWERING",
+          "FRUIT_SET"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Khô nóng."
+        ],
+        "en": [
+          "Hot, dry weather."
+        ]
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Bảo tồn thiên địch; chế phẩm Beauveria bassiana, Metarhizium anisopliae (Cục BVTV ghi hiệu quả với nhóm chích hút)."
+          ],
+          "en": [
+            "Conserve natural enemies; Beauveria bassiana and Metarhizium anisopliae products (listed by the PPD for sucking pests)."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_RED_MITE"
+          },
+          {
+            "id": "DURIAN_PSYLLID"
+          }
+        ],
+        "visualKeywords": [
+          "silvered young leaves",
+          "deformed shoots",
+          "scarred young fruit",
+          "tiny elongated insects"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "symptoms",
+        "epidemiology.cropStage"
+      ],
+      "references": [
+        {
+          "title": "Cục BVTV – TBKT 01-114:2021/BVTV: Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk (Viện BVTV)",
+          "url": "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_MEALYBUG",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rệp sáp",
+        "en": "Mealybugs",
+        "scientific": "Ferrisia virgata, Planococcus spp. (P. minor, P. lilacinus)",
+        "aliasesVn": [
+          "Rệp sáp bột",
+          "Rệp sáp hại quả"
+        ],
+        "aliasesEn": [
+          "Striped mealybug",
+          "Fruit mealybug"
+        ]
+      },
+      "nameVnSource": "Cục BVTV / SOFRI",
+      "affectedPart": {
+        "codes": [
+          "FRUIT",
+          "FLOWER",
+          "SHOOT",
+          "LEAF"
+        ],
+        "vn": "Trái (vỏ trái), Hoa, Đọt / lá non, Lá",
+        "en": "Fruit (husk), Flower, Shoot / young leaves, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Rệp sáp bột hai tua dài Ferrisia virgata; rệp sáp hại quả Planococcus spp."
+        ],
+        "en": [
+          "Striped mealybug Ferrisia virgata; fruit mealybugs Planococcus spp."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Ổ rệp phủ bột sáp trắng trên cuống trái, gai trái, chùm hoa, chồi, lá.",
+          "Rệp chích hút làm trái biến dạng, rụng; giảm phẩm chất trái.",
+          "Mật ngọt làm nấm bồ hóng phát triển, vỏ trái đen bẩn; thường có kiến đi kèm."
+        ],
+        "en": [
+          "Colonies covered in white mealy wax on fruit stalks, between husk spines, flower clusters, shoots and leaves.",
+          "Feeding deforms fruit and causes fruit drop; lowers fruit quality.",
+          "Honeydew supports sooty mould, blackening the husk; ants usually present."
+        ]
+      },
+      "variants": [
+        {
+          "id": "DURIAN_MEALYBUG__FERRISIA",
+          "names": {
+            "vn": "Rệp sáp bột hai tua dài",
+            "en": "Striped mealybug",
+            "scientific": "Ferrisia virgata"
+          },
+          "affectedPart": {
+            "codes": [
+              "FRUIT",
+              "FLOWER",
+              "SHOOT",
+              "LEAF"
+            ],
+            "vn": "Trái (vỏ trái), Hoa, Đọt / lá non, Lá",
+            "en": "Fruit (husk), Flower, Shoot / young leaves, Leaf"
+          },
+          "symptoms": {
+            "vn": [
+              "Rệp cái hình oval dài, lưng vồng phủ bột sáp trắng có vằn ngang, nhiều sợi sáp trắng bóng và 2 tua sáp ở đuôi dài khoảng ½ thân; gây hại nặng giai đoạn mang trái."
+            ],
+            "en": [
+              "Female oval-elongate, humped, covered in white banded wax with glassy white filaments and two tail filaments about half the body length; most damaging during fruiting."
+            ]
+          }
+        },
+        {
+          "id": "DURIAN_MEALYBUG__PLANOCOCCUS",
+          "names": {
+            "vn": "Rệp sáp hại quả",
+            "en": "Fruit mealybug",
+            "scientific": "Planococcus spp."
+          },
+          "affectedPart": {
+            "codes": [
+              "FRUIT"
+            ],
+            "vn": "Trái (vỏ trái)",
+            "en": "Fruit (husk)"
+          },
+          "symptoms": {
+            "vn": [
+              "Tấn công vào quả, hút dịch vỏ quả; dịch tiết làm bồ hóng phát triển, vỏ quả bị đen."
+            ],
+            "en": [
+              "Attacks fruit, sucking husk sap; excretions lead to sooty mould and blackened husk."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Kiến cộng sinh tha rệp từ chỗ này sang chỗ khác, cây này sang cây khác."
+          ],
+          "en": [
+            "Tending ants carry mealybugs between feeding sites and trees."
+          ]
+        },
+        "cropStage": [
+          "FLOWERING",
+          "FRUIT_SET",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Giai đoạn ra hoa, đậu trái (tháng 3–8 ở Tây Nguyên); vòng đời 36–48 ngày ở khoảng 24,5 °C.",
+          "Trồng xen cây nhiễm rệp sáp như mãng cầu, chôm chôm."
+        ],
+        "en": [
+          "Flowering and fruit-set stages (Mar–Aug in the Central Highlands); life cycle 36–48 days at about 24.5 °C.",
+          "Intercropping with mealybug hosts such as custard apple and rambutan."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Tỉa bỏ chùm hoa mọc dày, chùm hoa có rệp; tỉa trái non nhiễm nặng.",
+            "Phun nước rửa trôi rệp trên trái.",
+            "Tránh trồng xen cây ký chủ của rệp sáp."
+          ],
+          "en": [
+            "Thin dense flower clusters and those with mealybugs; remove heavily infested young fruit.",
+            "Wash mealybugs off fruit with water sprays.",
+            "Avoid intercropping with mealybug hosts."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bọ rùa Cryptolaemus montrouzieri ăn rệp sáp; bảo tồn thiên địch; sử dụng kiến vàng.",
+            "Chế phẩm Beauveria bassiana + Metarhizium anisopliae."
+          ],
+          "en": [
+            "Ladybird Cryptolaemus montrouzieri preys on mealybugs; conserve natural enemies; weaver ants.",
+            "Beauveria bassiana + Metarhizium anisopliae products."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_SOOTY_MOLD"
+          },
+          {
+            "id": "DURIAN_FRUIT_BORER",
+            "distinguishingFeature": {
+              "vn": "Sâu đục trái có lỗ đục, phân sâu; rệp sáp có ổ sáp trắng trên bề mặt.",
+              "en": "Fruit borer leaves entry holes and frass; mealybugs form white waxy colonies on the surface."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "white waxy insects",
+          "cottony wax on fruit",
+          "wax filaments",
+          "mealybug colony between spines",
+          "ants on fruit",
+          "sooty black husk"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cục BVTV – TBKT 01-114:2021/BVTV: Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk (Viện BVTV)",
+          "url": "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
+        },
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_FRUIT_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu đục trái",
+        "en": "Durian fruit borer",
+        "scientific": "Conogethes punctiferalis",
+        "aliasesVn": [
+          "Sâu đục quả"
+        ],
+        "aliasesEn": [
+          "Yellow peach moth"
+        ]
+      },
+      "nameVnSource": "Cục BVTV",
+      "affectedPart": {
+        "codes": [
+          "FRUIT",
+          "ARIL"
+        ],
+        "vn": "Trái (vỏ trái), Múi / cơm",
+        "en": "Fruit (husk), Aril / flesh"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non của ngài Conogethes punctiferalis (Lepidoptera: Crambidae/Pyralidae); trưởng thành màu vàng, cánh có nhiều đốm đen, sải cánh 16–18 mm."
+        ],
+        "en": [
+          "Larva of the moth Conogethes punctiferalis (Lepidoptera: Crambidae/Pyralidae); adult yellow with many black spots, wingspan 16–18 mm."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lỗ đục trên vỏ trái, thường gần cuống hoặc chỗ hai trái chạm nhau; phân sâu đùn ra ngoài lỗ.",
+          "Sâu non (lúc nhỏ trắng, sau hơi hồng, dài 12–14 mm) đục vào trong ăn cơm quanh hạt làm trái thối và rụng.",
+          "Gây hại từ khi trái bằng ngón tay cái đến trái lớn sắp thu hoạch."
+        ],
+        "en": [
+          "Entry holes in the husk, often near the stalk or where fruits touch; frass extruded from the holes.",
+          "Larvae (white when young, later pinkish, 12–14 mm) tunnel in and eat the aril around the seed, causing rot and fruit drop.",
+          "Attacks from thumb-sized fruit to mature fruit near harvest."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Ngài cái hoạt động ban đêm, đẻ trứng rải rác gần cuống trái non."
+          ],
+          "en": [
+            "Nocturnal females lay eggs singly near the stalk of young fruit."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_SET",
+          "FRUIT_DEVELOPMENT",
+          "HARVEST"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Cao điểm lúc ra hoa hình thành trái (khoảng tháng 3) và trái sắp chín (khoảng tháng 8) ở Tây Nguyên.",
+          "Trái chùm chạm nhau."
+        ],
+        "en": [
+          "Peaks at flowering/fruit formation (about March) and near ripening (about August) in the Central Highlands.",
+          "Clustered, touching fruit."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Tỉa trái chùm; cắt bỏ, tiêu hủy trái bị đục.",
+            "Bao trái; dùng bẫy pheromone giới tính để theo dõi/bắt ngài."
+          ],
+          "en": [
+            "Thin fruit clusters; remove and destroy bored fruit.",
+            "Bag fruit; use sex-pheromone traps for monitoring/mass trapping."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Chế phẩm Bacillus thuringiensis var. kurstaki, virus Granulosis, Beauveria bassiana + Metarhizium anisopliae.",
+            "Kiến vàng giảm tỷ lệ trái bị đục."
+          ],
+          "en": [
+            "Bacillus thuringiensis var. kurstaki, granulosis virus, Beauveria bassiana + Metarhizium anisopliae products.",
+            "Weaver ants reduce bored-fruit rate."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_PHYTOPHTHORA_FRUIT_ROT"
+          },
+          {
+            "id": "DURIAN_MEALYBUG"
+          }
+        ],
+        "visualKeywords": [
+          "bore hole in husk",
+          "frass on fruit",
+          "hole near fruit stalk",
+          "larva inside aril",
+          "rotting bored fruit",
+          "fruit drop"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cục BVTV – TBKT 01-114:2021/BVTV: Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk (Viện BVTV)",
+          "url": "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
+        },
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Châu Nguyễn Quốc Khánh, Nguyễn Tiến Anh, Lê Văn Vàng – Nghiên cứu ứng dụng pheromone giới tính để quản lý sâu đục trái Conogethes punctiferalis trên sầu riêng tại ĐBSCL. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 101–109",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Báo Nông nghiệp và Môi trường – Sử dụng kiến vàng quản lý sâu hại trên cây sầu riêng",
+          "url": "https://nongnghiepmoitruong.vn/su-dung-kien-vang-quan-ly-sau-hai-tren-cay-sau-rieng-d392172.html"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_SHOT_HOLE_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Mọt đục thân, cành",
+        "en": "Shot-hole (ambrosia) borer",
+        "scientific": "Xyleborus spp.",
+        "aliasesVn": [
+          "Mọt đục cành"
+        ],
+        "aliasesEn": [
+          "Ambrosia beetle",
+          "Bark beetle"
+        ]
+      },
+      "nameVnSource": "SOFRI",
+      "affectedPart": {
+        "codes": [
+          "TRUNK",
+          "BRANCH"
+        ],
+        "vn": "Thân, Cành",
+        "en": "Trunk, Branch"
+      },
+      "pathogens": {
+        "vn": [
+          "Bọ cánh cứng Xyleborus spp.; thường mang nấm (Fusarium) và tấn công cây đã suy yếu do Phytophthora."
+        ],
+        "en": [
+          "Beetles Xyleborus spp.; often carry fungi (Fusarium) and attack trees weakened by Phytophthora."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lỗ nhỏ trên vỏ thân, cành (thành trùng cái đục đường ống để đẻ trứng); ấu trùng ăn phần gỗ dưới vỏ.",
+          "Có mùn/phân và nhựa trên vỏ, dưới gốc cây.",
+          "Cây phát triển kém, cành khô; nặng thì cây khô và chết."
+        ],
+        "en": [
+          "Small holes in trunk and branch bark (females bore tunnels to lay eggs); larvae feed on wood under the bark.",
+          "Frass and sap on the bark and at the trunk base.",
+          "Poor growth and branch dieback; heavy infestation kills the tree."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Thành trùng bay giữa các cây; ưu tiên cây suy yếu."
+          ],
+          "en": [
+            "Adults fly between trees; prefer weakened trees."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT",
+          "TREE_RECOVERY"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Cây suy yếu, có vết bệnh xì mủ (vết bệnh thu hút bọ đục)."
+        ],
+        "en": [
+          "Weakened trees with Phytophthora cankers (cankers attract boring beetles)."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thăm vườn phát hiện sớm; quét Bordeaux hoặc vôi quanh gốc cao đến 2 m.",
+            "Cắt, tiêu hủy cành nhiễm; cạo lộ đường đục để xử lý."
+          ],
+          "en": [
+            "Scout for early detection; paint Bordeaux mixture or lime on the trunk up to 2 m.",
+            "Cut and destroy infested branches; scrape open galleries for treatment."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Nấm ký sinh Beauveria bassiana."
+          ],
+          "en": [
+            "Entomopathogenic fungus Beauveria bassiana."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_STEM_BORER",
+            "distinguishingFeature": {
+              "vn": "Xén tóc: lỗ đục lớn, sâu non dài 8–10 cm; mọt: lỗ nhỏ li ti, nhiều lỗ.",
+              "en": "Longhorn borer: large holes, larvae 8–10 cm; shot-hole borer: many tiny holes."
+            }
+          },
+          {
+            "id": "DURIAN_SUDDEN_DEATH"
+          },
+          {
+            "id": "DURIAN_PHYTOPHTHORA_CANKER"
+          }
+        ],
+        "visualKeywords": [
+          "tiny bore holes on bark",
+          "frass powder",
+          "sap at holes",
+          "branch dieback",
+          "pinhead holes"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "O'Gara E., Guest D.I. và cs. (2004) – Phytophthora diseases of durian, and durian-decline syndrome in northern Queensland. ACIAR Monograph 114, ch. 6.6",
+          "url": "https://era.daf.qld.gov.au/id/eprint/10667/"
+        },
+        {
+          "title": "Wikipedia – List of durian diseases and pests",
+          "url": "https://en.wikipedia.org/wiki/List_of_durian_diseases_and_pests"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_STEM_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Xén tóc đục thân",
+        "en": "Longhorn stem borer",
+        "scientific": "Batocera rufomaculata",
+        "aliasesVn": [
+          "Sâu đục thân",
+          "Sâu cạp vỏ"
+        ],
+        "aliasesEn": [
+          "Mango stem borer"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "TRUNK",
+          "BRANCH"
+        ],
+        "vn": "Thân, Cành",
+        "en": "Trunk, Branch"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non của xén tóc Batocera rufomaculata (loài phổ biến nhất trong các xén tóc hại sầu riêng ở Thái Lan)."
+        ],
+        "en": [
+          "Larva of the longhorn beetle Batocera rufomaculata (most prevalent longhorn on durian in Thailand)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Giai đoạn đầu khó thấy; con cái gặm vết lõm nhỏ trên vỏ và đẻ trứng bên dưới.",
+          "Khi sâu non lớn: lỗ đục, nhựa chảy, mùn gỗ/phân sâu đùn ra trên vỏ.",
+          "Sâu non đục từ dưới vỏ vào libe rồi vào lõi gỗ; dài 8–10 cm; cây nhiễm nặng có thể chết."
+        ],
+        "en": [
+          "Early damage is hard to see; females chew a small depression in the bark and lay an egg beneath.",
+          "As larvae grow: holes, sap dripping and frass extruded on the bark.",
+          "Larvae tunnel from under the bark into the phloem then heartwood; 8–10 cm long; heavy infestation can kill trees."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Thành trùng bay, đẻ trứng vào vỏ cây; giai đoạn sâu non khoảng 280 ngày."
+          ],
+          "en": [
+            "Adults fly and oviposit in bark; larval stage about 280 days."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT",
+          "TREE_RECOVERY"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Vườn lâu năm, ít thăm vườn."
+        ],
+        "en": [
+          "Old orchards with little scouting."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Kiểm tra vỏ thân tìm lỗ đục, mùn gỗ; bắt sâu non trong đường đục; cắt bỏ cành bị hại."
+          ],
+          "en": [
+            "Inspect bark for holes and frass; extract larvae from galleries; prune infested branches."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_SHOT_HOLE_BORER"
+          },
+          {
+            "id": "DURIAN_PHYTOPHTHORA_CANKER"
+          }
+        ],
+        "visualKeywords": [
+          "large bore hole",
+          "frass extruded from trunk",
+          "sap dripping from hole",
+          "large larva in wood",
+          "girdled branch"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "names.vn",
+        "epidemiology.cropStage"
+      ],
+      "reviewNotes": {
+        "vn": "Nguồn chính là nghiên cứu ở Thái Lan; SOFRI chỉ nêu tên 'sâu cạp vỏ, thân', 'sâu đục cành'. Cần chuyên gia xác nhận loài phổ biến ở Việt Nam.",
+        "en": "Main source is a Thai study; SOFRI only lists 'bark/stem borer' and 'branch borer'. Species in Vietnam needs expert confirmation."
+      },
+      "references": [
+        {
+          "title": "Sudhi-Aromna S. và cs. (2008) – Studies on the biology and infestation of stem borer, Batocera rufomaculata, in durian. Acta Hortic. 787",
+          "url": "https://ishs.org/ishs-article/787_41/"
+        },
+        {
+          "title": "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 66–75",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_ARIL_DISORDER",
+      "category": "DISORDER",
+      "agentType": "ABIOTIC",
+      "names": {
+        "vn": "Rối loạn sinh lý trái (sượng cơm, cháy múi)",
+        "en": "Fruit physiological disorders (hard flesh, tip burn)",
+        "aliasesVn": [
+          "Sượng cơm",
+          "Sượng trái",
+          "Cháy múi",
+          "Ướt múi",
+          "Lõi ướt",
+          "Chín không đều"
+        ],
+        "aliasesEn": [
+          "Hard flesh",
+          "Watery aril",
+          "Wet core",
+          "Tip burn",
+          "Uneven ripening"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "ARIL",
+          "FRUIT"
+        ],
+        "vn": "Múi / cơm, Trái (vỏ trái)",
+        "en": "Aril / flesh, Fruit (husk)"
+      },
+      "pathogens": {
+        "vn": [
+          "Không do vi sinh vật; do mất cân đối dinh dưỡng và ẩm độ đất trong giai đoạn nuôi trái."
+        ],
+        "en": [
+          "Not caused by a pathogen; due to nutrient imbalance and soil moisture during fruit development."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Chỉ thấy khi bổ trái: một phần hoặc nhiều múi bất thường so với múi bình thường.",
+          "Cơm cứng, không chín (sượng), có hoặc không đổi màu.",
+          "Cơm nhão, ướt nước; lõi trái ướt.",
+          "Đầu múi bị cháy nâu (cháy múi); trái chín không đều, giảm màu, mùi vị."
+        ],
+        "en": [
+          "Seen only when the fruit is opened: some or many arils abnormal compared with normal arils.",
+          "Hard, unripened flesh, with or without discoloration.",
+          "Watery aril; wet core.",
+          "Browned aril tips (tip burn); uneven ripening, poorer colour and flavour."
+        ]
+      },
+      "variants": [
+        {
+          "id": "DURIAN_ARIL_DISORDER__HARD_FLESH",
+          "names": {
+            "vn": "Sượng cơm",
+            "en": "Hard flesh"
+          },
+          "affectedPart": {
+            "codes": [
+              "ARIL"
+            ],
+            "vn": "Múi / cơm",
+            "en": "Aril / flesh"
+          },
+          "symptoms": {
+            "vn": [
+              "Cơm cứng, không mềm khi chín, có hoặc không đổi màu."
+            ],
+            "en": [
+              "Aril stays hard when ripe, with or without discoloration."
+            ]
+          }
+        },
+        {
+          "id": "DURIAN_ARIL_DISORDER__WATERY",
+          "names": {
+            "vn": "Ướt múi, lõi ướt",
+            "en": "Watery aril / wet core"
+          },
+          "affectedPart": {
+            "codes": [
+              "ARIL"
+            ],
+            "vn": "Múi / cơm",
+            "en": "Aril / flesh"
+          },
+          "symptoms": {
+            "vn": [
+              "Cơm nhão nước hoặc lõi trái ướt."
+            ],
+            "en": [
+              "Watery aril or wet fruit core."
+            ]
+          }
+        },
+        {
+          "id": "DURIAN_ARIL_DISORDER__TIP_BURN",
+          "names": {
+            "vn": "Cháy múi",
+            "en": "Tip burn"
+          },
+          "affectedPart": {
+            "codes": [
+              "ARIL"
+            ],
+            "vn": "Múi / cơm",
+            "en": "Aril / flesh"
+          },
+          "symptoms": {
+            "vn": [
+              "Đầu múi chuyển nâu như bị cháy."
+            ],
+            "en": [
+              "Aril tips turn brown as if burnt."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_DEVELOPMENT",
+          "HARVEST"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Cây ra đọt non trong giai đoạn mang trái (thường do thừa đạm).",
+          "Ẩm độ đất cao trước thu hoạch (mưa nhiều); giảm ẩm độ đất 1 tháng trước thu hoạch làm giảm tỷ lệ rối loạn.",
+          "Thiếu K và Ca trong lá (khảo sát ĐBSCL: khoảng 50% mẫu lá thiếu K, Ca); thiếu lân dễ tiêu trong đất."
+        ],
+        "en": [
+          "Vegetative flushing during the fruit-bearing stage (often from excess nitrogen).",
+          "High soil moisture before harvest (heavy rain); lowering soil moisture a month before harvest reduces the disorder rate.",
+          "Low leaf K and Ca (Mekong Delta survey: about 50% of leaf samples deficient); low soil available P."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Phủ bạt nilon (ủ bạt) quanh gốc để kiểm soát ẩm độ đất khi mưa lớn giai đoạn nuôi trái.",
+            "Hạn chế cây ra đọt khi đang nuôi trái."
+          ],
+          "en": [
+            "Plastic mulching under the canopy to control soil moisture during heavy rain in fruit development.",
+            "Prevent flushing while fruit are developing."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Kết hợp phân hữu cơ (khoảng 5 tấn/ha/vụ, bón 15 ngày sau đậu trái) với phân bón lá (phun 40, 60, 80 ngày sau đậu trái) giảm tỷ lệ rối loạn >85% so với đối chứng (ĐH Cần Thơ, 2022–2024).",
+            "Bổ sung K, Ca (ví dụ phân polyhalite); tránh bón đạm cao giai đoạn nuôi trái."
+          ],
+          "en": [
+            "Organic manure (about 5 t/ha/season, 15 days after fruit set) combined with foliar fertiliser (40, 60, 80 days after fruit set) cut the disorder rate by >85% versus control (Can Tho University, 2022–2024).",
+            "Supply K and Ca (e.g. polyhalite); avoid high nitrogen during fruit development."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_FRUIT_BORER",
+            "distinguishingFeature": {
+              "vn": "Sâu đục: có lỗ đục trên vỏ, sâu non, phân trong múi; rối loạn sinh lý không có lỗ đục.",
+              "en": "Fruit borer: husk holes, larvae and frass in the aril; physiological disorders have no holes."
+            }
+          },
+          {
+            "id": "DURIAN_PHYTOPHTHORA_FRUIT_ROT",
+            "distinguishingFeature": {
+              "vn": "Thối Phytophthora có vết thối trên vỏ lan vào trong, mùi hôi; rối loạn sinh lý vỏ bình thường.",
+              "en": "Phytophthora rot shows husk lesions extending inward with foul smell; disorders have a normal husk."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "hard aril",
+          "unripe flesh",
+          "watery aril",
+          "wet core",
+          "brown aril tip",
+          "uneven ripening",
+          "normal husk"
+        ]
+      },
+      "verification": "SOURCED",
+      "unverifiedFields": [
+        "names.vn",
+        "variants[].names.vn"
+      ],
+      "reviewNotes": {
+        "vn": "Bản nháp ghi 'dư Clo từ KCl' và 'mưa 60–80 ngày sau đậu trái' là nguyên nhân — chưa tìm thấy nguồn khoa học xác nhận, chưa đưa vào. Tên tiếng Việt từng dạng rối loạn là đề xuất.",
+        "en": "The draft cited chloride from KCl and rain at 60–80 days after fruit set as causes — no scientific source found, not included. Vietnamese names per disorder type are proposals."
+      },
+      "references": [
+        {
+          "title": "Le Van Dang và cs. (ĐH Cần Thơ, 2025) – Combining organic and foliar fertilization to mitigate physiological disorders of durian fruit. Plants 14(8): 1185 (CC BY 4.0)",
+          "url": "https://doi.org/10.3390/plants14081185"
+        },
+        {
+          "title": "Trần Văn Hâu và cs. (2023) – Durian. In: Tropical and Subtropical Fruit Crops, CRC Press, pp. 161–200",
+          "url": "https://doi.org/10.1201/9781003305033"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_SALT_FERTILIZER_INJURY",
+      "category": "DISORDER",
+      "agentType": "ABIOTIC",
+      "names": {
+        "vn": "Cháy lá do mặn, ngộ độc phân bón",
+        "en": "Salt and fertiliser injury",
+        "aliasesVn": [
+          "Cháy đầu lá",
+          "Cháy mép lá",
+          "Nhiễm mặn",
+          "Cháy phân"
+        ],
+        "aliasesEn": [
+          "Salinity injury",
+          "Fertiliser burn",
+          "Leaf tip burn"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "FLOWER",
+          "FRUIT",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Lá, Hoa, Trái (vỏ trái), Toàn cây",
+        "en": "Leaf, Flower, Fruit (husk), Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Không do vi sinh vật: nước tưới nhiễm mặn, bón phân quá liều, đất phèn/chua."
+        ],
+        "en": [
+          "Not caused by a pathogen: saline irrigation water, fertiliser overdose, acid-sulphate/acid soils."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây bị kìm hãm sinh trưởng; lá héo, đổi màu.",
+          "Cháy chóp lá và mép lá, lan dần vào phiến lá; lá giòn, rụng.",
+          "Rụng lá, rụng hoa hàng loạt; cây suy kiệt; nặng thì héo, rụng gần hết lá, chết cây.",
+          "Trái teo, khô nứt, rụng dần.",
+          "Xuất hiện đồng loạt trên nhiều cây cùng lúc, không có dấu hiệu nấm."
+        ],
+        "en": [
+          "Growth is suppressed; leaves wilt and discolour.",
+          "Leaf tips and margins scorch, spreading inward; leaves brittle and drop.",
+          "Mass leaf and flower drop; tree exhausted; severe cases wilt, lose most leaves and die.",
+          "Fruit shrivel, crack and drop.",
+          "Appears on many trees at once, without fungal signs."
+        ]
+      },
+      "variants": [
+        {
+          "id": "DURIAN_SALT_FERTILIZER_INJURY__SALINITY",
+          "names": {
+            "vn": "Nhiễm mặn",
+            "en": "Salinity injury"
+          },
+          "affectedPart": {
+            "codes": [
+              "LEAF",
+              "FLOWER",
+              "FRUIT",
+              "WHOLE_PLANT"
+            ],
+            "vn": "Lá, Hoa, Trái (vỏ trái), Toàn cây",
+            "en": "Leaf, Flower, Fruit (husk), Whole plant"
+          },
+          "symptoms": {
+            "vn": [
+              "Sau đợt hạn mặn hoặc tưới nước nhiễm mặn: cháy lá, rụng lá, rụng hoa, trái teo nứt."
+            ],
+            "en": [
+              "After drought/salt intrusion or saline irrigation: leaf scorch, leaf and flower drop, shrivelled cracked fruit."
+            ]
+          }
+        },
+        {
+          "id": "DURIAN_SALT_FERTILIZER_INJURY__FERTILIZER",
+          "names": {
+            "vn": "Cháy do phân bón",
+            "en": "Fertiliser burn"
+          },
+          "affectedPart": {
+            "codes": [
+              "LEAF",
+              "ROOT"
+            ],
+            "vn": "Lá, Rễ",
+            "en": "Leaf, Root"
+          },
+          "symptoms": {
+            "vn": [
+              "Sau khi bón/tưới phân đậm đặc: cháy chóp, mép lá; rễ tơ bị cháy."
+            ],
+            "en": [
+              "After heavy fertiliser application: tip and margin burn; feeder roots burnt."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "FLOWERING",
+          "FRUIT_SET",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Hạn mặn mùa khô (ĐBSCL); sầu riêng chỉ chịu được độ mặn dưới khoảng 1‰.",
+          "Bón phân hóa học quá liều; đất chua phèn."
+        ],
+        "en": [
+          "Dry-season drought and salt intrusion (Mekong Delta); durian tolerates salinity only below about 1 g/L.",
+          "Chemical fertiliser overdose; acid-sulphate soils."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Đo độ mặn nước trước khi tưới; trữ nước ngọt mùa khô.",
+            "Sau mặn: tưới nước ngọt liên tục 3–5 ngày để rửa muối, sau đó bón vôi (CaO) theo hình chiếu tán và tưới để đẩy Natri.",
+            "Cây hại nặng: chăm sóc như giai đoạn kiến thiết, không để trái; tỉa cành chết, tỉa bớt trái."
+          ],
+          "en": [
+            "Measure water salinity before irrigating; store fresh water for the dry season.",
+            "After salt injury: irrigate with fresh water for 3–5 days to leach salts, then apply lime (CaO) under the canopy and water in to displace sodium.",
+            "Severely affected trees: manage as non-bearing young trees to rebuild the canopy; prune dead wood and thin fruit."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Tưới chế phẩm sinh học, axit humic/fulvic kích thích ra rễ mới."
+          ],
+          "en": [
+            "Apply biological products and humic/fulvic acids to stimulate new roots."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Ngưng bón phân hóa học cho đến khi cây phục hồi rễ."
+          ],
+          "en": [
+            "Stop chemical fertilisers until roots recover."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_K_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu kali tiến triển chậm trên lá già; mặn/phân xảy ra đột ngột sau đợt mặn hoặc bón phân.",
+              "en": "K deficiency develops slowly on old leaves; salt/fertiliser injury appears suddenly after salt intrusion or fertilising."
+            }
+          },
+          {
+            "id": "DURIAN_LASIODIPLODIA_LEAF_BLIGHT"
+          },
+          {
+            "id": "DURIAN_RED_MITE"
+          }
+        ],
+        "visualKeywords": [
+          "leaf tip burn",
+          "leaf margin scorch",
+          "brittle leaves",
+          "mass leaf drop",
+          "orchard-wide symptoms",
+          "no fungal signs"
+        ]
+      },
+      "verification": "SOURCED",
+      "unverifiedFields": [
+        "variants[1]",
+        "favorableConditions.vn[1]",
+        "symptoms.vn[2]",
+        "symptoms.vn[4]"
+      ],
+      "reviewNotes": {
+        "vn": "Phần nhiễm mặn có nguồn SOFRI; phần ngộ độc phân bón, đất phèn và triệu chứng mép lá giòn, cây đồng loạt lấy từ bản nháp — cần chuyên gia xác nhận.",
+        "en": "Salinity part is sourced from SOFRI; fertiliser burn, acid-sulphate soil, brittle margins and orchard-wide pattern come from the draft — needs expert confirmation."
+      },
+      "references": [
+        {
+          "title": "Nguyễn Văn Sơn và cs. (SOFRI) – Biện pháp kỹ thuật giúp phục hồi vườn sầu riêng sau hạn mặn. Kỷ yếu Hội thảo \"Giải pháp quản lý sức khỏe cây sầu riêng theo hướng an toàn và bền vững\", ĐH Cần Thơ – SOFRI, 03/5/2024, tr. 61–65",
+          "url": "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
+        },
+        {
+          "title": "Báo Thế giới & Việt Nam / TTXVN (11/06/2020) – Giải pháp phục hồi vườn cây ăn trái sau hạn mặn",
+          "url": "https://baoquocte.vn/bien-doi-khi-hau-giai-phap-phuc-hoi-vuon-cay-an-trai-sau-han-man-117300.html"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_K_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu Kali",
+        "en": "Potassium deficiency",
+        "aliasesVn": [
+          "Thiếu K"
+        ],
+        "aliasesEn": [
+          "K deficiency"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "FRUIT",
+          "ARIL"
+        ],
+        "vn": "Lá, Trái (vỏ trái), Múi / cơm",
+        "en": "Leaf, Fruit (husk), Aril / flesh"
+      },
+      "pathogens": {
+        "vn": [
+          "Thiếu Kali (K)."
+        ],
+        "en": [
+          "Potassium (K) deficiency."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Bắt đầu ở lá già: chóp và mép lá vàng (vàng cam) rồi chuyển nâu xám, khô cháy dần vào trong; lá rụng nhiều.",
+          "Trái nhỏ, phát triển không đều; liên quan đến tỷ lệ rối loạn sinh lý cơm (sượng, cháy múi)."
+        ],
+        "en": [
+          "Starts on old leaves: tips and margins turn yellow (yellow-orange) then grey-brown, scorching inward; heavy leaf drop.",
+          "Small, uneven fruit; linked to aril physiological disorders (hard flesh, tip burn)."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Cây nuôi trái nặng; khảo sát ĐBSCL: khoảng 50% mẫu lá thiếu K và Ca."
+        ],
+        "en": [
+          "Heavy fruit load; Mekong Delta survey: about 50% of leaf samples deficient in K and Ca."
+        ]
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Phân tích lá/đất để xác nhận; bổ sung Kali (ưu tiên Kali sulphate) và phân hữu cơ."
+          ],
+          "en": [
+            "Confirm with leaf/soil analysis; supply potassium (sulphate form preferred) and organic manure."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_SALT_FERTILIZER_INJURY"
+          },
+          {
+            "id": "DURIAN_ANTHRACNOSE"
+          },
+          {
+            "id": "DURIAN_MG_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu Mg: vàng giữa các gân lá già, gân còn xanh; thiếu K: cháy chóp và mép.",
+              "en": "Mg deficiency: interveinal yellowing of old leaves with green veins; K deficiency: tip and margin scorch."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "old leaf margin scorch",
+          "yellow-orange leaf edge",
+          "tip burn on old leaves",
+          "small uneven fruit"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "symptoms"
+      ],
+      "reviewNotes": {
+        "vn": "Triệu chứng lá lấy từ trang khuyến nông/doanh nghiệp, chưa có tài liệu khoa học mô tả riêng cho sầu riêng; liên hệ K–Ca với rối loạn sinh lý trái có nguồn khoa học.",
+        "en": "Leaf symptoms come from extension/commercial pages; no peer-reviewed durian-specific description. The K–Ca link to aril disorders is peer-reviewed."
+      },
+      "references": [
+        {
+          "title": "Le Van Dang và cs. (ĐH Cần Thơ, 2025) – Combining organic and foliar fertilization to mitigate physiological disorders of durian fruit. Plants 14(8): 1185 (CC BY 4.0)",
+          "url": "https://doi.org/10.3390/plants14081185"
+        },
+        {
+          "title": "Digidrone (trang doanh nghiệp) – Triệu chứng thiếu dinh dưỡng trên cây sầu riêng",
+          "url": "https://digidrone.vn/trieu-chung-thieu-dinh-duong-tren-cay-sau-rieng/"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_MG_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu Magie",
+        "en": "Magnesium deficiency",
+        "aliasesVn": [
+          "Thiếu Mg"
+        ],
+        "aliasesEn": [
+          "Mg deficiency"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Thiếu Magie (Mg) — cùng với S là dinh dưỡng thiếu nhiều nhất trong lá sầu riêng ĐBSCL (DRIS)."
+        ],
+        "en": [
+          "Magnesium (Mg) deficiency — with S, the most deficient nutrient in Mekong Delta durian leaves (DRIS)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Bắt đầu ở lá già: vàng xen giữa các gân lá, có thể thành vùng hình chữ V ngược ở phía cuống lá; nặng lá khô giòn, rụng."
+        ],
+        "en": [
+          "Starts on old leaves: interveinal yellowing, possibly an inverted-V zone toward the petiole; severe leaves become brittle and drop."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "FLOWERING",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất phù sa ĐBSCL; bón nhiều Kali cản trở hấp thu Mg và Ca."
+        ],
+        "en": [
+          "Mekong Delta alluvial soils; heavy potassium application reduces Mg and Ca uptake."
+        ]
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Phân tích lá để xác nhận; bổ sung Mg (ví dụ Magie sulphate), cân đối K–Ca–Mg."
+          ],
+          "en": [
+            "Confirm with leaf analysis; supply Mg (e.g. magnesium sulphate) and balance K–Ca–Mg."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_K_DEFICIENCY"
+          },
+          {
+            "id": "DURIAN_ROOT_ROT",
+            "distinguishingFeature": {
+              "vn": "Thối rễ làm vàng cả gân lá và cây héo; thiếu Mg gân còn xanh.",
+              "en": "Root rot yellows veins too and causes wilting; Mg deficiency keeps veins green."
+            }
+          },
+          {
+            "id": "DURIAN_RED_MITE"
+          }
+        ],
+        "visualKeywords": [
+          "interveinal chlorosis",
+          "old leaf yellowing",
+          "green veins",
+          "inverted V yellow zone"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "symptoms"
+      ],
+      "reviewNotes": {
+        "vn": "Các trang khuyến nông mô tả triệu chứng thiếu Mg mâu thuẫn nhau (vàng từ rìa vào / từ gân ra / chữ V ngược). Cần chuyên gia xác nhận.",
+        "en": "Extension pages describe Mg deficiency inconsistently (from margin inward / from midrib outward / inverted V). Needs expert confirmation."
+      },
+      "references": [
+        {
+          "title": "Ngoc N.P. và cs. (2024) – DRIS diagnosis of leaf nutrients of durian on alluvial soils in the Vietnamese Mekong Delta. Horticulturae 10(6): 561",
+          "url": "https://doi.org/10.3390/horticulturae10060561"
+        },
+        {
+          "title": "Digidrone (trang doanh nghiệp) – Triệu chứng thiếu dinh dưỡng trên cây sầu riêng",
+          "url": "https://digidrone.vn/trieu-chung-thieu-dinh-duong-tren-cay-sau-rieng/"
+        }
+      ]
+    },
+    {
+      "id": "DURIAN_ZN_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu Kẽm",
+        "en": "Zinc deficiency",
+        "aliasesVn": [
+          "Thiếu Zn"
+        ],
+        "aliasesEn": [
+          "Zn deficiency",
+          "Little leaf"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "SHOOT",
+          "LEAF"
+        ],
+        "vn": "Đọt / lá non, Lá",
+        "en": "Shoot / young leaves, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Thiếu Kẽm (Zn)."
+        ],
+        "en": [
+          "Zinc (Zn) deficiency."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá non và lá thứ 2–3 từ đỉnh chuyển xanh nhạt hoặc vàng, có đốm trắng bạc giữa lá; thịt lá vàng, gân còn xanh.",
+          "Lá mới nhỏ, biến dạng, mọc sát nhau (lóng ngắn); cây còi cọc, chồi non có thể chết khô."
+        ],
+        "en": [
+          "Young leaves and the 2nd–3rd leaves from the tip turn pale green or yellow with silvery-white spots; interveinal yellowing with green veins.",
+          "New leaves small, distorted and crowded (short internodes); stunted tree, young shoots may die back."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FLUSHING"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất nghèo vi lượng, pH cao hoặc bón nhiều lân."
+        ],
+        "en": [
+          "Micronutrient-poor soils, high pH or heavy phosphorus use."
+        ]
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Phân tích lá để xác nhận; phun phân bón lá chứa Zn vào đợt đọt non; bón cân đối."
+          ],
+          "en": [
+            "Confirm with leaf analysis; foliar Zn on new flushes; balanced fertilisation."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "DURIAN_PSYLLID",
+            "distinguishingFeature": {
+              "vn": "Rầy phấn làm lá non quăn, có côn trùng trong lá xếp; thiếu Zn lá nhỏ, mọc chùm, không có côn trùng.",
+              "en": "Psyllids curl young leaves and are found inside folded leaves; Zn deficiency gives small crowded leaves without insects."
+            }
+          },
+          {
+            "id": "DURIAN_ROOT_NEMATODE"
+          },
+          {
+            "id": "DURIAN_MG_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu Mg xuất hiện trên lá già; thiếu Zn trên lá non.",
+              "en": "Mg deficiency shows on old leaves; Zn deficiency on young leaves."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "small leaves",
+          "rosetting",
+          "crowded new leaves",
+          "interveinal chlorosis young leaves",
+          "silvery spots",
+          "short internodes"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "symptoms",
+        "favorableConditions"
+      ],
+      "reviewNotes": {
+        "vn": "Triệu chứng lấy từ trang khuyến nông tổng hợp (Xuân Nông, Digidrone), chưa có tài liệu khoa học riêng cho sầu riêng.",
+        "en": "Symptoms from compiled extension pages (Xuan Nong, Digidrone); no peer-reviewed durian-specific source."
+      },
+      "references": [
+        {
+          "title": "Xuân Nông (sưu tầm) – Triệu chứng thiếu kẽm trên sầu riêng và khắc phục",
+          "url": "https://xuannong.vn/ky-thuat-trong/trieu-chung-thieu-kem-tren-sau-rieng-va-khac-phuc.html"
+        },
+        {
+          "title": "Digidrone (trang doanh nghiệp) – Triệu chứng thiếu dinh dưỡng trên cây sầu riêng",
+          "url": "https://digidrone.vn/trieu-chung-thieu-dinh-duong-tren-cay-sau-rieng/"
+        }
+      ]
+    }
+  ]
+}
