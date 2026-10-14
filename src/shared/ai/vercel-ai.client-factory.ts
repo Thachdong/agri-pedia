@@ -61,8 +61,20 @@ export class VercelAiClient implements IAiClient {
         timeout: input.timeoutMs,
         maxRetries: 0,
       });
+      // TEMP (diagnosis test): expose token usage to scripts/diagnose-test.ts.
+      (globalThis as any).__aiUsage?.push({
+        model: input.model,
+        system: input.system,
+        usage: result.usage,
+      });
       return { output: result.output, raw: parseRaw(result.text) };
     } catch (error) {
+      (globalThis as any).__aiUsage?.push({
+        model: input.model,
+        system: input.system,
+        error: error instanceof Error ? error.message : String(error),
+        usage: NoObjectGeneratedError.isInstance(error) ? error.usage : null,
+      });
       if (NoObjectGeneratedError.isInstance(error)) {
         throw new AiGenerationError(
           EAiErrorKind.INVALID_OUTPUT,

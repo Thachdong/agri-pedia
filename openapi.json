@@ -2466,6 +2466,481 @@
           }
         ]
       }
+    },
+    "/knowledge/crops": {
+      "get": {
+        "operationId": "KnowledgeController_crops",
+        "summary": "List crops supported by diagnosis (public)",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCropsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Knowledge"
+        ]
+      }
+    },
+    "/knowledge/diseases": {
+      "get": {
+        "operationId": "KnowledgeController_diseases",
+        "summary": "List diseases of a crop, by Vietnamese name (public)",
+        "description": "Filter by category; `q` matches Vietnamese/English names and aliases, ignoring case and diacritics. No pagination (~50 per crop).",
+        "parameters": [
+          {
+            "name": "crop",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "pattern": "^[A-Z0-9_]{1,50}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "DISEASE",
+                "PEST",
+                "DISORDER"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 100,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListDiseasesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Knowledge"
+        ]
+      }
+    },
+    "/knowledge/diseases/{code}": {
+      "get": {
+        "operationId": "KnowledgeController_disease",
+        "summary": "Get the Vietnamese detail of a disease (public)",
+        "description": "No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet.",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "pattern": "^[A-Z0-9_]{1,100}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiseaseDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_DISEASE_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Knowledge"
+        ]
+      }
+    },
+    "/diagnoses": {
+      "post": {
+        "operationId": "DiagnosisController_create",
+        "summary": "Send plant photos for disease diagnosis (processed in background)",
+        "description": "multipart/form-data: `images` = 1..5 files (jpg/png/webp, <= DIAGNOSIS_MAX_IMAGE_BYTES each; format checked by content), `meta` = JSON string `{ cropType, images: [{ plantPart }], note? }` with one entry per file in the same order. Answers 202 with status PROCESSING; the result comes via realtime `diagnosis.completed` { id, status } or by polling GET /diagnoses/{diagnosisId}. Daily limit per user: DIAGNOSIS_DAILY_LIMIT (Vietnam day).",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "images",
+                  "meta"
+                ],
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "1..5 photos"
+                  },
+                  "meta": {
+                    "type": "string",
+                    "description": "JSON: { \"cropType\": \"RICE\", \"images\": [{ \"plantPart\": \"LEAF\" }], \"note\": \"...\" }; plantPart: LEAF | SHEATH | STEM | PANICLE | ROOT | WHOLE_PLANT"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDiagnosisResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: DIAGNOSIS_CROP_NOT_SUPPORTED, DIAGNOSIS_INVALID_IMAGE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "DIAGNOSIS_USER_NOT_ALLOWED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "DIAGNOSIS_DAILY_LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "DiagnosisController_listMine",
+        "summary": "List my diagnoses, newest first",
+        "description": "Cursor pagination. `thumbnail` = signed URL of the first stored image; `diseases` empty while PROCESSING or when FAILED.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListMyDiagnosesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: DIAGNOSIS_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/diagnoses/{diagnosisId}": {
+      "get": {
+        "operationId": "DiagnosisController_get",
+        "summary": "Get one of my diagnoses with per-image results",
+        "description": "While PROCESSING: `summary` null, image `status` null, `regions` empty. Region `box` is 0..1 on the stored (EXIF-rotated) image at `url`; `diagnosis` null = uncertain region. Use `diseaseCode` with GET /knowledge/diseases/{code}. Another user's diagnosis answers 404.",
+        "parameters": [
+          {
+            "name": "diagnosisId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDiagnosisResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "DIAGNOSIS_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/diagnoses/{diagnosisId}/feedback": {
+      "post": {
+        "operationId": "DiagnosisController_feedback",
+        "summary": "Give feedback on a completed diagnosis (overwrites)",
+        "description": "Empty body (null) on success.",
+        "parameters": [
+          {
+            "name": "diagnosisId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitDiagnosisFeedbackDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "DIAGNOSIS_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "DIAGNOSIS_NOT_COMPLETED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -4265,6 +4740,828 @@
         "required": [
           "messages",
           "nextCursor"
+        ]
+      },
+      "CropItemResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "nameVi"
+        ]
+      },
+      "ListCropsResponse": {
+        "type": "object",
+        "properties": {
+          "crops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CropItemResponse"
+            }
+          }
+        },
+        "required": [
+          "crops"
+        ]
+      },
+      "DiseaseItemResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "nameEn": {
+            "type": "string"
+          },
+          "scientificName": {
+            "type": "string",
+            "nullable": true
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "DISEASE",
+              "PEST",
+              "DISORDER"
+            ]
+          },
+          "agentType": {
+            "type": "string",
+            "enum": [
+              "FUNGUS",
+              "BACTERIA",
+              "VIRUS",
+              "NEMATODE",
+              "INSECT",
+              "MITE",
+              "MOLLUSC",
+              "VERTEBRATE",
+              "NUTRIENT",
+              "ABIOTIC",
+              "COMPLEX",
+              "UNKNOWN"
+            ]
+          },
+          "affectedParts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "LEAF",
+                "SHEATH",
+                "STEM",
+                "PANICLE",
+                "ROOT",
+                "WHOLE_PLANT"
+              ]
+            }
+          },
+          "verification": {
+            "type": "string",
+            "enum": [
+              "SOURCED",
+              "GEMINI_REVIEWED",
+              "GEMINI_ONLY"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "nameVi",
+          "nameEn",
+          "scientificName",
+          "aliases",
+          "category",
+          "agentType",
+          "affectedParts",
+          "verification"
+        ]
+      },
+      "ListDiseasesResponse": {
+        "type": "object",
+        "properties": {
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiseaseItemResponse"
+            }
+          }
+        },
+        "required": [
+          "diseases"
+        ]
+      },
+      "DiseaseVariantResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "affectedParts": {
+            "type": "string"
+          },
+          "symptoms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "affectedParts",
+          "symptoms"
+        ]
+      },
+      "DiseaseTreatmentsResponse": {
+        "type": "object",
+        "properties": {
+          "cultural": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "biological": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "nutrition": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "cultural",
+          "biological",
+          "nutrition"
+        ]
+      },
+      "SimilarDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "distinguishingFeature": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "distinguishingFeature"
+        ]
+      },
+      "DiseaseReferenceResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "url"
+        ]
+      },
+      "DiseaseDetailResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "nameEn": {
+            "type": "string"
+          },
+          "scientificName": {
+            "type": "string",
+            "nullable": true
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "DISEASE",
+              "PEST",
+              "DISORDER"
+            ]
+          },
+          "agentType": {
+            "type": "string",
+            "enum": [
+              "FUNGUS",
+              "BACTERIA",
+              "VIRUS",
+              "NEMATODE",
+              "INSECT",
+              "MITE",
+              "MOLLUSC",
+              "VERTEBRATE",
+              "NUTRIENT",
+              "ABIOTIC",
+              "COMPLEX",
+              "UNKNOWN"
+            ]
+          },
+          "affectedParts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "LEAF",
+                "SHEATH",
+                "STEM",
+                "PANICLE",
+                "ROOT",
+                "WHOLE_PLANT"
+              ]
+            }
+          },
+          "pathogens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "symptoms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiseaseVariantResponse"
+            }
+          },
+          "transmissionMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cropStages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "SEEDLING",
+                "TILLERING",
+                "BOOTING",
+                "HEADING",
+                "MILK",
+                "MATURITY"
+              ]
+            }
+          },
+          "favorableConditions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "treatments": {
+            "$ref": "#/components/schemas/DiseaseTreatmentsResponse"
+          },
+          "similarDiseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SimilarDiseaseResponse"
+            }
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiseaseReferenceResponse"
+            }
+          },
+          "verification": {
+            "type": "string",
+            "enum": [
+              "SOURCED",
+              "GEMINI_REVIEWED",
+              "GEMINI_ONLY"
+            ]
+          },
+          "kbVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "nameVi",
+          "nameEn",
+          "scientificName",
+          "aliases",
+          "category",
+          "agentType",
+          "affectedParts",
+          "pathogens",
+          "symptoms",
+          "variants",
+          "transmissionMode",
+          "cropStages",
+          "favorableConditions",
+          "treatments",
+          "similarDiseases",
+          "references",
+          "verification",
+          "kbVersion"
+        ]
+      },
+      "CreateDiagnosisResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROCESSING",
+              "COMPLETED",
+              "FAILED"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ]
+      },
+      "DiagnosisListDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "confidenceLevel": {
+            "type": "string",
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ]
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "diseaseName",
+          "confidenceLevel"
+        ]
+      },
+      "DiagnosisListItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROCESSING",
+              "COMPLETED",
+              "FAILED"
+            ]
+          },
+          "cropType": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisListDiseaseResponse"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "cropType",
+          "thumbnail",
+          "diseases",
+          "createdAt"
+        ]
+      },
+      "ListMyDiagnosesResponse": {
+        "type": "object",
+        "properties": {
+          "diagnoses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisListItemResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "diagnoses",
+          "nextCursor"
+        ]
+      },
+      "DiagnosisConfidenceResponse": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "string",
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ]
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "level",
+          "score"
+        ]
+      },
+      "DiagnosisSummaryDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "category": {
+            "type": "object"
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
+          },
+          "imageCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "diseaseName",
+          "category",
+          "confidence",
+          "imageCount"
+        ]
+      },
+      "DiagnosisSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "hasDisease": {
+            "type": "boolean"
+          },
+          "conflict": {
+            "type": "boolean"
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisSummaryDiseaseResponse"
+            }
+          }
+        },
+        "required": [
+          "hasDisease",
+          "conflict",
+          "diseases"
+        ]
+      },
+      "DiagnosisImageDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "object"
+          },
+          "diseaseCode": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string",
+            "nullable": true
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
+          }
+        },
+        "required": [
+          "category",
+          "diseaseCode",
+          "variantCode",
+          "diseaseName",
+          "variantName",
+          "confidence"
+        ]
+      },
+      "DiagnosisBoxResponse": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "w": {
+            "type": "number"
+          },
+          "h": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "w",
+          "h"
+        ]
+      },
+      "DiagnosedDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string",
+            "nullable": true
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "variantCode",
+          "diseaseName",
+          "variantName",
+          "confidence"
+        ]
+      },
+      "DiagnosisRegionResponse": {
+        "type": "object",
+        "properties": {
+          "box": {
+            "$ref": "#/components/schemas/DiagnosisBoxResponse"
+          },
+          "symptom": {
+            "type": "string"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "diagnosis": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiagnosedDiseaseResponse"
+              }
+            ]
+          }
+        },
+        "required": [
+          "box",
+          "symptom",
+          "features",
+          "diagnosis"
+        ]
+      },
+      "DiagnosisImageResponse": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "mediaId": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "plantPart": {
+            "type": "string",
+            "enum": [
+              "LEAF",
+              "SHEATH",
+              "STEM",
+              "PANICLE",
+              "ROOT",
+              "WHOLE_PLANT"
+            ]
+          },
+          "detectedPart": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "LEAF",
+              "SHEATH",
+              "STEM",
+              "PANICLE",
+              "ROOT",
+              "WHOLE_PLANT"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "DISEASED",
+              "HEALTHY",
+              "UNCERTAIN",
+              "NOT_TARGET_CROP",
+              "LOW_QUALITY"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisImageDiseaseResponse"
+            }
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisRegionResponse"
+            }
+          }
+        },
+        "required": [
+          "index",
+          "mediaId",
+          "url",
+          "plantPart",
+          "detectedPart",
+          "status",
+          "message",
+          "diseases",
+          "regions"
+        ]
+      },
+      "GetDiagnosisResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROCESSING",
+              "COMPLETED",
+              "FAILED"
+            ]
+          },
+          "cropType": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "summary": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiagnosisSummaryResponse"
+              }
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisImageResponse"
+            }
+          },
+          "userFeedback": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "CORRECT",
+              "WRONG",
+              "UNSURE"
+            ]
+          },
+          "disclaimer": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "completedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "cropType",
+          "note",
+          "summary",
+          "images",
+          "userFeedback",
+          "disclaimer",
+          "createdAt",
+          "completedAt"
+        ]
+      },
+      "SubmitDiagnosisFeedbackDto": {
+        "type": "object",
+        "properties": {
+          "feedback": {
+            "type": "string",
+            "enum": [
+              "CORRECT",
+              "WRONG",
+              "UNSURE"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "feedback"
         ]
       }
     }

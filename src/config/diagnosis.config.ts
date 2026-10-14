@@ -6,9 +6,9 @@ const diagnosisConfigSchema = z.object({
   provider: z.enum(['GEMINI']).default('GEMINI'),
   apiKey: z.string().min(1),
   /** Model for B1 (describe: regions + observations). */
-  describeModel: z.string().min(1).default('gemini-3-flash-preview'),
+  describeModel: z.string().min(1).default('gemini-3.1-flash-lite'),
   /** Model for B3 (verify: pick one candidate per region). */
-  verifyModel: z.string().min(1).default('gemini-3-flash-preview'),
+  verifyModel: z.string().min(1).default('gemini-3.1-flash-lite'),
   /** Timeout of each AI request. */
   timeoutMs: z.coerce.number().int().positive().default(60000),
   /** Concurrent AI requests per process. */
