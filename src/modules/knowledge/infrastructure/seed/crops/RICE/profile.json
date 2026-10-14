@@ -94,7 +94,7 @@
         "LARGE_GT_10MM",
         "UNSURE"
       ],
-      "descriptionEn": "lesion size, estimated from leaf width (about 8-12 mm)"
+      "descriptionEn": "lesion size, estimated from a leaf width of about 8-12 mm"
     },
     "distribution": {
       "level": "region",

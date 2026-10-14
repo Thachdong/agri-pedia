@@ -30,11 +30,17 @@ export class KnowledgeQueryService implements IKnowledgeQueryPort {
   ): Promise<TKnowledgeDiagnosisCrop | null> {
     const crop = await this.knowledge.findCrop(cropType);
     if (!crop) return null;
-    const diseases = await this.knowledge.listDiseasesByCrop(cropType);
     return {
       code: crop.code,
+      nameEn: crop.nameEn,
       enabled: crop.enabled,
-      kbVersion: diseases[0]?.kbVersion ?? '',
+      kbVersion: crop.kbVersion,
+      plantParts: crop.plantParts.map((part) => ({
+        code: part.code,
+        promptEn: part.promptEn,
+      })),
+      features: crop.features,
+      prompt: { ...crop.prompt },
     };
   }
 

@@ -12,7 +12,6 @@ import {
 } from '../src/modules/diagnosis/application/use-cases';
 import { DIAGNOSIS_REPOSITORY } from '../src/modules/diagnosis/application/ports';
 import { EPlantPart } from '../src/modules/diagnosis/domain';
-import { DESCRIBE_SYSTEM_PROMPT } from '../src/modules/diagnosis/infrastructure/vision/prompts/describe.prompt';
 
 const [imagePath, reportPath, cropType = 'RICE', plantPart = 'LEAF'] =
   process.argv.slice(2);
@@ -79,7 +78,7 @@ async function main(): Promise<void> {
       'Token usage (every AI call, in order; includes retries)',
       usages.map(({ system, ...call }) => ({
         step:
-          system === DESCRIBE_SYSTEM_PROMPT
+          system.startsWith('You are a careful field observer')
             ? 'AI_1 (B1 describe)'
             : 'AI_2 (B3 verify)',
         ...call,

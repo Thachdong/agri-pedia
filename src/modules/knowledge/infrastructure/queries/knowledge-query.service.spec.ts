@@ -66,12 +66,17 @@ describe('KnowledgeQueryService', () => {
     service = new KnowledgeQueryService(knowledge);
   });
 
-  it('finds a crop with its status and KB version', async () => {
+  it('finds a crop with its status, KB version and diagnosis configuration', async () => {
     expect(await service.findDiagnosisCrop('RICE')).toEqual({
       code: 'RICE',
+      nameEn: 'rice',
       enabled: true,
       kbVersion: '2026-10-12',
+      plantParts: [{ code: 'LEAF', promptEn: 'leaf' }],
+      features: buildCrop().features,
+      prompt: { subjectEn: 'rice plants', wholeImageCuesEn: 'stunting' },
     });
+    expect((await service.findDiagnosisCrop('CORN'))?.enabled).toBe(false);
     expect(await service.findDiagnosisCrop('WHEAT')).toBeNull();
   });
 

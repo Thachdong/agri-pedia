@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   IKnowledgeQueryPort,
   KNOWLEDGE_QUERY_PORT,
+  TKnowledgeDiagnosisCrop,
 } from '@modules/knowledge/contracts';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
@@ -62,7 +63,7 @@ export function startOfLocalDay(now: Date): Date {
 }
 
 /**
- * Checks the request, normalizes the images, records a PROCESSING diagnosis and starts the
+ * Checks the request (plant parts must belong to the crop), normalizes the images, records a PROCESSING diagnosis and starts the
  * pipeline in the background with the normalized images; returns without waiting for it.
  */
 @Injectable()
@@ -93,7 +94,7 @@ export class CreateDiagnosisUseCase {
       throw new DiagnosisCropNotSupportedException(input.cropType);
     }
 
-    this.checkFiles(input, maxImageBytes);
+    this.checkFiles(input, maxImageBytes, crop);
     const normalized = await this.normalizeAll(input.files);
 
     const since = startOfLocalDay(new Date());
@@ -106,7 +107,7 @@ export class CreateDiagnosisUseCase {
         userId: input.userId,
         cropType: input.cropType,
         note: input.note,
-        ...this.vision.info(),
+        ...this.vision.info(crop),
         kbVersion: crop.kbVersion,
         plantParts: input.plantParts,
       });
@@ -121,6 +122,7 @@ export class CreateDiagnosisUseCase {
   private checkFiles(
     input: TCreateDiagnosisInput,
     maxImageBytes: number,
+    crop: TKnowledgeDiagnosisCrop,
   ): void {
     const count = input.files.length;
     if (count < MIN_DIAGNOSIS_IMAGES || count > MAX_DIAGNOSIS_IMAGES) {
@@ -138,6 +140,21 @@ export class CreateDiagnosisUseCase {
           reason: `Got ${count} images but ${input.plantParts.length} plant parts`,
         },
       ]);
+    }
+    const cropParts = crop.plantParts.map((part) => part.code);
+    const wrongPart: TInvalidImage[] = input.plantParts.flatMap(
+      (plantPart, index) =>
+        cropParts.includes(plantPart)
+          ? []
+          : [
+              {
+                index,
+                reason: `plantPart ${plantPart} is not a part of crop ${crop.code}`,
+              },
+            ],
+    );
+    if (wrongPart.length > 0) {
+      throw new DiagnosisInvalidImageException(wrongPart);
     }
     const tooLarge: TInvalidImage[] = input.files.flatMap((file, index) =>
       file.length > maxImageBytes

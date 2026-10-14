@@ -1,9 +1,11 @@
+import { TKnowledgeDiagnosisCrop } from '@modules/knowledge/contracts';
 import { TVerifyInput } from '../../../application/ports';
 
-export const VERIFY_PROMPT_VERSION = 'v1';
+export const VERIFY_PROMPT_VERSION = 'v2';
 
-/** Fixed (cacheable); everything that varies per image is in the user message. */
-export const VERIFY_SYSTEM_PROMPT = `You are a rice plant health specialist checking candidate diagnoses for regions of one photo.
+/** Fixed per crop (cacheable); everything that varies per image is in the user message. */
+export function buildVerifySystemPrompt(crop: TKnowledgeDiagnosisCrop): string {
+  return `You are a plant health specialist for ${crop.prompt.subjectEn}, checking candidate diagnoses for regions of one photo.
 
 You receive:
 - a downscaled photo of the whole plant, for context;
@@ -17,6 +19,7 @@ For each region given, answer one entry with the same regionIndex:
 - selfConfidence: HIGH when typical features are clearly visible and the other candidates are ruled out; MEDIUM when it fits but some features are unclear; LOW when it is a weak guess.
 
 Judge only from what is visible in the crops and the photo. Use the "distinguish from" notes to separate similar candidates.`;
+}
 
 /** Text part of the user message; the images follow as labelled parts. */
 export function buildVerifyUserMessage(input: TVerifyInput): string {

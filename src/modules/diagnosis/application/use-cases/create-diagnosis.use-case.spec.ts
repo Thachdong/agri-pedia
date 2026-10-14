@@ -11,6 +11,7 @@ import {
   EPlantPart,
 } from '../../domain';
 import {
+  buildDiagnosisCrop,
   FakeImageProcessor,
   FakeVisionDiagnosisProvider,
   InMemoryDiagnosisJobRunner,
@@ -68,7 +69,7 @@ describe('CreateDiagnosisUseCase', () => {
     } as unknown as IUserQueryPort;
     const knowledgeQuery = {
       findDiagnosisCrop: async (code: string) =>
-        crop ? { code, enabled: crop.enabled, kbVersion: '2026-10-12' } : null,
+        crop ? buildDiagnosisCrop({ code, enabled: crop.enabled }) : null,
     } as unknown as IKnowledgeQueryPort;
     useCase = new CreateDiagnosisUseCase(
       diagnoses,
@@ -93,7 +94,7 @@ describe('CreateDiagnosisUseCase', () => {
       note: 'lá vàng',
       provider: 'GEMINI',
       model: 'describe-model+verify-model',
-      promptVersion: 'd1+v1',
+      promptVersion: 'd+v/RICE@2026-10-12',
       kbVersion: '2026-10-12',
     });
     expect(saved?.images.map((i) => i.plantPart)).toEqual([
@@ -137,6 +138,18 @@ describe('CreateDiagnosisUseCase', () => {
     await expect(
       useCase.execute(input({ plantParts: [EPlantPart.LEAF] })),
     ).rejects.toBeInstanceOf(DiagnosisInvalidImageException);
+  });
+
+  it('rejects plant parts that are not parts of the crop, by index', async () => {
+    const error = await useCase
+      .execute(input({ plantParts: [EPlantPart.LEAF, EPlantPart.FRUIT] }))
+      .catch((e) => e);
+
+    expect(error).toBeInstanceOf(DiagnosisInvalidImageException);
+    expect(error.details.images).toEqual([
+      { index: 1, reason: 'plantPart FRUIT is not a part of crop RICE' },
+    ]);
+    expect(jobs.jobs).toHaveLength(0);
   });
 
   it('reports too large and unreadable images by index', async () => {

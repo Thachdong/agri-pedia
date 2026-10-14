@@ -1,3 +1,4 @@
+import { TKnowledgeDiagnosisCrop } from '@modules/knowledge/contracts';
 import {
   IVisionDiagnosisProvider,
   TDescribeInput,
@@ -22,11 +23,11 @@ export class FakeVisionDiagnosisProvider implements IVisionDiagnosisProvider {
   >();
   private readonly verifyAnswers = new Map<string, TAnswer<TVerifyOutput>[]>();
 
-  info(): TVisionProviderInfo {
+  info(crop: TKnowledgeDiagnosisCrop): TVisionProviderInfo {
     return {
       provider: 'GEMINI',
       model: 'describe-model+verify-model',
-      promptVersion: 'd1+v1',
+      promptVersion: `d+v/${crop.code}@${crop.kbVersion}`,
     };
   }
 

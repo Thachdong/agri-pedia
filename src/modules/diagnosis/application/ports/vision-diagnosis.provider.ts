@@ -1,4 +1,7 @@
-import { TKnowledgeDiseaseCard } from '@modules/knowledge/contracts';
+import {
+  TKnowledgeDiagnosisCrop,
+  TKnowledgeDiseaseCard,
+} from '@modules/knowledge/contracts';
 import {
   EPlantPart,
   TDescribeResult,
@@ -12,14 +15,15 @@ export type TVisionProviderInfo = {
   provider: string;
   /** `<describe model>+<verify model>`. */
   model: string;
-  /** `<describe prompt>+<verify prompt>`, e.g. `d1+v1`. */
+  /** `<describe prompt>+<verify prompt>/<crop>@<kbVersion>`, e.g. `d2+v2/RICE@2026-10-12`. */
   promptVersion: string;
 };
 
 /** B1 input: one image. */
 export type TDescribeInput = {
   image: TProcessedImage;
-  cropType: string;
+  /** Crop the photo should show; its features and parts shape the output. */
+  crop: TKnowledgeDiagnosisCrop;
   /** Part chosen by the user; only a hint. */
   plantPart: EPlantPart | null;
   maxRegions: number;
@@ -33,6 +37,7 @@ export type TDescribeOutput = {
 
 /** B3 input: one image with the crops of its regions that have candidates. */
 export type TVerifyInput = {
+  crop: TKnowledgeDiagnosisCrop;
   /** Downscaled whole image, for context. */
   thumbnail: TProcessedImage;
   regions: Array<{
@@ -55,7 +60,8 @@ export type TVerifyOutput = {
 
 /** AI vision steps; each call is one request. Throws on provider error, timeout or invalid output. */
 export interface IVisionDiagnosisProvider {
-  info(): TVisionProviderInfo;
+  /** Provider, models and prompt version used for photos of `crop`. */
+  info(crop: TKnowledgeDiagnosisCrop): TVisionProviderInfo;
   /** B1: regions + observations of one image; never a diagnosis. */
   describe(input: TDescribeInput): Promise<TDescribeOutput>;
   /** B3: per region, one of its candidate codes or NONE. */

@@ -17,6 +17,7 @@ import {
   TDescribeResult,
 } from '../../domain';
 import {
+  buildDiagnosisCrop,
   FakeImageProcessor,
   FakeVisionDiagnosisProvider,
   InMemoryDiagnosisRepository,
@@ -92,8 +93,11 @@ describe('ProcessDiagnosisUseCase', () => {
   let eventBus: InMemoryEventBus;
   let candidateRequests: TFindCandidatesInput[];
   let diagnosis: Diagnosis;
+  let cropFound: boolean;
 
   const knowledgeQuery = {
+    findDiagnosisCrop: async (code: string) =>
+      cropFound ? buildDiagnosisCrop({ code }) : null,
     findCandidates: async (input: TFindCandidatesInput) => {
       candidateRequests.push(input);
       return input.regions.map((region) =>
@@ -150,6 +154,7 @@ describe('ProcessDiagnosisUseCase', () => {
     realtime = new InMemoryRealtimePublisher();
     eventBus = new InMemoryEventBus();
     candidateRequests = [];
+    cropFound = true;
     diagnosis = Diagnosis.create({
       userId: 'u1',
       cropType: 'RICE',
@@ -214,6 +219,13 @@ describe('ProcessDiagnosisUseCase', () => {
       wholeImage: { discoloration: 'NONE' },
       limit: 3,
     });
+    // B1 and B3 got the crop configuration
+    expect(vision.describeRequests[0]).toMatchObject({
+      crop: { code: 'RICE' },
+      plantPart: EPlantPart.LEAF,
+      maxRegions: 5,
+    });
+    expect(vision.verifyRequests[0].crop.code).toBe('RICE');
     // B3 got the thumbnail, the crop and the cards
     expect(vision.verifyRequests[0].thumbnail.data.toString()).toBe('thumb:a');
     expect(vision.verifyRequests[0].regions[0]).toMatchObject({
@@ -284,6 +296,51 @@ describe('ProcessDiagnosisUseCase', () => {
       confidence: null,
     });
     expect(diagnosis.images[0].regions[0].candidates).toHaveLength(2);
+  });
+
+  it('ignores a detected part that is not a part of the crop, scoring on the user hint', async () => {
+    vision.onDescribe('a', described({ detectedPart: 'FRUIT', regions: [] }));
+    vision.onDescribe('b', described({ regions: [] }));
+
+    await run();
+
+    expect(diagnosis.images[0].detectedPart).toBeNull();
+    expect(diagnosis.images[1].detectedPart).toBe(EPlantPart.LEAF);
+  });
+
+  it("adds a whole-image region from the crop's features when the whole image looks abnormal", async () => {
+    vision.onDescribe(
+      'a',
+      described({ regions: [], wholeImage: { plantForm: 'STUNTED' } }),
+    );
+    vision.onDescribe('b', described({ regions: [] }));
+
+    await run();
+
+    expect(candidateRequests).toHaveLength(1);
+    expect(candidateRequests[0]).toMatchObject({
+      part: 'LEAF',
+      wholeImage: { plantForm: 'STUNTED' },
+      regions: [
+        { lesionShape: 'NO_DISTINCT_LESION', distribution: 'WHOLE_ORGAN' },
+      ],
+    });
+    expect(diagnosis.images[0].status).toBe(EDiagnosisImageStatus.UNCERTAIN);
+    expect(diagnosis.images[1].status).toBe(EDiagnosisImageStatus.HEALTHY);
+  });
+
+  it('fails the diagnosis without calling the AI when the crop is gone', async () => {
+    cropFound = false;
+
+    const result = await run();
+
+    expect(result.status).toBe(EDiagnosisStatus.FAILED);
+    expect(diagnosis.failureReason).toBe('Crop RICE not found');
+    expect(vision.describeRequests).toHaveLength(0);
+    expect(realtime.emitted[0].payload).toEqual({
+      id: diagnosis.id,
+      status: EDiagnosisStatus.FAILED,
+    });
   });
 
   it('fails the diagnosis when every image fails at the AI', async () => {

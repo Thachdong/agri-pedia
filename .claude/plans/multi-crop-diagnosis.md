@@ -12,12 +12,12 @@ Ngoài phạm vi: client (client chỉ gửi mã cây `cropType`, đã có trong
 - [x] 3. [use-case]           SeedKnowledgeBase: snapshot nhiều cây (kbVersion theo cây), KNOWLEDGE_ENABLED_CROPS ghi đè enabled; ListCrops trả plantParts/cropStages, sắp theo sortOrder
 - [x] 4. [persistence]        migration `knowledge-crops-config` (crops: name_en, kb_version, sort_order, config jsonb); mapper; replaceKnowledgeBase tắt cây không còn trong seed
 - [x] 5. [persistence]        seed loader JsonKnowledgeBaseSource đọc `seed/crops/*/` + các kiểm tra mục 4.3; crop pack RICE (crop.json mới, chuyển diseases/profile, profile thêm normal/descriptionEn/hintsEn chuyển từ prompt B1, scenarios.json); đổi specs/profile.json → specs/profiles/RICE.json; test "lúa không đổi điểm B2" + golden test theo cây
-- [ ] 6. [query-port]         IKnowledgeQueryPort.findDiagnosisCrop trả nameEn, plantParts, features, prompt; TKnowledgePlantPart → string; bỏ KNOWLEDGE_OBSERVATION_FEATURES
+- [x] 6. [query-port]         IKnowledgeQueryPort.findDiagnosisCrop trả nameEn, plantParts, features, prompt; TKnowledgePlantPart → string; bỏ KNOWLEDGE_OBSERVATION_FEATURES
 
 ## Module diagnosis
-- [ ] 7. [domain-model]       EPlantPart mở rộng (giống knowledge); isWholeImageAbnormal / wholeImageRegion theo `features` của cây (`normal`), lúa cho kết quả như cũ
-- [ ] 8. [use-case]           CreateDiagnosis: plantPart phải thuộc crop.plantParts (DIAGNOSIS_INVALID_IMAGE), promptVersion `d2+v2/<CROP>@<kbVersion>`; ProcessDiagnosis: lấy cấu hình cây 1 lần / ca, detectedPart theo crop.plantParts, truyền crop vào TDescribeInput / TVerifyInput
-- [ ] 9. [adapter]            AiVisionProvider: buildDescribeOutputSchema(crop) cache theo cropType@kbVersion; prompt B1/B3 template chung (d2/v2) sinh phần riêng từ crop + features (không có skill riêng — làm theo quy ước infrastructure)
+- [x] 7. [domain-model]       EPlantPart mở rộng (giống knowledge); isWholeImageAbnormal / wholeImageRegion theo `features` của cây (`normal`), lúa cho kết quả như cũ
+- [x] 8. [use-case]           CreateDiagnosis: plantPart phải thuộc crop.plantParts (DIAGNOSIS_INVALID_IMAGE), promptVersion `d2+v2/<CROP>@<kbVersion>`; ProcessDiagnosis: lấy cấu hình cây 1 lần / ca, detectedPart theo crop.plantParts, truyền crop vào TDescribeInput / TVerifyInput
+- [x] 9. [adapter]            AiVisionProvider: buildDescribeOutputSchema(crop) cache theo cropType@kbVersion; prompt B1/B3 template chung (d2/v2) sinh phần riêng từ crop + features (không có skill riêng — làm theo quy ước infrastructure)
 
 ## Sầu riêng (dữ liệu)
 - [ ] 10. [seed-data]         crop pack DURIAN (`enabled: false`): diseases.json từ Design/desease-detection/Duriant-KB, profile-durian.json + normal/descriptionEn/hintsEn, crop.json, scenarios.json (22 tình huống); đổi specs/profile-durian*.json → specs/profiles/DURIAN*.json

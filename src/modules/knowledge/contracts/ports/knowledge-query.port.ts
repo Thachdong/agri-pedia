@@ -1,20 +1,33 @@
-import { TKnowledgeObservation } from './observation-features';
+import {
+  TKnowledgeObservation,
+  TKnowledgeObservationFeatures,
+} from './observation-features';
 
-export type TKnowledgePlantPart =
-  'LEAF' | 'SHEATH' | 'STEM' | 'PANICLE' | 'ROOT' | 'WHOLE_PLANT';
-
+/** Crop with what a diagnosis needs to describe and score its photos. */
 export type TKnowledgeDiagnosisCrop = {
   code: string;
+  /** e.g. `durian`. */
+  nameEn: string;
   /** Supported by diagnosis. */
   enabled: boolean;
-  /** KB version of the crop's diseases, e.g. `2026-10-12`. */
+  /** KB version of the crop's diseases and profile, e.g. `2026-10-12`. */
   kbVersion: string;
+  /** Parts a photo of this crop may show (plant part codes) and their name in a vision prompt. */
+  plantParts: Array<{ code: string; promptEn: string }>;
+  /** Observation enums of the crop. */
+  features: TKnowledgeObservationFeatures;
+  prompt: {
+    /** e.g. `durian trees (Durio zibethinus)`. */
+    subjectEn: string;
+    /** Whole-plant symptoms worth reporting without a distinct lesion. */
+    wholeImageCuesEn: string;
+  };
 };
 
 export type TFindCandidatesInput = {
   cropType: string;
-  /** Plant part to filter by; null = any part. */
-  part: TKnowledgePlantPart | null;
+  /** Plant part code (one of the crop's) to filter by; null = any part. */
+  part: string | null;
   /** Whole-image observations, added to every region. */
   wholeImage: TKnowledgeObservation;
   regions: TKnowledgeObservation[];
@@ -51,7 +64,7 @@ export type TKnowledgeDiseaseName = {
 };
 
 export interface IKnowledgeQueryPort {
-  /** Crop with its diagnosis status; null when unknown. */
+  /** Crop with its diagnosis status and configuration (enabled or not); null when unknown. */
   findDiagnosisCrop(cropType: string): Promise<TKnowledgeDiagnosisCrop | null>;
   /**
    * Top candidates per region (same order as `regions`), scored on region + whole-image observations;

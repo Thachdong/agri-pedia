@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   IKnowledgeQueryPort,
   KNOWLEDGE_QUERY_PORT,
-  TKnowledgePlantPart,
+  TKnowledgeDiagnosisCrop,
 } from '@modules/knowledge/contracts';
 import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import {
@@ -70,12 +70,11 @@ type TImageOutcome = {
   aiFailed: boolean;
 };
 
-const PLANT_PARTS = Object.values(EPlantPart) as string[];
-
 /**
- * Background pipeline of one diagnosis: per image (in parallel) B1 describe -> prepare regions ->
+ * Background pipeline of one diagnosis, with the crop's configuration (features, parts, prompts):
+ * per image (in parallel) B1 describe -> prepare regions ->
  * B2 knowledge candidates -> B3 verify -> B4 confidence; then stores the images, completes
- * (or fails when every image failed at the AI), asks media to record the stored images
+ * (or fails when every image failed at the AI, or the crop is gone), asks media to record the stored images
  * (`diagnosis.images.stored`) and notifies the owner in realtime.
  */
 @Injectable()
@@ -109,15 +108,21 @@ export class ProcessDiagnosisUseCase {
       return { status: null, storedFiles: [] };
     }
 
-    const outcomes = await Promise.all(
-      diagnosis.images.map((image) =>
-        this.processImage(
-          diagnosis,
-          job.images[image.sortOrder],
-          image.plantPart,
-        ),
-      ),
+    const crop = await this.knowledgeQuery.findDiagnosisCrop(
+      diagnosis.cropType,
     );
+    const outcomes = crop
+      ? await Promise.all(
+          diagnosis.images.map((image) =>
+            this.processImage(
+              diagnosis,
+              crop,
+              job.images[image.sortOrder],
+              image.plantPart,
+            ),
+          ),
+        )
+      : [];
     const storedFiles = await this.storeImages(diagnosis.id, job.images);
 
     const finished = await this.unitOfWork.runInTransaction(async () => {
@@ -130,7 +135,9 @@ export class ProcessDiagnosisUseCase {
       for (const file of storedFiles) {
         current.attachImageMedia(file.sortOrder, file.mediaId);
       }
-      if (outcomes.every((outcome) => outcome.aiFailed)) {
+      if (!crop) {
+        current.fail(`Crop ${current.cropType} not found`);
+      } else if (outcomes.every((outcome) => outcome.aiFailed)) {
         current.fail('Every image failed at the AI provider');
       } else {
         current.complete();
@@ -173,6 +180,7 @@ export class ProcessDiagnosisUseCase {
 
   private async processImage(
     diagnosis: Diagnosis,
+    crop: TKnowledgeDiagnosisCrop,
     image: TProcessedImage,
     plantPart: EPlantPart,
   ): Promise<TImageOutcome> {
@@ -184,7 +192,7 @@ export class ProcessDiagnosisUseCase {
       described = await this.withRetry('describe', diagnosis.id, () =>
         this.vision.describe({
           image,
-          cropType: diagnosis.cropType,
+          crop,
           plantPart,
           maxRegions: maxRegionsPerImage,
         }),
@@ -193,10 +201,16 @@ export class ProcessDiagnosisUseCase {
       return { result: uncertain(null, [], null, null), aiFailed: true };
     }
 
-    const detectedPart = PLANT_PARTS.includes(described.result.detectedPart)
+    const detectedPart = crop.plantParts.some(
+      (part) => part.code === described.result.detectedPart,
+    )
       ? (described.result.detectedPart as EPlantPart)
       : null;
-    const prepared = prepareRegions(described.result, maxRegionsPerImage);
+    const prepared = prepareRegions(
+      described.result,
+      maxRegionsPerImage,
+      crop.features,
+    );
     if (prepared.status !== null) {
       return {
         result: {
@@ -214,7 +228,7 @@ export class ProcessDiagnosisUseCase {
     // B2
     const candidates = await this.knowledgeQuery.findCandidates({
       cropType: diagnosis.cropType,
-      part: (detectedPart ?? plantPart) as TKnowledgePlantPart,
+      part: detectedPart ?? plantPart,
       wholeImage: described.result.wholeImage,
       regions: prepared.regions.map((region) => region.observations),
       limit: candidatesPerRegion,
@@ -236,6 +250,7 @@ export class ProcessDiagnosisUseCase {
       try {
         verified = await this.verify(
           diagnosis.id,
+          crop,
           image,
           toVerify,
           regionCandidates,
@@ -284,6 +299,7 @@ export class ProcessDiagnosisUseCase {
 
   private async verify(
     diagnosisId: string,
+    crop: TKnowledgeDiagnosisCrop,
     image: TProcessedImage,
     toVerify: Array<{ region: TDescribedRegion; index: number }>,
     regionCandidates: TRegionCandidate[][],
@@ -304,6 +320,7 @@ export class ProcessDiagnosisUseCase {
     ]);
     return this.withRetry('verify', diagnosisId, () =>
       this.vision.verify({
+        crop,
         thumbnail,
         regions: toVerify.map(({ region, index }, i) => ({
           regionIndex: index,
