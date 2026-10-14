@@ -1,4 +1,4 @@
-import { Crop, Disease } from '../../../domain';
+import { Crop, Disease, TCropProps } from '../../../domain';
 import { IKnowledgeRepository } from '../knowledge.repository';
 
 export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
@@ -8,7 +8,9 @@ export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
   async listEnabledCrops(): Promise<Crop[]> {
     return [...this.crops.values()]
       .filter((crop) => crop.enabled)
-      .sort((a, b) => a.code.localeCompare(b.code));
+      .sort(
+        (a, b) => a.sortOrder - b.sortOrder || a.code.localeCompare(b.code),
+      );
   }
 
   async findCrop(code: string): Promise<Crop | null> {
@@ -38,7 +40,30 @@ export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
         this.diseases.delete(code);
       }
     }
+    for (const [code, crop] of this.crops) {
+      if (!cropCodes.has(code) && crop.enabled) {
+        this.crops.set(
+          code,
+          Crop.restore({ ...cropProps(crop), enabled: false }),
+        );
+      }
+    }
     for (const crop of crops) this.crops.set(crop.code, crop);
     for (const disease of diseases) this.diseases.set(disease.code, disease);
   }
+}
+
+function cropProps(crop: Crop): TCropProps {
+  return {
+    code: crop.code,
+    nameVi: crop.nameVi,
+    nameEn: crop.nameEn,
+    enabled: crop.enabled,
+    kbVersion: crop.kbVersion,
+    sortOrder: crop.sortOrder,
+    plantParts: crop.plantParts,
+    cropStages: crop.cropStages,
+    features: crop.features,
+    prompt: crop.prompt,
+  };
 }

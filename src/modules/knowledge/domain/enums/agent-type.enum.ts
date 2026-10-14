@@ -1,6 +1,9 @@
 /** What causes the problem. */
 export enum EAgentType {
   FUNGUS = 'FUNGUS',
+  /** Water mould (e.g. Phytophthora). */
+  OOMYCETE = 'OOMYCETE',
+  ALGA = 'ALGA',
   BACTERIA = 'BACTERIA',
   VIRUS = 'VIRUS',
   NEMATODE = 'NEMATODE',

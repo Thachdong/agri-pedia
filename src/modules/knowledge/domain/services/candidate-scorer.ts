@@ -1,9 +1,5 @@
 import { TScoringUnit } from '../disease-profile';
-import {
-  TObservation,
-  TObservationFeature,
-  UNSURE,
-} from '../observation-features';
+import { TObservation, UNSURE } from '../observation-features';
 
 /** Softmax temperature; tune after measuring. */
 export const SCORE_TEMPERATURE = 1;
@@ -23,9 +19,7 @@ export function rawScore(
   observation: TObservation,
 ): number {
   let raw = 0;
-  for (const [feature, value] of Object.entries(observation) as Array<
-    [TObservationFeature, string | undefined]
-  >) {
+  for (const [feature, value] of Object.entries(observation)) {
     if (value === undefined || value === UNSURE) continue;
     raw += unit.weights[feature]?.[value] ?? 0;
   }

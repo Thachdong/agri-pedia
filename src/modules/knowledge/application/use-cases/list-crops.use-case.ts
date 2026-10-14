@@ -5,10 +5,17 @@ import {
 } from '../ports/knowledge.repository';
 
 export type TListCropsOutput = {
-  crops: Array<{ code: string; nameVi: string }>;
+  crops: Array<{
+    code: string;
+    nameVi: string;
+    /** Parts a photo of this crop may show (diagnosis `plantPart`). */
+    plantParts: Array<{ code: string; nameVi: string }>;
+    /** Labels of the crop stage codes used by its diseases. */
+    cropStages: Array<{ code: string; nameVi: string }>;
+  }>;
 };
 
-/** Crops supported by diagnosis (public). */
+/** Crops supported by diagnosis (public), by sortOrder. */
 @Injectable()
 export class ListCropsUseCase {
   constructor(
@@ -19,7 +26,18 @@ export class ListCropsUseCase {
   async execute(): Promise<TListCropsOutput> {
     const crops = await this.knowledge.listEnabledCrops();
     return {
-      crops: crops.map((crop) => ({ code: crop.code, nameVi: crop.nameVi })),
+      crops: crops.map((crop) => ({
+        code: crop.code,
+        nameVi: crop.nameVi,
+        plantParts: crop.plantParts.map((part) => ({
+          code: part.code,
+          nameVi: part.nameVi,
+        })),
+        cropStages: crop.cropStages.map((stage) => ({
+          code: stage.code,
+          nameVi: stage.nameVi,
+        })),
+      })),
     };
   }
 }

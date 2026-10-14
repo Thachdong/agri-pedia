@@ -1,15 +1,14 @@
 import { Crop, Disease } from '../../domain';
 
 export type TKnowledgeBaseSnapshot = {
-  /** KB version, e.g. `2026-10-12`. */
-  kbVersion: string;
+  /** Every crop of the seed, each with its own `kbVersion`. */
   crops: Crop[];
   diseases: Disease[];
 };
 
 /** Source of the KB master data (seed files). */
 export interface IKnowledgeBaseSource {
-  /** Reads and checks the KB; throws when it is inconsistent (e.g. profile and KB versions differ). */
+  /** Reads and checks the KB; throws when it is inconsistent (e.g. a crop's profile and KB versions differ). */
   load(): Promise<TKnowledgeBaseSnapshot>;
 }
 

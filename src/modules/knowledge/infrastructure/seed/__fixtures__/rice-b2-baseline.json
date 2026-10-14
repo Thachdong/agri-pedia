@@ -1,0 +1,157 @@
+{
+  "note": "B2 top-3 of the rice scenarios computed by the single-crop loader (before multi-crop); the multi-crop loader must give the same raw and matchScore.",
+  "scenarios": [
+    {
+      "name": "đạo ôn lá",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "SPINDLE_DIAMOND",
+        "centerColor": "GRAY_WHITE",
+        "borderColor": "DARK_BROWN",
+        "margin": "SHARP",
+        "halo": "NONE",
+        "position": "LEAF_BLADE"
+      },
+      "top3": [
+        {
+          "diseaseCode": "RICE_BLAST",
+          "variantCode": "RICE_BLAST__V1",
+          "raw": 8,
+          "matchScore": 0.9541375798125502
+        },
+        {
+          "diseaseCode": "RICE_SHEATH_BLIGHT",
+          "variantCode": "RICE_SHEATH_BLIGHT__V2",
+          "raw": 4,
+          "matchScore": 0.017475639362017455
+        },
+        {
+          "diseaseCode": "RICE_BROWN_SPOT",
+          "variantCode": "RICE_BROWN_SPOT__V1",
+          "raw": 2,
+          "matchScore": 0.0023650706027995303
+        }
+      ]
+    },
+    {
+      "name": "đốm nâu",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "ROUND_OVAL",
+        "centerColor": "BROWN",
+        "halo": "YELLOW",
+        "size": "SMALL_LT_2MM",
+        "distribution": "SCATTERED"
+      },
+      "top3": [
+        {
+          "diseaseCode": "RICE_BROWN_SPOT",
+          "variantCode": "RICE_BROWN_SPOT__V1",
+          "raw": 8,
+          "matchScore": 0.8656951338099361
+        },
+        {
+          "diseaseCode": "ZINC_DEFICIENCY",
+          "variantCode": null,
+          "raw": 3,
+          "matchScore": 0.005833007928977551
+        },
+        {
+          "diseaseCode": "RICE_SHEATH_BLIGHT",
+          "variantCode": "RICE_SHEATH_BLIGHT__V1",
+          "raw": 1,
+          "matchScore": 0.0007894117801895845
+        }
+      ]
+    },
+    {
+      "name": "bạc lá",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "LONG_STREAK",
+        "centerColor": "YELLOW",
+        "margin": "WAVY_IRREGULAR",
+        "position": "LEAF_MARGIN"
+      },
+      "top3": [
+        {
+          "diseaseCode": "RICE_BACTERIAL_BLIGHT",
+          "variantCode": "RICE_BACTERIAL_BLIGHT__V1",
+          "raw": 11,
+          "matchScore": 0.9489413713099824
+        },
+        {
+          "diseaseCode": "RICE_STRIPE_VIRUS",
+          "variantCode": null,
+          "raw": 5,
+          "matchScore": 0.0023521904896633777
+        },
+        {
+          "diseaseCode": "RICE_RED_STRIPE",
+          "variantCode": null,
+          "raw": 3,
+          "matchScore": 0.00031833436614505994
+        }
+      ]
+    },
+    {
+      "name": "tungro",
+      "part": "WHOLE_PLANT",
+      "observations": {
+        "lesionShape": "NO_DISTINCT_LESION",
+        "centerColor": "ORANGE",
+        "discoloration": "YELLOW_ORANGE",
+        "plantForm": "STUNTED"
+      },
+      "top3": [
+        {
+          "diseaseCode": "RICE_TUNGRO",
+          "variantCode": null,
+          "raw": 8,
+          "matchScore": 0.9630578438799314
+        },
+        {
+          "diseaseCode": "PHOSPHORUS_DEFICIENCY",
+          "variantCode": null,
+          "raw": 4,
+          "matchScore": 0.01763901969746776
+        },
+        {
+          "diseaseCode": "NITROGEN_DEFICIENCY",
+          "variantCode": null,
+          "raw": 3,
+          "matchScore": 0.006489032709116504
+        }
+      ]
+    },
+    {
+      "name": "sâu cuốn lá",
+      "part": "LEAF",
+      "observations": {
+        "deformation": "FOLDED_ROLLED",
+        "lesionShape": "WHITE_SCRAPING",
+        "centerColor": "WHITE_SILVERY"
+      },
+      "top3": [
+        {
+          "diseaseCode": "RICE_LEAFFOLDER",
+          "variantCode": null,
+          "raw": 7,
+          "matchScore": 0.6307640138934809
+        },
+        {
+          "diseaseCode": "RICE_HISPA",
+          "variantCode": null,
+          "raw": 6,
+          "matchScore": 0.23204511294218966
+        },
+        {
+          "diseaseCode": "RICE_THRIPS",
+          "variantCode": null,
+          "raw": 5,
+          "matchScore": 0.08536462647573695
+        }
+      ]
+    }
+  ]
+}

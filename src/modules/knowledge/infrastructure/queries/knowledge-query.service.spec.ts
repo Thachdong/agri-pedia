@@ -3,8 +3,7 @@ import {
   buildDisease,
   InMemoryKnowledgeRepository,
 } from '../../application/ports/fakes';
-import { KNOWLEDGE_OBSERVATION_FEATURES } from '../../contracts';
-import { EPlantPart, EVerification, OBSERVATION_FEATURES } from '../../domain';
+import { EPlantPart, EVerification } from '../../domain';
 import { KnowledgeQueryService } from './knowledge-query.service';
 
 const blastVariants = [
@@ -65,10 +64,6 @@ describe('KnowledgeQueryService', () => {
       knowledge.diseases.set(disease.code, disease);
     }
     service = new KnowledgeQueryService(knowledge);
-  });
-
-  it('keeps the contract feature enums equal to the domain ones', () => {
-    expect(KNOWLEDGE_OBSERVATION_FEATURES).toEqual(OBSERVATION_FEATURES);
   });
 
   it('finds a crop with its status and KB version', async () => {

@@ -14,7 +14,14 @@ export class KnowledgeMapper {
     return Crop.restore({
       code: row.code,
       nameVi: row.nameVi,
+      nameEn: row.nameEn,
       enabled: row.enabled,
+      kbVersion: row.kbVersion,
+      sortOrder: row.sortOrder,
+      plantParts: row.config.plantParts,
+      cropStages: row.config.cropStages,
+      features: row.config.features,
+      prompt: row.config.prompt,
     });
   }
 
@@ -22,7 +29,16 @@ export class KnowledgeMapper {
     return Object.assign(new CropOrmEntity(), {
       code: crop.code,
       nameVi: crop.nameVi,
+      nameEn: crop.nameEn,
       enabled: crop.enabled,
+      kbVersion: crop.kbVersion,
+      sortOrder: crop.sortOrder,
+      config: {
+        plantParts: crop.plantParts,
+        cropStages: crop.cropStages,
+        features: crop.features,
+        prompt: crop.prompt,
+      },
     });
   }
 

@@ -8,10 +8,10 @@ Ngoài phạm vi: client (client chỉ gửi mã cây `cropType`, đã có trong
 - [x] 1. [config-group]       `knowledge` (KNOWLEDGE_ENABLED_CROPS: danh sách mã, rỗng = theo crop.json)
 
 ## Module knowledge
-- [ ] 2. [domain-model]       bỏ hằng OBSERVATION_FEATURES → type TObservationFeatures theo cây (level, values, normal, descriptionEn, hintsEn); Crop thêm nameEn, kbVersion, sortOrder, plantParts, cropStages, features, prompt; mở rộng EPlantPart / ECropStage / EAgentType (OOMYCETE, ALGA) / EVerification (SECONDARY, vẫn làm ứng viên)
-- [ ] 3. [use-case]           SeedKnowledgeBase: snapshot nhiều cây (kbVersion theo cây), KNOWLEDGE_ENABLED_CROPS ghi đè enabled; ListCrops trả plantParts/cropStages, sắp theo sortOrder
-- [ ] 4. [persistence]        migration `knowledge-crops-config` (crops: name_en, kb_version, sort_order, config jsonb); mapper; replaceKnowledgeBase tắt cây không còn trong seed
-- [ ] 5. [persistence]        seed loader JsonKnowledgeBaseSource đọc `seed/crops/*/` + các kiểm tra mục 4.3; crop pack RICE (crop.json mới, chuyển diseases/profile, profile thêm normal/descriptionEn/hintsEn chuyển từ prompt B1, scenarios.json); đổi specs/profile.json → specs/profiles/RICE.json; test "lúa không đổi điểm B2" + golden test theo cây
+- [x] 2. [domain-model]       bỏ hằng OBSERVATION_FEATURES → type TObservationFeatures theo cây (level, values, normal, descriptionEn, hintsEn); Crop thêm nameEn, kbVersion, sortOrder, plantParts, cropStages, features, prompt; mở rộng EPlantPart / ECropStage / EAgentType (OOMYCETE, ALGA) / EVerification (SECONDARY, vẫn làm ứng viên)
+- [x] 3. [use-case]           SeedKnowledgeBase: snapshot nhiều cây (kbVersion theo cây), KNOWLEDGE_ENABLED_CROPS ghi đè enabled; ListCrops trả plantParts/cropStages, sắp theo sortOrder
+- [x] 4. [persistence]        migration `knowledge-crops-config` (crops: name_en, kb_version, sort_order, config jsonb); mapper; replaceKnowledgeBase tắt cây không còn trong seed
+- [x] 5. [persistence]        seed loader JsonKnowledgeBaseSource đọc `seed/crops/*/` + các kiểm tra mục 4.3; crop pack RICE (crop.json mới, chuyển diseases/profile, profile thêm normal/descriptionEn/hintsEn chuyển từ prompt B1, scenarios.json); đổi specs/profile.json → specs/profiles/RICE.json; test "lúa không đổi điểm B2" + golden test theo cây
 - [ ] 6. [query-port]         IKnowledgeQueryPort.findDiagnosisCrop trả nameEn, plantParts, features, prompt; TKnowledgePlantPart → string; bỏ KNOWLEDGE_OBSERVATION_FEATURES
 
 ## Module diagnosis

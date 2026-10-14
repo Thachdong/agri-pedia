@@ -1,10 +1,12 @@
 import {
   Crop,
   Disease,
+  ECropStage,
   EAgentType,
   EDiseaseCategory,
   EPlantPart,
   EVerification,
+  TCropProps,
   TDiseaseContent,
   TDiseaseProps,
 } from '../../../domain';
@@ -49,10 +51,33 @@ export function buildDisease(
   });
 }
 
-export function buildCrop(code = 'RICE', enabled = true): Crop {
+/** Test helper: a crop with a small rice-like configuration; override any prop. */
+export function buildCrop(
+  code = 'RICE',
+  enabled = true,
+  overrides: Partial<TCropProps> = {},
+): Crop {
   return Crop.restore({
     code,
     nameVi: code === 'RICE' ? 'Lúa' : code,
+    nameEn: code.toLowerCase(),
     enabled,
+    kbVersion: '2026-10-12',
+    sortOrder: 1,
+    plantParts: [{ code: EPlantPart.LEAF, nameVi: 'Lá', promptEn: 'leaf' }],
+    cropStages: [{ code: ECropStage.SEEDLING, nameVi: 'Mạ' }],
+    features: {
+      lesionShape: {
+        level: 'region',
+        values: ['SPINDLE_DIAMOND', 'NO_DISTINCT_LESION', 'UNSURE'],
+      },
+      plantForm: {
+        level: 'image',
+        values: ['NORMAL', 'STUNTED', 'UNSURE'],
+        normal: ['NORMAL'],
+      },
+    },
+    prompt: { subjectEn: 'rice plants', wholeImageCuesEn: 'stunting' },
+    ...overrides,
   });
 }

@@ -18,7 +18,18 @@
         "TINY_DOTS",
         "NO_DISTINCT_LESION",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "shape of the lesion",
+      "hintsEn": {
+        "SPINDLE_DIAMOND": "elongated, wide in the middle, pointed at both ends",
+        "ROUND_OVAL": "round to oval spot",
+        "SHORT_NARROW_STREAK": "short thin line",
+        "LONG_STREAK": "long stripe along the leaf",
+        "IRREGULAR_BLOTCH": "patch without regular shape",
+        "ZONATE_BANDED": "concentric rings or bands",
+        "WHITE_SCRAPING": "white/transparent strips where green tissue was scraped",
+        "TINY_DOTS": "pinpoint dots"
+      }
     },
     "centerColor": {
       "level": "region",
@@ -34,7 +45,11 @@
         "TRANSLUCENT_WATER_SOAKED",
         "NONE",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "colour of the lesion centre",
+      "hintsEn": {
+        "TRANSLUCENT_WATER_SOAKED": "dark, wet-looking, translucent"
+      }
     },
     "borderColor": {
       "level": "region",
@@ -44,7 +59,8 @@
         "YELLOW",
         "NONE",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "colour of the lesion edge"
     },
     "margin": {
       "level": "region",
@@ -53,7 +69,13 @@
         "WAVY_IRREGULAR",
         "DIFFUSE",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "edge of the lesion",
+      "hintsEn": {
+        "SHARP": "clear edge",
+        "WAVY_IRREGULAR": "wavy edge",
+        "DIFFUSE": "edge fades out"
+      }
     },
     "halo": {
       "level": "region",
@@ -61,7 +83,8 @@
         "YELLOW",
         "NONE",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "a yellow zone around the lesion"
     },
     "size": {
       "level": "region",
@@ -70,7 +93,8 @@
         "MEDIUM_2_10MM",
         "LARGE_GT_10MM",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "lesion size, estimated from leaf width (about 8-12 mm)"
     },
     "distribution": {
       "level": "region",
@@ -80,7 +104,14 @@
         "MERGED_STRIPS",
         "WHOLE_ORGAN",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "how the lesions are spread",
+      "hintsEn": {
+        "SINGLE": "one spot",
+        "SCATTERED": "scattered spots",
+        "MERGED_STRIPS": "spots joined into stripes",
+        "WHOLE_ORGAN": "the whole leaf/organ"
+      }
     },
     "position": {
       "level": "region",
@@ -95,7 +126,8 @@
         "GRAIN",
         "ROOT",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "where the region is on the plant"
     },
     "sign": {
       "level": "region",
@@ -110,7 +142,15 @@
         "FRASS_OR_HOLE",
         "SILK_FOLD",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "visible signs on the region",
+      "hintsEn": {
+        "OOZE_DROPLETS": "bacterial droplets",
+        "SCLEROTIA": "small hard brown/black bodies",
+        "SPORE_BALL": "orange/green-black balls on grains",
+        "FRASS_OR_HOLE": "bore holes, droppings",
+        "SILK_FOLD": "silk binding a folded leaf"
+      }
     },
     "deformation": {
       "level": "region",
@@ -123,7 +163,11 @@
         "DRIED_WITHERED",
         "SOFT_ROT",
         "UNSURE"
-      ]
+      ],
+      "descriptionEn": "shape change of the organ",
+      "hintsEn": {
+        "HOLLOW_TUBE": "onion-leaf like tube"
+      }
     },
     "discoloration": {
       "level": "image",
@@ -135,7 +179,11 @@
         "WHITE_TIPS",
         "NONE",
         "UNSURE"
-      ]
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "colour of the foliage"
     },
     "plantForm": {
       "level": "image",
@@ -148,7 +196,11 @@
         "DEADHEART",
         "MISSING_OR_CUT_HILLS",
         "UNSURE"
-      ]
+      ],
+      "normal": [
+        "NORMAL"
+      ],
+      "descriptionEn": "plant shape"
     },
     "panicle": {
       "level": "image",
@@ -160,7 +212,12 @@
         "NOT_FULLY_EMERGED",
         "BROKEN_NECK",
         "UNSURE"
-      ]
+      ],
+      "normal": [
+        "NOT_VISIBLE",
+        "NORMAL"
+      ],
+      "descriptionEn": "panicles"
     },
     "pestsVisible": {
       "level": "image",
@@ -174,7 +231,11 @@
         "SNAIL_OR_EGGS",
         "OTHER",
         "UNSURE"
-      ]
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "visible pests"
     }
   },
   "profiles": {

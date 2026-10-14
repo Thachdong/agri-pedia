@@ -24,7 +24,7 @@ export class PgKnowledgeRepository
   async listEnabledCrops(): Promise<Crop[]> {
     const rows = await this.crops.find({
       where: { enabled: true },
-      order: { code: 'ASC' },
+      order: { sortOrder: 'ASC', code: 'ASC' },
     });
     return rows.map((row) => KnowledgeMapper.cropToDomain(row));
   }
@@ -54,6 +54,11 @@ export class PgKnowledgeRepository
     crops: Crop[],
     diseases: Disease[],
   ): Promise<void> {
+    const cropCodes = crops.map((crop) => crop.code);
+    await this.crops.update(
+      cropCodes.length > 0 ? { code: Not(In(cropCodes)) } : {},
+      { enabled: false },
+    );
     await this.crops.upsert(
       crops.map((crop) => KnowledgeMapper.cropToOrm(crop)),
       ['code'],

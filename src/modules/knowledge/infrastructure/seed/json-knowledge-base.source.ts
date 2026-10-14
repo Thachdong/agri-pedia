@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { z } from 'zod';
 import {
@@ -13,15 +13,16 @@ import {
   EDiseaseCategory,
   EPlantPart,
   EVerification,
-  OBSERVATION_FEATURES,
+  TCropProps,
   TDiseaseProfile,
   TLocalizedList,
   TLocalizedText,
-  TObservationFeature,
+  TObservationFeatures,
+  UNSURE,
 } from '../../domain';
 
-/** Crop names not carried by the KB file; every seeded crop is enabled for diagnosis. */
-const CROP_NAMES_VI: Record<string, string> = { RICE: 'Lúa' };
+/** Crop whose disease codes predate the `<CROP>_` prefix rule (kept: saved diagnoses refer to them). */
+const UNPREFIXED_CROP = 'RICE';
 
 const localizedList = z.object({
   vn: z.array(z.string()),
@@ -110,12 +111,17 @@ const diseasesFileSchema = z.object({
 
 const weightsSchema = z.record(z.string(), z.record(z.string(), z.number()));
 
+const featureSchema = z.object({
+  level: z.enum(['region', 'image']),
+  values: z.array(z.string()).min(1),
+  normal: z.array(z.string()).optional(),
+  descriptionEn: z.string().optional(),
+  hintsEn: z.record(z.string(), z.string()).optional(),
+});
+
 const profileFileSchema = z.object({
   kbVersion: z.string().min(1),
-  features: z.record(
-    z.string(),
-    z.object({ level: z.string(), values: z.array(z.string()) }),
-  ),
+  features: z.record(z.string(), featureSchema),
   profiles: z.record(
     z.string(),
     z.object({
@@ -125,38 +131,108 @@ const profileFileSchema = z.object({
   ),
 });
 
+const cropFileSchema = z.object({
+  code: z.string().min(1),
+  nameVi: z.string().min(1),
+  nameEn: z.string().min(1),
+  enabled: z.boolean(),
+  sortOrder: z.number().int(),
+  plantParts: z
+    .array(
+      z.object({
+        code: z.nativeEnum(EPlantPart),
+        nameVi: z.string().min(1),
+        promptEn: z.string().min(1),
+      }),
+    )
+    .min(1),
+  cropStages: z.array(
+    z.object({ code: z.nativeEnum(ECropStage), nameVi: z.string().min(1) }),
+  ),
+  prompt: z.object({
+    subjectEn: z.string().min(1),
+    wholeImageCuesEn: z.string().min(1),
+  }),
+});
+
 type TEntry = z.infer<typeof entrySchema>;
 type TWeights = z.infer<typeof weightsSchema>;
+type TCropPack = { crop: Crop; diseases: Disease[] };
 
-/** Reads `diseases.json` (KB) + `profile.json` (scoring weights) from `directory` (default: next to this file). */
+/**
+ * Reads one crop pack per sub-directory of `directory` (default: `crops/` next to this file):
+ * `crop.json` (crop + diagnosis config), `diseases.json` (KB), `profile.json` (feature enums + weights).
+ * Every check failure throws, so the app does not start on an inconsistent KB.
+ */
 export class JsonKnowledgeBaseSource implements IKnowledgeBaseSource {
-  constructor(private readonly directory: string = __dirname) {}
+  constructor(private readonly directory: string = join(__dirname, 'crops')) {}
 
   async load(): Promise<TKnowledgeBaseSnapshot> {
-    const kb = diseasesFileSchema.parse(await this.readJson('diseases.json'));
-    const profiles = profileFileSchema.parse(
-      await this.readJson('profile.json'),
+    const entries = await readdir(this.directory, { withFileTypes: true });
+    const folders = entries
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+    const packs = await Promise.all(
+      folders.map((folder) => this.loadPack(folder)),
     );
 
+    const cropOf = new Map<string, string>();
+    for (const { crop, diseases } of packs) {
+      for (const disease of diseases) {
+        const other = cropOf.get(disease.code);
+        if (other) {
+          throw new Error(
+            `Disease code ${disease.code} is used by crops ${other} and ${crop.code}`,
+          );
+        }
+        cropOf.set(disease.code, crop.code);
+      }
+    }
+    return {
+      crops: packs.map((pack) => pack.crop),
+      diseases: packs.flatMap((pack) => pack.diseases),
+    };
+  }
+
+  private async loadPack(folder: string): Promise<TCropPack> {
+    const cropFile = cropFileSchema.parse(
+      await this.readJson(folder, 'crop.json'),
+    );
+    const kb = diseasesFileSchema.parse(
+      await this.readJson(folder, 'diseases.json'),
+    );
+    const profiles = profileFileSchema.parse(
+      await this.readJson(folder, 'profile.json'),
+    );
+    const fail = (message: string): never => {
+      throw new Error(`crops/${folder}: ${message}`);
+    };
+
+    if (cropFile.code !== folder || kb.crop !== folder) {
+      fail(
+        `crop.json code ${cropFile.code} and diseases.json crop ${kb.crop} must equal the folder name`,
+      );
+    }
     if (profiles.kbVersion !== kb.version) {
-      throw new Error(
+      fail(
         `profile.json kbVersion ${profiles.kbVersion} does not match diseases.json version ${kb.version}`,
       );
     }
-    assertSameFeatures(profiles.features);
+    const features = profiles.features as TObservationFeatures;
+    assertFeatures(features, fail);
+    assertEntries(cropFile, kb.diseases, fail);
     const entries = new Map(kb.diseases.map((entry) => [entry.id, entry]));
     for (const [code, profile] of Object.entries(profiles.profiles)) {
-      assertProfileFits(code, profile, entries.get(code));
+      assertProfileFits(code, profile, entries.get(code), features, fail);
     }
 
-    const cropNameVi = CROP_NAMES_VI[kb.crop];
-    if (!cropNameVi) throw new Error(`No Vietnamese name for crop ${kb.crop}`);
-
     return {
-      kbVersion: kb.version,
-      crops: [
-        Crop.restore({ code: kb.crop, nameVi: cropNameVi, enabled: true }),
-      ],
+      crop: Crop.restore({
+        ...(cropFile as Omit<TCropProps, 'kbVersion' | 'features'>),
+        kbVersion: kb.version,
+        features,
+      }),
       diseases: kb.diseases.map((entry) =>
         toDisease(
           entry,
@@ -168,37 +244,89 @@ export class JsonKnowledgeBaseSource implements IKnowledgeBaseSource {
     };
   }
 
-  private async readJson(file: string): Promise<unknown> {
-    return JSON.parse(await readFile(join(this.directory, file), 'utf8'));
-  }
-}
-
-function assertSameFeatures(
-  features: Record<string, { level?: string; values?: string[] }>,
-): void {
-  const expected = JSON.stringify(OBSERVATION_FEATURES);
-  const actual = JSON.stringify(
-    Object.fromEntries(
-      Object.entries(features).map(([name, f]) => [
-        name,
-        { level: f.level, values: f.values },
-      ]),
-    ),
-  );
-  if (actual !== expected) {
-    throw new Error(
-      'profile.json features differ from OBSERVATION_FEATURES (update both together)',
+  private async readJson(folder: string, file: string): Promise<unknown> {
+    return JSON.parse(
+      await readFile(join(this.directory, folder, file), 'utf8'),
     );
   }
 }
 
-function assertWeightsKnown(code: string, weights: TWeights = {}): void {
+type TFail = (message: string) => never;
+
+/** Feature enums the diagnosis pipeline relies on. */
+function assertFeatures(features: TObservationFeatures, fail: TFail): void {
+  for (const [name, feature] of Object.entries(features)) {
+    if (!feature.values.includes(UNSURE)) fail(`${name} has no ${UNSURE}`);
+    if (feature.level === 'image') {
+      if (!feature.normal) fail(`image feature ${name} has no normal values`);
+      for (const value of feature.normal) {
+        if (!feature.values.includes(value)) {
+          fail(`${name}.normal has unknown value ${value}`);
+        }
+      }
+    } else if (feature.normal) {
+      fail(`region feature ${name} must not have normal values`);
+    }
+    for (const value of Object.keys(feature.hintsEn ?? {})) {
+      if (!feature.values.includes(value)) {
+        fail(`${name}.hintsEn has unknown value ${value}`);
+      }
+    }
+  }
+  // The whole-image region (no distinct lesion) is described with these values.
+  for (const [name, value] of [
+    ['lesionShape', 'NO_DISTINCT_LESION'],
+    ['distribution', 'WHOLE_ORGAN'],
+  ]) {
+    if (features[name]?.level !== 'region') {
+      fail(`region feature ${name} is missing`);
+    }
+    if (!features[name].values.includes(value)) {
+      fail(`${name} has no ${value}`);
+    }
+  }
+}
+
+/** Codes, parts and stages of the KB entries fit the crop. */
+function assertEntries(
+  crop: z.infer<typeof cropFileSchema>,
+  entries: TEntry[],
+  fail: TFail,
+): void {
+  const parts = new Set<string>(crop.plantParts.map((part) => part.code));
+  const stages = new Set<string>(crop.cropStages.map((stage) => stage.code));
+  const prefix = `${crop.code}_`;
+  for (const entry of entries) {
+    if (crop.code !== UNPREFIXED_CROP) {
+      for (const id of [entry.id, ...(entry.variants ?? []).map((v) => v.id)]) {
+        if (!id.startsWith(prefix)) fail(`${id} has no ${prefix} prefix`);
+      }
+    }
+    for (const part of entry.affectedPart.codes) {
+      if (!parts.has(part)) {
+        fail(`${entry.id} affects ${part}, not a plant part of the crop`);
+      }
+    }
+    for (const stage of entry.epidemiology?.cropStage ?? []) {
+      if (!stages.has(stage)) {
+        fail(`${entry.id} uses crop stage ${stage}, not a stage of the crop`);
+      }
+    }
+  }
+}
+
+function assertWeightsKnown(
+  code: string,
+  weights: TWeights = {},
+  features: TObservationFeatures,
+  fail: TFail,
+): void {
   for (const [feature, values] of Object.entries(weights)) {
-    const known = OBSERVATION_FEATURES[feature as TObservationFeature];
-    if (!known) throw new Error(`${code}: unknown feature ${feature}`);
+    const known = features[feature];
+    if (!known) fail(`${code}: unknown feature ${feature}`);
     for (const value of Object.keys(values)) {
-      if (!(known.values as readonly string[]).includes(value)) {
-        throw new Error(`${code}: unknown value ${feature}.${value}`);
+      if (!known.values.includes(value)) {
+        fail(`${code}: unknown value ${feature}.${value}`);
       }
     }
   }
@@ -208,15 +336,17 @@ function assertProfileFits(
   code: string,
   profile: { base?: TWeights; variants?: Record<string, TWeights> },
   entry: TEntry | undefined,
+  features: TObservationFeatures,
+  fail: TFail,
 ): void {
-  if (!entry) throw new Error(`profile.json: ${code} is not in diseases.json`);
-  assertWeightsKnown(code, profile.base);
+  if (!entry) fail(`profile.json: ${code} is not in diseases.json`);
+  assertWeightsKnown(code, profile.base, features, fail);
   const variantCodes = new Set((entry.variants ?? []).map((v) => v.id));
   for (const [variantCode, weights] of Object.entries(profile.variants ?? {})) {
     if (!variantCodes.has(variantCode)) {
-      throw new Error(`profile.json: ${code} has no variant ${variantCode}`);
+      fail(`profile.json: ${code} has no variant ${variantCode}`);
     }
-    assertWeightsKnown(variantCode, weights);
+    assertWeightsKnown(variantCode, weights, features, fail);
   }
 }
 

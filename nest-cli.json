@@ -6,7 +6,7 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "modules/knowledge/infrastructure/seed/*.json",
+        "include": "modules/knowledge/infrastructure/seed/crops/*/*.json",
         "watchAssets": true
       }
     ],

@@ -1,9 +1,5 @@
-import { TObservationFeature } from './observation-features';
-
-/** Observed value -> weight (-2..+4); values not listed weigh 0. */
-export type TFeatureWeights = Partial<
-  Record<TObservationFeature, Record<string, number>>
->;
+/** feature -> observed value -> weight (-2..+4); values not listed weigh 0. */
+export type TFeatureWeights = Record<string, Record<string, number>>;
 
 /** Weights of one KB entry (`profile.json` -> `profiles[code]`). */
 export type TDiseaseProfile = {
@@ -29,7 +25,7 @@ export function mergeWeights(
   for (const feature of new Set([
     ...Object.keys(base),
     ...Object.keys(override),
-  ]) as Set<TObservationFeature>) {
+  ])) {
     merged[feature] = { ...base[feature], ...override[feature] };
   }
   return merged;

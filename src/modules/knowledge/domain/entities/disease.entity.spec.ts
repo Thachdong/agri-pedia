@@ -97,6 +97,12 @@ describe('Disease.isCandidateFor', () => {
     ).toBe(false);
     expect(disease({ profile: null }).isCandidateFor(null)).toBe(false);
   });
+
+  it('keeps SECONDARY entries as candidates', () => {
+    expect(
+      disease({ verification: EVerification.SECONDARY }).isCandidateFor(null),
+    ).toBe(true);
+  });
 });
 
 describe('Disease.scoringUnits', () => {
