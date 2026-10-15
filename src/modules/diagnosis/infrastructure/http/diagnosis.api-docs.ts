@@ -11,7 +11,9 @@ defineApiDocs(DiagnosisController, {
       description:
         'multipart/form-data: `images` = 1..5 files (jpg/png/webp, <= DIAGNOSIS_MAX_IMAGE_BYTES each; ' +
         'format checked by content), `meta` = JSON string `{ cropType, images: [{ plantPart }], note? }` ' +
-        'with one entry per file in the same order. Answers 202 with status PROCESSING; the result comes via ' +
+        'with one entry per file in the same order; `cropType` from GET /knowledge/crops and each `plantPart` ' +
+        "from that crop's `plantParts` (otherwise DIAGNOSIS_INVALID_IMAGE). " +
+        'Answers 202 with status PROCESSING; the result comes via ' +
         'realtime `diagnosis.completed` { id, status } or by polling GET /diagnoses/{diagnosisId}. ' +
         'Daily limit per user: DIAGNOSIS_DAILY_LIMIT (Vietnam day).',
       auth: true,
@@ -24,7 +26,7 @@ defineApiDocs(DiagnosisController, {
             kind: 'text',
             description:
               'JSON: { "cropType": "RICE", "images": [{ "plantPart": "LEAF" }], "note": "..." }; ' +
-              'plantPart: LEAF | SHEATH | STEM | PANICLE | ROOT | WHOLE_PLANT',
+              "plantPart: one of the crop's plantParts (GET /knowledge/crops)",
           },
         },
       },

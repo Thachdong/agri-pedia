@@ -7,6 +7,9 @@ defineApiDocs(KnowledgeController, {
   operations: {
     crops: {
       summary: 'List crops supported by diagnosis (public)',
+      description:
+        'Enabled crops by display order. `plantParts` = the parts a photo of the crop may show (values for ' +
+        'POST /diagnoses `images[].plantPart`, dropdown order); `cropStages` = labels of the stage codes used by its diseases.',
     },
     diseases: {
       summary: 'List diseases of a crop, by Vietnamese name (public)',
