@@ -4,6 +4,7 @@ import { Crop, TCropProps } from './crop.entity';
 
 const props: TCropProps = {
   code: 'DURIAN',
+  slug: 'sau-rieng',
   nameVi: 'Sầu riêng',
   nameEn: 'durian',
   enabled: false,
@@ -26,6 +27,7 @@ describe('Crop', () => {
     const crop = Crop.restore(props);
 
     expect(crop.code).toBe('DURIAN');
+    expect(crop.slug).toBe('sau-rieng');
     expect(crop.nameVi).toBe('Sầu riêng');
     expect(crop.nameEn).toBe('durian');
     expect(crop.enabled).toBe(false);

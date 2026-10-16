@@ -133,6 +133,11 @@ const profileFileSchema = z.object({
 
 const cropFileSchema = z.object({
   code: z.string().min(1),
+  /** URL segment of the crop's articles, e.g. `lua`. */
+  slug: z
+    .string()
+    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)
+    .max(100),
   nameVi: z.string().min(1),
   nameEn: z.string().min(1),
   enabled: z.boolean(),
@@ -177,6 +182,16 @@ export class JsonKnowledgeBaseSource implements IKnowledgeBaseSource {
       folders.map((folder) => this.loadPack(folder)),
     );
 
+    const cropOfSlug = new Map<string, string>();
+    for (const { crop } of packs) {
+      const other = cropOfSlug.get(crop.slug);
+      if (other) {
+        throw new Error(
+          `Crop slug ${crop.slug} is used by crops ${other} and ${crop.code}`,
+        );
+      }
+      cropOfSlug.set(crop.slug, crop.code);
+    }
     const cropOf = new Map<string, string>();
     for (const { crop, diseases } of packs) {
       for (const disease of diseases) {

@@ -13,6 +13,7 @@ export class KnowledgeMapper {
   static cropToDomain(row: CropOrmEntity): Crop {
     return Crop.restore({
       code: row.code,
+      slug: row.slug,
       nameVi: row.nameVi,
       nameEn: row.nameEn,
       enabled: row.enabled,
@@ -28,6 +29,7 @@ export class KnowledgeMapper {
   static cropToOrm(crop: Crop): CropOrmEntity {
     return Object.assign(new CropOrmEntity(), {
       code: crop.code,
+      slug: crop.slug,
       nameVi: crop.nameVi,
       nameEn: crop.nameEn,
       enabled: crop.enabled,

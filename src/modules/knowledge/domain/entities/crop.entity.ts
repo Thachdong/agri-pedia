@@ -23,6 +23,8 @@ export type TCropPrompt = {
 export type TCropProps = {
   /** Stable key, e.g. `RICE`. */
   code: string;
+  /** URL segment of the crop's articles, e.g. `lua`; unique. */
+  slug: string;
   nameVi: string;
   nameEn: string;
   /** Supported by diagnosis. */
@@ -53,6 +55,10 @@ export class Crop {
 
   get code(): string {
     return this.props.code;
+  }
+
+  get slug(): string {
+    return this.props.slug;
   }
 
   get nameVi(): string {

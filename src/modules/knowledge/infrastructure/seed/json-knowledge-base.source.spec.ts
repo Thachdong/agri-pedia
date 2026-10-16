@@ -56,6 +56,7 @@ function cornPack(entryId = 'CORN_RUST'): TPackFiles {
   return {
     crop: {
       code: 'CORN',
+      slug: 'ngo',
       nameVi: 'Ngô',
       nameEn: 'corn',
       enabled: false,
@@ -214,12 +215,12 @@ describe('JsonKnowledgeBaseSource (several packs)', () => {
 
     const snapshot = await new JsonKnowledgeBaseSource(dir).load();
 
-    expect(snapshot.crops.map((c) => [c.code, c.kbVersion, c.enabled])).toEqual(
-      [
-        ['CORN', '2026-11-01', false],
-        ['RICE', '2026-10-12', true],
-      ],
-    );
+    expect(
+      snapshot.crops.map((c) => [c.code, c.slug, c.kbVersion, c.enabled]),
+    ).toEqual([
+      ['CORN', 'ngo', '2026-11-01', false],
+      ['RICE', 'lua', '2026-10-12', true],
+    ]);
     expect(
       snapshot.diseases.filter((d) => d.cropType === 'CORN').map((d) => d.code),
     ).toEqual(['CORN_RUST']);
@@ -234,6 +235,22 @@ describe('JsonKnowledgeBaseSource (several packs)', () => {
       { CORN: cornPack() },
     );
     await expectRejected(dir, 'CORN_RUST is used by crops CORN and RICE');
+  });
+
+  it('rejects a crop slug used by two crops', async () => {
+    const corn = cornPack();
+    corn.crop.slug = 'lua';
+    const dir = await packsWith(() => undefined, { CORN: corn });
+
+    await expectRejected(dir, 'Crop slug lua is used by crops CORN and RICE');
+  });
+
+  it('rejects a crop slug that is not a lowercase URL segment', async () => {
+    const corn = cornPack();
+    corn.crop.slug = 'Ngô';
+    const dir = await packsWith(() => undefined, { CORN: corn });
+
+    await expect(new JsonKnowledgeBaseSource(dir).load()).rejects.toThrow();
   });
 
   it('rejects entries of a new crop without the crop prefix', async () => {

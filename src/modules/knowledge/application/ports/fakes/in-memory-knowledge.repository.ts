@@ -56,6 +56,7 @@ export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
 function cropProps(crop: Crop): TCropProps {
   return {
     code: crop.code,
+    slug: crop.slug,
     nameVi: crop.nameVi,
     nameEn: crop.nameEn,
     enabled: crop.enabled,
