@@ -22,6 +22,8 @@ export type TArticleSeed = {
   /** Crop.code (pack folder). */
   cropType: string;
   diseaseCode: string;
+  /** Variant of `diseaseCode` the article is about; null = the disease's main article. */
+  variantCode: string | null;
   slug: string;
   title: string;
   summary: string;

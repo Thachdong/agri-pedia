@@ -78,6 +78,7 @@ describe('GetDiseaseDetailUseCase', () => {
           name: 'Đạo ôn lá',
           affectedParts: 'Lá',
           symptoms: ['Tâm xám'],
+          article: null,
         },
       ],
       transmissionMode: 'Qua gió. Qua hạt.',
@@ -117,6 +118,30 @@ describe('GetDiseaseDetailUseCase', () => {
     expect(detail.article).toEqual({
       path: '/benh-cay-trong/lua/benh-dao-on',
       status: 'DRAFT',
+    });
+  });
+
+  it('links the main article to the disease and a variant article to its variant', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    for (const article of [
+      buildArticle({
+        variantCode: 'RICE_BLAST__V1',
+        slug: 'benh-dao-on-la',
+      }),
+      buildArticle(),
+    ]) {
+      articles.articles.set(article.id, article);
+    }
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on',
+      status: 'REVIEWED',
+    });
+    expect(detail.variants[0].article).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on-la',
+      status: 'REVIEWED',
     });
   });
 

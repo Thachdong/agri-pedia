@@ -10,6 +10,7 @@ import {
   TArticleSeedImage,
 } from '../../application/ports';
 import {
+  diseaseCardCodes,
   EArticleStatus,
   referencedDiseaseCodes,
   TArticleImageCredit,
@@ -60,10 +61,18 @@ const articleFrontmatter = z
     'REVIEWED needs reviewedBy + reviewedAt',
   );
 
-/** Only the entry ids of a crop's diseases.json (the KB source checks the rest). */
+/** Only the entry and variant ids of a crop's diseases.json (the KB source checks the rest). */
 const diseaseIdsSchema = z.object({
-  diseases: z.array(z.object({ id: z.string() })),
+  diseases: z.array(
+    z.object({
+      id: z.string(),
+      variants: z.array(z.object({ id: z.string() })).optional(),
+    }),
+  ),
 });
+
+/** KB codes of one crop: disease ids, and variant id -> disease id. */
+type TKbCodes = { diseases: Set<string>; variantOf: Map<string, string> };
 
 const FRONTMATTER = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
 /** Fenced code blocks and inline code spans. */
@@ -79,6 +88,7 @@ const sha256 = (data: string | Buffer): string =>
 /**
  * Reads `<crop>/articles/<CODE>.md` + `<crop>/articles/images/<CODE>/*.webp` for every crop pack under
  * `directory` (default: `crops/` next to this file); crops without `articles/` are skipped.
+ * `<CODE>` is a disease id (main article) or a variant id (variant article, needs the main article).
  * Every check failure throws, so the app does not start with a broken article.
  */
 export class FileArticleSource implements IArticleSource {
@@ -113,7 +123,14 @@ export class FileArticleSource implements IArticleSource {
         await readFile(join(this.directory, crop, 'diseases.json'), 'utf8'),
       ),
     );
-    const kbCodes = new Set(diseases.map((d) => d.id));
+    const kbCodes: TKbCodes = {
+      diseases: new Set(diseases.map((d) => d.id)),
+      variantOf: new Map(
+        diseases.flatMap((d) =>
+          (d.variants ?? []).map((v): [string, string] => [v.id, d.id]),
+        ),
+      ),
+    };
     const seeds: TArticleSeed[] = [];
     const fileOfSlug = new Map<string, string>();
     for (const file of files) {
@@ -126,13 +143,23 @@ export class FileArticleSource implements IArticleSource {
       fileOfSlug.set(seed.slug, file);
       seeds.push(seed);
     }
+    const mains = new Set(
+      seeds.filter((s) => !s.variantCode).map((s) => s.diseaseCode),
+    );
+    for (const seed of seeds) {
+      if (seed.variantCode && !mains.has(seed.diseaseCode)) {
+        throw new Error(
+          `crops/${crop}/articles/${seed.variantCode}.md: variant article needs the main article ${seed.diseaseCode}.md`,
+        );
+      }
+    }
     return seeds;
   }
 
   private async loadArticle(
     crop: string,
     file: string,
-    kbCodes: Set<string>,
+    kbCodes: TKbCodes,
     fail: TFail,
   ): Promise<TArticleSeed> {
     const raw = await readFile(
@@ -157,8 +184,10 @@ export class FileArticleSource implements IArticleSource {
 
     if (file !== `${meta.code}.md`) fail(`file name must be ${meta.code}.md`);
     if (meta.crop !== crop) fail(`crop ${meta.crop} must be ${crop}`);
-    if (!kbCodes.has(meta.code))
-      fail(`code ${meta.code} is not in diseases.json`);
+    const parent = kbCodes.variantOf.get(meta.code);
+    if (!parent && !kbCodes.diseases.has(meta.code)) {
+      fail(`code ${meta.code} is not a disease or variant in diseases.json`);
+    }
     const imageFiles = new Set(meta.images.map((image) => image.file));
     if (meta.cover && !imageFiles.has(meta.cover)) {
       fail(`cover ${meta.cover} is not listed in images`);
@@ -169,7 +198,14 @@ export class FileArticleSource implements IArticleSource {
         fail(`image ${target} is not listed in images`);
     }
     for (const code of referencedDiseaseCodes(markdown)) {
-      if (!kbCodes.has(code)) fail(`disease ${code} is not in the ${crop} KB`);
+      if (!kbCodes.diseases.has(code) && !kbCodes.variantOf.has(code)) {
+        fail(`disease ${code} is not in the ${crop} KB`);
+      }
+    }
+    for (const code of diseaseCardCodes(markdown)) {
+      if (!kbCodes.diseases.has(code)) {
+        fail(`disease-card ${code} must be a disease id, not a variant`);
+      }
     }
     if (HTML_TAG.test(prose)) fail('HTML tags are not allowed');
 
@@ -206,7 +242,8 @@ export class FileArticleSource implements IArticleSource {
 
     return {
       cropType: crop,
-      diseaseCode: meta.code,
+      diseaseCode: parent ?? meta.code,
+      variantCode: parent ? meta.code : null,
       slug: meta.slug,
       title: meta.title,
       summary: meta.summary,

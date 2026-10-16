@@ -16,7 +16,24 @@ import { ListArticlesUseCase } from './list-articles.use-case';
 function setup() {
   const knowledge = new InMemoryKnowledgeRepository();
   knowledge.crops.set('RICE', buildCrop('RICE'));
-  knowledge.diseases.set('RICE_BLAST', buildDisease({ code: 'RICE_BLAST' }));
+  const blast = buildDisease({ code: 'RICE_BLAST' });
+  knowledge.diseases.set(
+    'RICE_BLAST',
+    buildDisease({
+      code: 'RICE_BLAST',
+      content: {
+        ...blast.content,
+        variants: [
+          {
+            code: 'RICE_BLAST__V1',
+            names: { vn: 'Đạo ôn lá', en: 'Leaf blast', scientific: null },
+            affectedPart: { vn: 'Lá', en: 'Leaf' },
+            symptoms: { vn: [], en: [] },
+          },
+        ],
+      },
+    }),
+  );
   knowledge.diseases.set(
     'RICE_BPH',
     buildDisease({
@@ -78,6 +95,31 @@ describe('ListArticlesUseCase', () => {
       }),
     ]);
     expect(result.nextCursor).toBeNull();
+  });
+
+  it('lists variant articles with their variant, next to the main article', async () => {
+    const { store, useCase } = setup();
+    store(
+      buildArticle({ title: 'Bệnh đạo ôn' }),
+      buildArticle({
+        variantCode: 'RICE_BLAST__V1',
+        slug: 'benh-dao-on-la',
+        title: 'Bệnh đạo ôn lá',
+      }),
+    );
+
+    const result = await useCase.execute({ crop: 'lua', limit: 50 });
+
+    expect(
+      result.articles.map((a) => [a.slug, a.disease?.code, a.variant]),
+    ).toEqual([
+      ['benh-dao-on', 'RICE_BLAST', null],
+      [
+        'benh-dao-on-la',
+        'RICE_BLAST',
+        { code: 'RICE_BLAST__V1', name: 'Đạo ôn lá' },
+      ],
+    ]);
   });
 
   it('filters by the category of the disease', async () => {

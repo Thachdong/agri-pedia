@@ -1,6 +1,8 @@
 import { InMemoryFileStorage } from '@shared/storage';
 import {
+  Article,
   KnowledgeArticleNotFoundException,
+  TArticleContent,
   KnowledgeCropNotFoundException,
 } from '../../domain';
 import {
@@ -11,6 +13,28 @@ import {
   InMemoryKnowledgeRepository,
 } from '../ports/fakes';
 import { GetArticleUseCase } from './get-article.use-case';
+
+/** Content of a stored article (to revise it in a test). */
+function contentOf(article: Article): TArticleContent {
+  return {
+    cropType: article.cropType,
+    diseaseCode: article.diseaseCode,
+    variantCode: article.variantCode,
+    slug: article.slug,
+    title: article.title,
+    summary: article.summary,
+    markdown: article.markdown,
+    cover: article.cover,
+    images: article.images,
+    sources: article.sources,
+    status: article.status,
+    reviewedBy: article.reviewedBy,
+    reviewedAt: article.reviewedAt,
+    kbVersion: article.kbVersion,
+    contentHash: article.contentHash,
+    updatedAt: article.updatedAt,
+  };
+}
 
 const MARKDOWN = [
   'Mở đầu',
@@ -26,12 +50,23 @@ function setup() {
   const knowledge = new InMemoryKnowledgeRepository();
   knowledge.crops.set('RICE', buildCrop('RICE'));
   const blast = buildDisease({ code: 'RICE_BLAST' });
+  const variant = (code: string, name: string) => ({
+    code,
+    names: { vn: name, en: name, scientific: null },
+    affectedPart: { vn: 'Lá', en: 'Leaf' },
+    symptoms: { vn: [], en: [] },
+  });
   knowledge.diseases.set(
     'RICE_BLAST',
     buildDisease({
       code: 'RICE_BLAST',
       content: {
         ...blast.content,
+        variants: [
+          variant('RICE_BLAST__V1', 'Đạo ôn lá'),
+          variant('RICE_BLAST__V2', 'Đạo ôn cổ bông'),
+          variant('RICE_BLAST__V3', 'Đạo ôn hạt'),
+        ],
         similarDiseases: [
           { code: 'RICE_BROWN_SPOT', distinguishingFeature: null },
         ],
@@ -62,7 +97,7 @@ function setup() {
     knowledge,
     new InMemoryFileStorage(),
   );
-  return { useCase };
+  return { articles, useCase };
 }
 
 const IMAGE_URL =
@@ -129,6 +164,85 @@ describe('GetArticleUseCase', () => {
       reviewedBy: 'AI',
       sources: [{ title: 'VIPA', url: 'https://vipa.vn' }],
     });
+  });
+
+  it('a main article lists its variant articles in KB order; variant links fall back to it', async () => {
+    const { articles, useCase } = setup();
+    for (const article of [
+      buildArticle({
+        variantCode: 'RICE_BLAST__V3',
+        slug: 'benh-dao-on-hat',
+        title: 'Đạo ôn hạt',
+      }),
+      buildArticle({
+        variantCode: 'RICE_BLAST__V1',
+        slug: 'benh-dao-on-la',
+        title: 'Đạo ôn lá',
+      }),
+    ]) {
+      articles.articles.set(article.id, article);
+    }
+    const main = [...articles.articles.values()].find(
+      (a) => a.slug === 'benh-dao-on',
+    );
+    main?.revise({
+      ...contentOf(main),
+      markdown:
+        '[Lá](/diseases/RICE_BLAST__V1) [Cổ bông](/diseases/RICE_BLAST__V2)',
+    });
+
+    const article = await useCase.execute({
+      cropSlug: 'lua',
+      slug: 'benh-dao-on',
+    });
+
+    expect(article.variant).toBeNull();
+    expect(article.parentArticle).toBeNull();
+    expect(article.variantArticles).toEqual([
+      {
+        path: '/benh-cay-trong/lua/benh-dao-on-la',
+        title: 'Đạo ôn lá',
+        variantCode: 'RICE_BLAST__V1',
+        variantName: 'Đạo ôn lá',
+      },
+      {
+        path: '/benh-cay-trong/lua/benh-dao-on-hat',
+        title: 'Đạo ôn hạt',
+        variantCode: 'RICE_BLAST__V3',
+        variantName: 'Đạo ôn hạt',
+      },
+    ]);
+    // V1 has its own article; V2 has none and links to the main article
+    expect(article.markdown).toBe(
+      '[Lá](/benh-cay-trong/lua/benh-dao-on-la) [Cổ bông](/benh-cay-trong/lua/benh-dao-on)',
+    );
+  });
+
+  it('a variant article shows its variant and the main article as parent', async () => {
+    const { articles, useCase } = setup();
+    const leaf = buildArticle({
+      variantCode: 'RICE_BLAST__V1',
+      slug: 'benh-dao-on-la',
+      title: 'Đạo ôn lá',
+    });
+    articles.articles.set(leaf.id, leaf);
+
+    const article = await useCase.execute({
+      cropSlug: 'lua',
+      slug: 'benh-dao-on-la',
+    });
+
+    expect(article.disease?.code).toBe('RICE_BLAST');
+    expect(article.variant).toEqual({
+      code: 'RICE_BLAST__V1',
+      name: 'Đạo ôn lá',
+      affectedParts: 'Lá',
+    });
+    expect(article.parentArticle).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on',
+      title: 'Bệnh đạo ôn lúa',
+    });
+    expect(article.variantArticles).toEqual([]);
   });
 
   it('throws KnowledgeCropNotFound for an unknown crop slug', async () => {

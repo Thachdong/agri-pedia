@@ -47,6 +47,8 @@ export type TArticleListItem = {
     scientificName: string | null;
     category: EDiseaseCategory;
   } | null;
+  /** Set for an article about one variant of the disease. */
+  variant: { code: string; name: string } | null;
 };
 
 export type TListArticlesOutput = {
@@ -127,6 +129,10 @@ export class ListArticlesUseCase {
           ? diseaseByCode.get(article.diseaseCode)
           : undefined;
         const cover = article.coverImage();
+        const variant =
+          disease && article.variantCode
+            ? disease.variant(article.variantCode)
+            : null;
         return {
           path: article.path(crop.slug),
           slug: article.slug,
@@ -143,6 +149,7 @@ export class ListArticlesUseCase {
                 category: disease.category,
               }
             : null,
+          variant: variant && { code: variant.code, name: variant.names.vn },
         };
       }),
       nextCursor,

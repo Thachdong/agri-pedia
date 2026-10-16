@@ -11,7 +11,7 @@ import {
   IKnowledgeRepository,
   KNOWLEDGE_REPOSITORY,
 } from '../ports/knowledge.repository';
-import { TSeedArticlesOutput } from './seed-articles.use-case';
+import { TSeedArticlesOutput, TSeededArticle } from './seed-articles.use-case';
 
 export type TRevalidateArticlesInput = TSeedArticlesOutput;
 
@@ -32,8 +32,10 @@ export const ARTICLE_CACHE_TAGS = {
 
 /**
  * Tells the client which article pages a seed changed: each changed / deleted article (old slug too),
- * its crop list, the global list, its disease redirect, and — when its link data changed
- * (new, renamed, title / cover, deleted) — every article linking to it.
+ * its crop list, the global list, its disease / variant redirect, the related article of the same
+ * disease (a variant article's main article lists the variants; a main article's title is the
+ * variants' breadcrumb), and — when its link data changed (new, renamed, title / cover, deleted) —
+ * every article linking to it (for a main article also links to its variant codes, which fall back to it).
  */
 @Injectable()
 export class RevalidateArticlesUseCase {
@@ -65,25 +67,67 @@ export class RevalidateArticlesUseCase {
       if (article.oldSlug) {
         tags.add(ARTICLE_CACHE_TAGS.article(article.cropSlug, article.oldSlug));
       }
-      if (article.diseaseCode) {
-        tags.add(ARTICLE_CACHE_TAGS.disease(article.diseaseCode));
-      }
+      const code = article.variantCode ?? article.diseaseCode;
+      if (code) tags.add(ARTICLE_CACHE_TAGS.disease(code));
     }
 
-    const linkCodes = changed
-      .filter((article) => article.linkChanged && article.diseaseCode)
-      .map((article) => article.diseaseCode as string);
-    if (linkCodes.length > 0) {
-      const crops = await this.knowledge.listCrops();
-      const slugOf = new Map(crops.map((crop) => [crop.code, crop.slug]));
-      for (const ref of await this.articles.findReferencing(linkCodes)) {
-        const cropSlug = slugOf.get(ref.cropType);
-        if (cropSlug) tags.add(ARTICLE_CACHE_TAGS.article(cropSlug, ref.slug));
-      }
-    }
+    for (const tag of await this.relatedArticleTags(changed)) tags.add(tag);
 
     const sorted = [...tags].sort();
     await this.invalidator.invalidate(sorted);
     return { tags: sorted };
+  }
+
+  /** Tags of the same-disease articles and of the articles linking to the changed ones. */
+  private async relatedArticleTags(
+    changed: TSeededArticle[],
+  ): Promise<string[]> {
+    const ofDiseases = changed.filter((article) => article.diseaseCode);
+    if (ofDiseases.length === 0) return [];
+    const crops = await this.knowledge.listCrops();
+    const slugOf = new Map(crops.map((crop) => [crop.code, crop.slug]));
+    const tags: string[] = [];
+    const addArticle = (cropType: string, slug: string): void => {
+      const cropSlug = slugOf.get(cropType);
+      if (cropSlug) tags.push(ARTICLE_CACHE_TAGS.article(cropSlug, slug));
+    };
+
+    const sameDisease = await this.articles.findByDiseaseCodes([
+      ...new Set(ofDiseases.map((article) => article.diseaseCode as string)),
+    ]);
+    for (const article of ofDiseases) {
+      for (const other of sameDisease) {
+        if (other.diseaseCode !== article.diseaseCode) continue;
+        // variant changed -> its main article; main changed -> every variant article
+        const related = article.variantCode
+          ? other.variantCode === null
+          : other.variantCode !== null;
+        if (related) addArticle(other.cropType, other.slug);
+      }
+    }
+
+    const linkChanged = ofDiseases.filter((article) => article.linkChanged);
+    const mainDiseases = linkChanged
+      .filter((article) => !article.variantCode)
+      .map((article) => article.diseaseCode as string);
+    // Links to a variant without its own article resolve to the main article.
+    const variantCodes =
+      mainDiseases.length > 0
+        ? (await this.knowledge.findDiseasesByCodes(mainDiseases)).flatMap(
+            (disease) => disease.content.variants.map((v) => v.code),
+          )
+        : [];
+    const linkCodes = [
+      ...linkChanged.map(
+        (article) => (article.variantCode ?? article.diseaseCode) as string,
+      ),
+      ...variantCodes,
+    ];
+    if (linkCodes.length > 0) {
+      for (const ref of await this.articles.findReferencing(linkCodes)) {
+        addArticle(ref.cropType, ref.slug);
+      }
+    }
+    return tags;
   }
 }

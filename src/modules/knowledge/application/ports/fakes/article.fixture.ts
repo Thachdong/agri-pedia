@@ -35,6 +35,7 @@ export function buildArticleSeed(
   const seed: TArticleSeed = {
     cropType: 'RICE',
     diseaseCode: 'RICE_BLAST',
+    variantCode: null,
     slug: 'benh-dao-on',
     title: 'Bệnh đạo ôn lúa',
     summary: 'Cách nhận biết và phòng bệnh đạo ôn trên lúa.',
@@ -63,6 +64,7 @@ export function buildArticle(
   return Article.restore(id, {
     cropType: 'RICE',
     diseaseCode: 'RICE_BLAST',
+    variantCode: null,
     slug: 'benh-dao-on',
     title: 'Bệnh đạo ôn lúa',
     summary: 'Cách nhận biết và phòng bệnh đạo ôn trên lúa.',

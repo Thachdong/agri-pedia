@@ -15,6 +15,7 @@ const CHANGED: TSeedArticlesOutput = {
       slug: 'benh-dao-on',
       oldSlug: null,
       diseaseCode: 'RICE_BLAST',
+      variantCode: null,
       linkChanged: true,
     },
   ],

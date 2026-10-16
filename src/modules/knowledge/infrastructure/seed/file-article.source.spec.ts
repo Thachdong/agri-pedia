@@ -208,7 +208,10 @@ describe('FileArticleSource (invalid article)', () => {
       }),
     });
 
-    await expectRejected(dir, 'code RICE_NOPE is not in diseases.json');
+    await expectRejected(
+      dir,
+      'code RICE_NOPE is not a disease or variant in diseases.json',
+    );
   });
 
   it('rejects a slug used twice in the crop', async () => {
@@ -300,6 +303,58 @@ describe('FileArticleSource (invalid article)', () => {
     await expectRejected(
       await validPack({ body: `${BODY}\n\n::disease-card{code="RICE_NOPE"}` }),
       'disease RICE_NOPE is not in the RICE KB',
+    );
+  });
+
+  it('loads a variant article under its disease, with links to variant ids', async () => {
+    const variant = articleText({
+      frontmatter: {
+        code: 'RICE_BLAST__V1',
+        slug: 'benh-dao-on-la',
+        cover: null,
+      },
+      images: 'images: []',
+      body: 'Xem [bài chính](/diseases/RICE_BLAST) và [cổ bông](/diseases/RICE_BLAST__V2).',
+    });
+    const dir = await packWith(
+      {
+        'RICE_BLAST.md': articleText({
+          body: `${BODY}\n\nChi tiết: [Đạo ôn lá](/diseases/RICE_BLAST__V1)`,
+        }),
+        'RICE_BLAST__V1.md': variant,
+      },
+      { 'RICE_BLAST/dao-on-1.webp': await webp() },
+    );
+
+    const seeds = await new FileArticleSource(dir).load();
+
+    expect(seeds.map((s) => [s.slug, s.diseaseCode, s.variantCode])).toEqual([
+      ['benh-dao-on', 'RICE_BLAST', null],
+      ['benh-dao-on-la', 'RICE_BLAST', 'RICE_BLAST__V1'],
+    ]);
+  });
+
+  it('rejects a variant article without the main article of its disease', async () => {
+    const dir = await packWith({
+      'RICE_BLAST__V1.md': articleText({
+        frontmatter: { code: 'RICE_BLAST__V1', cover: null },
+        images: 'images: []',
+        body: 'Mở đầu.',
+      }),
+    });
+
+    await expectRejected(
+      dir,
+      'variant article needs the main article RICE_BLAST.md',
+    );
+  });
+
+  it('rejects a disease card of a variant id', async () => {
+    await expectRejected(
+      await validPack({
+        body: `${BODY}\n\n::disease-card{code="RICE_BLAST__V1"}`,
+      }),
+      'disease-card RICE_BLAST__V1 must be a disease id, not a variant',
     );
   });
 

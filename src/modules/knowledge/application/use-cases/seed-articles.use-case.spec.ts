@@ -43,6 +43,7 @@ describe('SeedArticlesUseCase', () => {
           slug: 'benh-dao-on',
           oldSlug: null,
           diseaseCode: 'RICE_BLAST',
+          variantCode: null,
           linkChanged: true,
         },
       ],
@@ -139,11 +140,50 @@ describe('SeedArticlesUseCase', () => {
         slug: 'dao-on',
         oldSlug: 'benh-dao-on',
         diseaseCode: 'RICE_BLAST',
+        variantCode: null,
         linkChanged: true,
       },
     ]);
     expect((await articles.findAllForSeed()).map((a) => a.slug)).toEqual([
       'dao-on',
+    ]);
+  });
+
+  it('keeps a variant article apart from the main article of its disease', async () => {
+    const { source, articles, storage, useCase } = setup();
+    const variant = buildArticleSeed({
+      variantCode: 'RICE_BLAST__V1',
+      slug: 'benh-dao-on-la',
+      title: 'Đạo ôn lá',
+    });
+    source.seeds = [buildArticleSeed(), variant];
+
+    const result = await useCase.execute();
+
+    expect(result.upserted.map((a) => [a.slug, a.variantCode])).toEqual([
+      ['benh-dao-on', null],
+      ['benh-dao-on-la', 'RICE_BLAST__V1'],
+    ]);
+    const stored = await articles.findAllForSeed();
+    expect(stored.map((a) => [a.diseaseCode, a.variantCode])).toEqual([
+      ['RICE_BLAST', null],
+      ['RICE_BLAST', 'RICE_BLAST__V1'],
+    ]);
+    const sha = variant.images[0].sha256.slice(0, 8);
+    expect(
+      storage.uploaded.has(`articles/RICE/RICE_BLAST__V1/dao-on-1.${sha}.webp`),
+    ).toBe(true);
+
+    // matched by KB code: an unchanged pack changes nothing, dropping the variant deletes only it
+    expect(await useCase.execute()).toEqual({ upserted: [], deleted: [] });
+    source.seeds = [buildArticleSeed()];
+    expect((await useCase.execute()).deleted).toEqual([
+      {
+        cropSlug: 'lua',
+        slug: 'benh-dao-on-la',
+        diseaseCode: 'RICE_BLAST',
+        variantCode: 'RICE_BLAST__V1',
+      },
     ]);
   });
 
@@ -157,7 +197,12 @@ describe('SeedArticlesUseCase', () => {
     expect(result).toEqual({
       upserted: [],
       deleted: [
-        { cropSlug: 'lua', slug: 'benh-dao-on', diseaseCode: 'RICE_BLAST' },
+        {
+          cropSlug: 'lua',
+          slug: 'benh-dao-on',
+          diseaseCode: 'RICE_BLAST',
+          variantCode: null,
+        },
       ],
     });
     expect(await articles.findAllForSeed()).toEqual([]);

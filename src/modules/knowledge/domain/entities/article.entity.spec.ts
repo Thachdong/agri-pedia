@@ -21,6 +21,7 @@ const content = (
 ): TArticleContent => ({
   cropType: 'RICE',
   diseaseCode: 'RICE_BLAST',
+  variantCode: null,
   slug: 'benh-dao-on',
   title: 'Bệnh đạo ôn',
   summary: 'Tóm tắt',
@@ -102,5 +103,19 @@ describe('Article', () => {
       'a.webp',
       'c.webp',
     ]);
+  });
+
+  it('kbCode is the variant code of a variant article, else the disease code', () => {
+    expect(Article.create(content(), new Date()).kbCode).toBe('RICE_BLAST');
+    const variant = Article.create(
+      content({ variantCode: 'RICE_BLAST__V1', slug: 'benh-dao-on-la' }),
+      new Date(),
+    );
+    expect(variant.variantCode).toBe('RICE_BLAST__V1');
+    expect(variant.diseaseCode).toBe('RICE_BLAST');
+    expect(variant.kbCode).toBe('RICE_BLAST__V1');
+    expect(
+      Article.create(content({ diseaseCode: null }), new Date()).kbCode,
+    ).toBeNull();
   });
 });

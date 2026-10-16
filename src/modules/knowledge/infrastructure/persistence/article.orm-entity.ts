@@ -15,8 +15,14 @@ export const ARTICLE_TITLE_COLLATION = 'vi-x-icu';
 
 @Entity({ name: 'articles' })
 @Index('UQ_articles_crop_type_slug', ['cropType', 'slug'], { unique: true })
+// One main article per disease and one article per variant (variant codes contain the disease code).
 @Index('UQ_articles_disease_code_locale', ['diseaseCode', 'locale'], {
   unique: true,
+  where: '"variant_code" IS NULL',
+})
+@Index('UQ_articles_variant_code_locale', ['variantCode', 'locale'], {
+  unique: true,
+  where: '"variant_code" IS NOT NULL',
 })
 @Index('IDX_articles_crop_type_title', ['cropType', 'title'])
 @Index('IDX_articles_crop_type_status', ['cropType', 'status'])
@@ -39,6 +45,15 @@ export class ArticleOrmEntity {
     nullable: true,
   })
   diseaseCode: string | null;
+
+  /** Variant of the disease (`<diseaseCode>__V<n>`); null = the disease's main article. */
+  @Column({
+    name: 'variant_code',
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+  })
+  variantCode: string | null;
 
   @ManyToOne(() => DiseaseOrmEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'disease_code', referencedColumnName: 'code' })

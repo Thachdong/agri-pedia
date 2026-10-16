@@ -23,6 +23,8 @@ export type TSeededArticle = {
   /** Previous slug when the seed renamed the article. */
   oldSlug: string | null;
   diseaseCode: string | null;
+  /** Set for a variant article. */
+  variantCode: string | null;
   /** New, renamed, or its title / cover changed: pages linking to it show stale data. */
   linkChanged: boolean;
 };
@@ -31,6 +33,7 @@ export type TDeletedArticle = {
   cropSlug: string;
   slug: string;
   diseaseCode: string | null;
+  variantCode: string | null;
 };
 
 export type TSeedArticlesOutput = {
@@ -41,7 +44,7 @@ export type TSeedArticlesOutput = {
 /**
  * Writes the article seed into `articles` (run after the KB seed); idempotent by content hash.
  * New / changed images are uploaded first (public bucket, content hash in the key), then rows are
- * upserted (matched by disease code) and articles no longer in the pack deleted, in one transaction.
+ * upserted (matched by KB code: variant code, else disease code) and articles no longer in the pack deleted, in one transaction.
  */
 @Injectable()
 export class SeedArticlesUseCase {
@@ -64,14 +67,14 @@ export class SeedArticlesUseCase {
       return slug;
     };
     const existing = await this.articles.findAllForSeed();
-    const byDisease = new Map(existing.map((a) => [a.diseaseCode, a]));
+    const byCode = new Map(existing.map((a) => [a.kbCode, a]));
     const now = new Date();
 
     const save: Article[] = [];
     const uploads: Array<{ key: string; image: TArticleSeedImage }> = [];
     const upserted: TSeededArticle[] = [];
     for (const seed of seeds) {
-      const old = byDisease.get(seed.diseaseCode);
+      const old = byCode.get(seedCode(seed));
       if (old?.contentHash === seed.contentHash) continue;
 
       const content = toContent(seed);
@@ -86,6 +89,7 @@ export class SeedArticlesUseCase {
         slug: seed.slug,
         oldSlug: renamed ? old.slug : null,
         diseaseCode: seed.diseaseCode,
+        variantCode: seed.variantCode,
         linkChanged:
           !old ||
           renamed ||
@@ -102,9 +106,9 @@ export class SeedArticlesUseCase {
       }
     }
 
-    const seeded = new Set(seeds.map((seed) => seed.diseaseCode));
+    const seeded = new Set(seeds.map(seedCode));
     const removed = existing.filter(
-      (article) => !seeded.has(article.diseaseCode ?? ''),
+      (article) => !seeded.has(article.kbCode ?? ''),
     );
 
     // Upload before writing rows: a failed upload leaves the table unchanged.
@@ -126,9 +130,15 @@ export class SeedArticlesUseCase {
         cropSlug: cropSlug(article.cropType),
         slug: article.slug,
         diseaseCode: article.diseaseCode,
+        variantCode: article.variantCode,
       })),
     };
   }
+}
+
+/** KB code of a seed article: the variant code, else the disease code. */
+function seedCode(seed: TArticleSeed): string {
+  return seed.variantCode ?? seed.diseaseCode;
 }
 
 function coverKey(
@@ -141,13 +151,14 @@ function coverKey(
 /** `articles/<CROP>/<CODE>/<name>.<sha8>.webp`: a new key whenever the content changes. */
 function imageKey(seed: TArticleSeed, image: TArticleSeedImage): string {
   const name = image.file.replace(/\.webp$/, '');
-  return `articles/${seed.cropType}/${seed.diseaseCode}/${name}.${image.sha256.slice(0, 8)}.webp`;
+  return `articles/${seed.cropType}/${seedCode(seed)}/${name}.${image.sha256.slice(0, 8)}.webp`;
 }
 
 function toContent(seed: TArticleSeed): TArticleContent {
   return {
     cropType: seed.cropType,
     diseaseCode: seed.diseaseCode,
+    variantCode: seed.variantCode,
     slug: seed.slug,
     title: seed.title,
     summary: seed.summary,

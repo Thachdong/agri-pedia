@@ -6,6 +6,7 @@ export class ArticleMapper {
     return Article.restore(row.id, {
       cropType: row.cropType,
       diseaseCode: row.diseaseCode,
+      variantCode: row.variantCode,
       slug: row.slug,
       title: row.title,
       summary: row.summary,
@@ -28,6 +29,7 @@ export class ArticleMapper {
       id: article.id,
       cropType: article.cropType,
       diseaseCode: article.diseaseCode,
+      variantCode: article.variantCode,
       slug: article.slug,
       locale: 'vi',
       title: article.title,

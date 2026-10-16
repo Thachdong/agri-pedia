@@ -1,6 +1,7 @@
 import { Article, EArticleStatus } from '../../domain';
 import {
   buildCrop,
+  buildDisease,
   InMemoryArticleCacheInvalidator,
   InMemoryArticleRepository,
   InMemoryKnowledgeRepository,
@@ -18,7 +19,7 @@ function setup() {
     knowledge,
     invalidator,
   );
-  return { articles, invalidator, useCase };
+  return { articles, knowledge, invalidator, useCase };
 }
 
 /** Stores an article of RICE with this slug and body. */
@@ -26,10 +27,12 @@ function storeArticle(
   articles: InMemoryArticleRepository,
   slug: string,
   markdown: string,
+  codes: { diseaseCode?: string; variantCode?: string } = {},
 ): void {
   const article = Article.restore(slug, {
     cropType: 'RICE',
-    diseaseCode: `RICE_${slug.toUpperCase()}`,
+    diseaseCode: codes.diseaseCode ?? `RICE_${slug.toUpperCase()}`,
+    variantCode: codes.variantCode ?? null,
     slug,
     title: slug,
     summary: '',
@@ -53,6 +56,7 @@ const blast = (overrides: Partial<TSeededArticle> = {}): TSeededArticle => ({
   slug: 'benh-dao-on',
   oldSlug: null,
   diseaseCode: 'RICE_BLAST',
+  variantCode: null,
   linkChanged: false,
   ...overrides,
 });
@@ -130,7 +134,12 @@ describe('RevalidateArticlesUseCase', () => {
     const { tags } = await useCase.execute({
       upserted: [],
       deleted: [
-        { cropSlug: 'lua', slug: 'benh-dao-on', diseaseCode: 'RICE_BLAST' },
+        {
+          cropSlug: 'lua',
+          slug: 'benh-dao-on',
+          diseaseCode: 'RICE_BLAST',
+          variantCode: null,
+        },
       ],
     });
 
@@ -141,5 +150,84 @@ describe('RevalidateArticlesUseCase', () => {
       'articles',
       'articles:lua',
     ]);
+  });
+
+  it('sends the main article and the variant redirect when a variant article changed', async () => {
+    const { articles, useCase } = setup();
+    storeArticle(articles, 'benh-dao-on', '', { diseaseCode: 'RICE_BLAST' });
+    storeArticle(articles, 'benh-dao-on-co-bong', '', {
+      diseaseCode: 'RICE_BLAST',
+      variantCode: 'RICE_BLAST__V2',
+    });
+
+    const { tags } = await useCase.execute({
+      upserted: [
+        blast({ slug: 'benh-dao-on-la', variantCode: 'RICE_BLAST__V1' }),
+      ],
+      deleted: [],
+    });
+
+    expect(tags).toEqual([
+      'article-disease:RICE_BLAST__V1',
+      'article:lua:benh-dao-on',
+      'article:lua:benh-dao-on-la',
+      'articles',
+      'articles:lua',
+    ]);
+  });
+
+  it('sends every variant article when the main article changed', async () => {
+    const { articles, useCase } = setup();
+    storeArticle(articles, 'benh-dao-on-la', '', {
+      diseaseCode: 'RICE_BLAST',
+      variantCode: 'RICE_BLAST__V1',
+    });
+    storeArticle(articles, 'benh-dao-on-co-bong', '', {
+      diseaseCode: 'RICE_BLAST',
+      variantCode: 'RICE_BLAST__V2',
+    });
+
+    const { tags } = await useCase.execute({
+      upserted: [blast()],
+      deleted: [],
+    });
+
+    expect(tags).toEqual(
+      expect.arrayContaining([
+        'article:lua:benh-dao-on-la',
+        'article:lua:benh-dao-on-co-bong',
+      ]),
+    );
+  });
+
+  it('adds articles linking to a variant code when the main article it falls back to changed its link data', async () => {
+    const { articles, knowledge, useCase } = setup();
+    knowledge.diseases.set(
+      'RICE_BLAST',
+      buildDisease({
+        content: {
+          variants: [
+            {
+              code: 'RICE_BLAST__V2',
+              names: {
+                vn: 'Đạo ôn cổ bông',
+                en: 'Neck blast',
+                scientific: null,
+              },
+              affectedPart: { vn: 'Cổ bông', en: 'Neck' },
+              symptoms: { vn: [], en: [] },
+            },
+          ],
+        },
+      }),
+    );
+    storeArticle(articles, 'dom-nau', '[Cổ bông](/diseases/RICE_BLAST__V2)');
+
+    const { tags } = await useCase.execute({
+      upserted: [blast({ linkChanged: true })],
+      deleted: [],
+    });
+
+    expect(tags).toContain('article:lua:dom-nau');
   });
 });

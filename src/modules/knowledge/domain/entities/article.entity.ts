@@ -33,6 +33,8 @@ export type TArticleContent = {
   cropType: string;
   /** Disease.code of the same crop; null = article not about a disease. */
   diseaseCode: string | null;
+  /** Variant code of that disease (`<diseaseCode>__V<n>`) for a variant article; null = the disease's main article. */
+  variantCode: string | null;
   /** Unique within the crop, e.g. `benh-dao-on`. */
   slug: string;
   title: string;
@@ -116,6 +118,15 @@ export class Article extends AggregateRoot {
 
   get diseaseCode(): string | null {
     return this.props.diseaseCode;
+  }
+
+  get variantCode(): string | null {
+    return this.props.variantCode;
+  }
+
+  /** KB code the article is about: the variant code, else the disease code. */
+  get kbCode(): string | null {
+    return this.props.variantCode ?? this.props.diseaseCode;
   }
 
   get slug(): string {

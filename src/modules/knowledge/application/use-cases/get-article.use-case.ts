@@ -3,6 +3,7 @@ import { FILE_STORAGE, IFileStorage } from '@shared/storage';
 import {
   Article,
   diseaseCardCodes,
+  diseaseCodeOf,
   EAgentType,
   EArticleStatus,
   EDiseaseCategory,
@@ -47,6 +48,17 @@ export type TGetArticleOutput = {
     affectedParts: EPlantPart[];
     verification: EVerification;
   } | null;
+  /** Set for an article about one variant of `disease`. */
+  variant: { code: string; name: string; affectedParts: string } | null;
+  /** Variant article: the disease's main article (breadcrumb); null when it has none. */
+  parentArticle: { path: string; title: string } | null;
+  /** Main article: the variant articles of the disease, in KB variant order. */
+  variantArticles: Array<{
+    path: string;
+    title: string;
+    variantCode: string;
+    variantName: string;
+  }>;
   cover: { url: string; alt: string; width: number; height: number } | null;
   /** In order of appearance in the body, then images it does not show. */
   images: Array<{
@@ -107,15 +119,31 @@ export class GetArticleUseCase {
       ]),
     ];
     const [linkedArticles, relatedDiseases] = await Promise.all([
-      this.articles.findByDiseaseCodes(linkedCodes),
+      this.articles.findByDiseaseCodes([
+        ...new Set([
+          ...linkedCodes.map(diseaseCodeOf),
+          ...(article.diseaseCode ? [article.diseaseCode] : []),
+        ]),
+      ]),
       this.knowledge.findDiseasesByCodes(relatedCodes),
     ]);
     // Article links stay inside the crop (seed checks the codes belong to it).
     const articleOf = new Map(
       linkedArticles
         .filter((a) => a.cropType === crop.code)
-        .map((a) => [a.diseaseCode, a]),
+        .map((a) => [a.kbCode, a]),
     );
+    // A variant without its own article links to the disease's main article.
+    const articleFor = (code: string): Article | undefined =>
+      articleOf.get(code) ?? articleOf.get(diseaseCodeOf(code));
+    const variant =
+      disease && article.variantCode
+        ? disease.variant(article.variantCode)
+        : null;
+    const parent =
+      article.variantCode && article.diseaseCode
+        ? articleOf.get(article.diseaseCode)
+        : undefined;
     const coverUrl = (a: Article): string | null => {
       const cover = a.coverImage();
       return cover ? this.storage.publicUrl(cover.key) : null;
@@ -134,7 +162,7 @@ export class GetArticleUseCase {
       summary: article.summary,
       markdown: resolveArticleMarkdown(article.markdown, {
         imageUrl: (file) => imageUrl.get(file),
-        diseasePath: (code) => articleOf.get(code)?.path(crop.slug),
+        diseasePath: (code) => articleFor(code)?.path(crop.slug),
       }),
       crop: {
         code: crop.code,
@@ -153,6 +181,30 @@ export class GetArticleUseCase {
         affectedParts: disease.affectedParts,
         verification: disease.verification,
       },
+      variant: variant && {
+        code: variant.code,
+        name: variant.names.vn,
+        affectedParts: variant.affectedPart.vn,
+      },
+      parentArticle: parent
+        ? { path: parent.path(crop.slug), title: parent.title }
+        : null,
+      variantArticles:
+        disease && !article.variantCode
+          ? disease.content.variants.flatMap((v) => {
+              const own = articleOf.get(v.code);
+              return own
+                ? [
+                    {
+                      path: own.path(crop.slug),
+                      title: own.title,
+                      variantCode: v.code,
+                      variantName: v.names.vn,
+                    },
+                  ]
+                : [];
+            })
+          : [],
       cover: cover && {
         url: this.storage.publicUrl(cover.key),
         alt: cover.alt,

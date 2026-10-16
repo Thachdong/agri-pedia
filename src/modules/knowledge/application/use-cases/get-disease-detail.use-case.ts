@@ -36,6 +36,8 @@ export type TGetDiseaseDetailOutput = {
     name: string;
     affectedParts: string;
     symptoms: string[];
+    /** The variant's own article page; null when it has none. */
+    article: { path: string; status: EArticleStatus } | null;
   }>;
   transmissionMode: string | null;
   cropStages: ECropStage[];
@@ -49,7 +51,7 @@ export type TGetDiseaseDetailOutput = {
   references: Array<{ title: string; url: string }>;
   verification: EVerification;
   kbVersion: string;
-  /** The disease's article page; null when it has none. */
+  /** The disease's main article page; null when it has none. */
   article: { path: string; status: EArticleStatus } | null;
 };
 
@@ -73,10 +75,19 @@ export class GetDiseaseDetailUseCase {
       content.similarDiseases.map((s) => s.code),
     );
     const nameByCode = new Map(similar.map((d) => [d.code, d.nameVi]));
-    const [article] = await this.articles.findByDiseaseCodes([disease.code]);
-    const crop = article
-      ? await this.knowledge.findCrop(article.cropType)
-      : null;
+    const articles = await this.articles.findByDiseaseCodes([disease.code]);
+    const crop =
+      articles.length > 0
+        ? await this.knowledge.findCrop(disease.cropType)
+        : null;
+    const articleRef = (
+      code: string,
+    ): { path: string; status: EArticleStatus } | null => {
+      const article = articles.find((a) => a.kbCode === code);
+      return article && crop
+        ? { path: article.path(crop.slug), status: article.status }
+        : null;
+    };
 
     return {
       code: disease.code,
@@ -94,6 +105,7 @@ export class GetDiseaseDetailUseCase {
         name: variant.names.vn,
         affectedParts: variant.affectedPart.vn,
         symptoms: variant.symptoms.vn,
+        article: articleRef(variant.code),
       })),
       transmissionMode: content.transmissionMode
         ? content.transmissionMode.vn.join(' ')
@@ -113,10 +125,7 @@ export class GetDiseaseDetailUseCase {
       references: content.references,
       verification: disease.verification,
       kbVersion: disease.kbVersion,
-      article:
-        article && crop
-          ? { path: article.path(crop.slug), status: article.status }
-          : null,
+      article: articleRef(disease.code),
     };
   }
 }
