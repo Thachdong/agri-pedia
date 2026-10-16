@@ -1,22 +1,30 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
+import { DataSource } from 'typeorm';
+import { FILE_STORAGE, InMemoryFileStorage } from '@shared/storage';
 import { AppModule } from '../../src/app.module';
 
 // Reads the KB seeded on app start (51 rice entries); never modifies it.
+// Article images go to a fake storage; the articles table is emptied afterwards
+// so the next real start uploads them.
 describe('GET /knowledge/crops, /knowledge/diseases, /knowledge/diseases/:code (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(FILE_STORAGE)
+      .useValue(new InMemoryFileStorage())
+      .compile();
     moduleRef.useLogger(false);
     app = moduleRef.createNestApplication();
     await app.init();
   });
 
   afterAll(async () => {
+    await app.get(DataSource).query('DELETE FROM articles');
     await app.close();
   });
 

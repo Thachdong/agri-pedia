@@ -19,6 +19,7 @@ import {
   SeedKnowledgeBaseUseCase,
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
+import { ArticleController } from './infrastructure/http/article.controller';
 import './infrastructure/http/knowledge.api-docs';
 import { KnowledgeController } from './infrastructure/http/knowledge.controller';
 import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';
@@ -31,7 +32,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
 
 @Module({
   imports: [],
-  controllers: [KnowledgeController],
+  controllers: [KnowledgeController, ArticleController],
   providers: [
     SeedKnowledgeBaseUseCase,
     SeedArticlesUseCase,

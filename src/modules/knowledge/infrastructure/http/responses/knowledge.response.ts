@@ -1,5 +1,6 @@
 import {
   EAgentType,
+  EArticleStatus,
   ECropStage,
   EDiseaseCategory,
   EPlantPart,
@@ -73,6 +74,12 @@ export class DiseaseReferenceResponse {
   url: string;
 }
 
+export class DiseaseArticleResponse {
+  /** GET /knowledge/articles/:cropSlug/:slug path, e.g. `/benh-cay-trong/lua/benh-dao-on`. */
+  path: string;
+  status: EArticleStatus;
+}
+
 export class DiseaseDetailResponse {
   code: string;
   nameVi: string;
@@ -94,4 +101,6 @@ export class DiseaseDetailResponse {
   /** Not SOURCED: show "not yet confirmed by experts". */
   verification: EVerification;
   kbVersion: string;
+  /** null when the disease has no article. */
+  article: DiseaseArticleResponse | null;
 }
