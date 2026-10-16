@@ -16,6 +16,7 @@ const config = {
     firebaseClientEmail: 'svc@test-project.iam.gserviceaccount.com',
     firebasePrivateKey: privateKey,
     firebaseStorageBucket: 'test-bucket',
+    firebasePublicStorageBucket: 'test-public-bucket',
     presignUrlTtlSeconds: 600,
     downloadUrlTtlSeconds: 3600,
     publicBaseUrl: undefined as string | undefined,
@@ -61,21 +62,19 @@ describe('FirebaseFileStorage', () => {
     expect(url.searchParams.get('X-Goog-SignedHeaders')).toBe('host');
   });
 
-  it('builds an unsigned Firebase media URL for a public object', () => {
+  it('builds an unsigned URL of the public bucket', () => {
     const storage = new FirebaseFileStorage(config);
 
-    expect(
-      storage.publicUrl('public/articles/RICE/RICE_BLAST/a.1234abcd.webp'),
-    ).toBe(
-      'https://firebasestorage.googleapis.com/v0/b/test-bucket/o/public%2Farticles%2FRICE%2FRICE_BLAST%2Fa.1234abcd.webp?alt=media',
+    expect(storage.publicUrl('articles/RICE/RICE_BLAST/a.1234abcd.webp')).toBe(
+      'https://storage.googleapis.com/test-public-bucket/articles/RICE/RICE_BLAST/a.1234abcd.webp',
     );
   });
 
-  it('uses STORAGE_PUBLIC_BASE_URL for public objects when set', () => {
+  it('uses STORAGE_PUBLIC_BASE_URL for the public bucket when set', () => {
     const storage = new FirebaseFileStorage(configWith('https://cdn.test/'));
 
-    expect(storage.publicUrl('public/articles/RICE/a.webp')).toBe(
-      'https://cdn.test/public/articles/RICE/a.webp',
+    expect(storage.publicUrl('articles/RICE/a.webp')).toBe(
+      'https://cdn.test/articles/RICE/a.webp',
     );
   });
 
@@ -144,17 +143,17 @@ describe('InMemoryFileStorage.uploadPublicFile', () => {
     const storage = new InMemoryFileStorage();
 
     await storage.uploadPublicFile(
-      'public/articles/RICE/a.webp',
+      'articles/RICE/a.webp',
       Buffer.from('webp'),
       'image/webp',
     );
 
-    expect(storage.uploaded.get('public/articles/RICE/a.webp')).toMatchObject({
+    expect(storage.uploaded.get('articles/RICE/a.webp')).toMatchObject({
       contentType: 'image/webp',
       isPublic: true,
     });
-    expect(storage.publicUrl('public/articles/RICE/a.webp')).toBe(
-      'https://storage.test/public/articles/RICE/a.webp',
+    expect(storage.publicUrl('articles/RICE/a.webp')).toBe(
+      'https://storage.test/articles/RICE/a.webp',
     );
   });
 });

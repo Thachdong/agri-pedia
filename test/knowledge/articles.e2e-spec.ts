@@ -41,7 +41,7 @@ describe('GET /knowledge/articles/* (e2e)', () => {
 
     expect(keys).toEqual([
       expect.stringMatching(
-        /^public\/articles\/RICE\/RICE_BLAST\/dao-on-la-hinh-thoi\.[0-9a-f]{8}\.webp$/,
+        /^articles\/RICE\/RICE_BLAST\/dao-on-la-hinh-thoi\.[0-9a-f]{8}\.webp$/,
       ),
     ]);
   });
@@ -83,7 +83,7 @@ describe('GET /knowledge/articles/* (e2e)', () => {
         title: expect.stringContaining('Bệnh đạo ôn'),
         summary: expect.any(String),
         coverUrl: expect.stringMatching(
-          /^https:\/\/storage\.test\/public\/articles\/RICE\/RICE_BLAST\//,
+          /^https:\/\/storage\.test\/articles\/RICE\/RICE_BLAST\//,
         ),
         status: 'REVIEWED',
         updatedAt: '2026-10-16T00:00:00.000Z',
@@ -146,7 +146,7 @@ describe('GET /knowledge/articles/* (e2e)', () => {
       publishedAt: expect.any(String),
     });
     expect(body.markdown).toContain(
-      '](https://storage.test/public/articles/RICE/RICE_BLAST/dao-on-la-hinh-thoi.',
+      '](https://storage.test/articles/RICE/RICE_BLAST/dao-on-la-hinh-thoi.',
     );
     // RICE_BROWN_SPOT has no article yet: link dropped, text kept
     expect(body.markdown).not.toContain('/diseases/');

@@ -40,7 +40,7 @@ export type TSeedArticlesOutput = {
 
 /**
  * Writes the article seed into `articles` (run after the KB seed); idempotent by content hash.
- * New / changed images are uploaded first (public, content hash in the key), then rows are
+ * New / changed images are uploaded first (public bucket, content hash in the key), then rows are
  * upserted (matched by disease code) and articles no longer in the pack deleted, in one transaction.
  */
 @Injectable()
@@ -138,10 +138,10 @@ function coverKey(
   return images.find((image) => image.file === cover)?.key ?? null;
 }
 
-/** `public/articles/<CROP>/<CODE>/<name>.<sha8>.webp`: a new key whenever the content changes. */
+/** `articles/<CROP>/<CODE>/<name>.<sha8>.webp`: a new key whenever the content changes. */
 function imageKey(seed: TArticleSeed, image: TArticleSeedImage): string {
   const name = image.file.replace(/\.webp$/, '');
-  return `public/articles/${seed.cropType}/${seed.diseaseCode}/${name}.${image.sha256.slice(0, 8)}.webp`;
+  return `articles/${seed.cropType}/${seed.diseaseCode}/${name}.${image.sha256.slice(0, 8)}.webp`;
 }
 
 function toContent(seed: TArticleSeed): TArticleContent {

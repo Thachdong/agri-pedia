@@ -31,7 +31,7 @@ export interface IFileStorage {
   /** Writes an object from memory (server-side upload); overwrites an existing object with the same key. */
   uploadFile(key: string, content: Buffer, contentType: string): Promise<void>;
   /**
-   * Writes a publicly readable object under the `public/` prefix with immutable cache headers
+   * Writes an object to the public bucket (readable by anyone) with immutable cache headers
    * (the key must change when the content does); `publicUrl(key)` serves it without signing.
    */
   uploadPublicFile(
@@ -39,7 +39,7 @@ export interface IFileStorage {
     content: Buffer,
     contentType: string,
   ): Promise<void>;
-  /** Unsigned URL of an object under the `public/` prefix; does not check it exists. */
+  /** Unsigned URL of an object of the public bucket; does not check it exists. */
   publicUrl(key: string): string;
   /** Moves an object inside the bucket; throws StorageFileNotFoundError if `fromKey` is missing. */
   moveFile(fromKey: string, toKey: string): Promise<void>;

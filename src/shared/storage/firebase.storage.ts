@@ -18,14 +18,14 @@ export class FirebaseFileStorage implements IFileStorage {
   private readonly app: App;
   private readonly presignUrlTtlSeconds: number;
   private readonly downloadUrlTtlSeconds: number;
-  private readonly bucketName: string;
+  private readonly publicBucket: string;
   private readonly publicBaseUrl: string | undefined;
 
   constructor(@Inject(CONFIG_SERVICE) config: IConfigService) {
     const storage = config.get('storage');
     this.presignUrlTtlSeconds = storage.presignUrlTtlSeconds;
     this.downloadUrlTtlSeconds = storage.downloadUrlTtlSeconds;
-    this.bucketName = storage.firebaseStorageBucket;
+    this.publicBucket = storage.firebasePublicStorageBucket;
     this.publicBaseUrl = storage.publicBaseUrl?.replace(/\/+$/, '');
     // Reuse the named app: several Nest apps in one process (e2e) would otherwise fail on duplicate init.
     this.app =
@@ -94,7 +94,7 @@ export class FirebaseFileStorage implements IFileStorage {
     contentType: string,
   ): Promise<void> {
     await getStorage(this.app)
-      .bucket()
+      .bucket(this.publicBucket)
       .file(key)
       .save(content, {
         contentType,
@@ -104,9 +104,10 @@ export class FirebaseFileStorage implements IFileStorage {
   }
 
   publicUrl(key: string): string {
-    if (this.publicBaseUrl) return `${this.publicBaseUrl}/${key}`;
-    // Read is allowed by the Storage rule `match /public/{all=**} { allow read: if true; }`.
-    return `https://firebasestorage.googleapis.com/v0/b/${this.bucketName}/o/${encodeURIComponent(key)}?alt=media`;
+    const path = key.split('/').map(encodeURIComponent).join('/');
+    if (this.publicBaseUrl) return `${this.publicBaseUrl}/${path}`;
+    // The bucket grants allUsers roles/storage.objectViewer (no Firebase rules involved).
+    return `https://storage.googleapis.com/${this.publicBucket}/${path}`;
   }
 
   async moveFile(fromKey: string, toKey: string): Promise<void> {

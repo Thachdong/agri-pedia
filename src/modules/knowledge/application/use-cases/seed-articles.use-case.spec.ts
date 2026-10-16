@@ -11,7 +11,7 @@ import {
 import { SeedArticlesUseCase } from './seed-articles.use-case';
 
 const IMAGE_KEY = (sha: string) =>
-  `public/articles/RICE/RICE_BLAST/dao-on-1.${sha.slice(0, 8)}.webp`;
+  `articles/RICE/RICE_BLAST/dao-on-1.${sha.slice(0, 8)}.webp`;
 
 function setup() {
   const source = new InMemoryArticleSource([buildArticleSeed()]);
@@ -101,7 +101,7 @@ describe('SeedArticlesUseCase', () => {
     const result = await useCase.execute();
 
     expect([...storage.uploaded.keys()]).toEqual([
-      `public/articles/RICE/RICE_BLAST/dao-on-2.${changed.sha256.slice(0, 8)}.webp`,
+      `articles/RICE/RICE_BLAST/dao-on-2.${changed.sha256.slice(0, 8)}.webp`,
     ]);
     // cover (dao-on-1) unchanged, same slug and title
     expect(result.upserted).toEqual([

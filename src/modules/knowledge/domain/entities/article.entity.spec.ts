@@ -3,7 +3,7 @@ import { Article, TArticleContent, TArticleImage } from './article.entity';
 
 const image = (file: string): TArticleImage => ({
   file,
-  key: `public/articles/RICE/RICE_BLAST/${file.replace('.webp', '')}.1234abcd.webp`,
+  key: `articles/RICE/RICE_BLAST/${file.replace('.webp', '')}.1234abcd.webp`,
   width: 800,
   height: 600,
   alt: `alt ${file}`,

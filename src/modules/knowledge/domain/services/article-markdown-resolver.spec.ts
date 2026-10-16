@@ -8,7 +8,7 @@ import {
 const links = {
   imageUrl: (file: string) =>
     file === 'dao-on-1.webp'
-      ? 'https://cdn.test/public/dao-on-1.abcd1234.webp'
+      ? 'https://cdn.test/articles/dao-on-1.abcd1234.webp'
       : undefined,
   diseasePath: (code: string) =>
     code === 'RICE_BROWN_SPOT' ? '/benh-cay-trong/lua/benh-dom-nau' : undefined,
@@ -17,7 +17,7 @@ const links = {
 describe('resolveArticleMarkdown', () => {
   it('replaces image file names with their public URL', () => {
     expect(resolveArticleMarkdown('![Vết bệnh](dao-on-1.webp)', links)).toBe(
-      '![Vết bệnh](https://cdn.test/public/dao-on-1.abcd1234.webp)',
+      '![Vết bệnh](https://cdn.test/articles/dao-on-1.abcd1234.webp)',
     );
   });
 

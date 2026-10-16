@@ -71,7 +71,7 @@ export function buildArticle(
     images: [
       {
         file: 'dao-on-1.webp',
-        key: 'public/articles/RICE/RICE_BLAST/dao-on-1.1234abcd.webp',
+        key: 'articles/RICE/RICE_BLAST/dao-on-1.1234abcd.webp',
         width: 800,
         height: 600,
         alt: 'Vết bệnh',

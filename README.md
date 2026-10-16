@@ -60,15 +60,11 @@ $ npm run test:cov
 
 ## Deployment
 
-Firebase Storage rules must allow public reads under `public/` (article images, served by unsigned URL); writes go only through the server's service account:
+Article images go to a separate public bucket (`FIREBASE_PUBLIC_STORAGE_BUCKET`), served by unsigned URL; the Firebase bucket stays private. One-time setup (same project and location as the Firebase bucket; the service account already has write access at project level):
 
 ```
-match /b/{bucket}/o {
-  match /public/{all=**} {
-    allow read: if true;
-    allow write: if false;
-  }
-}
+gcloud storage buckets create gs://<project-id>-public --location US-CENTRAL1 --uniform-bucket-level-access
+gcloud storage buckets add-iam-policy-binding gs://<project-id>-public --member=allUsers --role=roles/storage.objectViewer
 ```
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.

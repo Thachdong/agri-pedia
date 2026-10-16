@@ -74,7 +74,7 @@ describe('ListArticlesUseCase', () => {
         path: '/benh-cay-trong/lua/benh-dao-on',
         status: 'REVIEWED',
         coverUrl:
-          'https://storage.test/public/articles/RICE/RICE_BLAST/dao-on-1.1234abcd.webp',
+          'https://storage.test/articles/RICE/RICE_BLAST/dao-on-1.1234abcd.webp',
       }),
     ]);
     expect(result.nextCursor).toBeNull();
