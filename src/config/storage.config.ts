@@ -14,6 +14,11 @@ const storageConfigSchema = z.object({
   presignUrlTtlSeconds: z.coerce.number().int().positive().default(900),
   /** Lifetime of signed read URLs (e.g. product thumbnails). */
   downloadUrlTtlSeconds: z.coerce.number().int().positive().default(3600),
+  /** Base URL for objects under `public/` (e.g. a CDN); unset = Firebase `?alt=media` URL. Empty value counts as unset. */
+  publicBaseUrl: z.preprocess(
+    (v) => (v === '' ? undefined : v),
+    z.string().url().optional(),
+  ),
 });
 
 export type TStorageConfig = z.infer<typeof storageConfigSchema>;
@@ -26,5 +31,6 @@ export const storageConfig = registerAs('storage', (): TStorageConfig =>
     firebaseStorageBucket: process.env.FIREBASE_STORAGE_BUCKET,
     presignUrlTtlSeconds: process.env.STORAGE_PRESIGN_URL_TTL_SECONDS,
     downloadUrlTtlSeconds: process.env.STORAGE_DOWNLOAD_URL_TTL_SECONDS,
+    publicBaseUrl: process.env.STORAGE_PUBLIC_BASE_URL,
   }),
 );
