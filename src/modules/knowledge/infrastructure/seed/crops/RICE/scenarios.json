@@ -1,0 +1,62 @@
+{
+  "note": "Tình huống kiểm tra profile.json của lúa: quan sát B1 giả lập -> đơn vị đứng đầu (top-1) ở B2. Lấy từ bảng mục 4.2 của specs/disease-diagnoses-plan.md; chỉ kiểm tra tính nhất quán của trọng số, không đo độ chính xác.",
+  "scenarios": [
+    {
+      "name": "đạo ôn lá",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "SPINDLE_DIAMOND",
+        "centerColor": "GRAY_WHITE",
+        "borderColor": "DARK_BROWN",
+        "margin": "SHARP",
+        "halo": "NONE",
+        "position": "LEAF_BLADE"
+      },
+      "expectTop1": "RICE_BLAST__V1"
+    },
+    {
+      "name": "đốm nâu",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "ROUND_OVAL",
+        "centerColor": "BROWN",
+        "halo": "YELLOW",
+        "size": "SMALL_LT_2MM",
+        "distribution": "SCATTERED"
+      },
+      "expectTop1": "RICE_BROWN_SPOT__V1"
+    },
+    {
+      "name": "bạc lá",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "LONG_STREAK",
+        "centerColor": "YELLOW",
+        "margin": "WAVY_IRREGULAR",
+        "position": "LEAF_MARGIN"
+      },
+      "expectTop1": "RICE_BACTERIAL_BLIGHT__V1"
+    },
+    {
+      "name": "tungro",
+      "part": "WHOLE_PLANT",
+      "observations": {
+        "lesionShape": "NO_DISTINCT_LESION",
+        "centerColor": "ORANGE",
+        "discoloration": "YELLOW_ORANGE",
+        "plantForm": "STUNTED"
+      },
+      "expectTop1": "RICE_TUNGRO"
+    },
+    {
+      "name": "sâu cuốn lá",
+      "part": "LEAF",
+      "observations": {
+        "deformation": "FOLDED_ROLLED",
+        "lesionShape": "WHITE_SCRAPING",
+        "centerColor": "WHITE_SILVERY"
+      },
+      "expectTop1": "RICE_LEAFFOLDER"
+    }
+  ]
+}

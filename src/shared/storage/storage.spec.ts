@@ -97,3 +97,20 @@ describe('InMemoryFileStorage.deleteFile', () => {
     ).resolves.toBeUndefined();
   });
 });
+
+describe('InMemoryFileStorage.uploadFile', () => {
+  it('stores the object under the key', async () => {
+    const storage = new InMemoryFileStorage();
+
+    await storage.uploadFile(
+      'diagnoses/d1/m1.jpg',
+      Buffer.from('jpeg'),
+      'image/jpeg',
+    );
+
+    expect([...storage.files]).toEqual(['diagnoses/d1/m1.jpg']);
+    expect(storage.uploaded.get('diagnoses/d1/m1.jpg')?.contentType).toBe(
+      'image/jpeg',
+    );
+  });
+});

@@ -1,0 +1,1135 @@
+{
+  "version": "2026-10-15",
+  "crop": "DURIAN",
+  "kbVersion": "2026-10-15",
+  "note": "Trọng số enum quan sát (B1) cho chấm điểm ứng viên ở B2, cây sầu riêng. Công thức: specs/disease-diagnoses-plan.md mục 4.2. Bộ enum riêng cho sầu riêng (khác profile.json của lúa: bỏ bẹ/bông/đẻ nhánh, thêm thân/cổ rễ/trái/múi, dấu hiệu chảy nhựa, tơ nấm, sáp rệp). Bản nháp do AI dựng từ symptoms.en / visualKeywords / distinguishingFeature của Design/desease-detection/Duriant-KB/diseases.json — cần người am hiểu nông nghiệp duyệt và chỉnh sau khi đo.",
+  "scale": "+4 dấu hiệu gần như đặc trưng, +3 rất đặc trưng, +2 mạnh, +1 hỗ trợ, -1/-2 mâu thuẫn; giá trị không ghi = 0; UNSURE luôn bỏ qua",
+  "merge": "trọng số biến thể = base, ghi đè theo từng (trường, giá trị) bằng variants[variantCode]; mục có biến thể chỉ chấm các biến thể",
+  "detectedPart": [
+    "LEAF",
+    "SHOOT",
+    "BRANCH",
+    "TRUNK",
+    "COLLAR",
+    "ROOT",
+    "FLOWER",
+    "FRUIT",
+    "ARIL",
+    "WHOLE_PLANT",
+    "UNSURE"
+  ],
+  "features": {
+    "lesionShape": {
+      "level": "region",
+      "values": [
+        "ROUND_OVAL",
+        "IRREGULAR_BLOTCH",
+        "ZONATE_CONCENTRIC",
+        "TIP_OR_MARGIN_BURN",
+        "INTERVEINAL_CHLOROSIS",
+        "RAISED_VELVETY",
+        "BARK_PATCH_CANKER",
+        "BORE_HOLES",
+        "TINY_DOTS_STIPPLING",
+        "NO_DISTINCT_LESION",
+        "UNSURE"
+      ],
+      "descriptionEn": "shape of the lesion",
+      "hintsEn": {
+        "ZONATE_CONCENTRIC": "concentric rings",
+        "TIP_OR_MARGIN_BURN": "dry brown band along the leaf tip or edge",
+        "INTERVEINAL_CHLOROSIS": "yellow between green veins",
+        "RAISED_VELVETY": "raised, velvety or felt-like spot",
+        "BARK_PATCH_CANKER": "dark, sunken or wet-looking patch of bark on trunk or branch",
+        "BORE_HOLES": "small round entry or exit holes",
+        "TINY_DOTS_STIPPLING": "many pinpoint pale or dark dots"
+      }
+    },
+    "centerColor": {
+      "level": "region",
+      "values": [
+        "GRAY_WHITE",
+        "WHITE_SILVERY",
+        "TAN",
+        "BROWN",
+        "REDDISH_BROWN",
+        "DARK_BROWN_BLACK",
+        "ORANGE_RUST",
+        "PINK",
+        "YELLOW",
+        "GRAY_GREEN",
+        "TRANSLUCENT_WATER_SOAKED",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "colour of the lesion centre",
+      "hintsEn": {
+        "GRAY_GREEN": "greyish green",
+        "TRANSLUCENT_WATER_SOAKED": "dark, wet-looking, translucent"
+      }
+    },
+    "borderColor": {
+      "level": "region",
+      "values": [
+        "DARK_BROWN",
+        "REDDISH_BROWN",
+        "YELLOW",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "colour of the lesion edge"
+    },
+    "margin": {
+      "level": "region",
+      "values": [
+        "SHARP",
+        "WAVY_IRREGULAR",
+        "DIFFUSE",
+        "UNSURE"
+      ],
+      "descriptionEn": "edge of the lesion",
+      "hintsEn": {
+        "SHARP": "clear edge",
+        "WAVY_IRREGULAR": "wavy edge",
+        "DIFFUSE": "edge fades out"
+      }
+    },
+    "halo": {
+      "level": "region",
+      "values": [
+        "YELLOW",
+        "PALE_GREEN",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "a coloured zone around the lesion"
+    },
+    "size": {
+      "level": "region",
+      "values": [
+        "SMALL_LT_2MM",
+        "MEDIUM_2_10MM",
+        "LARGE_GT_10MM",
+        "UNSURE"
+      ],
+      "descriptionEn": "lesion size, estimated from a leaf width of about 3-5 cm"
+    },
+    "distribution": {
+      "level": "region",
+      "values": [
+        "SINGLE",
+        "SCATTERED",
+        "CLUSTERED_COALESCING",
+        "WHOLE_ORGAN",
+        "UNSURE"
+      ],
+      "descriptionEn": "how the lesions are spread",
+      "hintsEn": {
+        "SINGLE": "one spot",
+        "SCATTERED": "scattered spots",
+        "CLUSTERED_COALESCING": "spots grouped or merging into patches",
+        "WHOLE_ORGAN": "the whole leaf/organ"
+      }
+    },
+    "position": {
+      "level": "region",
+      "values": [
+        "LEAF_TIP",
+        "LEAF_MARGIN",
+        "ALONG_MIDRIB_OR_VEINS",
+        "LEAF_BLADE",
+        "LEAF_UNDERSIDE",
+        "SHOOT_TIP",
+        "BRANCH",
+        "BRANCH_FORK",
+        "TRUNK",
+        "TRUNK_BASE_COLLAR",
+        "ROOT",
+        "FLOWER",
+        "FRUIT_HUSK",
+        "FRUIT_STALK",
+        "ARIL_FLESH",
+        "UNSURE"
+      ],
+      "descriptionEn": "where the region is on the tree",
+      "hintsEn": {
+        "LEAF_UNDERSIDE": "lower side of the leaf",
+        "BRANCH_FORK": "where branches split",
+        "TRUNK_BASE_COLLAR": "trunk base at soil level",
+        "FRUIT_STALK": "stalk joining fruit and branch",
+        "ARIL_FLESH": "flesh of an opened fruit"
+      }
+    },
+    "sign": {
+      "level": "region",
+      "values": [
+        "NONE",
+        "GUM_OOZE",
+        "WHITE_MYCELIUM",
+        "MYCELIAL_WEBBING",
+        "PINK_CRUST",
+        "BLACK_FUNGAL_DOTS",
+        "SOOTY_COATING",
+        "WHITE_WAX_COLONY",
+        "INSECT_OR_EGGS",
+        "FRASS_OR_HOLE",
+        "UNSURE"
+      ],
+      "descriptionEn": "visible signs on the region",
+      "hintsEn": {
+        "GUM_OOZE": "brown or amber sap/gum running from bark or fruit",
+        "WHITE_MYCELIUM": "white cottony fungal growth",
+        "MYCELIAL_WEBBING": "web-like fungal threads binding leaves",
+        "PINK_CRUST": "pink or salmon crust on bark",
+        "BLACK_FUNGAL_DOTS": "tiny black dots inside the lesion",
+        "SOOTY_COATING": "black powdery film that can be rubbed off",
+        "WHITE_WAX_COLONY": "clusters of white waxy insects",
+        "FRASS_OR_HOLE": "bore holes, sawdust-like droppings"
+      }
+    },
+    "deformation": {
+      "level": "region",
+      "values": [
+        "NONE",
+        "CURLED_DEFORMED",
+        "CRINKLED_SHRIVELED",
+        "SMALL_CROWDED_LEAVES",
+        "DRIED_WITHERED",
+        "SOFT_ROT",
+        "CRACKED",
+        "UNSURE"
+      ],
+      "descriptionEn": "shape change of the organ",
+      "hintsEn": {
+        "CURLED_DEFORMED": "leaves curled or twisted",
+        "CRINKLED_SHRIVELED": "crinkled, shrivelled young leaves",
+        "SMALL_CROWDED_LEAVES": "small leaves crowded at shoot tips",
+        "CRACKED": "cracked bark or husk"
+      }
+    },
+    "discoloration": {
+      "level": "image",
+      "values": [
+        "GENERAL_YELLOWING",
+        "OLD_LEAF_YELLOWING",
+        "YOUNG_LEAF_YELLOWING",
+        "SILVERY_BRONZE",
+        "BROWN_SCORCH",
+        "NONE",
+        "UNSURE"
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "colour of the foliage",
+      "hintsEn": {
+        "OLD_LEAF_YELLOWING": "yellowing mostly on older, lower leaves",
+        "YOUNG_LEAF_YELLOWING": "yellowing mostly on new leaves",
+        "SILVERY_BRONZE": "silvery or bronze sheen on leaves",
+        "BROWN_SCORCH": "leaves browned as if burnt"
+      }
+    },
+    "plantForm": {
+      "level": "image",
+      "values": [
+        "NORMAL",
+        "THIN_CANOPY_LEAF_DROP",
+        "TIP_DIEBACK",
+        "WILTING",
+        "STUNTED",
+        "DEAD_OR_DYING",
+        "UNSURE"
+      ],
+      "normal": [
+        "NORMAL"
+      ],
+      "descriptionEn": "shape of the whole tree / canopy",
+      "hintsEn": {
+        "THIN_CANOPY_LEAF_DROP": "sparse canopy, many leaves dropped",
+        "TIP_DIEBACK": "branch tips bare and dry, dying back toward the trunk"
+      }
+    },
+    "fruit": {
+      "level": "image",
+      "values": [
+        "NOT_VISIBLE",
+        "NORMAL",
+        "HUSK_ROT",
+        "BORE_HOLES",
+        "SOOTY_OR_WAXY",
+        "DEFORMED_OR_DROPPING",
+        "SHRIVELED_CRACKED",
+        "OPEN_ARIL_NORMAL",
+        "OPEN_ARIL_ABNORMAL",
+        "UNSURE"
+      ],
+      "normal": [
+        "NOT_VISIBLE",
+        "NORMAL",
+        "OPEN_ARIL_NORMAL"
+      ],
+      "descriptionEn": "fruits",
+      "hintsEn": {
+        "HUSK_ROT": "dark, wet or rotting patch on the husk",
+        "SOOTY_OR_WAXY": "husk covered by black soot or white wax",
+        "DEFORMED_OR_DROPPING": "misshapen fruits or fruits falling",
+        "OPEN_ARIL_NORMAL": "opened fruit with normal flesh",
+        "OPEN_ARIL_ABNORMAL": "opened fruit with wet, hard, discoloured or rotting flesh"
+      }
+    },
+    "pestsVisible": {
+      "level": "image",
+      "values": [
+        "NONE",
+        "PSYLLID",
+        "LEAFHOPPER",
+        "MITE",
+        "THRIPS",
+        "MEALYBUG",
+        "CATERPILLAR_LARVA",
+        "BEETLE_BORER",
+        "ANTS",
+        "OTHER",
+        "UNSURE"
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "visible pests",
+      "hintsEn": {
+        "PSYLLID": "tiny jumping insects with white waxy threads on young shoots",
+        "MEALYBUG": "white waxy insects"
+      }
+    }
+  },
+  "profiles": {
+    "DURIAN_PHYTOPHTHORA_CANKER": {
+      "base": {
+        "sign": {
+          "GUM_OOZE": 4,
+          "FRASS_OR_HOLE": -1,
+          "PINK_CRUST": -2
+        },
+        "lesionShape": {
+          "BARK_PATCH_CANKER": 3,
+          "IRREGULAR_BLOTCH": 1,
+          "BORE_HOLES": -1
+        },
+        "centerColor": {
+          "REDDISH_BROWN": 2,
+          "DARK_BROWN_BLACK": 1,
+          "TRANSLUCENT_WATER_SOAKED": 2
+        },
+        "deformation": {
+          "CRACKED": 2,
+          "SOFT_ROT": 1
+        },
+        "margin": {
+          "WAVY_IRREGULAR": 1
+        },
+        "size": {
+          "LARGE_GT_10MM": 1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 1
+        },
+        "plantForm": {
+          "THIN_CANOPY_LEAF_DROP": 1,
+          "TIP_DIEBACK": 1
+        }
+      },
+      "variants": {
+        "DURIAN_PHYTOPHTHORA_CANKER__TRUNK": {
+          "position": {
+            "TRUNK": 2,
+            "BRANCH": 2,
+            "BRANCH_FORK": 2
+          }
+        },
+        "DURIAN_PHYTOPHTHORA_CANKER__COLLAR": {
+          "position": {
+            "TRUNK_BASE_COLLAR": 3,
+            "TRUNK": 1
+          }
+        }
+      }
+    },
+    "DURIAN_ROOT_ROT": {
+      "base": {
+        "position": {
+          "ROOT": 3
+        },
+        "deformation": {
+          "SOFT_ROT": 3
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "sign": {
+          "GUM_OOZE": -1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 2,
+          "OLD_LEAF_YELLOWING": 1
+        },
+        "plantForm": {
+          "WILTING": 2,
+          "THIN_CANOPY_LEAF_DROP": 2,
+          "DEAD_OR_DYING": 1
+        }
+      }
+    },
+    "DURIAN_PHYTOPHTHORA_FRUIT_ROT": {
+      "base": {
+        "position": {
+          "FRUIT_HUSK": 3
+        },
+        "fruit": {
+          "HUSK_ROT": 3,
+          "BORE_HOLES": -1
+        },
+        "centerColor": {
+          "TRANSLUCENT_WATER_SOAKED": 2,
+          "BROWN": 1,
+          "DARK_BROWN_BLACK": 2
+        },
+        "sign": {
+          "WHITE_MYCELIUM": 3,
+          "FRASS_OR_HOLE": -2
+        },
+        "lesionShape": {
+          "ROUND_OVAL": 1,
+          "IRREGULAR_BLOTCH": 1,
+          "BORE_HOLES": -2
+        },
+        "deformation": {
+          "SOFT_ROT": 2,
+          "CRACKED": 1
+        },
+        "size": {
+          "LARGE_GT_10MM": 1
+        },
+        "distribution": {
+          "CLUSTERED_COALESCING": 1
+        }
+      }
+    },
+    "DURIAN_PHYTOPHTHORA_LEAF_BLIGHT": {
+      "base": {
+        "centerColor": {
+          "TRANSLUCENT_WATER_SOAKED": 3,
+          "DARK_BROWN_BLACK": 2
+        },
+        "halo": {
+          "PALE_GREEN": 3,
+          "YELLOW": -1
+        },
+        "sign": {
+          "WHITE_MYCELIUM": 3,
+          "MYCELIAL_WEBBING": -1
+        },
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 2
+        },
+        "position": {
+          "LEAF_BLADE": 1,
+          "LEAF_UNDERSIDE": 1
+        },
+        "size": {
+          "LARGE_GT_10MM": 1
+        },
+        "margin": {
+          "DIFFUSE": 1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        }
+      }
+    },
+    "DURIAN_SUDDEN_DEATH": {
+      "base": {
+        "plantForm": {
+          "WILTING": 3,
+          "DEAD_OR_DYING": 3
+        },
+        "lesionShape": {
+          "BORE_HOLES": 2
+        },
+        "sign": {
+          "FRASS_OR_HOLE": 2,
+          "GUM_OOZE": -2
+        },
+        "position": {
+          "TRUNK": 2
+        },
+        "size": {
+          "SMALL_LT_2MM": 1
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 1,
+          "YELLOW": 1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 2
+        },
+        "discoloration": {
+          "BROWN_SCORCH": 1
+        }
+      }
+    },
+    "DURIAN_DIEBACK": {
+      "base": {
+        "plantForm": {
+          "TIP_DIEBACK": 4,
+          "THIN_CANOPY_LEAF_DROP": 2
+        },
+        "position": {
+          "SHOOT_TIP": 2,
+          "BRANCH": 2
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "deformation": {
+          "DRIED_WITHERED": 2
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "sign": {
+          "GUM_OOZE": -1,
+          "MYCELIAL_WEBBING": -1,
+          "PINK_CRUST": -2
+        }
+      }
+    },
+    "DURIAN_RHIZOCTONIA_LEAF_BLIGHT": {
+      "base": {
+        "sign": {
+          "MYCELIAL_WEBBING": 4
+        },
+        "centerColor": {
+          "TRANSLUCENT_WATER_SOAKED": 2,
+          "BROWN": 1,
+          "GRAY_WHITE": 1
+        },
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 2
+        },
+        "position": {
+          "SHOOT_TIP": 2,
+          "LEAF_MARGIN": 1
+        },
+        "deformation": {
+          "CRINKLED_SHRIVELED": 2,
+          "DRIED_WITHERED": 1
+        },
+        "size": {
+          "LARGE_GT_10MM": 1
+        },
+        "halo": {
+          "YELLOW": -1
+        },
+        "plantForm": {
+          "TIP_DIEBACK": 1
+        }
+      }
+    },
+    "DURIAN_PHOMOPSIS_LEAF_SPOT": {
+      "base": {
+        "halo": {
+          "YELLOW": 3,
+          "PALE_GREEN": -1
+        },
+        "lesionShape": {
+          "ROUND_OVAL": 2
+        },
+        "size": {
+          "SMALL_LT_2MM": 2,
+          "MEDIUM_2_10MM": 1,
+          "LARGE_GT_10MM": -1
+        },
+        "centerColor": {
+          "GRAY_WHITE": 2,
+          "BROWN": 1,
+          "REDDISH_BROWN": 1
+        },
+        "borderColor": {
+          "REDDISH_BROWN": 1,
+          "DARK_BROWN": 1
+        },
+        "position": {
+          "ALONG_MIDRIB_OR_VEINS": 2,
+          "LEAF_BLADE": 1
+        },
+        "distribution": {
+          "SCATTERED": 1
+        },
+        "margin": {
+          "SHARP": 1
+        },
+        "sign": {
+          "WHITE_MYCELIUM": -1
+        }
+      }
+    },
+    "DURIAN_LASIODIPLODIA_LEAF_BLIGHT": {
+      "base": {
+        "position": {
+          "LEAF_TIP": 3
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 3,
+          "GRAY_WHITE": 1,
+          "DARK_BROWN_BLACK": 1
+        },
+        "lesionShape": {
+          "TIP_OR_MARGIN_BURN": 2
+        },
+        "sign": {
+          "BLACK_FUNGAL_DOTS": 3
+        },
+        "borderColor": {
+          "YELLOW": 1
+        },
+        "discoloration": {
+          "OLD_LEAF_YELLOWING": 1
+        }
+      }
+    },
+    "DURIAN_ANTHRACNOSE": {
+      "base": {
+        "lesionShape": {
+          "ZONATE_CONCENTRIC": 3,
+          "TIP_OR_MARGIN_BURN": 2
+        },
+        "position": {
+          "LEAF_MARGIN": 2,
+          "LEAF_TIP": 2
+        },
+        "centerColor": {
+          "REDDISH_BROWN": 2,
+          "BROWN": 1,
+          "DARK_BROWN_BLACK": 1
+        },
+        "sign": {
+          "BLACK_FUNGAL_DOTS": 2
+        },
+        "margin": {
+          "SHARP": 2
+        },
+        "borderColor": {
+          "DARK_BROWN": 1
+        },
+        "size": {
+          "LARGE_GT_10MM": 1
+        },
+        "halo": {
+          "YELLOW": -1
+        }
+      }
+    },
+    "DURIAN_PINK_DISEASE": {
+      "base": {
+        "sign": {
+          "PINK_CRUST": 4,
+          "WHITE_MYCELIUM": 1
+        },
+        "centerColor": {
+          "PINK": 3
+        },
+        "position": {
+          "BRANCH_FORK": 3,
+          "BRANCH": 2,
+          "TRUNK": 1
+        },
+        "deformation": {
+          "CRACKED": 1,
+          "DRIED_WITHERED": 1
+        },
+        "plantForm": {
+          "TIP_DIEBACK": 1
+        }
+      }
+    },
+    "DURIAN_ALGAL_SPOT": {
+      "base": {
+        "lesionShape": {
+          "RAISED_VELVETY": 4,
+          "ROUND_OVAL": 1
+        },
+        "centerColor": {
+          "ORANGE_RUST": 3,
+          "GRAY_GREEN": 2,
+          "REDDISH_BROWN": 1
+        },
+        "size": {
+          "MEDIUM_2_10MM": 2
+        },
+        "distribution": {
+          "SCATTERED": 1
+        },
+        "position": {
+          "LEAF_BLADE": 1,
+          "BRANCH": 1,
+          "TRUNK": 1
+        },
+        "halo": {
+          "YELLOW": -1
+        }
+      }
+    },
+    "DURIAN_SOOTY_MOLD": {
+      "base": {
+        "sign": {
+          "SOOTY_COATING": 4
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 1,
+          "NO_DISTINCT_LESION": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        },
+        "margin": {
+          "DIFFUSE": 1
+        },
+        "fruit": {
+          "SOOTY_OR_WAXY": 2
+        },
+        "pestsVisible": {
+          "MEALYBUG": 2,
+          "PSYLLID": 1,
+          "ANTS": 1
+        }
+      }
+    },
+    "DURIAN_ROOT_NEMATODE": {
+      "base": {
+        "position": {
+          "ROOT": 2
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "deformation": {
+          "SOFT_ROT": -1
+        },
+        "plantForm": {
+          "STUNTED": 3,
+          "THIN_CANOPY_LEAF_DROP": 1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 1
+        }
+      }
+    },
+    "DURIAN_PSYLLID": {
+      "base": {
+        "pestsVisible": {
+          "PSYLLID": 4,
+          "LEAFHOPPER": -1
+        },
+        "position": {
+          "SHOOT_TIP": 3,
+          "LEAF_UNDERSIDE": 1
+        },
+        "deformation": {
+          "CURLED_DEFORMED": 3
+        },
+        "lesionShape": {
+          "TINY_DOTS_STIPPLING": 2
+        },
+        "centerColor": {
+          "YELLOW": 1,
+          "BROWN": 1
+        },
+        "sign": {
+          "INSECT_OR_EGGS": 2,
+          "SOOTY_COATING": 1
+        },
+        "distribution": {
+          "SCATTERED": 1
+        },
+        "plantForm": {
+          "THIN_CANOPY_LEAF_DROP": 1
+        }
+      }
+    },
+    "DURIAN_LEAFHOPPER": {
+      "base": {
+        "pestsVisible": {
+          "LEAFHOPPER": 4,
+          "PSYLLID": -1
+        },
+        "position": {
+          "SHOOT_TIP": 3,
+          "LEAF_MARGIN": 1
+        },
+        "deformation": {
+          "CURLED_DEFORMED": 3,
+          "DRIED_WITHERED": 1
+        },
+        "centerColor": {
+          "BROWN": 1,
+          "DARK_BROWN_BLACK": 1
+        },
+        "lesionShape": {
+          "TIP_OR_MARGIN_BURN": 1
+        },
+        "sign": {
+          "INSECT_OR_EGGS": 2
+        }
+      }
+    },
+    "DURIAN_RED_MITE": {
+      "base": {
+        "pestsVisible": {
+          "MITE": 4
+        },
+        "lesionShape": {
+          "TINY_DOTS_STIPPLING": 3
+        },
+        "discoloration": {
+          "SILVERY_BRONZE": 3
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 2,
+          "YELLOW": 1
+        },
+        "position": {
+          "LEAF_UNDERSIDE": 2,
+          "LEAF_BLADE": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1,
+          "SCATTERED": 1
+        },
+        "size": {
+          "SMALL_LT_2MM": 1
+        },
+        "margin": {
+          "DIFFUSE": 1
+        },
+        "sign": {
+          "INSECT_OR_EGGS": 1
+        }
+      }
+    },
+    "DURIAN_THRIPS": {
+      "base": {
+        "pestsVisible": {
+          "THRIPS": 4
+        },
+        "position": {
+          "SHOOT_TIP": 2,
+          "FLOWER": 1,
+          "FRUIT_HUSK": 1
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 2
+        },
+        "deformation": {
+          "CURLED_DEFORMED": 2
+        },
+        "discoloration": {
+          "SILVERY_BRONZE": 2
+        },
+        "lesionShape": {
+          "TINY_DOTS_STIPPLING": 1
+        }
+      }
+    },
+    "DURIAN_MEALYBUG": {
+      "base": {
+        "sign": {
+          "WHITE_WAX_COLONY": 4,
+          "INSECT_OR_EGGS": 1
+        },
+        "pestsVisible": {
+          "MEALYBUG": 4,
+          "ANTS": 1
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "distribution": {
+          "CLUSTERED_COALESCING": 1
+        }
+      },
+      "variants": {
+        "DURIAN_MEALYBUG__FERRISIA": {
+          "position": {
+            "FRUIT_STALK": 2,
+            "FLOWER": 2,
+            "SHOOT_TIP": 1,
+            "FRUIT_HUSK": 1
+          },
+          "fruit": {
+            "DEFORMED_OR_DROPPING": 2
+          }
+        },
+        "DURIAN_MEALYBUG__PLANOCOCCUS": {
+          "position": {
+            "FRUIT_HUSK": 3
+          },
+          "fruit": {
+            "SOOTY_OR_WAXY": 3
+          },
+          "sign": {
+            "SOOTY_COATING": 1
+          }
+        }
+      }
+    },
+    "DURIAN_FRUIT_BORER": {
+      "base": {
+        "sign": {
+          "FRASS_OR_HOLE": 4,
+          "WHITE_MYCELIUM": -1
+        },
+        "fruit": {
+          "BORE_HOLES": 4
+        },
+        "lesionShape": {
+          "BORE_HOLES": 3
+        },
+        "position": {
+          "FRUIT_HUSK": 2,
+          "FRUIT_STALK": 1,
+          "ARIL_FLESH": 1
+        },
+        "pestsVisible": {
+          "CATERPILLAR_LARVA": 3
+        },
+        "deformation": {
+          "SOFT_ROT": 1
+        }
+      }
+    },
+    "DURIAN_SHOT_HOLE_BORER": {
+      "base": {
+        "lesionShape": {
+          "BORE_HOLES": 3
+        },
+        "sign": {
+          "FRASS_OR_HOLE": 3,
+          "GUM_OOZE": 1
+        },
+        "position": {
+          "TRUNK": 2,
+          "BRANCH": 2
+        },
+        "size": {
+          "SMALL_LT_2MM": 2,
+          "LARGE_GT_10MM": -2
+        },
+        "distribution": {
+          "SCATTERED": 2,
+          "SINGLE": -1
+        },
+        "pestsVisible": {
+          "BEETLE_BORER": 3,
+          "CATERPILLAR_LARVA": -1
+        },
+        "plantForm": {
+          "TIP_DIEBACK": 1
+        }
+      }
+    },
+    "DURIAN_STEM_BORER": {
+      "base": {
+        "lesionShape": {
+          "BORE_HOLES": 3
+        },
+        "sign": {
+          "FRASS_OR_HOLE": 3,
+          "GUM_OOZE": 1
+        },
+        "position": {
+          "TRUNK": 2,
+          "BRANCH": 2
+        },
+        "size": {
+          "LARGE_GT_10MM": 2,
+          "MEDIUM_2_10MM": 1,
+          "SMALL_LT_2MM": -2
+        },
+        "distribution": {
+          "SINGLE": 2,
+          "SCATTERED": -1
+        },
+        "pestsVisible": {
+          "CATERPILLAR_LARVA": 2,
+          "BEETLE_BORER": 2
+        }
+      }
+    },
+    "DURIAN_ARIL_DISORDER": {
+      "base": {
+        "position": {
+          "ARIL_FLESH": 4
+        },
+        "fruit": {
+          "OPEN_ARIL_ABNORMAL": 4,
+          "HUSK_ROT": -2,
+          "BORE_HOLES": -2
+        },
+        "sign": {
+          "FRASS_OR_HOLE": -2,
+          "WHITE_MYCELIUM": -2
+        }
+      },
+      "variants": {
+        "DURIAN_ARIL_DISORDER__HARD_FLESH": {
+          "centerColor": {
+            "TAN": 1,
+            "NONE": 1
+          },
+          "lesionShape": {
+            "NO_DISTINCT_LESION": 1
+          }
+        },
+        "DURIAN_ARIL_DISORDER__WATERY": {
+          "centerColor": {
+            "TRANSLUCENT_WATER_SOAKED": 3
+          },
+          "deformation": {
+            "SOFT_ROT": 1
+          }
+        },
+        "DURIAN_ARIL_DISORDER__TIP_BURN": {
+          "centerColor": {
+            "BROWN": 2,
+            "DARK_BROWN_BLACK": 1
+          },
+          "lesionShape": {
+            "TIP_OR_MARGIN_BURN": 2
+          }
+        }
+      }
+    },
+    "DURIAN_SALT_FERTILIZER_INJURY": {
+      "base": {
+        "lesionShape": {
+          "TIP_OR_MARGIN_BURN": 3
+        },
+        "position": {
+          "LEAF_TIP": 2,
+          "LEAF_MARGIN": 2
+        },
+        "centerColor": {
+          "TAN": 2,
+          "BROWN": 1
+        },
+        "sign": {
+          "BLACK_FUNGAL_DOTS": -2,
+          "WHITE_MYCELIUM": -2,
+          "INSECT_OR_EGGS": -1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        },
+        "discoloration": {
+          "BROWN_SCORCH": 2
+        }
+      },
+      "variants": {
+        "DURIAN_SALT_FERTILIZER_INJURY__SALINITY": {
+          "plantForm": {
+            "THIN_CANOPY_LEAF_DROP": 2,
+            "WILTING": 2
+          },
+          "fruit": {
+            "SHRIVELED_CRACKED": 2
+          }
+        },
+        "DURIAN_SALT_FERTILIZER_INJURY__FERTILIZER": {}
+      }
+    },
+    "DURIAN_K_DEFICIENCY": {
+      "base": {
+        "lesionShape": {
+          "TIP_OR_MARGIN_BURN": 3,
+          "ZONATE_CONCENTRIC": -2
+        },
+        "position": {
+          "LEAF_MARGIN": 3,
+          "LEAF_TIP": 2
+        },
+        "borderColor": {
+          "YELLOW": 2
+        },
+        "centerColor": {
+          "BROWN": 1,
+          "TAN": 1
+        },
+        "margin": {
+          "DIFFUSE": 1
+        },
+        "sign": {
+          "BLACK_FUNGAL_DOTS": -2
+        },
+        "discoloration": {
+          "OLD_LEAF_YELLOWING": 2
+        }
+      }
+    },
+    "DURIAN_MG_DEFICIENCY": {
+      "base": {
+        "lesionShape": {
+          "INTERVEINAL_CHLOROSIS": 4
+        },
+        "centerColor": {
+          "YELLOW": 2
+        },
+        "position": {
+          "LEAF_BLADE": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        },
+        "discoloration": {
+          "OLD_LEAF_YELLOWING": 3,
+          "YOUNG_LEAF_YELLOWING": -2
+        },
+        "pestsVisible": {
+          "MITE": -1
+        }
+      }
+    },
+    "DURIAN_ZN_DEFICIENCY": {
+      "base": {
+        "deformation": {
+          "SMALL_CROWDED_LEAVES": 4
+        },
+        "lesionShape": {
+          "INTERVEINAL_CHLOROSIS": 2
+        },
+        "position": {
+          "SHOOT_TIP": 2
+        },
+        "centerColor": {
+          "YELLOW": 1,
+          "WHITE_SILVERY": 1
+        },
+        "discoloration": {
+          "YOUNG_LEAF_YELLOWING": 3,
+          "OLD_LEAF_YELLOWING": -2
+        },
+        "plantForm": {
+          "STUNTED": 2
+        },
+        "pestsVisible": {
+          "PSYLLID": -1
+        }
+      }
+    }
+  }
+}

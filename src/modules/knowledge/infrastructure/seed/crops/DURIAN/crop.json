@@ -1,0 +1,97 @@
+{
+  "code": "DURIAN",
+  "nameVi": "Sầu riêng",
+  "nameEn": "durian",
+  "enabled": false,
+  "sortOrder": 2,
+  "plantParts": [
+    {
+      "code": "LEAF",
+      "nameVi": "Lá",
+      "promptEn": "leaf"
+    },
+    {
+      "code": "SHOOT",
+      "nameVi": "Đọt / lá non",
+      "promptEn": "young shoot / new leaves"
+    },
+    {
+      "code": "BRANCH",
+      "nameVi": "Cành",
+      "promptEn": "branch"
+    },
+    {
+      "code": "TRUNK",
+      "nameVi": "Thân",
+      "promptEn": "trunk"
+    },
+    {
+      "code": "COLLAR",
+      "nameVi": "Gốc / cổ rễ",
+      "promptEn": "trunk base / collar"
+    },
+    {
+      "code": "ROOT",
+      "nameVi": "Rễ",
+      "promptEn": "root"
+    },
+    {
+      "code": "FLOWER",
+      "nameVi": "Hoa",
+      "promptEn": "flower"
+    },
+    {
+      "code": "FRUIT",
+      "nameVi": "Trái",
+      "promptEn": "fruit (husk)"
+    },
+    {
+      "code": "ARIL",
+      "nameVi": "Múi / cơm",
+      "promptEn": "opened fruit, aril / flesh"
+    },
+    {
+      "code": "WHOLE_PLANT",
+      "nameVi": "Cả cây",
+      "promptEn": "whole tree"
+    }
+  ],
+  "cropStages": [
+    {
+      "code": "SEEDLING",
+      "nameVi": "Cây con / vườn ươm"
+    },
+    {
+      "code": "YOUNG_TREE",
+      "nameVi": "Kiến thiết cơ bản"
+    },
+    {
+      "code": "FLUSHING",
+      "nameVi": "Ra đọt (lộc non)"
+    },
+    {
+      "code": "FLOWERING",
+      "nameVi": "Ra hoa"
+    },
+    {
+      "code": "FRUIT_SET",
+      "nameVi": "Đậu trái / trái non"
+    },
+    {
+      "code": "FRUIT_DEVELOPMENT",
+      "nameVi": "Nuôi trái"
+    },
+    {
+      "code": "HARVEST",
+      "nameVi": "Thu hoạch / sau thu hoạch (trái)"
+    },
+    {
+      "code": "TREE_RECOVERY",
+      "nameVi": "Phục hồi cây sau thu hoạch"
+    }
+  ],
+  "prompt": {
+    "subjectEn": "durian trees (Durio zibethinus)",
+    "wholeImageCuesEn": "general yellowing, thin canopy, dieback from branch tips, wilting, fruit rot or bore holes, visible insects"
+  }
+}

@@ -1,0 +1,1528 @@
+{
+  "version": "2026-10-13",
+  "kbVersion": "2026-10-12",
+  "note": "Trọng số enum quan sát (B1) cho chấm điểm ứng viên ở B2. Công thức: specs/disease-diagnoses-plan.md mục 4.2. Bản nháp do AI dựng từ symptoms.en / visualKeywords / distinguishingFeature của diseases.json — cần người am hiểu nông nghiệp duyệt và chỉnh sau khi đo.",
+  "scale": "+4 dấu hiệu gần như đặc trưng, +3 rất đặc trưng, +2 mạnh, +1 hỗ trợ, -1/-2 mâu thuẫn; giá trị không ghi = 0; UNSURE luôn bỏ qua",
+  "merge": "trọng số biến thể = base, ghi đè theo từng (trường, giá trị) bằng variants[variantCode]; mục có biến thể chỉ chấm các biến thể",
+  "features": {
+    "lesionShape": {
+      "level": "region",
+      "values": [
+        "SPINDLE_DIAMOND",
+        "ROUND_OVAL",
+        "SHORT_NARROW_STREAK",
+        "LONG_STREAK",
+        "IRREGULAR_BLOTCH",
+        "ZONATE_BANDED",
+        "WHITE_SCRAPING",
+        "TINY_DOTS",
+        "NO_DISTINCT_LESION",
+        "UNSURE"
+      ],
+      "descriptionEn": "shape of the lesion",
+      "hintsEn": {
+        "SPINDLE_DIAMOND": "elongated, wide in the middle, pointed at both ends",
+        "ROUND_OVAL": "round to oval spot",
+        "SHORT_NARROW_STREAK": "short thin line",
+        "LONG_STREAK": "long stripe along the leaf",
+        "IRREGULAR_BLOTCH": "patch without regular shape",
+        "ZONATE_BANDED": "concentric rings or bands",
+        "WHITE_SCRAPING": "white/transparent strips where green tissue was scraped",
+        "TINY_DOTS": "pinpoint dots"
+      }
+    },
+    "centerColor": {
+      "level": "region",
+      "values": [
+        "GRAY_WHITE",
+        "WHITE_SILVERY",
+        "TAN",
+        "BROWN",
+        "REDDISH_BROWN",
+        "DARK_BROWN_BLACK",
+        "ORANGE",
+        "YELLOW",
+        "TRANSLUCENT_WATER_SOAKED",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "colour of the lesion centre",
+      "hintsEn": {
+        "TRANSLUCENT_WATER_SOAKED": "dark, wet-looking, translucent"
+      }
+    },
+    "borderColor": {
+      "level": "region",
+      "values": [
+        "DARK_BROWN",
+        "REDDISH_BROWN",
+        "YELLOW",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "colour of the lesion edge"
+    },
+    "margin": {
+      "level": "region",
+      "values": [
+        "SHARP",
+        "WAVY_IRREGULAR",
+        "DIFFUSE",
+        "UNSURE"
+      ],
+      "descriptionEn": "edge of the lesion",
+      "hintsEn": {
+        "SHARP": "clear edge",
+        "WAVY_IRREGULAR": "wavy edge",
+        "DIFFUSE": "edge fades out"
+      }
+    },
+    "halo": {
+      "level": "region",
+      "values": [
+        "YELLOW",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "a yellow zone around the lesion"
+    },
+    "size": {
+      "level": "region",
+      "values": [
+        "SMALL_LT_2MM",
+        "MEDIUM_2_10MM",
+        "LARGE_GT_10MM",
+        "UNSURE"
+      ],
+      "descriptionEn": "lesion size, estimated from a leaf width of about 8-12 mm"
+    },
+    "distribution": {
+      "level": "region",
+      "values": [
+        "SINGLE",
+        "SCATTERED",
+        "MERGED_STRIPS",
+        "WHOLE_ORGAN",
+        "UNSURE"
+      ],
+      "descriptionEn": "how the lesions are spread",
+      "hintsEn": {
+        "SINGLE": "one spot",
+        "SCATTERED": "scattered spots",
+        "MERGED_STRIPS": "spots joined into stripes",
+        "WHOLE_ORGAN": "the whole leaf/organ"
+      }
+    },
+    "position": {
+      "level": "region",
+      "values": [
+        "LEAF_TIP",
+        "LEAF_MARGIN",
+        "ALONG_MIDRIB_OR_VEINS",
+        "LEAF_BLADE",
+        "LOWER_SHEATH",
+        "UPPER_SHEATH",
+        "NODE_OR_NECK",
+        "GRAIN",
+        "ROOT",
+        "UNSURE"
+      ],
+      "descriptionEn": "where the region is on the plant"
+    },
+    "sign": {
+      "level": "region",
+      "values": [
+        "NONE",
+        "OOZE_DROPLETS",
+        "SCLEROTIA",
+        "MOLD_OR_POWDER",
+        "SPORE_BALL",
+        "GALL_SWELLING",
+        "INSECT_OR_EGGS",
+        "FRASS_OR_HOLE",
+        "SILK_FOLD",
+        "UNSURE"
+      ],
+      "descriptionEn": "visible signs on the region",
+      "hintsEn": {
+        "OOZE_DROPLETS": "bacterial droplets",
+        "SCLEROTIA": "small hard brown/black bodies",
+        "SPORE_BALL": "orange/green-black balls on grains",
+        "FRASS_OR_HOLE": "bore holes, droppings",
+        "SILK_FOLD": "silk binding a folded leaf"
+      }
+    },
+    "deformation": {
+      "level": "region",
+      "values": [
+        "NONE",
+        "FOLDED_ROLLED",
+        "TWISTED_CRINKLED",
+        "CUT_OR_CHEWED",
+        "HOLLOW_TUBE",
+        "DRIED_WITHERED",
+        "SOFT_ROT",
+        "UNSURE"
+      ],
+      "descriptionEn": "shape change of the organ",
+      "hintsEn": {
+        "HOLLOW_TUBE": "onion-leaf like tube"
+      }
+    },
+    "discoloration": {
+      "level": "image",
+      "values": [
+        "YELLOW_ORANGE",
+        "PALE_YELLOW_GREEN",
+        "DARK_GREEN",
+        "REDDISH_BRONZE",
+        "WHITE_TIPS",
+        "NONE",
+        "UNSURE"
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "colour of the foliage"
+    },
+    "plantForm": {
+      "level": "image",
+      "values": [
+        "NORMAL",
+        "STUNTED",
+        "ABNORMALLY_TALL",
+        "EXCESS_TILLERS_GRASSY",
+        "LODGED_BROKEN",
+        "DEADHEART",
+        "MISSING_OR_CUT_HILLS",
+        "UNSURE"
+      ],
+      "normal": [
+        "NORMAL"
+      ],
+      "descriptionEn": "plant shape"
+    },
+    "panicle": {
+      "level": "image",
+      "values": [
+        "NOT_VISIBLE",
+        "NORMAL",
+        "EMPTY_ERECT_WHITE",
+        "DISCOLORED_GRAINS",
+        "NOT_FULLY_EMERGED",
+        "BROKEN_NECK",
+        "UNSURE"
+      ],
+      "normal": [
+        "NOT_VISIBLE",
+        "NORMAL"
+      ],
+      "descriptionEn": "panicles"
+    },
+    "pestsVisible": {
+      "level": "image",
+      "values": [
+        "NONE",
+        "PLANTHOPPER",
+        "LEAFHOPPER",
+        "CATERPILLAR",
+        "BEETLE",
+        "BUG",
+        "SNAIL_OR_EGGS",
+        "OTHER",
+        "UNSURE"
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "visible pests"
+    }
+  },
+  "profiles": {
+    "RICE_BLAST": {
+      "base": {
+        "centerColor": {
+          "GRAY_WHITE": 2
+        },
+        "borderColor": {
+          "DARK_BROWN": 1,
+          "REDDISH_BROWN": 1
+        },
+        "margin": {
+          "SHARP": 1
+        },
+        "halo": {
+          "YELLOW": -1
+        },
+        "sign": {
+          "OOZE_DROPLETS": -1
+        }
+      },
+      "variants": {
+        "RICE_BLAST__V1": {
+          "lesionShape": {
+            "SPINDLE_DIAMOND": 3,
+            "ROUND_OVAL": -1,
+            "SHORT_NARROW_STREAK": -1,
+            "LONG_STREAK": -1
+          },
+          "position": {
+            "LEAF_BLADE": 1
+          },
+          "size": {
+            "MEDIUM_2_10MM": 1
+          }
+        },
+        "RICE_BLAST__V2": {
+          "position": {
+            "NODE_OR_NECK": 3
+          },
+          "panicle": {
+            "BROKEN_NECK": 3,
+            "EMPTY_ERECT_WHITE": 1
+          },
+          "centerColor": {
+            "GRAY_WHITE": 0,
+            "DARK_BROWN_BLACK": 2
+          },
+          "lesionShape": {
+            "IRREGULAR_BLOTCH": 1
+          }
+        },
+        "RICE_BLAST__V3": {
+          "position": {
+            "NODE_OR_NECK": 3
+          },
+          "plantForm": {
+            "LODGED_BROKEN": 2
+          },
+          "centerColor": {
+            "GRAY_WHITE": 0,
+            "DARK_BROWN_BLACK": 2
+          },
+          "deformation": {
+            "DRIED_WITHERED": 1
+          }
+        }
+      }
+    },
+    "RICE_SHEATH_BLIGHT": {
+      "base": {
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 2,
+          "ZONATE_BANDED": 2,
+          "ROUND_OVAL": 1
+        },
+        "centerColor": {
+          "GRAY_WHITE": 2
+        },
+        "borderColor": {
+          "DARK_BROWN": 1
+        },
+        "margin": {
+          "WAVY_IRREGULAR": 1
+        },
+        "sign": {
+          "SCLEROTIA": 3
+        },
+        "size": {
+          "LARGE_GT_10MM": 1
+        },
+        "position": {
+          "LOWER_SHEATH": 2
+        }
+      },
+      "variants": {
+        "RICE_SHEATH_BLIGHT__V1": {
+          "position": {
+            "LOWER_SHEATH": 3
+          },
+          "sign": {
+            "MOLD_OR_POWDER": 1
+          }
+        },
+        "RICE_SHEATH_BLIGHT__V2": {
+          "position": {
+            "LOWER_SHEATH": 0,
+            "LEAF_BLADE": 1,
+            "UPPER_SHEATH": 1,
+            "GRAIN": 1
+          }
+        }
+      }
+    },
+    "RICE_BAKANAE": {
+      "base": {
+        "plantForm": {
+          "ABNORMALLY_TALL": 4
+        },
+        "discoloration": {
+          "PALE_YELLOW_GREEN": 2
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        }
+      },
+      "variants": {
+        "RICE_BAKANAE__V1": {
+          "plantForm": {
+            "LODGED_BROKEN": 1
+          }
+        }
+      }
+    },
+    "RICE_BROWN_SPOT": {
+      "base": {
+        "lesionShape": {
+          "ROUND_OVAL": 3,
+          "SPINDLE_DIAMOND": -1,
+          "LONG_STREAK": -1
+        },
+        "halo": {
+          "YELLOW": 2
+        },
+        "centerColor": {
+          "BROWN": 1,
+          "GRAY_WHITE": 1,
+          "TAN": 1,
+          "DARK_BROWN_BLACK": 1
+        },
+        "borderColor": {
+          "REDDISH_BROWN": 1,
+          "DARK_BROWN": 1
+        },
+        "size": {
+          "SMALL_LT_2MM": 1,
+          "MEDIUM_2_10MM": 1
+        },
+        "distribution": {
+          "SCATTERED": 1
+        }
+      },
+      "variants": {
+        "RICE_BROWN_SPOT__V1": {
+          "position": {
+            "LEAF_BLADE": 1
+          }
+        },
+        "RICE_BROWN_SPOT__V2": {
+          "position": {
+            "GRAIN": 3
+          },
+          "panicle": {
+            "DISCOLORED_GRAINS": 2
+          },
+          "halo": {
+            "YELLOW": 0
+          },
+          "centerColor": {
+            "DARK_BROWN_BLACK": 2
+          }
+        }
+      }
+    },
+    "RICE_SHEATH_ROT": {
+      "base": {
+        "position": {
+          "UPPER_SHEATH": 3,
+          "LOWER_SHEATH": -1
+        },
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 1,
+          "ROUND_OVAL": 1
+        },
+        "centerColor": {
+          "GRAY_WHITE": 1,
+          "BROWN": 1,
+          "DARK_BROWN_BLACK": 1
+        },
+        "sign": {
+          "MOLD_OR_POWDER": 2
+        },
+        "panicle": {
+          "NOT_FULLY_EMERGED": 3
+        },
+        "deformation": {
+          "SOFT_ROT": 1
+        }
+      },
+      "variants": {
+        "RICE_SHEATH_ROT__V1": {
+          "centerColor": {
+            "DARK_BROWN_BLACK": 2
+          }
+        }
+      }
+    },
+    "RICE_FALSE_SMUT": {
+      "base": {
+        "position": {
+          "GRAIN": 2
+        },
+        "sign": {
+          "SPORE_BALL": 4
+        },
+        "centerColor": {
+          "ORANGE": 2,
+          "YELLOW": 1,
+          "DARK_BROWN_BLACK": 1
+        }
+      },
+      "variants": {
+        "RICE_FALSE_SMUT__V1": {}
+      }
+    },
+    "RICE_KERNEL_SMUT": {
+      "base": {
+        "position": {
+          "GRAIN": 2
+        },
+        "sign": {
+          "MOLD_OR_POWDER": 2,
+          "SPORE_BALL": 1
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "panicle": {
+          "DISCOLORED_GRAINS": 1
+        }
+      }
+    },
+    "RICE_NARROW_BROWN_SPOT": {
+      "base": {
+        "lesionShape": {
+          "SHORT_NARROW_STREAK": 3,
+          "ROUND_OVAL": -1,
+          "SPINDLE_DIAMOND": -1
+        },
+        "centerColor": {
+          "REDDISH_BROWN": 2,
+          "BROWN": 1
+        },
+        "size": {
+          "SMALL_LT_2MM": 1,
+          "MEDIUM_2_10MM": 1
+        },
+        "position": {
+          "ALONG_MIDRIB_OR_VEINS": 1,
+          "LEAF_BLADE": 1
+        },
+        "margin": {
+          "SHARP": 1
+        },
+        "halo": {
+          "YELLOW": -1
+        },
+        "distribution": {
+          "SCATTERED": 1
+        },
+        "sign": {
+          "OOZE_DROPLETS": -1
+        }
+      },
+      "variants": {
+        "RICE_NARROW_BROWN_SPOT__V1": {}
+      }
+    },
+    "RICE_LEAF_SCALD": {
+      "base": {
+        "lesionShape": {
+          "ZONATE_BANDED": 3,
+          "IRREGULAR_BLOTCH": 1
+        },
+        "position": {
+          "LEAF_TIP": 2,
+          "LEAF_MARGIN": 1
+        },
+        "centerColor": {
+          "TAN": 1,
+          "BROWN": 1
+        },
+        "size": {
+          "LARGE_GT_10MM": 2
+        },
+        "margin": {
+          "DIFFUSE": 1
+        }
+      }
+    },
+    "RICE_STEM_ROT": {
+      "base": {
+        "position": {
+          "LOWER_SHEATH": 2
+        },
+        "sign": {
+          "SCLEROTIA": 2
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "plantForm": {
+          "LODGED_BROKEN": 2
+        },
+        "deformation": {
+          "SOFT_ROT": 1,
+          "HOLLOW_TUBE": 1
+        }
+      },
+      "variants": {
+        "RICE_STEM_ROT__V1": {
+          "plantForm": {
+            "LODGED_BROKEN": 3
+          }
+        }
+      }
+    },
+    "RICE_RED_STRIPE": {
+      "base": {
+        "lesionShape": {
+          "LONG_STREAK": 2,
+          "TINY_DOTS": 1,
+          "SHORT_NARROW_STREAK": 1
+        },
+        "centerColor": {
+          "ORANGE": 3,
+          "YELLOW": 1
+        },
+        "position": {
+          "LEAF_BLADE": 1,
+          "LEAF_TIP": 1
+        }
+      }
+    },
+    "RICE_GRAIN_DISCOLORATION": {
+      "base": {
+        "position": {
+          "GRAIN": 3
+        },
+        "panicle": {
+          "DISCOLORED_GRAINS": 3,
+          "EMPTY_ERECT_WHITE": 1
+        },
+        "centerColor": {
+          "BROWN": 1,
+          "DARK_BROWN_BLACK": 1,
+          "GRAY_WHITE": 1
+        },
+        "sign": {
+          "MOLD_OR_POWDER": 1
+        }
+      },
+      "variants": {
+        "RICE_GRAIN_DISCOLORATION__V1": {
+          "lesionShape": {
+            "ROUND_OVAL": 1
+          }
+        },
+        "RICE_GRAIN_DISCOLORATION__V2": {
+          "centerColor": {
+            "DARK_BROWN_BLACK": 2
+          },
+          "deformation": {
+            "SOFT_ROT": 1
+          }
+        }
+      }
+    },
+    "RICE_BACTERIAL_BLIGHT": {
+      "base": {
+        "position": {
+          "LEAF_TIP": 2,
+          "LEAF_MARGIN": 3
+        },
+        "lesionShape": {
+          "LONG_STREAK": 3,
+          "IRREGULAR_BLOTCH": 1,
+          "SPINDLE_DIAMOND": -2,
+          "ROUND_OVAL": -2
+        },
+        "margin": {
+          "WAVY_IRREGULAR": 3
+        },
+        "centerColor": {
+          "YELLOW": 2,
+          "GRAY_WHITE": 1,
+          "TAN": 1
+        },
+        "sign": {
+          "OOZE_DROPLETS": 2
+        },
+        "size": {
+          "LARGE_GT_10MM": 1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        }
+      },
+      "variants": {
+        "RICE_BACTERIAL_BLIGHT__V1": {},
+        "RICE_BACTERIAL_BLIGHT__V2": {
+          "lesionShape": {
+            "NO_DISTINCT_LESION": 2
+          },
+          "distribution": {
+            "WHOLE_ORGAN": 2
+          },
+          "deformation": {
+            "FOLDED_ROLLED": 2,
+            "DRIED_WITHERED": 2
+          },
+          "discoloration": {
+            "PALE_YELLOW_GREEN": 1
+          },
+          "margin": {
+            "WAVY_IRREGULAR": 0
+          }
+        }
+      }
+    },
+    "RICE_BACTERIAL_LEAF_STREAK": {
+      "base": {
+        "lesionShape": {
+          "SHORT_NARROW_STREAK": 3,
+          "LONG_STREAK": 1,
+          "ROUND_OVAL": -1,
+          "SPINDLE_DIAMOND": -1
+        },
+        "centerColor": {
+          "TRANSLUCENT_WATER_SOAKED": 3,
+          "YELLOW": 1,
+          "BROWN": 1,
+          "REDDISH_BROWN": 1
+        },
+        "position": {
+          "ALONG_MIDRIB_OR_VEINS": 2,
+          "LEAF_BLADE": 1
+        },
+        "sign": {
+          "OOZE_DROPLETS": 2
+        },
+        "margin": {
+          "SHARP": 1
+        }
+      },
+      "variants": {
+        "RICE_BACTERIAL_LEAF_STREAK__V1": {
+          "distribution": {
+            "MERGED_STRIPS": 1
+          }
+        }
+      }
+    },
+    "RICE_BACTERIAL_GRAIN_ROT": {
+      "base": {
+        "position": {
+          "GRAIN": 3
+        },
+        "panicle": {
+          "EMPTY_ERECT_WHITE": 2,
+          "DISCOLORED_GRAINS": 2
+        },
+        "centerColor": {
+          "YELLOW": 1,
+          "TAN": 1,
+          "BROWN": 1,
+          "REDDISH_BROWN": 1
+        },
+        "margin": {
+          "SHARP": 1
+        }
+      }
+    },
+    "RICE_BACTERIAL_SHEATH_BROWN_ROT": {
+      "base": {
+        "position": {
+          "UPPER_SHEATH": 3
+        },
+        "centerColor": {
+          "TRANSLUCENT_WATER_SOAKED": 2,
+          "BROWN": 1,
+          "TAN": 1
+        },
+        "margin": {
+          "DIFFUSE": 2
+        },
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 1,
+          "ROUND_OVAL": 1
+        },
+        "panicle": {
+          "DISCOLORED_GRAINS": 1,
+          "NOT_FULLY_EMERGED": 1
+        }
+      }
+    },
+    "RICE_TUNGRO": {
+      "base": {
+        "discoloration": {
+          "YELLOW_ORANGE": 4
+        },
+        "plantForm": {
+          "STUNTED": 2
+        },
+        "position": {
+          "LEAF_TIP": 1
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        },
+        "centerColor": {
+          "ORANGE": 1,
+          "YELLOW": 1
+        },
+        "pestsVisible": {
+          "LEAFHOPPER": 1
+        }
+      }
+    },
+    "RICE_GRASSY_STUNT": {
+      "base": {
+        "plantForm": {
+          "EXCESS_TILLERS_GRASSY": 4,
+          "STUNTED": 2
+        },
+        "discoloration": {
+          "PALE_YELLOW_GREEN": 2
+        },
+        "lesionShape": {
+          "TINY_DOTS": 1
+        },
+        "centerColor": {
+          "REDDISH_BROWN": 1
+        },
+        "pestsVisible": {
+          "PLANTHOPPER": 1
+        }
+      }
+    },
+    "RICE_RAGGED_STUNT": {
+      "base": {
+        "deformation": {
+          "TWISTED_CRINKLED": 3,
+          "CUT_OR_CHEWED": 1
+        },
+        "sign": {
+          "GALL_SWELLING": 3
+        },
+        "discoloration": {
+          "DARK_GREEN": 2
+        },
+        "plantForm": {
+          "STUNTED": 2
+        },
+        "position": {
+          "LEAF_MARGIN": 1,
+          "LEAF_TIP": 1
+        },
+        "panicle": {
+          "NOT_FULLY_EMERGED": 1
+        },
+        "pestsVisible": {
+          "PLANTHOPPER": 1
+        }
+      }
+    },
+    "RICE_SRBSDV": {
+      "base": {
+        "sign": {
+          "GALL_SWELLING": 3
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "discoloration": {
+          "DARK_GREEN": 2
+        },
+        "plantForm": {
+          "STUNTED": 2
+        },
+        "position": {
+          "NODE_OR_NECK": 1,
+          "LOWER_SHEATH": 1
+        },
+        "panicle": {
+          "NOT_FULLY_EMERGED": 1
+        }
+      },
+      "variants": {
+        "RICE_SRBSDV__V1": {
+          "lesionShape": {
+            "LONG_STREAK": 1
+          }
+        }
+      }
+    },
+    "RICE_STRIPE_VIRUS": {
+      "base": {
+        "lesionShape": {
+          "LONG_STREAK": 3
+        },
+        "centerColor": {
+          "YELLOW": 2,
+          "WHITE_SILVERY": 1
+        },
+        "position": {
+          "ALONG_MIDRIB_OR_VEINS": 1
+        },
+        "distribution": {
+          "MERGED_STRIPS": 1
+        },
+        "deformation": {
+          "TWISTED_CRINKLED": 2,
+          "DRIED_WITHERED": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "sign": {
+          "OOZE_DROPLETS": -1
+        }
+      }
+    },
+    "RICE_ROOT_NEMATODE": {
+      "base": {
+        "position": {
+          "ROOT": 3
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2,
+          "BROWN": 1
+        },
+        "deformation": {
+          "SOFT_ROT": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "discoloration": {
+          "PALE_YELLOW_GREEN": 1
+        },
+        "sign": {
+          "GALL_SWELLING": -1
+        }
+      },
+      "variants": {
+        "RICE_ROOT_NEMATODE__V1": {}
+      }
+    },
+    "RICE_WHITE_TIP": {
+      "base": {
+        "position": {
+          "LEAF_TIP": 3
+        },
+        "centerColor": {
+          "GRAY_WHITE": 2,
+          "WHITE_SILVERY": 2
+        },
+        "deformation": {
+          "TWISTED_CRINKLED": 2,
+          "DRIED_WITHERED": 1
+        },
+        "panicle": {
+          "NOT_FULLY_EMERGED": 2,
+          "EMPTY_ERECT_WHITE": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        }
+      }
+    },
+    "RICE_ROOT_KNOT": {
+      "base": {
+        "position": {
+          "ROOT": 3
+        },
+        "sign": {
+          "GALL_SWELLING": 3
+        },
+        "deformation": {
+          "TWISTED_CRINKLED": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "discoloration": {
+          "PALE_YELLOW_GREEN": 1
+        }
+      }
+    },
+    "RICE_ROOT_SUFFOCATION": {
+      "base": {
+        "position": {
+          "ROOT": 3
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "deformation": {
+          "SOFT_ROT": 1
+        },
+        "discoloration": {
+          "YELLOW_ORANGE": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "sign": {
+          "GALL_SWELLING": -1
+        }
+      },
+      "variants": {
+        "RICE_ROOT_SUFFOCATION__V1": {}
+      }
+    },
+    "BROWN_PLANTHOPPER": {
+      "base": {
+        "pestsVisible": {
+          "PLANTHOPPER": 4
+        },
+        "sign": {
+          "INSECT_OR_EGGS": 2,
+          "MOLD_OR_POWDER": 1
+        },
+        "position": {
+          "LOWER_SHEATH": 2
+        },
+        "deformation": {
+          "DRIED_WITHERED": 2
+        },
+        "discoloration": {
+          "YELLOW_ORANGE": 1,
+          "REDDISH_BRONZE": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        }
+      }
+    },
+    "GREEN_LEAFHOPPER": {
+      "base": {
+        "pestsVisible": {
+          "LEAFHOPPER": 4
+        },
+        "sign": {
+          "INSECT_OR_EGGS": 1
+        },
+        "discoloration": {
+          "YELLOW_ORANGE": 1,
+          "PALE_YELLOW_GREEN": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        }
+      }
+    },
+    "RICE_LEAFFOLDER": {
+      "base": {
+        "deformation": {
+          "FOLDED_ROLLED": 4
+        },
+        "sign": {
+          "SILK_FOLD": 3,
+          "FRASS_OR_HOLE": 1
+        },
+        "lesionShape": {
+          "WHITE_SCRAPING": 2,
+          "LONG_STREAK": 1
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 1,
+          "GRAY_WHITE": 1
+        },
+        "pestsVisible": {
+          "CATERPILLAR": 2
+        }
+      }
+    },
+    "STEM_BORER": {
+      "base": {
+        "plantForm": {
+          "DEADHEART": 4
+        },
+        "panicle": {
+          "EMPTY_ERECT_WHITE": 3
+        },
+        "sign": {
+          "FRASS_OR_HOLE": 2
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        },
+        "pestsVisible": {
+          "CATERPILLAR": 1
+        }
+      }
+    },
+    "RICE_HISPA": {
+      "base": {
+        "lesionShape": {
+          "WHITE_SCRAPING": 4,
+          "ROUND_OVAL": -1,
+          "SPINDLE_DIAMOND": -1
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 2,
+          "GRAY_WHITE": 1
+        },
+        "position": {
+          "ALONG_MIDRIB_OR_VEINS": 2
+        },
+        "pestsVisible": {
+          "BEETLE": 3
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        },
+        "halo": {
+          "YELLOW": -1
+        }
+      }
+    },
+    "RICE_THRIPS": {
+      "base": {
+        "lesionShape": {
+          "TINY_DOTS": 2,
+          "WHITE_SCRAPING": 1
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 2,
+          "YELLOW": 1
+        },
+        "deformation": {
+          "FOLDED_ROLLED": 2,
+          "DRIED_WITHERED": 1
+        },
+        "position": {
+          "LEAF_TIP": 1,
+          "LEAF_MARGIN": 1
+        },
+        "pestsVisible": {
+          "OTHER": 1
+        }
+      }
+    },
+    "RICE_GALL_MIDGE": {
+      "base": {
+        "deformation": {
+          "HOLLOW_TUBE": 4
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 2
+        },
+        "sign": {
+          "GALL_SWELLING": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        }
+      }
+    },
+    "RICE_BUG": {
+      "base": {
+        "pestsVisible": {
+          "BUG": 4
+        },
+        "panicle": {
+          "EMPTY_ERECT_WHITE": 2,
+          "DISCOLORED_GRAINS": 2
+        },
+        "position": {
+          "GRAIN": 1
+        },
+        "lesionShape": {
+          "TINY_DOTS": 1
+        }
+      }
+    },
+    "BLACK_BUG": {
+      "base": {
+        "pestsVisible": {
+          "BUG": 3
+        },
+        "discoloration": {
+          "REDDISH_BRONZE": 3
+        },
+        "position": {
+          "LOWER_SHEATH": 1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "panicle": {
+          "NOT_FULLY_EMERGED": 1,
+          "EMPTY_ERECT_WHITE": 1
+        }
+      }
+    },
+    "RICE_CASEWORM": {
+      "base": {
+        "deformation": {
+          "CUT_OR_CHEWED": 3,
+          "FOLDED_ROLLED": 1
+        },
+        "lesionShape": {
+          "WHITE_SCRAPING": 1
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 1
+        },
+        "position": {
+          "LEAF_TIP": 1
+        },
+        "pestsVisible": {
+          "CATERPILLAR": 2
+        }
+      }
+    },
+    "RICE_SKIPPER": {
+      "base": {
+        "deformation": {
+          "FOLDED_ROLLED": 3,
+          "CUT_OR_CHEWED": 2
+        },
+        "sign": {
+          "SILK_FOLD": 1
+        },
+        "pestsVisible": {
+          "CATERPILLAR": 2
+        }
+      }
+    },
+    "RICE_WHORL_MAGGOT": {
+      "base": {
+        "sign": {
+          "FRASS_OR_HOLE": 2
+        },
+        "centerColor": {
+          "WHITE_SILVERY": 1,
+          "TRANSLUCENT_WATER_SOAKED": 1,
+          "YELLOW": 1
+        },
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 1,
+          "TINY_DOTS": 1
+        },
+        "position": {
+          "LEAF_MARGIN": 1
+        },
+        "deformation": {
+          "TWISTED_CRINKLED": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        }
+      }
+    },
+    "ARMYWORM": {
+      "base": {
+        "deformation": {
+          "CUT_OR_CHEWED": 4
+        },
+        "pestsVisible": {
+          "CATERPILLAR": 3
+        },
+        "position": {
+          "LEAF_TIP": 1,
+          "LEAF_MARGIN": 1
+        },
+        "panicle": {
+          "BROKEN_NECK": 1
+        }
+      }
+    },
+    "PANICLE_MITE": {
+      "base": {
+        "position": {
+          "UPPER_SHEATH": 2,
+          "GRAIN": 1
+        },
+        "lesionShape": {
+          "SHORT_NARROW_STREAK": 1,
+          "LONG_STREAK": 1
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2,
+          "YELLOW": 1
+        },
+        "panicle": {
+          "NOT_FULLY_EMERGED": 2,
+          "DISCOLORED_GRAINS": 2,
+          "EMPTY_ERECT_WHITE": 1
+        }
+      }
+    },
+    "GOLDEN_APPLE_SNAIL": {
+      "base": {
+        "pestsVisible": {
+          "SNAIL_OR_EGGS": 4
+        },
+        "sign": {
+          "INSECT_OR_EGGS": 2
+        },
+        "plantForm": {
+          "MISSING_OR_CUT_HILLS": 3
+        },
+        "deformation": {
+          "CUT_OR_CHEWED": 2
+        }
+      }
+    },
+    "RAT": {
+      "base": {
+        "plantForm": {
+          "MISSING_OR_CUT_HILLS": 3
+        },
+        "deformation": {
+          "CUT_OR_CHEWED": 3
+        },
+        "panicle": {
+          "BROKEN_NECK": 1
+        },
+        "pestsVisible": {
+          "SNAIL_OR_EGGS": -2
+        }
+      }
+    },
+    "NITROGEN_DEFICIENCY": {
+      "base": {
+        "discoloration": {
+          "PALE_YELLOW_GREEN": 4
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 2
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 2
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "halo": {
+          "YELLOW": -1
+        }
+      }
+    },
+    "POTASSIUM_DEFICIENCY": {
+      "base": {
+        "position": {
+          "LEAF_TIP": 2,
+          "LEAF_MARGIN": 2
+        },
+        "discoloration": {
+          "DARK_GREEN": 2
+        },
+        "centerColor": {
+          "YELLOW": 1,
+          "BROWN": 1,
+          "DARK_BROWN_BLACK": 1
+        },
+        "lesionShape": {
+          "IRREGULAR_BLOTCH": 1,
+          "TINY_DOTS": 1
+        },
+        "margin": {
+          "DIFFUSE": 1,
+          "WAVY_IRREGULAR": -1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        },
+        "sign": {
+          "OOZE_DROPLETS": -2
+        }
+      }
+    },
+    "PHOSPHORUS_DEFICIENCY": {
+      "base": {
+        "discoloration": {
+          "DARK_GREEN": 3
+        },
+        "plantForm": {
+          "STUNTED": 2
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 2
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        }
+      }
+    },
+    "ZINC_DEFICIENCY": {
+      "base": {
+        "lesionShape": {
+          "TINY_DOTS": 2,
+          "IRREGULAR_BLOTCH": 1
+        },
+        "centerColor": {
+          "BROWN": 2
+        },
+        "position": {
+          "ALONG_MIDRIB_OR_VEINS": 2
+        },
+        "distribution": {
+          "SCATTERED": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "discoloration": {
+          "PALE_YELLOW_GREEN": 1
+        }
+      }
+    },
+    "IRON_TOXICITY": {
+      "base": {
+        "lesionShape": {
+          "TINY_DOTS": 2
+        },
+        "centerColor": {
+          "REDDISH_BROWN": 2,
+          "BROWN": 1,
+          "ORANGE": 1
+        },
+        "discoloration": {
+          "REDDISH_BRONZE": 3,
+          "YELLOW_ORANGE": 1
+        },
+        "position": {
+          "ROOT": 1
+        }
+      },
+      "variants": {
+        "IRON_TOXICITY__V1": {
+          "discoloration": {
+            "REDDISH_BRONZE": 4
+          },
+          "position": {
+            "LEAF_TIP": 1
+          },
+          "deformation": {
+            "DRIED_WITHERED": 1
+          }
+        }
+      }
+    },
+    "SULFIDE_TOXICITY": {
+      "base": {
+        "position": {
+          "ROOT": 3
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "discoloration": {
+          "PALE_YELLOW_GREEN": 1
+        },
+        "sign": {
+          "GALL_SWELLING": -1
+        }
+      }
+    },
+    "SALINITY": {
+      "base": {
+        "discoloration": {
+          "WHITE_TIPS": 4
+        },
+        "position": {
+          "LEAF_TIP": 2
+        },
+        "centerColor": {
+          "GRAY_WHITE": 1,
+          "WHITE_SILVERY": 1,
+          "YELLOW": 1
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1,
+          "IRREGULAR_BLOTCH": 1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        },
+        "deformation": {
+          "TWISTED_CRINKLED": -1
+        }
+      }
+    },
+    "RICE_PREMATURE_LEAF_YELLOWING": {
+      "base": {
+        "discoloration": {
+          "YELLOW_ORANGE": 2
+        },
+        "position": {
+          "LEAF_TIP": 1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        }
+      },
+      "variants": {
+        "RICE_PREMATURE_LEAF_YELLOWING__V1": {
+          "lesionShape": {
+            "IRREGULAR_BLOTCH": 1
+          },
+          "centerColor": {
+            "ORANGE": 1
+          }
+        },
+        "RICE_PREMATURE_LEAF_YELLOWING__V2": {
+          "lesionShape": {
+            "NO_DISTINCT_LESION": 1
+          },
+          "distribution": {
+            "WHOLE_ORGAN": 1
+          }
+        }
+      }
+    },
+    "RICE_BACTERIAL_FOOT_ROT": {
+      "base": {
+        "position": {
+          "LOWER_SHEATH": 2
+        },
+        "deformation": {
+          "SOFT_ROT": 3
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 1,
+          "TRANSLUCENT_WATER_SOAKED": 1
+        }
+      },
+      "variants": {
+        "RICE_BACTERIAL_FOOT_ROT__V1": {
+          "centerColor": {
+            "TRANSLUCENT_WATER_SOAKED": 2,
+            "GRAY_WHITE": 1
+          }
+        }
+      }
+    },
+    "RICE_GLUME_BLIGHT": {
+      "base": {
+        "position": {
+          "GRAIN": 2
+        },
+        "sign": {
+          "MOLD_OR_POWDER": 3
+        },
+        "panicle": {
+          "DISCOLORED_GRAINS": 2
+        },
+        "centerColor": {
+          "GRAY_WHITE": 1,
+          "DARK_BROWN_BLACK": 1
+        }
+      },
+      "variants": {
+        "RICE_GLUME_BLIGHT__V1": {}
+      }
+    }
+  }
+}

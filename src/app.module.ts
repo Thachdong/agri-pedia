@@ -6,6 +6,7 @@ import { CryptoModule } from '@shared/crypto';
 import { EventBusModule } from '@shared/event-bus';
 import { SharedLoggerModule } from '@shared/logger';
 import { MessagingModule } from '@shared/messaging';
+import { AiModule } from '@shared/ai';
 import { StorageModule } from '@shared/storage';
 import { RealtimeModule } from '@shared/realtime';
 import { SharedHttpModule } from '@shared/http';
@@ -17,6 +18,8 @@ import { NotificationModule } from '@modules/notification/notification.module';
 import { UserModule } from '@modules/user/user.module';
 import { ChatModule } from '@modules/chat/chat.module';
 import { LocationModule } from '@modules/location/location.module';
+import { KnowledgeModule } from '@modules/knowledge/knowledge.module';
+import { DiagnosisModule } from '@modules/diagnosis/diagnosis.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -31,6 +34,7 @@ import { AppService } from './app.service';
     AccessTokenModule,
     MessagingModule,
     StorageModule,
+    AiModule,
     RealtimeModule,
     SharedHttpModule,
     // business modules
@@ -42,6 +46,8 @@ import { AppService } from './app.service';
     NotificationModule,
     ChatModule,
     LocationModule,
+    KnowledgeModule,
+    DiagnosisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

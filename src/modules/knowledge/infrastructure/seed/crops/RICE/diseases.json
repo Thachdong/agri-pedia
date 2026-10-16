@@ -1,0 +1,6230 @@
+{
+  "version": "2026-10-12",
+  "crop": "RICE",
+  "languageUse": {
+    "en": "retrieval / matching (RAG)",
+    "vn": "display to Vietnamese users"
+  },
+  "note": "Mỗi mục: một bệnh / sinh vật gây hại / rối loạn, các biến thể nằm trong 'variants'. Xem 'verification' để biết mức kiểm chứng. Không lưu khuyến cáo hoạt chất.",
+  "dictionaries": {
+    "plantPart": {
+      "LEAF": {
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "SHEATH": {
+        "vn": "Bẹ lá",
+        "en": "Leaf sheath"
+      },
+      "STEM": {
+        "vn": "Thân",
+        "en": "Stem"
+      },
+      "PANICLE": {
+        "vn": "Bông / hạt",
+        "en": "Panicle / grain"
+      },
+      "ROOT": {
+        "vn": "Rễ",
+        "en": "Root"
+      },
+      "WHOLE_PLANT": {
+        "vn": "Toàn cây",
+        "en": "Whole plant"
+      }
+    },
+    "cropStage": {
+      "SEEDLING": {
+        "vn": "Mạ",
+        "en": "Seedling"
+      },
+      "TILLERING": {
+        "vn": "Đẻ nhánh",
+        "en": "Tillering"
+      },
+      "BOOTING": {
+        "vn": "Làm đòng",
+        "en": "Booting"
+      },
+      "HEADING": {
+        "vn": "Trổ",
+        "en": "Heading"
+      },
+      "MILK": {
+        "vn": "Ngậm sữa",
+        "en": "Milk"
+      },
+      "MATURITY": {
+        "vn": "Chín",
+        "en": "Maturity"
+      }
+    },
+    "category": {
+      "DISEASE": {
+        "vn": "Bệnh",
+        "en": "Disease"
+      },
+      "PEST": {
+        "vn": "Sinh vật gây hại",
+        "en": "Pest"
+      },
+      "DISORDER": {
+        "vn": "Rối loạn dinh dưỡng / sinh lý",
+        "en": "Nutrient / physiological disorder"
+      }
+    },
+    "verification": {
+      "SOURCED": "Viết lại từ nguồn đã tải (xem references / diseases_sources.json)",
+      "GEMINI_REVIEWED": "Nội dung Gemini đã sửa lỗi đã biết; có nguồn đối chiếu trong diseases_sources.json",
+      "GEMINI_ONLY": "Chỉ có nội dung Gemini (đã rà), chưa có nguồn tải về — cần chuyên gia xác nhận"
+    }
+  },
+  "count": 51,
+  "diseases": [
+    {
+      "id": "RICE_BLAST",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh đạo ôn",
+        "en": "Rice Blast",
+        "scientific": "Pyricularia oryzae (Magnaporthe oryzae)"
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "PANICLE",
+          "STEM"
+        ],
+        "vn": "Lá, Bông / hạt, Thân",
+        "en": "Leaf, Panicle / grain, Stem"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm ký sinh Pyricularia oryzae",
+          "Giai đoạn hữu tính Magnaporthe oryzae"
+        ],
+        "en": [
+          "Parasitic fungus Pyricularia oryzae",
+          "Sexual stage Magnaporthe oryzae"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh ban đầu là chấm trắng đến xám xanh, viền xanh đậm.",
+          "Vết bệnh già trên lá có hình thoi (hình mắt én), hai đầu nhọn, tâm trắng xám đến xám, viền nâu đỏ hoặc nâu.",
+          "Một số vết có hình thoi rộng ở giữa, nhọn hai đầu; các vết có thể lan rộng, liên kết làm chết cả lá.",
+          "Ở cổ bông và đốt thân, vết bệnh màu nâu xám đến đen; cổ bông bị thối làm bông gãy gục, hạt lép."
+        ],
+        "en": [
+          "Initial lesions are white to gray-green spots with dark green borders.",
+          "Older leaf lesions are elliptical or spindle-shaped with whitish to gray centers and red-brown to brown borders.",
+          "Some are diamond-shaped, wide in the middle and pointed at both ends; lesions can coalesce and kill the leaf.",
+          "On the neck and nodes, lesions are grayish-brown to black; neck rot makes the panicle break and fall over, grains unfilled."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_BLAST__V1",
+          "names": {
+            "vn": "Đạo ôn lá",
+            "en": "Leaf Blast",
+            "scientific": "Pyricularia oryzae"
+          },
+          "affectedPart": {
+            "vn": "Lá",
+            "en": "Leaf"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết hình thoi rõ, giữa rộng, hai đầu thuôn nhọn, tâm xám trắng, viền nâu.",
+              "Kích thước vết thay đổi tuỳ mức kháng bệnh của giống."
+            ],
+            "en": [
+              "Distinct spindle-shaped lesions, wide in the middle and pointed at the ends, gray-white center, brown border.",
+              "Lesion size varies with the variety's resistance."
+            ]
+          }
+        },
+        {
+          "id": "RICE_BLAST__V2",
+          "names": {
+            "vn": "Đạo ôn cổ bông (cổ gié)",
+            "en": "Neck Blast (Panicle Neck Blast)",
+            "scientific": "Pyricularia oryzae"
+          },
+          "affectedPart": {
+            "vn": "Cổ bông, gié",
+            "en": "Neck, panicle branches"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết bệnh bao quanh đoạn cổ bông có hình thon dài, thắt lại tại vị trí xâm nhiễm.",
+              "Bề mặt vết bệnh chuyển màu nâu đen sậm, làm méo mó cấu trúc ống cổ bông.",
+              "Hình thái gãy gục góc 90 độ tại vị trí vết bệnh thắt ngẽn."
+            ],
+            "en": [
+              "Lesions encircling the panicle neck are elongated and constricted at the infection site.",
+              "Surface turns dark brown-black, distorting the neck tube structure.",
+              "Causes a 90-degree lodging angle at the constricted lesion site."
+            ]
+          }
+        },
+        {
+          "id": "RICE_BLAST__V3",
+          "names": {
+            "vn": "Đạo ôn đốt thân",
+            "en": "Node Blast",
+            "scientific": "Pyricularia oryzae"
+          },
+          "affectedPart": {
+            "vn": "Đốt thân",
+            "en": "Stem node"
+          },
+          "symptoms": {
+            "vn": [
+              "Đốt thân bị thâm đen đến nâu xám, khô teo; thân dễ gãy tại đốt bị bệnh."
+            ],
+            "en": [
+              "Nodes turn blackish to grayish-brown and dry up; the stem easily breaks at infected nodes."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây lan qua bào tử nấm phát tán trong không khí và gió."
+          ],
+          "en": [
+            "Transmitted via airborne fungal spores dispersed by wind."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Trời âm u, có sương mù nhiều vào sáng sớm, mưa dầm."
+        ],
+        "en": [
+          "Cloudy, heavy morning fog, prolonged light rain."
+        ],
+        "temperature": "20°C - 28°C",
+        "humidity": "> 85%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng chế phẩm vi sinh chứa Bacillus subtilis hoặc Trichoderma."
+          ],
+          "en": [
+            "Use biological agents containing Bacillus subtilis or Trichoderma."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Ngừng bón phân đạm, bổ sung Kali và Silic."
+          ],
+          "en": [
+            "Stop nitrogen fertilizers, supplement Potassium and Silicon."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Giữ mực nước vừa phải, vệ sinh đồng ruộng."
+          ],
+          "en": [
+            "Maintain moderate water levels, clean field residues."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BROWN_SPOT",
+            "distinguishingFeature": {
+              "vn": "Đốm nâu hình bầu dục nhỏ, Đạo ôn hình thoi dài nhọn 2 đầu.",
+              "en": "Brown spot is small oval; Blast is elongated spindle."
+            }
+          },
+          {
+            "id": "RICE_NARROW_BROWN_SPOT"
+          }
+        ],
+        "visualKeywords": [
+          "spindle shape",
+          "diamond shape",
+          "gray-white center",
+          "brown border",
+          "pointed ends"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh Đạo ôn",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "Bệnh đạo ôn trên lúa và biện pháp phòng trừ",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/benh-dao-on-tren-lua-va-bien-phap-phong-tru-146.html"
+        },
+        {
+          "title": "IRRI – Blast (leaf and collar)",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/blast-leaf-collar"
+        },
+        {
+          "title": "IRRI – Blast (node and neck)",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/blast-node-neck"
+        }
+      ]
+    },
+    {
+      "id": "RICE_SHEATH_BLIGHT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh khô vằn",
+        "en": "Sheath Blight",
+        "scientific": "Rhizoctonia solani"
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "SHEATH",
+          "LEAF",
+          "PANICLE"
+        ],
+        "vn": "Bẹ lá, Lá, Bông / hạt",
+        "en": "Leaf sheath, Leaf, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Rhizoctonia solani (giai đoạn hữu tính Thanatephorus cucumeris)"
+        ],
+        "en": [
+          "Fungus Rhizoctonia solani (sexual stage Thanatephorus cucumeris)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Hình dạng vết bệnh ban đầu là các đốm nhỏ hình bầu dục hoặc hình elip bất định.",
+          "Khi lan rộng, chúng tạo thành các mảng vằn vện loang lổ không đều hình da hổ hoặc hình gợn sóng.",
+          "Viền vết bệnh có hình răng cưa hoặc đường cong sắc nét màu nâu sậm, phần tâm màu xám tro.",
+          "Các hạch nấm hình cầu dẹt, nhỏ như hạt cải bám rải rác xung quanh vùng vết bệnh."
+        ],
+        "en": [
+          "Initial lesions are small oval or indefinite elliptical spots.",
+          "When expanding, they form irregular tiger-skin or wavy mottled banded patches.",
+          "Margins feature sharp dark brown serrated or curved lines with ash-grey centers.",
+          "Flat spherical sclerotia, small as mustard seeds, scatter around the lesion area."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_SHEATH_BLIGHT__V1",
+          "names": {
+            "vn": "Khô vằn bẹ lá dưới",
+            "en": "Lower Sheath Blight",
+            "scientific": "Rhizoctonia solani (early stage)"
+          },
+          "affectedPart": {
+            "vn": "Bẹ lá dưới",
+            "en": "Lower leaf sheath"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết bệnh có hình bầu dục hoặc hình mắt én lớn xuất hiện ở phần bẹ lá sát mặt nước.",
+              "Các vết vằn đan xen vào nhau tạo thành dạng lưới hoặc hình mây loang lổ.",
+              "Bề mặt vết bệnh ẩm ướt, có thể quan sát thấy các sợi nấm trắng mỏng kết thành hạch."
+            ],
+            "en": [
+              "Large oval or swallow-eye lesions appear on leaf sheaths near the water surface.",
+              "Banded stripes intertwine to form a web-like or mottled cloud pattern.",
+              "Lesion surfaces are moist, displaying thin white fungal hyphae forming sclerotia."
+            ]
+          }
+        },
+        {
+          "id": "RICE_SHEATH_BLIGHT__V2",
+          "names": {
+            "vn": "Khô vằn lá cờ và bông",
+            "en": "Flag Leaf and Panicle Sheath Blight",
+            "scientific": "Rhizoctonia solani (heading stage)"
+          },
+          "affectedPart": {
+            "vn": "Lá đòng, bông lúa",
+            "en": "Flag leaf, panicle"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết bệnh lan lên lá đòng có hình thù loang lổ bất quy tắc, kéo dài theo chiều dọc phiến lá.",
+              "Trên gié và cuống hạt xuất hiện các vết đốm vằn vện hình bầu dục nhỏ màu nâu xám."
+            ],
+            "en": [
+              "Lesions spreading to flag leaves have irregular mottled shapes extending longitudinally.",
+              "Small greyish-brown oval banded spots appear on panicle branches and grain stalks."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây lan qua hạch nấm trong đất, nước tưới và tàn dư thực vật."
+          ],
+          "en": [
+            "Transmitted via soil-borne sclerotia, irrigation water, and crop debris."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nhiệt độ cao, ẩm độ cao, ruộng bón thừa đạm, sạ dày."
+        ],
+        "en": [
+          "High temperature, high humidity, excess nitrogen, dense sowing."
+        ],
+        "temperature": "25°C - 32°C",
+        "humidity": "> 90%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Phun chế phẩm chứa Pseudomonas fluorescens hoặc Trichoderma."
+          ],
+          "en": [
+            "Spray Pseudomonas fluorescens or Trichoderma."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân cân đối N-P-K, tránh thừa đạm."
+          ],
+          "en": [
+            "Apply balanced N-P-K, avoid excess nitrogen."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Rút nước phơi ruộng định kỳ, cấy mật độ vừa phải."
+          ],
+          "en": [
+            "Drain and dry fields periodically, plant at optimal density."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BLAST",
+            "distinguishingFeature": {
+              "vn": "Khô vằn tạo mảng loang lổ hình da hổ, không có hình thoi như đạo ôn.",
+              "en": "Sheath blight forms tiger-skin mottled patches, unlike spindle blast."
+            }
+          },
+          {
+            "id": "RICE_SHEATH_ROT"
+          },
+          {
+            "id": "RICE_STEM_ROT"
+          }
+        ],
+        "visualKeywords": [
+          "tiger skin",
+          "banded sclerotia",
+          "wavy margins"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh Khô vằn",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "Phòng trừ bệnh khô vằn hại lúa vụ Mùa 2023",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/phong-tru-benh-kho-van-hai-lua-vu-mua-2023-162.html"
+        },
+        {
+          "title": "IRRI – Sheath blight",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/sheath-blight"
+        }
+      ]
+    },
+    {
+      "id": "RICE_BAKANAE",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh lúa von",
+        "en": "Bakanae Disease (Foolish Seedling Disease)",
+        "scientific": "Gibberella fujikuroi (Fusarium fujikuroi)"
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "LEAF"
+        ],
+        "vn": "Thân, Lá",
+        "en": "Stem, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Gibberella fujikuroi (vô tính Fusarium fujikuroi)"
+        ],
+        "en": [
+          "Fungus Gibberella fujikuroi (anamorph Fusarium fujikuroi)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây lúa bị vươn cao bất thường, gầy mảnh, lá có màu xanh nhạt và mọc thưa thớt hơn cây khỏe.",
+          "Cây thường bị héo chết rũ từ giai đoạn mạ hoặc đẻ nhánh, nếu sống sót cũng không thể trổ bông."
+        ],
+        "en": [
+          "Plants grow abnormally tall and spindly with pale green leaves and sparse tillers compared to healthy plants.",
+          "Plants typically wilt and die from seedling or tillering stages, and if surviving, fail to produce panicles."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_BAKANAE__V1",
+          "names": {
+            "vn": "Lúa von vống cao",
+            "en": "Elongation Bakanae Variant",
+            "scientific": "Gibberella fujikuroi (gibberellin hyperproduction)"
+          },
+          "affectedPart": {
+            "vn": "Thân mạ, thân lúa",
+            "en": "Seedling and adult stems"
+          },
+          "symptoms": {
+            "vn": [
+              "Cây lúa cao gấp rưỡi cây bình thường, thân mềm yếu và dễ ngã đổ."
+            ],
+            "en": [
+              "Plants grow 1.5 times taller than normal, with soft weak stems prone to lodging."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây truyền chủ yếu qua hạt giống nhiễm nấm bệnh."
+          ],
+          "en": [
+            "Transmitted primarily through infected seeds."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nhiệt độ ấm áp, gieo sạ quá dày, thừa đạm."
+        ],
+        "en": [
+          "Warm temperatures, overly dense sowing, excess nitrogen."
+        ],
+        "temperature": "25°C - 32°C",
+        "humidity": "Cao"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng vi sinh ủ hạt giống và xử lý đất."
+          ],
+          "en": [
+            "Use microbial inoculants for seeds and soil."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Tránh bón thừa đạm kích thích vống cao."
+          ],
+          "en": [
+            "Avoid excess nitrogen stimulating abnormal elongation."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Nhổ bỏ và tiêu hủy cây vống cao bất thường."
+          ],
+          "en": [
+            "Rogue out and destroy abnormally tall spindly plants."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BLAST",
+            "distinguishingFeature": {
+              "vn": "Lúa von vươn cao bất thường, gầy mảnh; các bệnh khác không làm vống cao thân.",
+              "en": "Bakanae causes abnormal height and spindly growth unlike other diseases."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "abnormal elongation",
+          "spindly seedling",
+          "pale green height"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh Lúa von",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – Bakanae",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/bakanae"
+        }
+      ]
+    },
+    {
+      "id": "RICE_BROWN_SPOT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh đốm nâu",
+        "en": "Brown Spot",
+        "scientific": "Bipolaris oryzae (Helminthosporium oryzae)"
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "PANICLE"
+        ],
+        "vn": "Lá, Bông / hạt",
+        "en": "Leaf, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Bipolaris oryzae (Helminthosporium oryzae)"
+        ],
+        "en": [
+          "Fungus Bipolaris oryzae (Helminthosporium oryzae)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh có hình bầu dục hoặc hình tròn nhỏ giống mắt chim với tâm màu xám hoặc nâu nhạt.",
+          "Xung quanh vết bệnh có quầng màu vàng sáng bao bọc rõ rệt.",
+          "Trên hạt lúa, vết bệnh tạo thành các đốm nâu sẫm làm hạt bị lép lửng."
+        ],
+        "en": [
+          "Lesions are small oval or circular eye-like spots with grey or light brown centers.",
+          "Surrounded by a distinct bright yellow halo.",
+          "On grains, lesions form dark brown spots causing partial or complete sterility."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_BROWN_SPOT__V1",
+          "names": {
+            "vn": "Đốm nâu lá",
+            "en": "Leaf Brown Spot",
+            "scientific": "Bipolaris oryzae (leaf infection)"
+          },
+          "affectedPart": {
+            "vn": "Phiến lá",
+            "en": "Leaf blade"
+          },
+          "symptoms": {
+            "vn": [
+              "Xuất hiện nhiều đốm nhỏ màu nâu rải rác khắp phiến lá.",
+              "Khi bệnh nặng, các vết liên kết làm lá khô cháy từ chóp lá lan vào trong."
+            ],
+            "en": [
+              "Numerous small brown spots scatter across the leaf blades.",
+              "When severe, spots coalesce causing leaves to dry and burn from tips inward."
+            ]
+          }
+        },
+        {
+          "id": "RICE_BROWN_SPOT__V2",
+          "names": {
+            "vn": "Đốm nâu hạt",
+            "en": "Grain Brown Spot",
+            "scientific": "Bipolaris oryzae (grain infection)"
+          },
+          "affectedPart": {
+            "vn": "Hạt lúa",
+            "en": "Grain"
+          },
+          "symptoms": {
+            "vn": [
+              "Vỏ hạt lúa có các đốm nâu đậm, hạt gạo bên trong bị rỗ và giảm chất lượng thương phẩm."
+            ],
+            "en": [
+              "Grain hulls exhibit dark brown spots, and internal kernels become pitted with reduced commercial quality."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây truyền qua hạt giống và tàn dư cây bệnh qua đông."
+          ],
+          "en": [
+            "Transmitted through seeds and overwintering crop residues."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "MATURITY"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất thiếu kali, phèn chua, thời tiết ẩm ướt."
+        ],
+        "en": [
+          "Potassium-deficient soil, acidic sulfate soil, humid weather."
+        ],
+        "temperature": "25°C - 30°C",
+        "humidity": "> 85%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng Trichoderma xử lý đất và tàn dư."
+          ],
+          "en": [
+            "Apply Trichoderma for soil and stubble treatment."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón đủ Kali, Lân và phân hữu cơ cải tạo đất."
+          ],
+          "en": [
+            "Ensure adequate Potassium, Phosphorus and organic matter."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Cải tạo đất chua phèn, xử lý hạt giống."
+          ],
+          "en": [
+            "Amend acidic soils, treat seeds before sowing."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BLAST",
+            "distinguishingFeature": {
+              "vn": "Đốm nâu hình bầu dục nhỏ mắt chim, không có hình thoi dài như đạo ôn.",
+              "en": "Brown spot has small eye-like oval spots, unlike long spindle blast."
+            }
+          },
+          {
+            "id": "RICE_NARROW_BROWN_SPOT"
+          }
+        ],
+        "visualKeywords": [
+          "eye-like spot",
+          "yellow halo",
+          "brown center"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh Đốm nâu",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – Brown spot",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/brown-spot"
+        }
+      ]
+    },
+    {
+      "id": "RICE_SHEATH_ROT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh thối bẹ",
+        "en": "Sheath Rot",
+        "scientific": "Sarocladium oryzae"
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "SHEATH",
+          "PANICLE"
+        ],
+        "vn": "Bẹ lá, Bông / hạt",
+        "en": "Leaf sheath, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Sarocladium oryzae"
+        ],
+        "en": [
+          "Fungus Sarocladium oryzae"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh xuất hiện trên bẹ lá đòng dưới dạng các đốm hình bầu dục dàimàu nâu xám hoặc viền nâu.",
+          "Bên trong bẹ lá chứa đầy bột nấm màu trắng hoặc hồng nhạt, làm bông lúa bị nghẹn không trổ thoát ra ngoài."
+        ],
+        "en": [
+          "Lesions appear on flag leaf sheaths as elongated oval spots with greyish-white centers or brown margins.",
+          "Leaf sheaths contain white or pinkish powdery fungal masses, choking panicles and preventing emergence."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_SHEATH_ROT__V1",
+          "names": {
+            "vn": "Thối bẹ lá đòng",
+            "en": "Flag Leaf Sheath Rot",
+            "scientific": "Sarocladium oryzae (sheath infection)"
+          },
+          "affectedPart": {
+            "vn": "Bẹ lá bao quanh đòng",
+            "en": "Flag leaf sheath enclosing panicles"
+          },
+          "symptoms": {
+            "vn": [
+              "Bẹ lá bị thối nhũn, chuyển màu nâu sậm, bông lúa trổ dở dang bị lép lửng."
+            ],
+            "en": [
+              "Sheaths rot and turn dark brown, and incompletely emerged panicles become sterile."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây truyền qua bào tử nấm và côn trùng chích hút tạo vết thương."
+          ],
+          "en": [
+            "Transmitted via fungal spores and insect-feeding wounds."
+          ]
+        },
+        "cropStage": [
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ẩm độ cao, mưa nhiều lúc lúa trổ."
+        ],
+        "en": [
+          "High humidity, frequent rain during heading."
+        ],
+        "temperature": "25°C - 28°C",
+        "humidity": "> 90%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng Bacillus subtilis."
+          ],
+          "en": [
+            "Use Bacillus subtilis."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân cân đối, tránh thừa đạm."
+          ],
+          "en": [
+            "Apply balanced fertilizers, avoid excess nitrogen."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Phòng trừ sâu hại chích hút giảm vết thương."
+          ],
+          "en": [
+            "Control sucking pests to reduce wound sites."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_SHEATH_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Thối bẹ xuất hiện bột nấm hồng/trắng bên trong bẹ lá đòng.",
+              "en": "Sheath rot shows pink/white powdery fungi inside flag leaf sheaths."
+            }
+          },
+          {
+            "id": "RICE_BACTERIAL_SHEATH_BROWN_ROT"
+          }
+        ],
+        "visualKeywords": [
+          "flag leaf sheath rot",
+          "powdery fungal mass",
+          "choked panicle"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh thối bẹ",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – Sheath rot",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/sheath-rot"
+        }
+      ]
+    },
+    {
+      "id": "RICE_FALSE_SMUT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh than vàng",
+        "en": "False Smut",
+        "scientific": "Ustilaginoidea virens",
+        "aliasesVn": [
+          "hoa cúc"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "PANICLE"
+        ],
+        "vn": "Bông / hạt",
+        "en": "Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm túi Ustilaginoidea virens (giai đoạn hữu tính Villosiclava virens)"
+        ],
+        "en": [
+          "Ascomycete Ustilaginoidea virens (sexual stage Villosiclava virens)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Một số hạt lúa bị biến đổi thành các khối u nấm lớn hình cầu màu vàng cam, sau chuyển sang màu xanh sẫm hoặc đen nhung.",
+          "Các khối u nấm vỡ ra phát tán bột bào tử màu xanh bám vào các hạt lúa xung quanh."
+        ],
+        "en": [
+          "Individual grains transform into large spherical velvet-like orange-yellow fungal balls, later turning dark green or velvety black.",
+          "Fungal balls rupture, dispersing green spore powder onto neighboring grains."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_FALSE_SMUT__V1",
+          "names": {
+            "vn": "Than vàng hạt lúa",
+            "en": "Grain False Smut",
+            "scientific": "Ustilaginoidea virens (kernel infection)"
+          },
+          "affectedPart": {
+            "vn": "Hạt lúa đơn lẻ trong bông",
+            "en": "Individual panicle grains"
+          },
+          "symptoms": {
+            "vn": [
+              "Hạt lúa biến thành khối bào tử lớn hơn nhiều so với hạt bình thường, bề mặt như nhung, màu vàng cam rồi chuyển xanh đen."
+            ],
+            "en": [
+              "Grains are replaced by spore balls much larger than normal grains, velvety, orange-yellow turning greenish-black."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử nấm lây truyền qua gió và nước trong thời kỳ trổ hoa."
+          ],
+          "en": [
+            "Fungal spores transmitted via wind and water during flowering."
+          ]
+        },
+        "cropStage": [
+          "HEADING",
+          "MILK"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Trời âm u, mưa rào nhẹ, ẩm độ cực cao khi lúa trổ."
+        ],
+        "en": [
+          "Cloudy skies, light showers, extremely high humidity during flowering."
+        ],
+        "temperature": "22°C - 26°C",
+        "humidity": "> 95%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng chế phẩm sinh học đối kháng nấm đảm."
+          ],
+          "en": [
+            "Use biological agents against basidiomycete fungi."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Giảm phân đạm bón thừa giai đoạn đón đòng."
+          ],
+          "en": [
+            "Reduce excess nitrogen at panicle initiation."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Sử dụng giống kháng và vệ sinh đồng ruộng."
+          ],
+          "en": [
+            "Use resistant varieties and field sanitation."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_GRAIN_DISCOLORATION",
+            "distinguishingFeature": {
+              "vn": "Than vàng tạo khối u nấm màu vàng cam/xanh nhung bám ngoài hạt.",
+              "en": "False smut forms velvety orange-yellow/green fungal balls on grains."
+            }
+          },
+          {
+            "id": "RICE_KERNEL_SMUT"
+          }
+        ],
+        "visualKeywords": [
+          "velvety spore ball",
+          "orange-green gall",
+          "swollen grain"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh hoa cúc",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – False smut",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/false-smut"
+        }
+      ]
+    },
+    {
+      "id": "RICE_KERNEL_SMUT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh than đen",
+        "en": "Kernel Smut",
+        "scientific": "Tilletia barclayana",
+        "aliasesEn": [
+          "Black smut"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "PANICLE"
+        ],
+        "vn": "Bông / hạt",
+        "en": "Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Tilletia barclayana"
+        ],
+        "en": [
+          "Fungus Tilletia barclayana"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Thường phát hiện khi lúa chín; hạt nhiễm nhẹ trông bình thường nhưng bên trong có màu tối.",
+          "Hạt nhiễm nặng: bột bào tử đen trào ra dọc mép hai vỏ trấu, vỏ trấu hở, khối bào tử đen nhô ra như cựa gà.",
+          "Hạt gạo bị thay một phần hoặc toàn bộ bằng khối bột bào tử đen."
+        ],
+        "en": [
+          "Usually noticed at ripening; lightly infected grains look normal but are dark inside.",
+          "Heavily infected grains: black spore powder bursts out along the glume seams, glumes gape and a black spur-like spore mass protrudes.",
+          "The kernel is partly or entirely replaced by black spore powder."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử nhiễm vào hoa khi lúa trổ."
+          ],
+          "en": [
+            "Spores infect the flowers at heading."
+          ]
+        },
+        "cropStage": [
+          "HEADING",
+          "MATURITY"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ẩm độ cao trong thời kỳ trổ."
+        ],
+        "en": [
+          "High humidity during heading."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng hạt giống sạch bệnh.",
+            "Vệ sinh tàn dư, không bón thừa đạm."
+          ],
+          "en": [
+            "Use clean seed.",
+            "Remove crop residue; avoid excess nitrogen."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_FALSE_SMUT",
+            "distinguishingFeature": {
+              "vn": "Than đen: bột đen trào ra từ trong hạt, hạt giữ gần nguyên hình; than vàng: khối nấm lớn, như nhung, vàng cam rồi xanh đen bao ngoài hạt.",
+              "en": "Kernel smut: black powder bursts from inside a near-normal grain; false smut: large velvety orange to greenish-black ball replacing the grain."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "black spore powder",
+          "gaping glumes",
+          "dark grain",
+          "spur-like spore mass"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "VIPA – Bệnh than đen",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        }
+      ]
+    },
+    {
+      "id": "RICE_NARROW_BROWN_SPOT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh đốm gạch",
+        "en": "Narrow Brown Leaf Spot",
+        "scientific": "Sphaerulina oryzina (Cercospora janseana)",
+        "aliasesVn": [
+          "Bệnh gạch nâu"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "SHEATH"
+        ],
+        "vn": "Lá, Bẹ lá",
+        "en": "Leaf, Leaf sheath"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Sphaerulina oryzina (Cercospora janseana)"
+        ],
+        "en": [
+          "Fungus Sphaerulina oryzina (Cercospora janseana)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh là các sọc ngắn màu nâu đỏ hoặc màu gạch non nằm dọc theo gân lá, giới hạn hẹp.",
+          "Khi bệnh nặng làm khô cháy phần chóp và mép lá tương tự như triệu chứng thiếu dinh dưỡng."
+        ],
+        "en": [
+          "Lesions are short reddish-brown or brick-colored narrow linear streaks parallel to leaf veins.",
+          "Severe infections cause leaf tips and margins to dry and burn similarly to nutritional deficiencies."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_NARROW_BROWN_SPOT__V1",
+          "names": {
+            "vn": "Đốm gạch lá lúa",
+            "en": "Narrow Leaf Streak Spot",
+            "scientific": "Cercospora janseana"
+          },
+          "affectedPart": {
+            "vn": "Phiến lá",
+            "en": "Leaf blade"
+          },
+          "symptoms": {
+            "vn": [
+              "Các vệt sọc màu nâu đỏ ngắn, song song với gân lá, kích thước đều đặn."
+            ],
+            "en": [
+              "Short reddish-brown streaks parallel to leaf veins with uniform dimensions."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử nấm lan truyền qua gió và nước mưa."
+          ],
+          "en": [
+            "Fungal spores spread via wind and rainwater."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Thời tiết ẩm ướt, ruộng thiếu kali và dinh dưỡng."
+        ],
+        "en": [
+          "Humid weather, potassium-deficient soils."
+        ],
+        "temperature": "25°C - 30°C",
+        "humidity": "> 85%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng chế phẩm sinh học bảo vệ lá."
+          ],
+          "en": [
+            "Use biological foliar protection."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân cân đối N-P-K, bổ sung vi lượng."
+          ],
+          "en": [
+            "Apply balanced N-P-K with micronutrients."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Vệ sinh đồng ruộng, luân canh cây trồng."
+          ],
+          "en": [
+            "Sanitize fields and rotate crops."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BACTERIAL_LEAF_STREAK",
+            "distinguishingFeature": {
+              "vn": "Đốm gạch do nấm Cercospora tạo vệt ngắn nâu đỏ; Đốm sọc do vi khuẩn tạo sọc nước.",
+              "en": "Narrow brown spot is fungal reddish streaks; bacterial streak is water-soaked."
+            }
+          },
+          {
+            "id": "RICE_BROWN_SPOT"
+          }
+        ],
+        "visualKeywords": [
+          "reddish-brown streak",
+          "narrow parallel line",
+          "brick color"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "IRRI – Narrow brown spot",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/narrow-brown-spot"
+        }
+      ]
+    },
+    {
+      "id": "RICE_LEAF_SCALD",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh cháy lá",
+        "en": "Leaf Scald",
+        "scientific": "Microdochium oryzae"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Microdochium oryzae"
+        ],
+        "en": [
+          "Fungus Microdochium oryzae"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh bắt đầu từ chóp hoặc mép lá, có các vòng xen kẽ màu nâu nhạt và nâu đậm.",
+          "Trên lá già: vết hình thuôn dài với quầng nâu nhạt; chóp và mép lá trong mờ.",
+          "Vết dài 1–5 cm, rộng 0,5–1 cm, lan rộng liên kết làm khô phần lớn phiến lá như bị bỏng; chóp lá có thể bị xé dọc gân chính."
+        ],
+        "en": [
+          "Lesions start at leaf tips or edges with alternating light tan and dark brown zones.",
+          "On mature leaves: oblong lesions with light brown halos; translucent leaf tips and margins.",
+          "Lesions 1–5 cm long and 0.5–1 cm wide enlarge and coalesce, drying much of the blade into a scalded look; tips may split along the midrib."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử lan qua mưa, gió."
+          ],
+          "en": [
+            "Spores spread by rain and wind."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mưa nhiều, bón nhiều đạm."
+        ],
+        "en": [
+          "Wet weather, high nitrogen."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Bón phân cân đối, không thừa đạm.",
+            "Dùng giống chống chịu, vệ sinh tàn dư."
+          ],
+          "en": [
+            "Balanced fertilizer, avoid excess nitrogen.",
+            "Use tolerant varieties; remove residue."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BACTERIAL_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Cháy lá (scald): vết có vòng đồng tâm nâu nhạt/nâu đậm, trông như bị bỏng; bạc lá: vệt vàng rơm dọc mép lá, biên lượn sóng, có giọt dịch vi khuẩn.",
+              "en": "Scald: zonate light/dark brown bands, scalded look; bacterial blight: straw-yellow streaks along margins with wavy edges and bacterial ooze."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "zonate lesion",
+          "alternating tan and brown bands",
+          "scalded leaf tip",
+          "translucent margin"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Leaf Scald",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/leaf-scald"
+        }
+      ]
+    },
+    {
+      "id": "RICE_STEM_ROT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh thối thân, mục gốc",
+        "en": "Stem Rot",
+        "scientific": "Sclerotium oryzae",
+        "aliasesVn": [
+          "Bệnh thối thân"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "SHEATH"
+        ],
+        "vn": "Thân, Bẹ lá",
+        "en": "Stem, Leaf sheath"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Sclerotium oryzae (hạch nấm tồn tại trong đất)"
+        ],
+        "en": [
+          "Fungus Sclerotium oryzae (soil-borne sclerotia)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Xuất hiện vết đốm màu đen ở phần bẹ lá sát mặt nước, sau đó lan sâu vào trong thân làm thân mục rỗng.",
+          "Bên trong ống thân chứa nhiều hạch nấm nhỏ màu đen, làm cây lúa bị đổ ngã hàng loạt cuối vụ."
+        ],
+        "en": [
+          "Black spots appear on leaf sheaths near the water surface, later penetrating stems and causing hollow rot.",
+          "Stem interiors contain numerous small black sclerotia, causing mass lodging late in the season."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_STEM_ROT__V1",
+          "names": {
+            "vn": "Mục gốc thân lúa",
+            "en": "Basal Stem Rot",
+            "scientific": "Sclerotium oryzae (stem base infection)"
+          },
+          "affectedPart": {
+            "vn": "Các lóng thân dưới cùng",
+            "en": "Lower internodes"
+          },
+          "symptoms": {
+            "vn": [
+              "Thân lúa bị thối đen, dễ dàng bóp bẹp và gãy gục khi có gió nhẹ."
+            ],
+            "en": [
+              "Rice stems rot black, easily crushing and lodging under gentle breezes."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Hạch nấm tồn tại trong đất và rơm rạ, lây qua nước tưới."
+          ],
+          "en": [
+            "Sclerotia persist in soil and straw, transmitted via irrigation water."
+          ]
+        },
+        "cropStage": [
+          "BOOTING",
+          "HEADING",
+          "MATURITY"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng ngập nước liên tục, bón phân đạm cao, sạ dày."
+        ],
+        "en": [
+          "Continuously flooded fields, high nitrogen, dense sowing."
+        ],
+        "temperature": "28°C - 32°C",
+        "humidity": "Cao"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng nấm Trichoderma xử lý rơm rạ trước sạ."
+          ],
+          "en": [
+            "Apply Trichoderma to treat straw before seeding."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Tăng cường bón Kali giúp cứng vách tế bào gốc."
+          ],
+          "en": [
+            "Enhance Potassium for strong basal cell walls."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Tháo cạn nước định kỳ cho gốc thông thoáng."
+          ],
+          "en": [
+            "Drain water periodically to aerate the base."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_SHEATH_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Thối thân mục gốc phá hủy lóng thân dưới cùng và chứa hạch đen bên trong ống thân.",
+              "en": "Stem rot destroys basal internodes and contains black sclerotia inside stem tubes."
+            }
+          },
+          {
+            "id": "STEM_BORER"
+          }
+        ],
+        "visualKeywords": [
+          "hollow stem",
+          "black sclerotia",
+          "basal lodging"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "IRRI – Stem rot",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/stem-rot"
+        }
+      ]
+    },
+    {
+      "id": "RICE_RED_STRIPE",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh sọc đỏ",
+        "en": "Red Stripe",
+        "scientific": "Chưa xác định chắc chắn"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Tác nhân chưa được xác định chắc chắn (theo IRRI)"
+        ],
+        "en": [
+          "Causal agent not firmly established (per IRRI)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết ban đầu nhỏ bằng đầu kim, màu xanh vàng đến cam nhạt.",
+          "Vết già là đốm màu cam kèm một sọc kéo dài về phía chóp lá.",
+          "Vết hoại tử và liên kết làm lá cháy; đôi khi có trên bẹ lá."
+        ],
+        "en": [
+          "Initial lesions are pin-sized, yellow-green to light orange.",
+          "Older lesions are orange spots with a stripe advancing toward the leaf tip.",
+          "Lesions turn necrotic and coalesce into a blighted look; occasionally on sheaths."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Chưa rõ."
+          ],
+          "en": [
+            "Not well established."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nóng ẩm."
+        ],
+        "en": [
+          "Warm, humid conditions."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Bón phân cân đối, quản lý nước hợp lý."
+          ],
+          "en": [
+            "Balanced fertilizer and good water management."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BACTERIAL_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Sọc đỏ: đốm cam có sọc chạy về chóp lá; khi nặng rất khó phân biệt với bạc lá.",
+              "en": "Red stripe: orange spot with a stripe running toward the tip; at advanced stages hard to tell from bacterial blight."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "orange spot with stripe",
+          "pin-sized yellow-green lesion",
+          "stripe toward leaf tip"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Red stripe",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/red-stripe"
+        }
+      ]
+    },
+    {
+      "id": "RICE_GRAIN_DISCOLORATION",
+      "category": "DISEASE",
+      "agentType": "COMPLEX",
+      "names": {
+        "vn": "Bệnh lem lép hạt",
+        "en": "Grain Discoloration (Dirty Panicle)",
+        "scientific": "Complex of fungi and bacteria (Bipolaris oryzae, Curvularia lunata, etc.)"
+      },
+      "nameVnSource": "Chi cục BVTV Ninh Bình",
+      "affectedPart": {
+        "codes": [
+          "PANICLE"
+        ],
+        "vn": "Bông / hạt",
+        "en": "Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Tổ hợp nhiều loài nấm và vi khuẩn (Bipolaris oryzae, Curvularia lunata, Fusarium spp., Burkholderia glumae)"
+        ],
+        "en": [
+          "Complex of fungi and bacteria (Bipolaris oryzae, Curvularia lunata, Fusarium spp., Burkholderia glumae)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vỏ hạt lúa xuất hiện các vết đốm màu nâu, xám hoặc đen bất định.",
+          "Hạt lúa bị lép hoàn toàn hoặc lửng hạt, phần gạo bên trong bị biến màu hoặc mục nát.",
+          "Trong điều kiện ẩm ướt, trên bề mặt hạt xuất hiện lớp mốc màu xám hoặc đen phủ kín."
+        ],
+        "en": [
+          "Grain hulls develop indefinite brown, grey, or black spots.",
+          "Grains become completely unfilled or partially filled, with internal endosperm discolored or rotted.",
+          "Under humid conditions, grey or black mold layers cover the grain surfaces."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_GRAIN_DISCOLORATION__V1",
+          "names": {
+            "vn": "Lem lép do nấm",
+            "en": "Fungal Grain Discoloration",
+            "scientific": "Bipolaris oryzae, Curvularia lunata, Fusarium spp."
+          },
+          "affectedPart": {
+            "vn": "Vỏ hạt lúa",
+            "en": "Grain hull"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết đốm hình bầu dục hoặc hình tròn màu nâu đen xuất hiện rải rác trên vỏ trấu.",
+              "Hạt lúa có thể bị đen một phần hoặc toàn bộ vỏ ngoài."
+            ],
+            "en": [
+              "Oval or circular dark brown spots scatter across the grain hulls.",
+              "Grains may exhibit partial or total exterior darkening."
+            ]
+          }
+        },
+        {
+          "id": "RICE_GRAIN_DISCOLORATION__V2",
+          "names": {
+            "vn": "Lem lép do vi khuẩn",
+            "en": "Bacterial Grain Rot",
+            "scientific": "Burkholderia glumae (trước đây Pseudomonas glumae); Acidovorax avenae"
+          },
+          "affectedPart": {
+            "vn": "Cuống hạt, hạt lúa",
+            "en": "Grain pedicels, grains"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết bệnh bắt đầu từ cuống hạt chuyển màu nâu sẫm, sau lan vào bên trong làm hạt thối đen.",
+              "Gạo bên trong bị teo tóp, ngả màu vàng sẫm hoặc xám đục."
+            ],
+            "en": [
+              "Infections start from pedicels turning dark brown, spreading inward to cause black rot.",
+              "Internal rice kernels shrivel and turn dark yellow or opaque grey."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây truyền qua hạt giống nhiễm bệnh và bào tử phát tán qua không khí."
+          ],
+          "en": [
+            "Transmitted via infected seeds and airborne spores."
+          ]
+        },
+        "cropStage": [
+          "HEADING",
+          "MILK"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mưa nhiều, trời âm u trong giai đoạn trổ bông."
+        ],
+        "en": [
+          "Frequent rain, cloudy skies during heading stage."
+        ],
+        "temperature": "22°C - 30°C",
+        "humidity": "> 90%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng Trichoderma hoặc dịch chiết thực vật."
+          ],
+          "en": [
+            "Use Trichoderma or plant extracts."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân đón đòng hợp lý, bổ sung Kali và Bo-Canxi."
+          ],
+          "en": [
+            "Apply panicle fertilizers, supplement Potassium and Boron-Calcium."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Chọn giống sạch bệnh, quản lý nước tốt lúc trổ."
+          ],
+          "en": [
+            "Select clean varieties, manage water well at heading."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_GLUME_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Lem lép hạt có đốm nâu/đen trên vỏ; Mốc vỏ trấu bao phủ lớp mốc hồng/xám cuối vụ.",
+              "en": "Grain discoloration has brown/black spots; Glume mold shows pink/grey mold."
+            }
+          },
+          {
+            "id": "RICE_BACTERIAL_GRAIN_ROT"
+          }
+        ],
+        "visualKeywords": [
+          "dirty panicle",
+          "dark spots on hull",
+          "unfilled grain"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "Bệnh Lem lép hạt và các biện pháp phòng trừ",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/benh-lem-lep-hat-va-cac-bien-phap-phong-tru-173.html"
+        }
+      ]
+    },
+    {
+      "id": "RICE_BACTERIAL_BLIGHT",
+      "category": "DISEASE",
+      "agentType": "BACTERIA",
+      "names": {
+        "vn": "Bệnh bạc lá",
+        "en": "Bacterial Blight",
+        "scientific": "Xanthomonas oryzae pv. oryzae",
+        "aliasesVn": [
+          "cháy bìa lá"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Vi khuẩn hình gậy Xanthomonas oryzae pv. oryzae"
+        ],
+        "en": [
+          "Rod-shaped bacterium Xanthomonas oryzae pv. oryzae"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh bắt đầu từ chóp lá hoặc mép lá, lan dọc xuống dưới theo dạng vệt dài hình dải băng.",
+          "Ranh giới giữa phần lá bệnh và lá khỏe có hình dạng lượn sóng hoặc răng cưa rõ rệt.",
+          "Hình thái mép vết bệnh chuyển từ màu vàng rơm sang trắng xám khi khô.",
+          "Tiết dịch vi khuẩn hình cầu nhỏ đục mờ bám rải rác dọc theo đường biên vết bệnh."
+        ],
+        "en": [
+          "Lesions start from leaf tips or margins, spreading downward as long ribbon-like stripes.",
+          "The boundary between diseased and healthy tissue features distinct wavy or serrated patterns.",
+          "Lesion margins transition from straw-yellow to whitish-grey when dry.",
+          "Small opaque spherical bacterial ooze droplets scatter along the lesion borders."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_BACTERIAL_BLIGHT__V1",
+          "names": {
+            "vn": "Bạc lá điển hình",
+            "en": "Typical Bacterial Blight",
+            "scientific": "Xanthomonas oryzae pv. oryzae"
+          },
+          "affectedPart": {
+            "vn": "Mép lá",
+            "en": "Leaf margin"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết bệnh có hình tam giác kéo dài hoặc hình dải băng bám dọc theo một bên mép lá hoặc cả hai bên.",
+              "Đường biên phân cách bên trong phiến lá có hình lượn sóng uốn khúc màu vàng nhạt.",
+              "Bề mặt khô giòn, thắt lại và dễ bị xé rách dọc theo các đường gân lá."
+            ],
+            "en": [
+              "Lesions have elongated triangular or ribbon shapes along one or both leaf margins.",
+              "Internal boundary within the leaf blade features wavy light yellow curves.",
+              "Surfaces dry brittle, constrict, and easily tear along leaf veins."
+            ]
+          }
+        },
+        {
+          "id": "RICE_BACTERIAL_BLIGHT__V2",
+          "names": {
+            "vn": "Bệnh héo vàng (Kresek)",
+            "en": "Kresek (Seedling Blight)",
+            "scientific": "Xanthomonas oryzae pv. oryzae (young seedling infection)"
+          },
+          "affectedPart": {
+            "vn": "Cả cây lúa non",
+            "en": "Whole seedling"
+          },
+          "symptoms": {
+            "vn": [
+              "Lá lúa bị héo xanh và quăn vòng tròn lại thành hình ống dọc theo trục lá.",
+              "Toàn bộ khóm lúa có hình thái rũ xuống, ngả màu xám lục rồi chuyển vàng khô."
+            ],
+            "en": [
+              "Rice leaves turn green-wilted and curl into tubular shapes along the leaf axis.",
+              "Entire rice hills droop, turn grayish-green, and subsequently dry yellow."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây lan qua nước tưới, mưa dông, vết thương cơ học và lỗ khí khổng."
+          ],
+          "en": [
+            "Transmitted via irrigation water, rainstorms, mechanical wounds, and stomata."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mưa bão kết hợp gió mạnh làm rách lá, nhiệt độ ấm."
+        ],
+        "en": [
+          "Rainstorms with strong winds causing leaf wounds, warm temperatures."
+        ],
+        "temperature": "26°C - 34°C",
+        "humidity": "> 90%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng chế phẩm vi sinh Bacillus subtilis."
+          ],
+          "en": [
+            "Use Bacillus subtilis microbial products."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Tuyệt đối không bón đạm, bổ sung Kali và kẽm."
+          ],
+          "en": [
+            "Strictly avoid nitrogen, supplement Potassium and zinc."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Tránh làm rách lá, tháo cạn nước khi bệnh nặng."
+          ],
+          "en": [
+            "Avoid leaf wounding, drain water during severe outbreaks."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BACTERIAL_LEAF_STREAK",
+            "distinguishingFeature": {
+              "vn": "Bạc lá tạo vệt lớn dọc mép lá; Đốm sọc vi khuẩn tạo sọc nhỏ giữa gân lá.",
+              "en": "Bacterial blight forms large margin stripes; Streak forms narrow interveinal stripes."
+            }
+          },
+          {
+            "id": "RICE_LEAF_SCALD"
+          }
+        ],
+        "visualKeywords": [
+          "ribbon stripe",
+          "wavy margin",
+          "bacterial ooze",
+          "straw yellow"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh bạc lá lúa",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "Các biện pháp phòng chống bệnh Bạc lá hại lúa vụ Mùa 2023",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/cac-bien-phap-phong-chong-benh-bac-la-hai-lua-vu-mua-2023-160.html"
+        },
+        {
+          "title": "IRRI – Bacterial blight",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/bacterial-blight"
+        }
+      ]
+    },
+    {
+      "id": "RICE_BACTERIAL_LEAF_STREAK",
+      "category": "DISEASE",
+      "agentType": "BACTERIA",
+      "names": {
+        "vn": "Bệnh đốm sọc vi khuẩn",
+        "en": "Bacterial Leaf Streak",
+        "scientific": "Xanthomonas oryzae pv. oryzicola"
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Vi khuẩn hình gậy Xanthomonas oryzae pv. oryzicola"
+        ],
+        "en": [
+          "Rod-shaped bacterium Xanthomonas oryzae pv. oryzicola"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết bệnh có hình dạng các đường sọc thẳng dài, hẹp và rất đều đặn.",
+          "Bị giới hạn hoàn hảo giữa các đường gân phụ của lá lúa nên có hình chữ nhật thuôn dài.",
+          "Kích thước vết sọc ngắn (vài milimét đến vài centimet), đầu vết sọc hơi tù hoặc nhọn đều.",
+          "Bề mặt vết sọc rỉ ra các giọt dịch vi khuẩn nhỏ như hạt sương vào sáng sớm."
+        ],
+        "en": [
+          "Lesions appear as long, narrow, and very regular straight stripes.",
+          "Strictly bounded between secondary leaf veins, resulting in elongated rectangular shapes.",
+          "Stripes are short (a few millimeters to centimeters) with slightly blunt or pointed ends.",
+          "Stripe surfaces exude small dew-like bacterial ooze droplets in early mornings."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_BACTERIAL_LEAF_STREAK__V1",
+          "names": {
+            "vn": "Đốm sọc vi khuẩn sọc hẹp",
+            "en": "Narrow Bacterial Streak",
+            "scientific": "Xanthomonas oryzae pv. oryzicola (interveinal phase)"
+          },
+          "affectedPart": {
+            "vn": "Giữa các gân lá",
+            "en": "Interveinal leaf area"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết sọc ngậm nước trong suốt ở giai đoạn đầu, sau chuyển màu nâu vàng hoặc nâu đỏ.",
+              "Các vết sọc có thể liên kết thành các mảng sọc dài dọc theo phiến lá."
+            ],
+            "en": [
+              "Water-soaked translucent stripes initially, later turning yellowish-brown or reddish-brown.",
+              "Stripes may coalesce into long striped patches along the leaf blade."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây lan qua nước mưa, nước tưới và dịch tiết vi khuẩn."
+          ],
+          "en": [
+            "Transmitted via rainwater, irrigation water, and bacterial ooze."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Thời tiết ẩm ướt, mưa rào."
+        ],
+        "en": [
+          "Wet weather, rain showers."
+        ],
+        "temperature": "25°C - 30°C",
+        "humidity": "> 85%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng chế phẩm vi sinh đối kháng vi khuẩn."
+          ],
+          "en": [
+            "Apply microbial agents antagonistic to bacteria."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Giảm đạm, tăng kali và phân hữu cơ."
+          ],
+          "en": [
+            "Reduce nitrogen, increase potassium and organic fertilizer."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Tránh ngập sâu làm lan truyền dịch tiết."
+          ],
+          "en": [
+            "Avoid deep water to prevent bacterial ooze spread."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BACTERIAL_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Đốm sọc bị giới hạn bởi gân phụ, rất đều đặn.",
+              "en": "Streak is restricted by secondary veins, very regular."
+            }
+          },
+          {
+            "id": "RICE_NARROW_BROWN_SPOT"
+          }
+        ],
+        "visualKeywords": [
+          "narrow stripe",
+          "interveinal",
+          "translucent streak"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh đốm sọc vi khuẩn lá lúa",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "Các biện pháp phòng chống bệnh đốm sọc vi khuẩn hại lúa vụ Mùa 2023",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/cac-bien-phap-phong-chong-benh-dom-soc-vi-khuan-hai-lua-vu-mua-2023-161.html"
+        },
+        {
+          "title": "IRRI – Bacterial leaf streak",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/bacterial-leaf-streak"
+        }
+      ]
+    },
+    {
+      "id": "RICE_BACTERIAL_GRAIN_ROT",
+      "category": "DISEASE",
+      "agentType": "BACTERIA",
+      "names": {
+        "vn": "Bệnh thối đen lép hạt",
+        "en": "Bacterial Grain Rot / Panicle Blight",
+        "scientific": "Burkholderia glumae",
+        "aliasesVn": [
+          "Lép vàng",
+          "Thối hạt vi khuẩn"
+        ],
+        "aliasesEn": [
+          "Bacterial panicle blight"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "PANICLE"
+        ],
+        "vn": "Bông / hạt",
+        "en": "Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Vi khuẩn Burkholderia glumae (trước đây Pseudomonas glumae)"
+        ],
+        "en": [
+          "Bacterium Burkholderia glumae (formerly Pseudomonas glumae)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vài ngày sau trổ, vỏ trấu ở phần phôi hạt đổi màu vàng nhạt rồi lan ra toàn vỏ.",
+          "Hạt chuyển từ trắng kem sang nâu, nâu vàng hoặc nâu đỏ nhạt; có đường nâu cắt ngang phân ranh mô khoẻ và mô bệnh.",
+          "Bệnh nặng: hạt lép hoàn toàn, phôi nâu, gạo mủn; cả bông lép đứng thẳng."
+        ],
+        "en": [
+          "A few days after heading, the glume near the embryo turns pale yellow and the discoloration spreads over the hull.",
+          "Grains turn from creamy white to brown, yellow-brown or light reddish-brown, with a brown line separating healthy and diseased tissue.",
+          "Severe: completely unfilled grains, brown embryo, brittle kernel; whole panicles stand erect and empty."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây qua hạt giống, nước mưa."
+          ],
+          "en": [
+            "Seed-borne; spread by rain splash."
+          ]
+        },
+        "cropStage": [
+          "HEADING",
+          "MILK"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nắng nóng, ẩm độ cao lúc trổ."
+        ],
+        "en": [
+          "Hot, humid weather at heading."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng hạt giống sạch bệnh.",
+            "Bón đạm hợp lý, không bón muộn."
+          ],
+          "en": [
+            "Use clean seed.",
+            "Moderate nitrogen; avoid late applications."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_GRAIN_DISCOLORATION",
+            "distinguishingFeature": {
+              "vn": "Thối hạt vi khuẩn: biến màu bắt đầu ở phôi hạt, có đường nâu cắt ngang, bông lép đứng thẳng; lem lép do nấm: đốm nâu/đen rải rác trên vỏ.",
+              "en": "Bacterial grain rot: discoloration starts at the embryo end with a brown dividing line, erect empty panicles; fungal dirty panicle: scattered brown/black spots on the hull."
+            }
+          },
+          {
+            "id": "STEM_BORER",
+            "distinguishingFeature": {
+              "vn": "Bông lép đứng thẳng giống bông bạc do sâu đục thân, nhưng cổ bông không bị đục.",
+              "en": "Erect empty panicles resemble stem-borer whiteheads, but the neck is not bored."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "discolored grain from embryo end",
+          "brown dividing line on hull",
+          "erect unfilled panicle"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "VIPA – Bệnh thối đen lép hạt lúa",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        }
+      ]
+    },
+    {
+      "id": "RICE_BACTERIAL_SHEATH_BROWN_ROT",
+      "category": "DISEASE",
+      "agentType": "BACTERIA",
+      "names": {
+        "vn": "Bệnh thối bẹ nâu vi khuẩn",
+        "en": "Bacterial Sheath Brown Rot",
+        "scientific": "Pseudomonas fuscovaginae"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "SHEATH",
+          "PANICLE"
+        ],
+        "vn": "Bẹ lá, Bông / hạt",
+        "en": "Leaf sheath, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Vi khuẩn Pseudomonas fuscovaginae"
+        ],
+        "en": [
+          "Bacterium Pseudomonas fuscovaginae"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Triệu chứng chủ yếu trên bẹ lá đòng lúc làm đòng và trên bông.",
+          "Vết thuôn dài đến bất định, xanh đậm úng nước, sau chuyển nâu xám hoặc nâu, viền nâu đậm lan toả.",
+          "Nặng: cả bẹ lá hoại tử khô, bông héo; vỏ trấu có vết úng nước chuyển nâu nhạt, hạt biến màu, dị dạng hoặc lép.",
+          "Ở mạ: bẹ lá dưới vàng đến nâu, có thể lan lên gân lá."
+        ],
+        "en": [
+          "Mainly on the flag leaf sheath at booting and on the panicle.",
+          "Oblong to irregular dark green water-soaked lesions turning gray-brown or brown with a diffuse dark brown margin.",
+          "Severe: the whole sheath turns necrotic and dries, the panicle withers; glumes show water-soaked lesions turning light brown; grains discolored, deformed or empty.",
+          "Seedlings: yellow to brown discoloration of the lower leaf sheath, may extend to leaf veins."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây qua hạt giống."
+          ],
+          "en": [
+            "Seed-borne."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nhiệt độ thấp, ẩm độ cao."
+        ],
+        "en": [
+          "Cool, humid conditions."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng hạt giống sạch bệnh, vệ sinh đồng ruộng."
+          ],
+          "en": [
+            "Use clean seed; field sanitation."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_SHEATH_ROT",
+            "distinguishingFeature": {
+              "vn": "Thối bẹ nâu vi khuẩn: vết úng nước xanh đậm rồi nâu, không có bột nấm trắng/hồng bên trong bẹ như thối bẹ do nấm.",
+              "en": "Bacterial sheath brown rot: water-soaked dark green then brown lesions, without the whitish-pink powdery growth inside the sheath seen in fungal sheath rot."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "water-soaked sheath lesion",
+          "flag leaf sheath brown rot",
+          "discolored glumes"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Bacterial sheath brown rot",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/bacterial-sheath-brown-rot"
+        }
+      ]
+    },
+    {
+      "id": "RICE_TUNGRO",
+      "category": "DISEASE",
+      "agentType": "VIRUS",
+      "names": {
+        "vn": "Bệnh vàng lá tungro",
+        "en": "Rice Tungro",
+        "scientific": "Rice tungro bacilliform virus (RTBV) + Rice tungro spherical virus (RTSV)",
+        "aliasesVn": [
+          "Vàng lụi",
+          "Lúa thụt"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Lá, Toàn cây",
+        "en": "Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Phối hợp hai virus RTBV và RTSV, truyền qua rầy xanh đuôi đen"
+        ],
+        "en": [
+          "Combination of RTBV and RTSV, transmitted by green leafhoppers"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá vàng hoặc vàng cam, bắt đầu từ chóp lá lan xuống phiến lá.",
+          "Lá có thể lốm đốm hoặc có sọc, đốm màu gỉ sắt, hoại tử giữa các gân.",
+          "Cây lùn, ít chồi, trổ muộn; bông nhỏ, trổ không thoát, nhiều hạt lép có vết nâu đậm."
+        ],
+        "en": [
+          "Yellow or orange-yellow leaves, discoloration starting at the tip and extending down the blade.",
+          "Leaves may be mottled or striped, with rust-colored spots and interveinal necrosis.",
+          "Stunting, fewer tillers, delayed flowering; small, incompletely exserted panicles with many sterile or partly filled grains with dark brown blotches."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Truyền qua rầy xanh đuôi đen (Nephotettix spp.)."
+          ],
+          "en": [
+            "Transmitted by green leafhoppers (Nephotettix spp.)."
+          ]
+        },
+        "vector": "GREEN_LEAFHOPPER",
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mật độ rầy xanh cao, gieo cấy không đồng loạt."
+        ],
+        "en": [
+          "High leafhopper populations, staggered planting."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng giống kháng, gieo cấy đồng loạt, nhổ bỏ cây bệnh, quản lý rầy xanh."
+          ],
+          "en": [
+            "Resistant varieties, synchronous planting, rogue infected plants, manage leafhoppers."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "NITROGEN_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Tungro: vàng cam từ chóp lá, cây lùn theo khóm, có rầy xanh; thiếu đạm: vàng nhạt đều ở lá già trên cả ruộng.",
+              "en": "Tungro: orange-yellow from the leaf tip, stunted hills in patches, leafhoppers present; N deficiency: uniform pale yellowing of older leaves across the field."
+            }
+          },
+          {
+            "id": "RICE_GRASSY_STUNT",
+            "distinguishingFeature": {
+              "vn": "Vàng lùn đẻ nhánh rất nhiều như bụi cỏ; tungro giảm số chồi.",
+              "en": "Grassy stunt causes excessive tillering; tungro reduces tillers."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "orange-yellow leaf from tip",
+          "stunted hills",
+          "reduced tillers",
+          "mottled leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "VIPA – Các bệnh virus hại lúa Rice virus diseases",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – Tungro",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/tungro"
+        }
+      ]
+    },
+    {
+      "id": "RICE_GRASSY_STUNT",
+      "category": "DISEASE",
+      "agentType": "VIRUS",
+      "names": {
+        "vn": "Bệnh vàng lùn",
+        "en": "Rice Grassy Stunt",
+        "scientific": "Rice grassy stunt virus (RGSV, Tenuivirus)",
+        "aliasesVn": [
+          "lúa cỏ"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "WHOLE_PLANT"
+        ],
+        "vn": "Toàn cây",
+        "en": "Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Virus RGSV, truyền qua rầy nâu (Nilaparvata lugens)"
+        ],
+        "en": [
+          "Rice grassy stunt virus, transmitted by the brown planthopper (Nilaparvata lugens)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây lùn nặng, đẻ nhánh rất nhiều, bụi lúa mọc thẳng đứng như bụi cỏ.",
+          "Lá ngắn, hẹp, màu xanh nhạt đến vàng, thường có các đốm nâu gỉ sắt.",
+          "Cây thường không trổ hoặc bông nhỏ, lép."
+        ],
+        "en": [
+          "Severe stunting, excessive tillering and a very upright, grassy growth habit.",
+          "Short, narrow, pale green to yellow leaves, often with rusty spots.",
+          "Plants often fail to produce panicles, or panicles are small and unfilled."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Truyền truyền hoàn toàn qua môi giới rầy nâu (Nilaparvata lugens)."
+          ],
+          "en": [
+            "Transmitted exclusively by brown planthopper vectors."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING"
+        ],
+        "vector": "BROWN_PLANTHOPPER"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mật độ rầy nâu cao trên đồng ruộng."
+        ],
+        "en": [
+          "High planthopper population in fields."
+        ],
+        "temperature": "25°C - 32°C",
+        "humidity": "Cao"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng nấm Beauveria bassiana hoặc bảo vệ thiên địch."
+          ],
+          "en": [
+            "Use Beauveria bassiana or protect natural predators."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Tập trung bón phân dưỡng rễ cho khóm khỏe xung quanh."
+          ],
+          "en": [
+            "Focus on root nutrition for surrounding healthy hills."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Nhổ bỏ và tiêu hủy khóm lúa bệnh nặng."
+          ],
+          "en": [
+            "Rogue out and destroy heavily infected hills."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_RAGGED_STUNT",
+            "distinguishingFeature": {
+              "vn": "Vàng lùn: đẻ nhánh nhiều, dạng bụi cỏ, lá vàng hẹp; lùn xoắn lá: lá rách mép, xoắn chóp, gân sưng.",
+              "en": "Grassy stunt: excessive tillering, grassy, narrow yellow leaves; ragged stunt: ragged leaf edges, twisted tips, vein swellings."
+            }
+          },
+          {
+            "id": "RICE_SRBSDV",
+            "distinguishingFeature": {
+              "vn": "Lùn sọc đen có u sáp/sọc đen dọc lóng thân, lá xanh đậm; vàng lùn lá vàng, không có u.",
+              "en": "Black-streaked dwarf has waxy galls/black streaks on internodes and dark green leaves; grassy stunt has yellow leaves, no galls."
+            }
+          },
+          {
+            "id": "RICE_TUNGRO"
+          }
+        ],
+        "visualKeywords": [
+          "severe stunting",
+          "excessive tillering",
+          "grassy upright clump",
+          "narrow yellow leaves",
+          "rusty spots"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Các bệnh virus hại lúa Rice virus diseases",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – Rice grassy stunt",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-grassy-stunt"
+        }
+      ]
+    },
+    {
+      "id": "RICE_RAGGED_STUNT",
+      "category": "DISEASE",
+      "agentType": "VIRUS",
+      "names": {
+        "vn": "Bệnh lùn xoắn lá",
+        "en": "Rice Ragged Stunt",
+        "scientific": "Rice ragged stunt virus (RRSV, Oryzavirus)"
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Lá, Toàn cây",
+        "en": "Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Virus RRSV, truyền qua rầy nâu (Nilaparvata lugens)"
+        ],
+        "en": [
+          "Rice ragged stunt virus, transmitted by the brown planthopper (Nilaparvata lugens)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây lùn, lá xanh đậm; mép lá bị rách, chóp lá xoắn lại.",
+          "Gân lá sưng phồng thành u ở mặt dưới phiến lá và mặt ngoài bẹ lá.",
+          "Lá đòng xoắn, dị dạng; trổ muộn, bông trổ không thoát, hạt lép; có thể phân nhánh ở các đốt trên."
+        ],
+        "en": [
+          "Stunted plants with dark green leaves; ragged leaf edges and twisted leaf tips.",
+          "Vein swellings (galls) on the underside of leaf blades and the outer surface of sheaths.",
+          "Twisted, malformed flag leaf; delayed and incomplete panicle emergence, unfilled grains; nodal branching may occur."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Truyền truyền hoàn toàn qua môi giới rầy nâu (Nilaparvata lugens)."
+          ],
+          "en": [
+            "Transmitted exclusively by brown planthopper vectors."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING"
+        ],
+        "vector": "BROWN_PLANTHOPPER"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mật độ rầy nâu cao trên đồng ruộng."
+        ],
+        "en": [
+          "High planthopper population in fields."
+        ],
+        "temperature": "25°C - 32°C",
+        "humidity": "Cao"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng nấm Beauveria bassiana hoặc bảo vệ thiên địch."
+          ],
+          "en": [
+            "Use Beauveria bassiana or protect natural predators."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Tập trung bón phân dưỡng rễ cho khóm khỏe xung quanh."
+          ],
+          "en": [
+            "Focus on root nutrition for surrounding healthy hills."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Nhổ bỏ và tiêu hủy khóm lúa bệnh nặng."
+          ],
+          "en": [
+            "Rogue out and destroy heavily infected hills."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_GRASSY_STUNT",
+            "distinguishingFeature": {
+              "vn": "Lùn xoắn lá: lá rách, xoắn chóp, gân sưng; vàng lùn: đẻ nhánh nhiều, lá vàng hẹp.",
+              "en": "Ragged stunt: ragged, twisted leaves, vein swellings; grassy stunt: excessive tillering, narrow yellow leaves."
+            }
+          },
+          {
+            "id": "RICE_SRBSDV",
+            "distinguishingFeature": {
+              "vn": "Lùn sọc đen có u sáp/sọc đen dọc lóng thân.",
+              "en": "Black-streaked dwarf has waxy galls/black streaks along internodes."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "ragged leaf edge",
+          "twisted leaf tip",
+          "vein swelling",
+          "gall",
+          "stunted dark green"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Các bệnh virus hại lúa Rice virus diseases",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – Rice ragged stunt",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-ragged-stunt"
+        }
+      ]
+    },
+    {
+      "id": "RICE_SRBSDV",
+      "category": "DISEASE",
+      "agentType": "VIRUS",
+      "names": {
+        "vn": "Bệnh lùn sọc đen",
+        "en": "Southern Rice Black-Streaked Dwarf",
+        "scientific": "Southern rice black-streaked dwarf virus (SRBSDV)",
+        "aliasesVn": [
+          "Bệnh lùn sọc đen phương Nam"
+        ]
+      },
+      "nameVnSource": "Chi cục BVTV Ninh Bình",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Thân, Toàn cây",
+        "en": "Stem, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Virut SRBSDV truyền bệnh qua môi giới Rầy lưng trắng (Sogatella furcifera)"
+        ],
+        "en": [
+          "SRBSDV virus transmitted by white-backed planthopper (Sogatella furcifera)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây lúa bị lùn rõ rệt, trên thân và bẹ lá xuất hiện các u sần sùi màu đen sậm.",
+          "Lá cứng, xanh đậm, gân lá sưng phồng, rễ thối đen và cây không trổ bông được."
+        ],
+        "en": [
+          "Plants exhibit marked stunting, with dark black gall-like swellings on stems and leaf sheaths.",
+          "Leaves are stiff and dark green with swollen veins; roots rot black and panicles fail to emerge."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_SRBSDV__V1",
+          "names": {
+            "vn": "Lùn sọc đen hại thân lá",
+            "en": "Stem and Leaf Black-Streaked Dwarf",
+            "scientific": "SRBSDV virus infection"
+          },
+          "affectedPart": {
+            "vn": "Thân, bẹ lá, gân lá",
+            "en": "Stems, leaf sheaths, veins"
+          },
+          "symptoms": {
+            "vn": [
+              "Các sọc u sần màu đen nổi gồ lên dọc theo bẹ lá và lóng thân."
+            ],
+            "en": [
+              "Raised black gall streaks emerge longitudinally along leaf sheaths and internodes."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Truyền truyền qua môi giới Rầy lưng trắng (Sogatella furcifera)."
+          ],
+          "en": [
+            "Transmitted via white-backed planthopper vectors (Sogatella furcifera)."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ],
+        "vector": "WHITE_BACKED_PLANTHOPPER"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mật độ rầy lưng trắng cao trên đồng ruộng."
+        ],
+        "en": [
+          "High white-backed planthopper population."
+        ],
+        "temperature": "25°C - 30°C",
+        "humidity": "Cao"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng nấm ký sinh côn trùng kiểm soát rầy."
+          ],
+          "en": [
+            "Use entomopathogenic fungi to control planthoppers."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân nuôi khóm lúa khỏe xung quanh."
+          ],
+          "en": [
+            "Fertilize healthy surrounding hills."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Tiêu hủy khóm lúa nhiễm virus nặng."
+          ],
+          "en": [
+            "Destroy heavily virus-infected hills."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_GRASSY_STUNT",
+            "distinguishingFeature": {
+              "vn": "Lùn sọc đen có u sần đen nổi gồ trên bẹ/thân; Vàng lùn không có u sần.",
+              "en": "Black-streaked dwarf has raised black galls on sheaths/stems; grassy stunt lacks galls."
+            }
+          },
+          {
+            "id": "RICE_RAGGED_STUNT"
+          }
+        ],
+        "visualKeywords": [
+          "black gall",
+          "stunted dark green",
+          "swollen veins"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Các bệnh virus hại lúa Rice virus diseases",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "HƯỚNG DẪN PHÒNG, CHỐNG BỆNH LÙN SỌC ĐEN HẠI LÚA (Southern Rice Black Streaked Dwarf Virus)",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/huong-dan-phong-chong-benh-lun-soc-den-hai-lua-southern-rice-black-streaked-dwarf-virus-33.html"
+        }
+      ]
+    },
+    {
+      "id": "RICE_STRIPE_VIRUS",
+      "category": "DISEASE",
+      "agentType": "VIRUS",
+      "names": {
+        "vn": "Bệnh sọc lá lúa",
+        "en": "Rice Stripe Virus Disease",
+        "scientific": "Rice stripe virus (RSV)",
+        "aliasesEn": [
+          "RSVD"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Virus RSV, truyền chủ yếu qua rầy nâu nhỏ (Laodelphax striatellus)"
+        ],
+        "en": [
+          "Rice stripe virus, mainly transmitted by the small brown planthopper (Laodelphax striatellus)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá có sọc vàng nhạt đến trắng vàng, lốm đốm và vệt hoại tử.",
+          "Nhiễm sớm: lá gấp, xoắn, héo rũ; cây lùn, ít chồi, có thể chết sớm.",
+          "Bông dị dạng, hạt trắng đến nâu, lép, trổ không thoát."
+        ],
+        "en": [
+          "Chlorotic to yellowish-white stripes, mottling and necrotic streaks on leaves.",
+          "Early infection: folded, twisted, wilted, droopy leaves; stunted plants with few tillers that may die early.",
+          "Deformed, unfilled whitish to brown spikelets; panicles not fully exserted."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Truyền qua rầy nâu nhỏ."
+          ],
+          "en": [
+            "Transmitted by the small brown planthopper."
+          ]
+        },
+        "vector": "SMALL_BROWN_PLANTHOPPER",
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Chủ yếu ở vùng ôn đới Đông Á; mật độ rầy nâu nhỏ cao."
+        ],
+        "en": [
+          "Mainly temperate East Asia; high small brown planthopper populations."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng giống kháng, quản lý môi giới truyền bệnh."
+          ],
+          "en": [
+            "Resistant varieties; vector management."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_TUNGRO",
+            "distinguishingFeature": {
+              "vn": "Sọc lá: sọc vàng trắng dọc lá, lá rũ xoắn; tungro: vàng cam từ chóp lá.",
+              "en": "Stripe: yellowish-white stripes, droopy twisted leaves; tungro: orange-yellow from the tip."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "chlorotic stripes",
+          "yellowish-white streaks",
+          "droopy twisted leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "VIPA – Các bệnh virus hại lúa Rice virus diseases",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        },
+        {
+          "title": "IRRI – Rice stripe virus disease",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-stripe"
+        }
+      ]
+    },
+    {
+      "id": "RICE_ROOT_NEMATODE",
+      "category": "DISEASE",
+      "agentType": "NEMATODE",
+      "names": {
+        "vn": "Bệnh tuyến trùng rễ / thối rễ",
+        "en": "Root-lesion Nematode / Root Rot",
+        "scientific": "Hirschmanniella oryzae",
+        "aliasesVn": [
+          "Tuyến trùng hại rễ lúa"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "ROOT"
+        ],
+        "vn": "Rễ",
+        "en": "Root"
+      },
+      "pathogens": {
+        "vn": [
+          "Tuyến trùng ký sinh rễ Hirschmanniella oryzae"
+        ],
+        "en": [
+          "Root-parasitic nematode Hirschmanniella oryzae"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rễ lúa xuất hiện các vết hoại tử màu nâu đen, chóp rễ bị thối cụt và kém phát triển.",
+          "Cây lúa còi cọc, vàng lá dưới chân, khả năng hấp thu dinh dưỡng kém."
+        ],
+        "en": [
+          "Roots develop brown-black necrotic lesions, root tips rot blunt and remain underdeveloped.",
+          "Plants stunt, lower leaves yellow, and nutrient absorption capacity drops severely."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_ROOT_NEMATODE__V1",
+          "names": {
+            "vn": "Tuyến trùng ký sinh rễ lúa",
+            "en": "Rice Root Nematode Infestation",
+            "scientific": "Hirschmanniella oryzae root damage"
+          },
+          "affectedPart": {
+            "vn": "Hệ thống rễ tơ và rễ cái",
+            "en": "Fine and primary root systems"
+          },
+          "symptoms": {
+            "vn": [
+              "Rễ lúa bị thủng lỗ, thối đen và dễ bị bứt đứt khi nhổ."
+            ],
+            "en": [
+              "Roots are punctured, rot black, and easily snap when pulled."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Tuyến trùng di chuyển trong nước ruộng và đất ẩm sang rễ mới."
+          ],
+          "en": [
+            "Nematodes move through paddy water and moist soil to new roots."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất ngập nước liên tục, kết cấu đất thích hợp cho tuyến trùng."
+        ],
+        "en": [
+          "Continuously flooded soil favorable for nematodes."
+        ],
+        "temperature": "24°C - 30°C",
+        "humidity": "Đất ngập nước"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng vi khuẩn hoặc nấm đối kháng tuyến trùng."
+          ],
+          "en": [
+            "Use antagonistic bacteria or fungi against nematodes."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bổ sung phân hữu cơ và chất kích thích ra rễ."
+          ],
+          "en": [
+            "Supplement organic matter and root stimulants."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Luân canh cây trồng cạn hoặc phơi ải đất."
+          ],
+          "en": [
+            "Upland crop rotation or soil sun-drying."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_ROOT_SUFFOCATION",
+            "distinguishingFeature": {
+              "vn": "Tuyến trùng gây hoại tử rễ cụt kèm vết chấm; nghẹt rễ do ngộ độc khí độc toàn bộ.",
+              "en": "Nematodes cause root necrosis with lesions; asphyxiation causes general root rot."
+            }
+          },
+          {
+            "id": "RICE_ROOT_KNOT"
+          }
+        ],
+        "visualKeywords": [
+          "root necrosis",
+          "blunt root tip",
+          "stunted patch"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Tuyến trùng hại rễ lúa",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        }
+      ]
+    },
+    {
+      "id": "RICE_WHITE_TIP",
+      "category": "DISEASE",
+      "agentType": "NEMATODE",
+      "names": {
+        "vn": "Tuyến trùng khô đầu lá lúa",
+        "en": "White Tip",
+        "scientific": "Aphelenchoides besseyi",
+        "aliasesVn": [
+          "Trắng ngọn"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Tuyến trùng Aphelenchoides besseyi"
+        ],
+        "en": [
+          "Nematode Aphelenchoides besseyi"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Đầu lá khô tóp, chóp lá trắng xám, xoắn mút đầu lá.",
+          "Lá và lá đòng ở cổ bông xoắn lại; cây thấp, ít dảnh, nghẹn đòng.",
+          "Bông ngắn trổ không thoát, hạt trắng lép; rõ nhất lúc đứng cái đến đòng trổ."
+        ],
+        "en": [
+          "Dried, shriveled leaf tips turning grayish-white, twisted tips.",
+          "Leaves and the flag leaf near the panicle twist; stunted plants with few tillers, panicle choking.",
+          "Short, incompletely exserted panicles with white empty grains; clearest from booting to heading."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây qua hạt giống; tuyến trùng di chuyển lên hoa và vào hạt."
+          ],
+          "en": [
+            "Seed-borne; nematodes move up to the flowers and into grains."
+          ]
+        },
+        "cropStage": [
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Gieo hạt giống nhiễm tuyến trùng."
+        ],
+        "en": [
+          "Sowing infested seed."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng hạt giống sạch; xử lý hạt bằng nước nóng theo hướng dẫn kỹ thuật."
+          ],
+          "en": [
+            "Use clean seed; hot-water seed treatment per technical guidance."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_THRIPS",
+            "distinguishingFeature": {
+              "vn": "Khô đầu lá do tuyến trùng: chóp trắng xám xoắn kèm nghẹn đòng; bọ trĩ: lá cuốn từ mép, có chấm trắng, thấy bọ trĩ trong lá cuốn.",
+              "en": "White tip: gray-white twisted tips with panicle choking; thrips: leaves rolled from the margins with silvery streaks and thrips inside."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "white leaf tip",
+          "twisted tip",
+          "choked panicle",
+          "white empty grains"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "VIPA – Tuyến trùng khô đầu lá lúa",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        }
+      ]
+    },
+    {
+      "id": "RICE_ROOT_KNOT",
+      "category": "DISEASE",
+      "agentType": "NEMATODE",
+      "names": {
+        "vn": "Tuyến trùng nốt sưng rễ",
+        "en": "Root Knot Nematode",
+        "scientific": "Meloidogyne graminicola"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "ROOT"
+        ],
+        "vn": "Rễ",
+        "en": "Root"
+      },
+      "pathogens": {
+        "vn": [
+          "Tuyến trùng Meloidogyne graminicola"
+        ],
+        "en": [
+          "Nematode Meloidogyne graminicola"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rễ có nốt sưng hình móc câu đặc trưng.",
+          "Lá mới ra bị biến dạng, nhăn mép; cây lùn, vàng lá.",
+          "Cây bị nặng ra hoa và chín sớm."
+        ],
+        "en": [
+          "Characteristic hook-like galls on roots.",
+          "Newly emerged leaves distorted and crinkled along the margins; stunting and chlorosis.",
+          "Heavily infected plants flower and mature early."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Tuyến trùng trong đất xâm nhập qua chóp rễ."
+          ],
+          "en": [
+            "Soil nematodes penetrate root tips."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng khô hoặc gieo thẳng không ngập nước."
+        ],
+        "en": [
+          "Non-flooded, upland or direct-seeded fields."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Luân canh, giữ ngập nước sớm, vệ sinh cỏ ký chủ."
+          ],
+          "en": [
+            "Crop rotation, early flooding, control host weeds."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_ROOT_NEMATODE",
+            "distinguishingFeature": {
+              "vn": "Nốt sưng rễ: có u sưng hình móc câu; tuyến trùng hại rễ (Hirschmanniella): rễ hoại tử nâu đen, không có u.",
+              "en": "Root knot: hook-like galls; root nematode (Hirschmanniella): brown-black necrotic roots without galls."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "hooked root galls",
+          "crinkled new leaves",
+          "stunted chlorotic plants"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Root knot nematode",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/root-knot"
+        }
+      ]
+    },
+    {
+      "id": "RICE_ROOT_SUFFOCATION",
+      "category": "DISORDER",
+      "agentType": "ABIOTIC",
+      "names": {
+        "vn": "Bệnh nghẹt rễ / Ngộ độc hữu cơ",
+        "en": "Root Asphyxiation / Organic Acid Toxicity",
+        "scientific": "Physiological disorder (H2S and organic acids accumulation)",
+        "aliasesVn": [
+          "Bệnh nghẹt rễ lúa"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "ROOT",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Rễ, Toàn cây",
+        "en": "Root, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Rối loạn sinh lý do tích tụ khí độc H2S và axit hữu cơ trong đất yếm khí"
+        ],
+        "en": [
+          "Physiological disorder due to H2S and organic acid accumulation in anaerobic soils"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rễ lúa chuyển sang màu nâu đen, chóp rễ thối rữa, không ra rễ mới.",
+          "Lá lúa vàng cam, chóp lá khô, khóm lúa còi cọc không phát triển."
+        ],
+        "en": [
+          "Roots turn dark brown-black, root tips rot, and new roots fail to emerge.",
+          "Leaves turn orange-yellow with dry tips, and plant clumps stunt without growth."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_ROOT_SUFFOCATION__V1",
+          "names": {
+            "vn": "Ngộ độc hữu cơ đất lầy thụt",
+            "en": "Organic Acid Toxicity in Muddy Soils",
+            "scientific": "Anaerobic decomposition phytotoxicity"
+          },
+          "affectedPart": {
+            "vn": "Hệ thống rễ",
+            "en": "Root system"
+          },
+          "symptoms": {
+            "vn": [
+              "Rễ lúa bị thối đen, có mùi hôi tanh khi nhổ lên khỏi bùn."
+            ],
+            "en": [
+              "Roots rot black, emitting a foul anaerobic odor when pulled from mud."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Phát sinh nội sinh do điều kiện đất yếm khí và rơm rạ phân hủy."
+          ],
+          "en": [
+            "Endogenous occurrence due to anaerobic soil conditions and decomposing straw."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Vùi rơm rạ tươi không kịp hoai mục, ngập nước liên tục."
+        ],
+        "en": [
+          "Fresh undecomposed straw incorporation, continuous flooding."
+        ],
+        "temperature": "25°C - 32°C",
+        "humidity": "Đất ngập yếm khí"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng vi sinh phân giải hữu cơ yếm khí."
+          ],
+          "en": [
+            "Use microbes to decompose anaerobic organic matter."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bổ sung lân dễ tiêu và vôi nông nghiệp nâng pH."
+          ],
+          "en": [
+            "Supplement available phosphorus and agricultural lime."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Tháo nước cũ, xới xáo nhẹ mặt đất, cấp nước sạch."
+          ],
+          "en": [
+            "Drain old water, aerate soil surface, supply clean water."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_ROOT_NEMATODE",
+            "distinguishingFeature": {
+              "vn": "Nghẹt rễ do ngộ độc hữu cơ làm rễ đen toàn bộ kèm mùi tanh; tuyến trùng có vết hoại tử cụt rễ.",
+              "en": "Root asphyxiation causes general black roots and fishy odor; nematodes cause localized necrotic spots."
+            }
+          },
+          {
+            "id": "IRON_TOXICITY"
+          },
+          {
+            "id": "SULFIDE_TOXICITY"
+          }
+        ],
+        "visualKeywords": [
+          "black roots",
+          "fishy odor",
+          "orange leaf tip"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "VIPA – Bệnh nghẹt rễ lúa",
+          "url": "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
+        }
+      ]
+    },
+    {
+      "id": "BROWN_PLANTHOPPER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rầy nâu",
+        "en": "Brown Planthopper",
+        "scientific": "Nilaparvata lugens",
+        "aliasesEn": [
+          "BPH"
+        ]
+      },
+      "nameVnSource": "Syngenta",
+      "affectedPart": {
+        "codes": [
+          "SHEATH",
+          "STEM",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Bẹ lá, Thân, Toàn cây",
+        "en": "Leaf sheath, Stem, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Côn trùng chích hút Nilaparvata lugens"
+        ],
+        "en": [
+          "Sap-sucking insect Nilaparvata lugens"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rầy non và trưởng thành tập trung chích hút ở gốc lúa, để lại vệt nâu cứng trên thân.",
+          "Mật độ cao: lá vàng cam rồi nâu khô, cây chết thành từng chòm (cháy rầy).",
+          "Gốc lúa có muội đen (nấm bồ hóng) và chất mật; có thể kèm bệnh vàng lùn, lùn xoắn lá."
+        ],
+        "en": [
+          "Nymphs and adults cluster at the base of tillers and suck sap, leaving hard brown feeding marks.",
+          "High populations: leaves turn orange-yellow, then brown and dry, plants die in patches (hopperburn).",
+          "Honeydew and sooty mold at the plant base; grassy stunt or ragged stunt may occur."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Rầy trưởng thành có cánh di trú, bị hấp dẫn bởi ánh sáng đèn."
+          ],
+          "en": [
+            "Winged adults migrate and are attracted to light."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING",
+          "MILK"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng rậm, bón thừa đạm, phun thuốc trừ sâu sớm làm chết thiên địch."
+        ],
+        "en": [
+          "Dense crop, excess nitrogen, early insecticide sprays that kill natural enemies."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Gieo sạ đồng loạt, né rầy theo bẫy đèn, không sạ dày, bảo vệ thiên địch, dùng giống kháng."
+          ],
+          "en": [
+            "Synchronous planting following light-trap timing, avoid dense sowing, conserve natural enemies, resistant varieties."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "BLACK_BUG",
+            "distinguishingFeature": {
+              "vn": "Cháy rầy có muội đen ở gốc; cháy do bọ xít đen không có muội đen và chất mật.",
+              "en": "Hopperburn has sooty mold at the base; black bug 'bugburn' has no honeydew or sooty mold."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "hopperburn",
+          "insects at plant base",
+          "sooty mold",
+          "circular dead patches"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Syngenta – Rầy nâu (Nilavarvata lugens)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Planthopper",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/planthopper"
+        }
+      ]
+    },
+    {
+      "id": "GREEN_LEAFHOPPER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rầy xanh đuôi đen",
+        "en": "Green Leafhopper",
+        "scientific": "Nephotettix spp.",
+        "aliasesEn": [
+          "GLH"
+        ]
+      },
+      "nameVnSource": "VIPA",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Côn trùng chích hút Nephotettix spp."
+        ],
+        "en": [
+          "Sap-sucking insects Nephotettix spp."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rầy non vàng hoặc xanh nhạt và rầy trưởng thành xanh nhạt (có/không có chấm đen) hút nhựa ở phần trên cây.",
+          "Cây lùn, giảm sức sống và số chồi hữu hiệu, có thể khô héo.",
+          "Thiệt hại chính là truyền bệnh vàng lá tungro."
+        ],
+        "en": [
+          "Yellow or pale green nymphs and pale green adults (with or without black markings) feed on upper plant parts.",
+          "Stunted plants with reduced vigor and productive tillers; may wither.",
+          "Main damage is transmission of tungro."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Côn trùng di chuyển giữa các ruộng."
+          ],
+          "en": [
+            "Moves between fields."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Gieo cấy không đồng loạt."
+        ],
+        "en": [
+          "Staggered planting."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Gieo cấy đồng loạt, dùng giống kháng, bảo vệ thiên địch."
+          ],
+          "en": [
+            "Synchronous planting, resistant varieties, conserve natural enemies."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_TUNGRO",
+            "distinguishingFeature": {
+              "vn": "Rầy xanh là côn trùng nhìn thấy trên lá; vàng cam từ chóp lá là triệu chứng của tungro do rầy truyền.",
+              "en": "Leafhoppers are visible insects; orange-yellow leaves from the tip are tungro symptoms they transmit."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "green leafhopper",
+          "pale green insect on leaves",
+          "yellowing plants"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Green leafhopper",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/green-leafhopper"
+        }
+      ]
+    },
+    {
+      "id": "RICE_LEAFFOLDER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu cuốn lá nhỏ",
+        "en": "Rice Leaffolder",
+        "scientific": "Cnaphalocrocis medinalis",
+        "aliasesVn": [
+          "Sâu cuốn lá"
+        ]
+      },
+      "nameVnSource": "Syngenta",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non của bướm Cnaphalocrocis medinalis"
+        ],
+        "en": [
+          "Larvae of the moth Cnaphalocrocis medinalis"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá bị cuốn dọc thành ống, mép lá dính bằng tơ.",
+          "Sâu ăn bên trong để lại vệt trắng trong suốt chạy dọc lá.",
+          "Ruộng hại nặng trắng xơ như bị cháy, nhiều lá cuốn; có phân sâu trong ống lá."
+        ],
+        "en": [
+          "Leaves folded lengthwise into tubes with margins tied by silk.",
+          "Larvae feed inside, leaving longitudinal white transparent streaks.",
+          "Heavily infested fields look scorched with many folded leaves; frass inside folds."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bướm đẻ trứng rải rác trên lá; thường 2 lứa/vụ (đẻ nhánh và đòng–trổ)."
+          ],
+          "en": [
+            "Moths lay eggs singly on leaves; usually two generations per season (tillering and booting–heading)."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nắng mưa xen kẽ, bón thừa đạm."
+        ],
+        "en": [
+          "Alternating sun and rain, excess nitrogen."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thăm đồng thường xuyên, bón phân cân đối, bảo vệ thiên địch."
+          ],
+          "en": [
+            "Regular field scouting, balanced fertilizer, conserve natural enemies."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_HISPA",
+            "distinguishingFeature": {
+              "vn": "Sâu cuốn lá: lá cuốn ống, vệt trắng bên trong; sâu gai: lá không cuốn, vệt cạo trắng song song gân, có bọ gai.",
+              "en": "Leaffolder: tubular folded leaves with white streaks inside; hispa: unfolded leaves with white scraping streaks parallel to veins and spiny beetles."
+            }
+          },
+          {
+            "id": "RICE_SKIPPER",
+            "distinguishingFeature": {
+              "vn": "Sâu cuốn lá lớn ăn khuyết lá và cuốn tổ lớn hơn.",
+              "en": "Rice skipper removes leaf tissue and makes larger rolled chambers."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "folded leaf tube",
+          "white longitudinal streaks",
+          "scorched field"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Syngenta – Sâu cuốn lá (Cnaphalocrosis medinalis)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Rice leaffolder",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-leaffolder"
+        }
+      ]
+    },
+    {
+      "id": "STEM_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu đục thân",
+        "en": "Stem Borer (Yellow Stem Borer)",
+        "scientific": "Scirpophaga incertulas",
+        "aliasesVn": [
+          "Sâu đục thân lúa hai chấm"
+        ],
+        "aliasesEn": [
+          "Yellow stem borer"
+        ]
+      },
+      "nameVnSource": "Chi cục BVTV Ninh Bình",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "PANICLE"
+        ],
+        "vn": "Thân, Bông / hạt",
+        "en": "Stem, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non của bướm Scirpophaga incertulas (đục vào thân lúa)"
+        ],
+        "en": [
+          "Larvae of the moth Scirpophaga incertulas boring into stems"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Giai đoạn đẻ nhánh: dảnh giữa héo khô (dảnh héo), rút ra dễ dàng.",
+          "Giai đoạn trổ: bông bạc, trắng, lép, đứng thẳng.",
+          "Thân có lỗ đục nhỏ, bên trong có phân sâu."
+        ],
+        "en": [
+          "Vegetative stage: central tiller dries (deadheart) and pulls out easily.",
+          "Reproductive stage: whiteheads — emerging panicles whitish, empty, erect.",
+          "Tiny holes on stems with frass inside."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bướm đẻ ổ trứng trên lá; thường 2 lứa/vụ."
+          ],
+          "en": [
+            "Moths lay egg masses on leaves; usually two generations per season."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nắng nóng xen kẽ mưa, gốc rạ vụ trước còn sâu."
+        ],
+        "en": [
+          "Hot weather with rain, infested stubble from the previous crop."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Cày vùi gốc rạ, theo dõi bướm và ổ trứng, ngắt ổ trứng, bảo vệ thiên địch."
+          ],
+          "en": [
+            "Plow under stubble, monitor moths and egg masses, remove egg masses, conserve natural enemies."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BLAST",
+            "distinguishingFeature": {
+              "vn": "Bông bạc do sâu đục thân: thân có lỗ đục và phân sâu; đạo ôn cổ bông: vết nâu đen ở cổ bông, không có lỗ đục.",
+              "en": "Stem-borer whiteheads: bore holes and frass in stem; neck blast: brown-black lesion at the neck, no holes."
+            }
+          },
+          {
+            "id": "RAT",
+            "distinguishingFeature": {
+              "vn": "Chuột cắn thân vết cắt chéo 45°, không có sâu bên trong.",
+              "en": "Rats cut stems cleanly at 45°, no larvae inside."
+            }
+          },
+          {
+            "id": "RICE_STEM_ROT"
+          }
+        ],
+        "visualKeywords": [
+          "deadheart",
+          "whitehead",
+          "bore hole",
+          "frass in stem"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Phòng trừ sâu đục thân lúa hai chấm trên mạ vụ mùa 2023",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/phong-tru-sau-duc-than-lua-hai-cham-tren-ma-vu-mua-2023-154.html"
+        },
+        {
+          "title": "Syngenta – Sâu đục thân (Scirpophaga incertulas)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Stem borer",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/stem-borer"
+        }
+      ]
+    },
+    {
+      "id": "RICE_HISPA",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu gai",
+        "en": "Rice Hispa",
+        "scientific": "Dicladispa armigera",
+        "aliasesVn": [
+          "Bọ gai"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Bọ cánh cứng Dicladispa armigera (trưởng thành có gai, ấu trùng đục trong lá)"
+        ],
+        "en": [
+          "Spiny beetle Dicladispa armigera (adults scrape, larvae mine leaves)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Trưởng thành cạo mặt trên phiến lá, để lại lớp biểu bì dưới thành vệt trắng song song gân chính.",
+          "Ấu trùng đục giữa hai lớp biểu bì tạo mảng trắng trong mờ không đều dọc theo gân lá.",
+          "Lá bị hại héo, trắng như màng; ruộng hại nặng trông như bị cháy, nhìn xa màu bạc trắng."
+        ],
+        "en": [
+          "Adults scrape the upper leaf surface, leaving the lower epidermis as white streaks parallel to the midrib.",
+          "Larvae tunnel between the epidermal layers, creating irregular translucent white patches along the veins.",
+          "Damaged leaves wither and turn whitish and membranous; severely infested fields look burnt."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bọ trưởng thành di chuyển giữa các ruộng; trứng đẻ gần chóp lá."
+          ],
+          "en": [
+            "Adults move between fields; eggs laid near leaf tips."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Cỏ dại quanh ruộng, cấy dày, bón nhiều đạm."
+        ],
+        "en": [
+          "Weedy field borders, dense planting, heavy nitrogen."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Làm sạch cỏ, không cấy dày, ngắt bỏ chóp lá có trứng, bắt trưởng thành bằng vợt."
+          ],
+          "en": [
+            "Remove weeds, avoid dense planting, clip leaf tips with eggs, sweep-net adults."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_LEAFFOLDER",
+            "distinguishingFeature": {
+              "vn": "Sâu gai: lá không cuốn, vệt cạo trắng song song; sâu cuốn lá: lá cuốn thành ống.",
+              "en": "Hispa: unfolded leaves with parallel white scraping; leaffolder: tubular folded leaves."
+            }
+          },
+          {
+            "id": "RICE_THRIPS",
+            "distinguishingFeature": {
+              "vn": "Bọ trĩ gây chấm/vệt bạc nhỏ và lá cuốn từ mép, côn trùng rất nhỏ trong lá non.",
+              "en": "Thrips cause small silvery streaks and rolled leaves, with tiny insects in young leaves."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "white scraping streaks parallel to veins",
+          "translucent mines",
+          "whitish membranous leaves",
+          "spiny black beetle"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Rice hispa",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-hispa"
+        }
+      ]
+    },
+    {
+      "id": "RICE_THRIPS",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Bọ trĩ",
+        "en": "Rice Thrips",
+        "scientific": "Stenchaetothrips biformis",
+        "aliasesVn": [
+          "Bù lạch"
+        ]
+      },
+      "nameVnSource": "Chi cục BVTV Ninh Bình",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Côn trùng rất nhỏ (~1,5 mm) Stenchaetothrips biformis chích hút lá non"
+        ],
+        "en": [
+          "Tiny (~1.5 mm) insect Stenchaetothrips biformis feeding on young leaves"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá non có nhiều chấm trắng nhỏ, vệt bạc hoặc mảng vàng.",
+          "Lá cuốn từ mép vào giữa, chóp lá héo, tóp lại và khô vàng; nặng thì lá vàng sẫm/đỏ.",
+          "Bọ trĩ ẩn trong lá nõn hoặc lá cuốn khi trời nắng."
+        ],
+        "en": [
+          "Young leaves with many small white dots, silvery streaks or yellowish patches.",
+          "Leaves curl from the margins to the middle, tips wither and dry yellow; severe damage turns leaves dark yellow to reddish.",
+          "Thrips hide inside unfolded or curled leaves on sunny days."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Sinh sản đơn tính là chủ yếu, vòng đời ngắn."
+          ],
+          "en": [
+            "Mostly parthenogenetic with a short life cycle."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng thiếu nước, khô hạn, trời râm mát."
+        ],
+        "en": [
+          "Dry fields lacking water, overcast weather."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Giữ đủ nước cho ruộng, bón phân cân đối giúp lúa phục hồi."
+          ],
+          "en": [
+            "Keep the field flooded; balanced fertilizer to help recovery."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_HISPA",
+            "distinguishingFeature": {
+              "vn": "Bọ trĩ: lá cuốn, chấm bạc nhỏ, thấy bọ trĩ khi quét lòng bàn tay ướt lên ngọn lúa; sâu gai: vệt cạo trắng dài song song gân.",
+              "en": "Thrips: rolled leaves with small silvery dots, insects found by sweeping a wet palm over the tips; hispa: long white scraping streaks along veins."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "silvery streaks",
+          "curled leaf margins",
+          "yellowing young leaves",
+          "withered leaf tips"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Bọ Trĩ hại lúa",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/bo-tri-hai-lua-145.html"
+        },
+        {
+          "title": "Syngenta – Bọ trĩ (Stenchaetothrips biformis)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Rice thrips",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-thrips"
+        }
+      ]
+    },
+    {
+      "id": "RICE_GALL_MIDGE",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Muỗi hành",
+        "en": "Rice Gall Midge",
+        "scientific": "Orseolia oryzae",
+        "aliasesVn": [
+          "Sâu năn"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "STEM"
+        ],
+        "vn": "Thân",
+        "en": "Stem"
+      },
+      "pathogens": {
+        "vn": [
+          "Ấu trùng muỗi Orseolia oryzae"
+        ],
+        "en": [
+          "Larvae of the midge Orseolia oryzae"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Gốc dảnh bị hại phát triển thành ống rỗng màu trắng bạc như lá hành (cọng hành), rộng ~1 cm, dài 10–30 cm.",
+          "Dảnh bị hại không ra lá mới, không trổ bông; cây lùn.",
+          "Lá biến dạng, héo, cuộn."
+        ],
+        "en": [
+          "The infested tiller forms a hollow silvery-white tube (onion leaf / silver shoot), about 1 cm wide and 10–30 cm long.",
+          "Affected tillers stop producing leaves and panicles; plants are stunted.",
+          "Deformed, wilted, rolled leaves."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Muỗi trưởng thành đẻ trứng trên lá."
+          ],
+          "en": [
+            "Adult midges lay eggs on leaves."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa mưa, ẩm độ cao."
+        ],
+        "en": [
+          "Rainy season, high humidity."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Dùng giống kháng, vệ sinh cỏ ký chủ, gieo cấy đồng loạt."
+          ],
+          "en": [
+            "Resistant varieties, remove alternate host grasses, synchronous planting."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_RAGGED_STUNT",
+            "distinguishingFeature": {
+              "vn": "Muỗi hành có ống hành trắng bạc ở dảnh; lùn xoắn lá có lá rách, xoắn chóp, gân sưng.",
+              "en": "Gall midge shows a silvery onion-leaf tube; ragged stunt shows ragged, twisted leaves with vein swellings."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "onion leaf",
+          "silver shoot",
+          "hollow tubular gall"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Rice gall midge",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-gall-midge"
+        }
+      ]
+    },
+    {
+      "id": "RICE_BUG",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Bọ xít hôi",
+        "en": "Rice Bug",
+        "scientific": "Leptocorisa oratorius",
+        "aliasesVn": [
+          "Bọ xít dài"
+        ]
+      },
+      "nameVnSource": "Syngenta",
+      "affectedPart": {
+        "codes": [
+          "PANICLE"
+        ],
+        "vn": "Bông / hạt",
+        "en": "Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Bọ xít Leptocorisa oratorius chích hút hạt đang vào sữa"
+        ],
+        "en": [
+          "Bug Leptocorisa oratorius sucking developing grains"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Hạt lép, lửng, nhỏ, nhăn hoặc biến dạng, có đốm.",
+          "Bông lép đứng thẳng.",
+          "Có bọ xít mình mảnh màu nâu xanh và mùi hôi đặc trưng trên ruộng."
+        ],
+        "en": [
+          "Small, shriveled, deformed, spotty or empty grains.",
+          "Erect panicles with empty grains.",
+          "Slender brown-green bugs and a characteristic offensive smell in the field."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bọ xít bay từ cỏ dại, ruộng trổ sớm sang ruộng khác."
+          ],
+          "en": [
+            "Bugs move from weeds and early-heading fields."
+          ]
+        },
+        "cropStage": [
+          "HEADING",
+          "MILK"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nóng ẩm, mưa nhiều; ruộng trổ sớm hoặc muộn so với xung quanh."
+        ],
+        "en": [
+          "Hot, humid, rainy weather; fields heading earlier or later than neighbors."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Diệt cỏ dại, gieo sạ đồng loạt, dùng đèn/lửa bẫy bọ xít."
+          ],
+          "en": [
+            "Remove weeds, synchronous planting, light traps."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_GRAIN_DISCOLORATION",
+            "distinguishingFeature": {
+              "vn": "Bọ xít: hạt lép có vết chích, thấy bọ xít và mùi hôi; lem lép do nấm: đốm nâu/đen trên vỏ, không có bọ xít.",
+              "en": "Rice bug: empty grains with feeding punctures, bugs and smell present; dirty panicle: brown/black hull spots, no bugs."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "unfilled grains",
+          "erect panicle",
+          "slender brown bug",
+          "spotty grains"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Syngenta – Bọ xít hôi (Leptocorisa oratorius)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Rice bug",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-bug"
+        }
+      ]
+    },
+    {
+      "id": "BLACK_BUG",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Bọ xít đen",
+        "en": "Rice Black Bug",
+        "scientific": "Scotinophara spp."
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "SHEATH"
+        ],
+        "vn": "Thân, Bẹ lá",
+        "en": "Stem, Leaf sheath"
+      },
+      "pathogens": {
+        "vn": [
+          "Bọ xít Scotinophara spp. chích hút gốc thân"
+        ],
+        "en": [
+          "Bugs Scotinophara spp. feeding at the stem base"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây chuyển nâu đỏ hoặc vàng, lá có vết úa.",
+          "Giảm đẻ nhánh, dảnh héo (cháy bọ xít) nhưng không có chất mật/muội đen.",
+          "Cây lùn, bông nhỏ, trổ không thoát, hạt lép hoặc bông bạc; dảnh héo không rút ra được ở gốc."
+        ],
+        "en": [
+          "Plants turn reddish-brown or yellow with chlorotic leaf lesions.",
+          "Reduced tillering and wilting tillers (bugburn) without honeydew or sooty mold.",
+          "Stunting, small or incompletely exserted panicles, unfilled spikelets or whiteheads; damaged plants cannot be pulled out at the base."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bọ xít bay, bị hấp dẫn bởi ánh sáng."
+          ],
+          "en": [
+            "Bugs fly and are attracted to light."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng rậm, ẩm."
+        ],
+        "en": [
+          "Dense, humid crops."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Bẫy đèn, vệ sinh đồng ruộng, gieo cấy đồng loạt."
+          ],
+          "en": [
+            "Light traps, field sanitation, synchronous planting."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "BROWN_PLANTHOPPER",
+            "distinguishingFeature": {
+              "vn": "Cháy bọ xít không có muội đen; cháy rầy có muội đen và rầy ở gốc.",
+              "en": "Bugburn lacks sooty mold; hopperburn has sooty mold and hoppers at the base."
+            }
+          },
+          {
+            "id": "STEM_BORER",
+            "distinguishingFeature": {
+              "vn": "Dảnh héo do bọ xít đen không rút ra được; do sâu đục thân rút ra dễ.",
+              "en": "Black-bug deadhearts cannot be pulled out; stem-borer deadhearts pull out easily."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "bugburn",
+          "reddish-brown plants",
+          "black bugs at stem base"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Black bug",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/black-bug"
+        }
+      ]
+    },
+    {
+      "id": "RICE_CASEWORM",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu phao",
+        "en": "Rice Caseworm",
+        "scientific": "Nymphula depunctalis"
+      },
+      "nameVnSource": "Syngenta",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non Nymphula depunctalis sống trong ống lá"
+        ],
+        "en": [
+          "Larvae of Nymphula depunctalis living in leaf cases"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá bị cắn đứt vuông góc như cắt bằng kéo.",
+          "Các ống lá (phao) chứa sâu nổi trên mặt nước hoặc bám vào bẹ lá.",
+          "Mô lá bị ăn trơ biểu bì, có dạng hình thang/bậc thang."
+        ],
+        "en": [
+          "Leaves cut at right angles as with scissors.",
+          "Leaf cases with larvae float on the water or cling to sheaths.",
+          "Fed leaves have papery epidermis; skeletonized tissue looks ladder-like."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Sâu theo ống lá trôi trên mặt nước sang ruộng khác."
+          ],
+          "en": [
+            "Larvae in cases drift on water to other fields."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng ngập nước, mưa nhiều."
+        ],
+        "en": [
+          "Flooded fields, heavy rain."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Rút nước ruộng vài ngày, vớt phao sâu."
+          ],
+          "en": [
+            "Drain the field for a few days; collect floating cases."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "ARMYWORM",
+            "distinguishingFeature": {
+              "vn": "Sâu phao cắt lá vuông góc và có ống lá nổi; sâu cắn gié ăn khuyết lá từ chóp/mép, cắn gié.",
+              "en": "Caseworm cuts leaves squarely and leaves floating cases; armyworm eats leaf tips/margins and panicle branches."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "leaf cut at right angle",
+          "floating leaf cases",
+          "ladder-like skeletonized leaf"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Syngenta – Sâu phao (Nymphula depunctalis)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Rice caseworm",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-caseworm"
+        }
+      ]
+    },
+    {
+      "id": "RICE_SKIPPER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu cuốn lá lớn",
+        "en": "Rice Skipper",
+        "scientific": "Pelopidas mathias"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non bướm nhảy Pelopidas mathias"
+        ],
+        "en": [
+          "Larvae of the skipper butterfly Pelopidas mathias"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá bị ăn khuyết mất mô lá.",
+          "Sâu cuốn lá làm tổ để ẩn bên trong."
+        ],
+        "en": [
+          "Leaf tissue removed by feeding.",
+          "Larvae roll leaves into a protected chamber."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bướm đẻ trứng trên lá."
+          ],
+          "en": [
+            "Butterflies lay eggs on leaves."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Thiên địch bị tiêu diệt do lạm dụng thuốc, khô hạn hoặc ngập úng."
+        ],
+        "en": [
+          "Natural enemies killed by pesticide misuse, droughts or floods."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thường do thiên địch kiểm soát; hạn chế phun thuốc không cần thiết."
+          ],
+          "en": [
+            "Usually controlled by natural enemies; avoid unnecessary sprays."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_LEAFFOLDER",
+            "distinguishingFeature": {
+              "vn": "Sâu cuốn lá nhỏ để lại vệt trắng trong ống lá; sâu cuốn lá lớn ăn khuyết mất mô lá.",
+              "en": "Leaffolder leaves white streaks inside folds; skipper removes leaf tissue."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "rolled leaf chamber",
+          "leaf tissue removed"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Rice skipper",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-skippers"
+        }
+      ]
+    },
+    {
+      "id": "RICE_WHORL_MAGGOT",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Ruồi đục nõn",
+        "en": "Rice Whorl Maggot",
+        "scientific": "Hydrellia philippina"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Giòi ruồi Hydrellia philippina gặm lá chưa mở"
+        ],
+        "en": [
+          "Maggots of Hydrellia philippina rasping unopened leaves"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá mới ra có mảng trắng hoặc trong mờ, lỗ nhỏ như kim châm.",
+          "Đốm vàng hoặc trong ở mép trong của lá mới; lá biến dạng, dễ gãy khi có gió.",
+          "Cây lùn, ít chồi."
+        ],
+        "en": [
+          "Emerging leaves with white or transparent patches and pinholes.",
+          "Clear or yellow spots on the inner margins of new leaves; distorted leaves that break easily in wind.",
+          "Stunting and few tillers."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Ruồi trưởng thành đẻ trứng trên lá, ưa ruộng có nước."
+          ],
+          "en": [
+            "Adult flies lay eggs on leaves; favor flooded fields."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng ngập nước giai đoạn đầu."
+        ],
+        "en": [
+          "Standing water in early crop stages."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Lúa thường tự phục hồi; bảo vệ thiên địch."
+          ],
+          "en": [
+            "Plants usually recover; conserve natural enemies."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_HISPA",
+            "distinguishingFeature": {
+              "vn": "Ruồi đục nõn gây lỗ kim và mảng trong ở mép lá mới; sâu gai gây vệt cạo trắng dài song song gân.",
+              "en": "Whorl maggot causes pinholes and clear patches on new-leaf margins; hispa causes long white scraping streaks."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "pinholes",
+          "transparent patches on new leaves",
+          "distorted leaf"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Rice whorl maggot",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rice-whorl-maggot"
+        }
+      ]
+    },
+    {
+      "id": "ARMYWORM",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu cắn gié",
+        "en": "Armyworm",
+        "scientific": "Mythimna separata",
+        "aliasesVn": [
+          "Sâu keo"
+        ],
+        "aliasesEn": [
+          "Rice ear-cutting caterpillar"
+        ]
+      },
+      "nameVnSource": "Syngenta",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "PANICLE"
+        ],
+        "vn": "Lá, Bông / hạt",
+        "en": "Leaf, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non Mythimna separata (Leucania separata)"
+        ],
+        "en": [
+          "Larvae of Mythimna separata (Leucania separata)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Sâu ăn chóp lá và dọc mép lá, có thể ăn trụi chỉ còn gân chính.",
+          "Sâu non bò lên cắn gié lúa làm gié rơi rụng.",
+          "Sâu cắn phá ban đêm, ban ngày ẩn ở gốc lúa."
+        ],
+        "en": [
+          "Larvae feed on leaf tips and along margins, sometimes leaving only the midribs.",
+          "Larvae climb up and cut panicle branches, which fall off.",
+          "Feeds at night, hides at the plant base during the day."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Sâu di chuyển theo đàn giữa các ruộng."
+          ],
+          "en": [
+            "Larvae move in groups between fields."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "HEADING",
+          "MILK"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng trũng, ẩm, nhiều cỏ; thời tiết ẩm mát, mưa bão."
+        ],
+        "en": [
+          "Low-lying, humid, weedy fields; cool wet weather and storms."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Làm sạch cỏ, không để ruộng khô sớm khi trổ, bảo vệ thiên địch."
+          ],
+          "en": [
+            "Remove weeds, do not drain early at heading, conserve natural enemies."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_CASEWORM",
+            "distinguishingFeature": {
+              "vn": "Sâu cắn gié ăn khuyết lá và cắn gié; sâu phao cắt lá vuông góc, có ống lá nổi.",
+              "en": "Armyworm defoliates and cuts panicle branches; caseworm cuts leaves squarely with floating cases."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "leaf removal",
+          "midrib only",
+          "cut panicle branches"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Syngenta – Sâu cắn gié (Leucania separata)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Armyworm",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/armyworms"
+        }
+      ]
+    },
+    {
+      "id": "PANICLE_MITE",
+      "category": "PEST",
+      "agentType": "MITE",
+      "names": {
+        "vn": "Nhện gié",
+        "en": "Panicle Rice Mite",
+        "scientific": "Steneotarsonemus spinki"
+      },
+      "nameVnSource": "Chi cục BVTV Ninh Bình",
+      "affectedPart": {
+        "codes": [
+          "SHEATH",
+          "PANICLE"
+        ],
+        "vn": "Bẹ lá, Bông / hạt",
+        "en": "Leaf sheath, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Nhện rất nhỏ Steneotarsonemus spinki sống trong bẹ lá"
+        ],
+        "en": [
+          "Tiny mite Steneotarsonemus spinki living inside leaf sheaths"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vết hại ban đầu là chấm nhỏ hình chữ nhật màu trắng vàng đến vàng nhạt, sau nâu đậm hoặc thâm đen trên bẹ lá.",
+          "Bẹ lá có vệt thâm nâu chạy dọc; bông trổ nghẹn.",
+          "Vỏ trấu và gié lép đen, hạt lép."
+        ],
+        "en": [
+          "Small rectangular whitish-yellow to pale yellow spots on the sheath, later dark brown to blackish.",
+          "Dark brown streaks along the sheath; panicles choke at heading.",
+          "Blackened, empty hulls and panicle branches."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Nhện lây lan theo gió, nước, công cụ và hạt giống."
+          ],
+          "en": [
+            "Spread by wind, water, tools and seed."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nắng nóng, ít mưa (vụ Mùa)."
+        ],
+        "en": [
+          "Hot, dry weather."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Vệ sinh đồng ruộng, cày vùi rơm rạ, không gieo sạ dày, bón phân cân đối."
+          ],
+          "en": [
+            "Field sanitation, plow under straw, avoid dense sowing, balanced fertilizer."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_SHEATH_ROT",
+            "distinguishingFeature": {
+              "vn": "Nhện gié: vệt thâm nâu dọc bẹ và chấm nhỏ hình chữ nhật, không có bột nấm trong bẹ; thối bẹ: vết nâu xám có bột nấm trắng/hồng bên trong.",
+              "en": "Panicle mite: dark brown streaks and small rectangular spots, no fungal powder; sheath rot: gray-brown lesions with whitish-pink powder inside."
+            }
+          },
+          {
+            "id": "RICE_GRAIN_DISCOLORATION"
+          }
+        ],
+        "visualKeywords": [
+          "dark brown sheath streak",
+          "blackened empty grains",
+          "choked panicle"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Các biện pháp phòng trừ nhện gié hại lúa",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/cac-bien-phap-phong-tru-nhen-gie-hai-lua-172.html"
+        },
+        {
+          "title": "Syngenta – Nhện gié (Steneotarsonemus spinki)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        }
+      ]
+    },
+    {
+      "id": "GOLDEN_APPLE_SNAIL",
+      "category": "PEST",
+      "agentType": "MOLLUSC",
+      "names": {
+        "vn": "Ốc bươu vàng",
+        "en": "Golden Apple Snail",
+        "scientific": "Pomacea canaliculata",
+        "aliasesEn": [
+          "GAS"
+        ]
+      },
+      "nameVnSource": "Chi cục BVTV Ninh Bình",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "LEAF"
+        ],
+        "vn": "Thân, Lá",
+        "en": "Stem, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Ốc Pomacea canaliculata"
+        ],
+        "en": [
+          "Snail Pomacea canaliculata"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Mất khóm lúa, cây non bị cắn đứt ở gốc.",
+          "Lá và thân bị cắn; ruộng trống từng mảng.",
+          "Trứng màu hồng tươi bám trên thân lúa, cọc, bờ ruộng."
+        ],
+        "en": [
+          "Missing hills; young plants cut at the base.",
+          "Cut leaves and stems; patches of empty field.",
+          "Bright pink egg masses on stems, stakes and bunds."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Ốc di chuyển theo nước tưới, kênh mương."
+          ],
+          "en": [
+            "Snails move with irrigation water and canals."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ruộng ngập nước trong khoảng 1 tháng đầu sau sạ/cấy."
+        ],
+        "en": [
+          "Flooded fields during the first month after planting."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thu gom ốc và ổ trứng, đặt lưới chắn ở cửa lấy nước, rút cạn nước giai đoạn đầu, cắm cọc dẫn dụ ốc đẻ trứng."
+          ],
+          "en": [
+            "Hand-pick snails and eggs, screen water inlets, drain fields early, place stakes to attract egg laying."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RAT",
+            "distinguishingFeature": {
+              "vn": "Ốc cắn cây non ở gốc dưới nước, có trứng hồng; chuột cắn chéo 45° và có hang, dấu chân.",
+              "en": "Snails cut young plants below water and leave pink eggs; rats cut at 45° and leave burrows and footprints."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "missing hills",
+          "pink egg masses",
+          "cut seedlings"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Hướng dẫn phòng trừ ốc bươu vàng hại lúa vụ mùa 2023",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/huong-dan-phong-tru-oc-buou-vang-hai-lua-vu-mua-2023-153.html"
+        },
+        {
+          "title": "Syngenta – ỐC BƯƠU VÀNG (Pomacea canaliculata)",
+          "url": "https://www.syngenta.com.vn/sites/g/files/kgtney1261/files/media/document/2017/11/20/quan_ly_sau-nhen-oc_hai_lua_1386.pdf"
+        },
+        {
+          "title": "IRRI – Snails",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/golden-apple-snails-fact-sheet"
+        }
+      ]
+    },
+    {
+      "id": "RAT",
+      "category": "PEST",
+      "agentType": "VERTEBRATE",
+      "names": {
+        "vn": "Chuột hại",
+        "en": "Rice Field Rat",
+        "scientific": "Rattus spp."
+      },
+      "nameVnSource": "Chi cục BVTV Ninh Bình",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "PANICLE"
+        ],
+        "vn": "Thân, Bông / hạt",
+        "en": "Stem, Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Chuột đồng (Rattus spp.)"
+        ],
+        "en": [
+          "Field rats (Rattus spp.)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Mất hạt gieo, mất khóm, cây non bị cắn đứt.",
+          "Dảnh bị cắn chéo khoảng 45° gần gốc; dảnh mọc lại.",
+          "Đòng, bông và hạt bị cắn; có đường chạy, hang và dấu chân trên bờ ruộng."
+        ],
+        "en": [
+          "Missing seeds, missing hills, chopped young seedlings.",
+          "Tillers cut near the base at about 45°; re-tillering.",
+          "Chewed panicles and grains; runways, burrows and footprints on bunds."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Chuột di chuyển từ bờ, kênh, làng vào ruộng."
+          ],
+          "en": [
+            "Rats move from bunds, canals and villages into fields."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING",
+          "HEADING",
+          "MATURITY"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Gieo cấy không đồng loạt, bờ ruộng to nhiều cỏ."
+        ],
+        "en": [
+          "Asynchronous planting, wide weedy bunds."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Diệt chuột đồng loạt theo cộng đồng, gieo cấy tập trung, phát quang bờ ruộng, bẫy chuột."
+          ],
+          "en": [
+            "Community-wide rat control, synchronous planting, clear bunds, trapping."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "STEM_BORER",
+            "distinguishingFeature": {
+              "vn": "Chuột cắn chéo 45°, vết cắt gọn; sâu đục thân có lỗ đục và phân sâu trong thân.",
+              "en": "Rats cut cleanly at 45°; stem borers leave bore holes and frass."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "tillers cut at 45 degrees",
+          "missing hills",
+          "burrows"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Chuột hại và các biện pháp phòng trừ",
+          "url": "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/chuot-hai-va-cac-bien-phap-phong-tru-70.html"
+        },
+        {
+          "title": "IRRI – Rat",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/rats-fact-sheet"
+        }
+      ]
+    },
+    {
+      "id": "NITROGEN_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu đạm",
+        "en": "Nitrogen Deficiency",
+        "scientific": "Rối loạn dinh dưỡng"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Lá, Toàn cây",
+        "en": "Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Thiếu đạm trong đất hoặc bón không đủ"
+        ],
+        "en": [
+          "Insufficient soil or applied nitrogen"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá già hoặc cả cây vàng xanh nhạt; cả ruộng có thể vàng.",
+          "Lá hẹp, nhỏ, ngắn, mọc thẳng, màu vàng chanh (trừ lá non xanh hơn).",
+          "Cây lùn, ít chồi, ít hạt."
+        ],
+        "en": [
+          "Older leaves or whole plants yellowish green; the whole field may look yellowish.",
+          "Narrow, small, short, erect, lemon-yellowish leaves (young leaves greener).",
+          "Stunting, reduced tillering and grain number."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất nghèo đạm, bón thiếu, mất đạm do ngập/rửa trôi."
+        ],
+        "en": [
+          "N-poor soils, low application, losses by flooding or leaching."
+        ]
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Bón bổ sung đạm theo nhu cầu cây (có thể dùng bảng so màu lá)."
+          ],
+          "en": [
+            "Top-dress nitrogen according to crop need (e.g. leaf color chart)."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_TUNGRO",
+            "distinguishingFeature": {
+              "vn": "Thiếu đạm vàng đều cả ruộng, bắt đầu ở lá già; tungro vàng cam từ chóp lá theo khóm, cây lùn, có rầy xanh.",
+              "en": "N deficiency yellows uniformly from older leaves; tungro is orange-yellow from tips in patches with leafhoppers."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "uniform pale yellow field",
+          "yellow older leaves",
+          "erect narrow leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Nitrogen (N) deficiency",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/nitrogen-deficiency"
+        }
+      ]
+    },
+    {
+      "id": "POTASSIUM_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu kali",
+        "en": "Potassium Deficiency",
+        "scientific": "Rối loạn dinh dưỡng"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Thiếu kali trong đất hoặc bón không đủ"
+        ],
+        "en": [
+          "Insufficient soil or applied potassium"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây xanh đậm, mép lá vàng nâu hoặc đốm hoại tử nâu đậm, bắt đầu ở chóp lá già.",
+          "Lá già chuyển vàng rồi nâu; có thể có sọc vàng giữa các gân, lá dưới cong rũ.",
+          "Lá trên ngắn, rũ, màu xanh đậm 'bẩn'; triệu chứng theo từng khóm."
+        ],
+        "en": [
+          "Dark green plants with yellowish-brown leaf margins or dark brown necrotic spots, first on tips of older leaves.",
+          "Older leaves turn yellow then brown; interveinal yellow stripes, lower leaves bend down.",
+          "Short, droopy, dirty dark green upper leaves; patchy, hill-by-hill pattern."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING",
+          "HEADING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất nghèo kali, lấy rơm ra khỏi ruộng nhiều vụ."
+        ],
+        "en": [
+          "K-poor soils, straw removed for many seasons."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Vùi rơm rạ trả lại ruộng."
+          ],
+          "en": [
+            "Return straw to the field."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón bổ sung kali."
+          ],
+          "en": [
+            "Apply potassium fertilizer."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BROWN_SPOT",
+            "distinguishingFeature": {
+              "vn": "Thiếu kali: cháy nâu mép và chóp lá già theo khóm; đốm nâu: vết tròn/bầu dục có tâm xám, quầng vàng rải rác trên lá.",
+              "en": "K deficiency: brown margins and tips of older leaves by hill; brown spot: round/oval spots with gray centers and yellow halos."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "yellow-brown leaf margins",
+          "necrotic leaf tips",
+          "dirty dark green droopy leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Potassium (K) deficiency",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/potassium-deficiency"
+        }
+      ]
+    },
+    {
+      "id": "PHOSPHORUS_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu lân",
+        "en": "Phosphorus Deficiency",
+        "scientific": "Rối loạn dinh dưỡng"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Lá, Toàn cây",
+        "en": "Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Thiếu lân trong đất hoặc bón không đủ"
+        ],
+        "en": [
+          "Insufficient soil or applied phosphorus"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cây lùn, đẻ nhánh ít, thân mảnh khảnh.",
+          "Lá già hẹp, ngắn, mọc rất thẳng, màu xanh đậm 'bẩn'; lá già chuyển nâu và chết.",
+          "Một số giống lá có màu đỏ tím; chín muộn."
+        ],
+        "en": [
+          "Stunted plants, reduced tillering, thin spindly stems.",
+          "Older leaves narrow, short, very erect, dirty dark green; older leaves turn brown and die.",
+          "Red-purple leaves in varieties prone to anthocyanin; delayed maturity."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất chua, đất phèn, đất nghèo lân."
+        ],
+        "en": [
+          "Acid, acid-sulfate or P-poor soils."
+        ]
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Bón lót lân đầy đủ."
+          ],
+          "en": [
+            "Apply adequate basal phosphorus."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "NITROGEN_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu lân: lá xanh đậm, thẳng, cây ít chồi; thiếu đạm: lá vàng nhạt.",
+              "en": "P deficiency: dark green erect leaves, few tillers; N deficiency: pale yellow leaves."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "dark green erect leaves",
+          "reduced tillering",
+          "spindly stems"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Phosphorus (P) deficiency",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/phosphorous-deficiency"
+        }
+      ]
+    },
+    {
+      "id": "ZINC_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu kẽm",
+        "en": "Zinc Deficiency",
+        "scientific": "Rối loạn dinh dưỡng",
+        "aliasesEn": [
+          "Khaira"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Thiếu kẽm dễ tiêu trong đất"
+        ],
+        "en": [
+          "Low available soil zinc"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "2–4 tuần sau cấy: đốm nâu bụi trên lá trên của cây lùn.",
+          "Gân chính lá non mất màu (vàng) nhất là gần gốc lá; đôi khi có vạch trắng dọc gân chính.",
+          "Lá dưới có vệt, mảng nâu lan rộng liên kết; lá nhỏ lại; ruộng mọc không đều từng mảng."
+        ],
+        "en": [
+          "2–4 weeks after transplanting: dusty brown spots on upper leaves of stunted plants.",
+          "Chlorotic midribs of young leaves near the leaf base; sometimes a white line along the midrib.",
+          "Brown blotches and streaks on lower leaves that enlarge and coalesce; smaller leaf blades; uneven, patchy growth."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất ngập lâu, đất kiềm/mặn, đất nhiều hữu cơ."
+        ],
+        "en": [
+          "Long-flooded, alkaline/saline or high-organic soils."
+        ]
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Bón bổ sung kẽm theo khuyến cáo địa phương."
+          ],
+          "en": [
+            "Apply zinc per local recommendations."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_BROWN_SPOT",
+            "distinguishingFeature": {
+              "vn": "Thiếu kẽm: đốm nâu bụi kèm gân chính non vàng, cây lùn theo mảng; đốm nâu: vết bầu dục tâm xám, quầng vàng.",
+              "en": "Zn deficiency: dusty brown spots with chlorotic young midribs and patchy stunting; brown spot: oval gray-centered lesions with yellow halos."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "dusty brown spots",
+          "chlorotic midrib",
+          "patchy stunted growth"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Zinc (Zn) deficiency",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/zinc-deficiency"
+        }
+      ]
+    },
+    {
+      "id": "IRON_TOXICITY",
+      "category": "DISORDER",
+      "agentType": "ABIOTIC",
+      "names": {
+        "vn": "Ngộ độc sắt",
+        "en": "Iron Toxicity",
+        "scientific": "Rối loạn sinh lý (Fe2+ dư thừa)",
+        "aliasesVn": [
+          "ngộ độc phèn"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "ROOT"
+        ],
+        "vn": "Lá, Rễ",
+        "en": "Leaf, Root"
+      },
+      "pathogens": {
+        "vn": [
+          "Rối loạn sinh lý do cây hút quá nhiều sắt hoà tan (Fe2+) trên đất phèn, ngập yếm khí"
+        ],
+        "en": [
+          "Physiological disorder from excess ferrous iron (Fe2+) uptake on acid sulfate, waterlogged soils"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá lúa xuất hiện các đốm nâu nhỏ, sau lan rộng làm lá ngả màu vàng cam hoặc nâu đỏ.",
+          "Rễ lúa phủ lớp màu vàng đỏ của oxit sắt, cứng giòn và kém phát triển."
+        ],
+        "en": [
+          "Leaves develop small brown spots, later expanding to turn orange-yellow or reddish-brown.",
+          "Roots are coated with reddish-yellow iron oxide deposits, becoming brittle and stunted."
+        ]
+      },
+      "variants": [
+        {
+          "id": "IRON_TOXICITY__V1",
+          "names": {
+            "vn": "Ngộ độc sắt (Bronzing)",
+            "en": "Iron Toxicity Bronzing",
+            "scientific": "Excess ferrous iron uptake (Fe2+)"
+          },
+          "affectedPart": {
+            "vn": "Phiến lá",
+            "en": "Leaf blades"
+          },
+          "symptoms": {
+            "vn": [
+              "Lá lúa có màu đồng thau (bronzing), chóp lá khô cháy ngược vào trong."
+            ],
+            "en": [
+              "Leaves exhibit a bronzed appearance with tips drying backward."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây; do đặc tính đất phèn, ngập yếm khí."
+          ],
+          "en": [
+            "Not transmissible; caused by acid sulfate, waterlogged soil conditions."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất phèn chua, ngập nước yếm khí."
+        ],
+        "en": [
+          "Acid sulfate soils, anaerobic flooding."
+        ],
+        "temperature": "25°C - 32°C",
+        "humidity": "Đất chua phèn"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng hữu cơ sinh học tăng vi sinh vùng rễ."
+          ],
+          "en": [
+            "Use bio-organic products to enhance rhizosphere microbes."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón vôi cải tạo đất, cân đối Lân, Kali, kẽm."
+          ],
+          "en": [
+            "Apply lime, balance Phosphorus, Potassium, zinc."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Quản lý tưới tiêu rút nước phơi ruộng định kỳ."
+          ],
+          "en": [
+            "Manage irrigation by periodic draining and drying."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_PREMATURE_LEAF_YELLOWING",
+            "distinguishingFeature": {
+              "vn": "Ngộ độc sắt (bronzing) xuất hiện sớm dạng đồng thau; vàng lá chín sớm xảy ra cuối vụ.",
+              "en": "Iron toxicity bronzing appears early with bronze color; premature yellowing happens late season."
+            }
+          },
+          {
+            "id": "RICE_BROWN_SPOT"
+          },
+          {
+            "id": "POTASSIUM_DEFICIENCY"
+          }
+        ],
+        "visualKeywords": [
+          "bronzing leaves",
+          "iron oxide coating",
+          "stunted growth"
+        ]
+      },
+      "verification": "GEMINI_REVIEWED",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ],
+      "references": [
+        {
+          "title": "IRRI – Iron (Fe) toxicity",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/iron-toxicity"
+        }
+      ]
+    },
+    {
+      "id": "SULFIDE_TOXICITY",
+      "category": "DISORDER",
+      "agentType": "ABIOTIC",
+      "names": {
+        "vn": "Ngộ độc sulfua",
+        "en": "Sulfide Toxicity",
+        "scientific": "Rối loạn sinh lý"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "ROOT"
+        ],
+        "vn": "Rễ",
+        "en": "Root"
+      },
+      "pathogens": {
+        "vn": [
+          "Tích tụ H2S trong đất ngập yếm khí"
+        ],
+        "en": [
+          "H2S accumulation in anaerobic flooded soil"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá mới ra vàng giữa các gân.",
+          "Bộ rễ thưa, thô, màu nâu đậm đến đen (rễ khoẻ có lớp màu cam nâu đều)."
+        ],
+        "en": [
+          "Interveinal chlorosis of emerging leaves.",
+          "Coarse, sparse, dark brown to black roots (healthy roots have a smooth orange-brown coating)."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây."
+          ],
+          "en": [
+            "Not transmissible."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất ngập liên tục, nhiều chất hữu cơ chưa phân huỷ."
+        ],
+        "en": [
+          "Continuously flooded soils rich in undecomposed organic matter."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Tháo nước phơi ruộng, tránh vùi lượng lớn chất hữu cơ tươi."
+          ],
+          "en": [
+            "Drain and dry the field; avoid incorporating large amounts of fresh organic matter."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_ROOT_SUFFOCATION",
+            "distinguishingFeature": {
+              "vn": "Cùng nhóm ngộ độc đất yếm khí; kiểm tra rễ đen khi nhổ lên.",
+              "en": "Same anaerobic-soil complex; check for black roots when uprooted."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "black roots",
+          "interveinal chlorosis of new leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Sulfide toxicity",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/sulfide-toxicity"
+        }
+      ]
+    },
+    {
+      "id": "SALINITY",
+      "category": "DISORDER",
+      "agentType": "ABIOTIC",
+      "names": {
+        "vn": "Nhiễm mặn",
+        "en": "Salinity",
+        "scientific": "Rối loạn sinh lý"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Lá, Toàn cây",
+        "en": "Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Muối hoà tan trong đất/nước tưới cao"
+        ],
+        "en": [
+          "High soluble salts in soil or irrigation water"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Chóp lá trắng; triệu chứng xuất hiện ở lá thứ nhất, rồi lá thứ hai, sau đến lá đang ra.",
+          "Một số lá có mảng vàng nhạt hoặc trắng vàng.",
+          "Cây lùn, ít chồi, ruộng phát triển không đều từng mảng."
+        ],
+        "en": [
+          "White leaf tips; symptoms appear first on the first leaf, then the second, then the growing leaf.",
+          "Pale, yellow or yellow-white patches on some leaves.",
+          "Stunting, reduced tillering, patchy field growth."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Không lây; do xâm nhập mặn."
+          ],
+          "en": [
+            "Not transmissible; caused by saline intrusion."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "TILLERING",
+          "BOOTING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Vùng ven biển, mùa khô xâm nhập mặn."
+        ],
+        "en": [
+          "Coastal areas, dry-season saline intrusion."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Rửa mặn, dùng giống chịu mặn, theo dõi độ mặn nước trước khi lấy vào ruộng."
+          ],
+          "en": [
+            "Flush salts, use salt-tolerant varieties, check water salinity before irrigating."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "ZINC_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Nhiễm mặn: chóp lá trắng, vùng ven biển; thường đi kèm thiếu kẽm/lân.",
+              "en": "Salinity: white leaf tips in coastal areas; often accompanied by Zn/P deficiency."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "white leaf tips",
+          "yellow-white patches",
+          "patchy stunting"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "IRRI – Salinity",
+          "url": "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/salinity"
+        }
+      ]
+    },
+    {
+      "id": "RICE_PREMATURE_LEAF_YELLOWING",
+      "category": "DISEASE",
+      "agentType": "UNKNOWN",
+      "names": {
+        "vn": "Bệnh vàng lá chín sớm",
+        "en": "Early Premature Leaf Yellowing",
+        "scientific": "Chưa thống nhất (cần xác nhận)"
+      },
+      "nameVnSource": "Gemini",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nguyên nhân chưa thống nhất giữa các tài liệu (nấm hoặc rối loạn sinh lý/dinh dưỡng) — cần chuyên gia xác nhận"
+        ],
+        "en": [
+          "Cause not settled across sources (fungal or physiological/nutritional) — needs expert confirmation"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá lúa chuyển sang màu vàng cam hoặc vàng sậm sớm từ giai đoạn ngậm sữa đến chín.",
+          "Lá bị khô cháy từ chóp và mép lá lan dần vào trong, làm giảm hiệu suất quang hợp."
+        ],
+        "en": [
+          "Leaves prematurely turn orange-yellow or dark yellow from milky to ripening stages.",
+          "Leaves dry and burn from tips inward, reducing photosynthetic efficiency."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_PREMATURE_LEAF_YELLOWING__V1",
+          "names": {
+            "vn": "Vàng lá do phức hợp nấm",
+            "en": "Fungal-induced Premature Yellowing",
+            "scientific": "Chưa xác định"
+          },
+          "affectedPart": {
+            "vn": "Lá già và lá trung tâm",
+            "en": "Older and middle leaves"
+          },
+          "symptoms": {
+            "vn": [
+              "Xuất hiện các vết đốm cam vàng loang lổ, lá héo khô nhanh chóng."
+            ],
+            "en": [
+              "Mottled orange-yellow spots appear, and leaves quickly wither and dry."
+            ]
+          }
+        },
+        {
+          "id": "RICE_PREMATURE_LEAF_YELLOWING__V2",
+          "names": {
+            "vn": "Vàng lá sinh lý",
+            "en": "Physiological Yellowing",
+            "scientific": "Chưa xác định"
+          },
+          "affectedPart": {
+            "vn": "Toàn bộ tán lá",
+            "en": "Entire canopy"
+          },
+          "symptoms": {
+            "vn": [
+              "Lá lúa vàng đều cả phiến lá, rễ chuyển màu nâu đen và kém phát triển."
+            ],
+            "en": [
+              "Leaves uniformly yellow across blades, roots turn dark brown and underdeveloped."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Do suy giảm sinh lý cây hoặc phức hợp nấm yếu cuối vụ."
+          ],
+          "en": [
+            "Caused by plant physiological decline or late-season weak fungal complexes."
+          ]
+        },
+        "cropStage": [
+          "MILK",
+          "MATURITY"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nắng gắt xen kẽ mưa giông cuối vụ."
+        ],
+        "en": [
+          "Intense sun alternating with late-season rainstorms."
+        ],
+        "temperature": "28°C - 35°C",
+        "humidity": "Biến động"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng chế phẩm vi sinh cải tạo đất và rễ."
+          ],
+          "en": [
+            "Use microbial products for soil and root improvement."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Cung cấp đầy đủ Kali và chất điều hòa sinh trưởng."
+          ],
+          "en": [
+            "Provide Potassium and growth regulators."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Duy trì tưới ngập khô xen kẽ hợp lý."
+          ],
+          "en": [
+            "Maintain proper alternate wetting and drying."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "IRON_TOXICITY",
+            "distinguishingFeature": {
+              "vn": "Vàng lá chín sớm diễn ra tự nhiên/nấm cuối vụ; Vàng lá ngộ độc sắt diễn ra từ giai đoạn mạ/đẻ nhánh.",
+              "en": "Premature yellowing occurs late season; iron toxicity occurs early in seedling/tillering."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "premature yellowing",
+          "canopy discoloration",
+          "early drying"
+        ]
+      },
+      "verification": "GEMINI_ONLY",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ]
+    },
+    {
+      "id": "RICE_BACTERIAL_FOOT_ROT",
+      "category": "DISEASE",
+      "agentType": "BACTERIA",
+      "names": {
+        "vn": "Bệnh thối gốc vi khuẩn",
+        "en": "Bacterial Foot Rot",
+        "scientific": "Dickeya zeae (trước đây Erwinia chrysanthemi pv. zeae)"
+      },
+      "nameVnSource": "Gemini",
+      "affectedPart": {
+        "codes": [
+          "STEM",
+          "SHEATH"
+        ],
+        "vn": "Thân, Bẹ lá",
+        "en": "Stem, Leaf sheath"
+      },
+      "pathogens": {
+        "vn": [
+          "Vi khuẩn Dickeya zeae (trước đây Erwinia chrysanthemi pv. zeae)"
+        ],
+        "en": [
+          "Bacterium Dickeya zeae (formerly Erwinia chrysanthemi pv. zeae)"
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Gốc thân lúa chuyển màu nâu sẫm, thối nhũn mềm và bốc mùi hôi khó chịu.",
+          "Cây lúa bị héo rũ đột ngột, dễ dàng nhổ đứt phần gốc khỏi mặt đất."
+        ],
+        "en": [
+          "Rice stem bases turn dark brown, soft rot, and emit a foul odor.",
+          "Plants wilt abruptly, and stem bases easily detach from roots when pulled."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_BACTERIAL_FOOT_ROT__V1",
+          "names": {
+            "vn": "Thối nhũn gốc vi khuẩn",
+            "en": "Bacterial Soft Crown Rot",
+            "scientific": "Dickeya zeae"
+          },
+          "affectedPart": {
+            "vn": "Vùng cổ rễ và bẹ lá",
+            "en": "Crown zone and leaf sheaths"
+          },
+          "symptoms": {
+            "vn": [
+              "Mô tế bào gốc bị nhũn nước, xám đục và đổ sập nhanh chóng."
+            ],
+            "en": [
+              "Crown tissues become water-soaked, opaquely grey, and rapidly collapse."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Vi khuẩn xâm nhập qua vết thương vùng gốc do cơ học hoặc côn trùng."
+          ],
+          "en": [
+            "Bacteria enter through mechanical or insect-induced base wounds."
+          ]
+        },
+        "cropStage": [
+          "TILLERING",
+          "BOOTING"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Nhiệt độ cao, mưa ngập úng vùng gốc."
+        ],
+        "en": [
+          "High temperature, waterlogged base flooding."
+        ],
+        "temperature": "30°C - 35°C",
+        "humidity": "> 90%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng chế phẩm Bacillus subtilis vùng gốc."
+          ],
+          "en": [
+            "Use Bacillus subtilis preparations at the base."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Tăng cường Kali và Canxi giúp cứng cây."
+          ],
+          "en": [
+            "Increase Potassium and Calcium for sturdy plants."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Tháo cạn nước ruộng cắt đứt lây lan."
+          ],
+          "en": [
+            "Drain field water to halt transmission."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_STEM_ROT",
+            "distinguishingFeature": {
+              "vn": "Thối gốc vi khuẩn bốc mùi hôi thối nhũn; thối thân do nấm chứa hạch đen khô.",
+              "en": "Bacterial crown rot emits a foul soft-rot odor; fungal stem rot contains dry black sclerotia."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "soft crown rot",
+          "foul odor",
+          "abrupt wilting"
+        ]
+      },
+      "verification": "GEMINI_ONLY",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ]
+    },
+    {
+      "id": "RICE_GLUME_BLIGHT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh mốc vỏ trấu",
+        "en": "Glume Blight / Grain Mold",
+        "scientific": "Epicoccum sorghinum (Phoma sorghina), Alternaria spp. và các nấm khác",
+        "aliasesVn": [
+          "cháy vỏ trấu"
+        ]
+      },
+      "nameVnSource": "Gemini",
+      "affectedPart": {
+        "codes": [
+          "PANICLE"
+        ],
+        "vn": "Bông / hạt",
+        "en": "Panicle / grain"
+      },
+      "pathogens": {
+        "vn": [
+          "Tổ hợp nấm mốc Epicoccum spp., Alternaria spp., Cladosporium spp."
+        ],
+        "en": [
+          "Mold fungi complex Epicoccum spp., Alternaria spp., Cladosporium spp."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Vỏ trấu xuất hiện các mảng mốc màu hồng, xám hoặc đen do nấm phát triển trong điều kiện mưa ẩm kéo dài.",
+          "Hạt gạo bên trong bị xốp, giòn và giảm tỷ lệ gạo nguyên."
+        ],
+        "en": [
+          "Grain hulls develop pink, grey, or black mold patches due to fungal growth during prolonged wet weather.",
+          "Internal kernels become chalky and brittle, lowering head rice recovery rates."
+        ]
+      },
+      "variants": [
+        {
+          "id": "RICE_GLUME_BLIGHT__V1",
+          "names": {
+            "vn": "Mốc vỏ trấu cuối vụ",
+            "en": "Late-season Glume Mold",
+            "scientific": "Epicoccum / Alternaria infection"
+          },
+          "affectedPart": {
+            "vn": "Bông lúa chín",
+            "en": "Ripening panicles"
+          },
+          "symptoms": {
+            "vn": [
+              "Bông lúa phủ lớp mốc xám đen, hạt lúa bị bám dính và ẩm mốc."
+            ],
+            "en": [
+              "Panicles are covered in dark grey mold layers, and grains clump together with mold."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Tổ hợp nấm hoại sinh tấn công hạt lúa khi gặp ẩm ướt kéo dài."
+          ],
+          "en": [
+            "Saprophytic mold complex attacking grains during prolonged moisture."
+          ]
+        },
+        "cropStage": [
+          "MATURITY"
+        ]
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mưa dầm kéo dài khi lúa đã chín không thu hoạch kịp."
+        ],
+        "en": [
+          "Prolonged rainstorms when rice is ripe and unharvested."
+        ],
+        "temperature": "25°C - 30°C",
+        "humidity": "> 90%"
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Sử dụng sinh học đối kháng nấm mốc."
+          ],
+          "en": [
+            "Use biological preparations against molds."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón nuôi hạt đầy đủ cuối vụ."
+          ],
+          "en": [
+            "Provide adequate late-season grain-filling nutrition."
+          ]
+        },
+        "cultural": {
+          "vn": [
+            "Thu hoạch kịp thời tránh mưa dầm gây mốc."
+          ],
+          "en": [
+            "Harvest promptly to avoid rain-induced molding."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "RICE_GRAIN_DISCOLORATION",
+            "distinguishingFeature": {
+              "vn": "Mốc vỏ trấu phủ lớp mốc hồng/đen trên vỏ hạt cuối vụ do mưa dầm.",
+              "en": "Glume/grain mold covers hulls with pink/black mold late season due to rain."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "glume mold",
+          "pink grey black mold",
+          "chalky kernel"
+        ]
+      },
+      "verification": "GEMINI_ONLY",
+      "unverifiedFields": [
+        "favorableConditions.temperature",
+        "favorableConditions.humidity",
+        "treatments.biological"
+      ]
+    }
+  ]
+}

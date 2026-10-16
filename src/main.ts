@@ -9,6 +9,11 @@ async function bootstrap() {
   useAppLogger(app);
   setupSwagger(app);
   const config = app.get<IConfigService>(CONFIG_SERVICE);
-  await app.listen(config.get('app').port);
+  const { nodeEnv, port, corsOrigins } = config.get('app');
+  app.enableCors({
+    origin: nodeEnv === 'production' ? corsOrigins : true,
+    credentials: true,
+  });
+  await app.listen(port);
 }
 bootstrap();

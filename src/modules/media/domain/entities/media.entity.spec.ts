@@ -25,6 +25,20 @@ describe('Media.create', () => {
     });
   });
 
+  it('stores diagnosis media under the diagnoses folder', () => {
+    const media = Media.create({
+      id: 'm1',
+      type: EMediaType.IMAGE,
+      extension: MediaExtension.create(EMediaType.IMAGE, 'jpg'),
+      filename: 'image-1.jpg',
+      ownerType: EMediaOwnerType.DIAGNOSIS,
+      ownerId: 'd1',
+      sortOrder: 0,
+    });
+
+    expect(media.source).toBe('diagnoses/d1/m1.jpg');
+  });
+
   it('keeps a given id and stores user media under the users folder', () => {
     const media = Media.create({
       id: 'm1',

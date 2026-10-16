@@ -9,6 +9,7 @@ const OWNER_FOLDERS: Record<EMediaOwnerType, string> = {
   [EMediaOwnerType.PRODUCT]: 'products',
   [EMediaOwnerType.USER_AVATAR]: 'users',
   [EMediaOwnerType.USER_LICENSE]: 'users',
+  [EMediaOwnerType.DIAGNOSIS]: 'diagnoses',
 };
 
 export type TMediaProps = {
