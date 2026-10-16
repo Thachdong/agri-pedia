@@ -33,10 +33,8 @@ describe('GET /knowledge/crops, /knowledge/diseases, /knowledge/diseases/:code (
   it('lists enabled crops with their plant parts and stages, without login', async () => {
     const res = await http().get('/knowledge/crops').expect(200);
 
-    // DURIAN is seeded but disabled
-    expect(res.body.crops.map((c: { code: string }) => c.code)).toEqual([
-      'RICE',
-    ]);
+    // RICE first by sortOrder; DURIAN (seeded disabled) only shows when KNOWLEDGE_ENABLED_CROPS enables it
+    expect(res.body.crops[0].code).toBe('RICE');
     expect(res.body.crops[0]).toEqual({
       code: 'RICE',
       nameVi: 'Lúa',

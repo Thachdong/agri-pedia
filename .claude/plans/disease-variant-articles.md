@@ -10,7 +10,7 @@ Hiện trạng: code chưa có variant ở phần bài viết; loader chỉ nh�
 - [x] 3. [use-case]       GetArticle: `variant`, `parentArticle`, `variantArticles` (theo thứ tự variants KB), link `/diseases/<id biến thể>` → bài biến thể hoặc bài chính; ListArticles: `variant`; GetDiseaseDetail: `article` = bài chính, `variants[].article`
 - [x] 4. [persistence]    cột `articles.variant_code`, unique `(disease_code, coalesce(variant_code, ''), locale)`; repo tìm theo mã bệnh + mã biến thể; migration `knowledge-article-variants`
 - [x] 5. [persistence]    FileArticleSource: `code` = id bệnh hoặc id biến thể của crop; bài biến thể cần bài chính của bệnh; link nhận id biến thể; `disease-card` chỉ id bệnh; test pack có 1 bài biến thể
-- [ ] 6. [http]           response class action 41, 42, 35 thêm trường; e2e
+- [x] 6. [http]           response class action 41, 42, 35 thêm trường; e2e
 - [ ] 7. [api-docs]       action 35, 41, 42; openapi:export
 - [ ] 8. [boundary-review]
-- [ ] 9. [sync]           copy 5 bài + ảnh từ Design (RICE_BLAST, RICE_BLAST__V1..V3, DURIAN_PHYTOPHTHORA_CANKER) vào crop pack, khởi động app kiểm seed
+- [x] 9. [sync]           copy 5 bài + ảnh từ Design (RICE_BLAST, RICE_BLAST__V1..V3, DURIAN_PHYTOPHTHORA_CANKER) vào crop pack, khởi động app kiểm seed

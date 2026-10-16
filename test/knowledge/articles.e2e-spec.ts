@@ -39,9 +39,13 @@ describe('GET /knowledge/articles/* (e2e)', () => {
       .filter(([, file]) => file.isPublic)
       .map(([key]) => key);
 
-    expect(keys).toEqual([
+    // A variant article keeps its images under its own code.
+    expect(keys.sort()).toEqual([
       expect.stringMatching(
         /^articles\/RICE\/RICE_BLAST\/dao-on-la-hinh-thoi\.[0-9a-f]{8}\.webp$/,
+      ),
+      expect.stringMatching(
+        /^articles\/RICE\/RICE_BLAST__V1\/dao-on-la-hinh-thoi\.[0-9a-f]{8}\.webp$/,
       ),
     ]);
   });
@@ -57,7 +61,7 @@ describe('GET /knowledge/articles/* (e2e)', () => {
           slug: 'lua',
           nameVi: 'Lúa',
           diagnosisEnabled: expect.any(Boolean),
-          articleCount: 1,
+          articleCount: 4,
         },
         {
           code: 'DURIAN',
@@ -76,25 +80,42 @@ describe('GET /knowledge/articles/* (e2e)', () => {
     expect(res.headers['cache-control']).toBe('public, max-age=60');
     expect(res.body.crop).toMatchObject({ code: 'RICE', slug: 'lua' });
     expect(res.body.nextCursor).toBeNull();
-    expect(res.body.articles).toEqual([
-      {
-        path: '/benh-cay-trong/lua/benh-dao-on',
-        slug: 'benh-dao-on',
-        title: expect.stringContaining('Bệnh đạo ôn'),
-        summary: expect.any(String),
-        coverUrl: expect.stringMatching(
-          /^https:\/\/storage\.test\/articles\/RICE\/RICE_BLAST\//,
-        ),
-        status: 'REVIEWED',
-        updatedAt: '2026-10-16T00:00:00.000Z',
-        disease: {
-          code: 'RICE_BLAST',
-          nameVi: 'Bệnh đạo ôn',
-          scientificName: expect.any(String),
-          category: 'DISEASE',
-        },
-      },
+    expect(res.body.articles).toHaveLength(4);
+    expect(
+      res.body.articles.map(
+        (a: { slug: string; variant: { code: string } | null }) => [
+          a.slug,
+          a.variant?.code ?? null,
+        ],
+      ),
+    ).toEqual([
+      ['benh-dao-on', null],
+      ['benh-dao-on-co-bong', 'RICE_BLAST__V2'],
+      ['benh-dao-on-dot-than', 'RICE_BLAST__V3'],
+      ['benh-dao-on-la', 'RICE_BLAST__V1'],
     ]);
+    expect(res.body.articles[0]).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on',
+      slug: 'benh-dao-on',
+      title: expect.stringContaining('Bệnh đạo ôn'),
+      summary: expect.any(String),
+      coverUrl: expect.stringMatching(
+        /^https:\/\/storage\.test\/articles\/RICE\/RICE_BLAST\//,
+      ),
+      status: 'REVIEWED',
+      updatedAt: '2026-10-16T00:00:00.000Z',
+      disease: {
+        code: 'RICE_BLAST',
+        nameVi: 'Bệnh đạo ôn',
+        scientificName: expect.any(String),
+        category: 'DISEASE',
+      },
+      variant: null,
+    });
+    expect(res.body.articles[3]).toMatchObject({
+      disease: { code: 'RICE_BLAST' },
+      variant: { code: 'RICE_BLAST__V1', name: expect.any(String) },
+    });
   });
 
   it('filters the list by disease category', async () => {
@@ -152,6 +173,23 @@ describe('GET /knowledge/articles/* (e2e)', () => {
     expect(body.markdown).not.toContain('/diseases/');
     expect(body.markdown).toContain('| Bệnh đốm nâu |');
     expect(body.markdown).toContain('::disease-card{code="RICE_BROWN_SPOT"}');
+    // links to variant ids go to the variant articles
+    expect(body.markdown).toContain('](/benh-cay-trong/lua/benh-dao-on-la)');
+    expect(body.markdown).toContain(
+      '](/benh-cay-trong/lua/benh-dao-on-co-bong)',
+    );
+    expect(body.variant).toBeNull();
+    expect(body.parentArticle).toBeNull();
+    expect(
+      body.variantArticles.map((a: { variantCode: string; path: string }) => [
+        a.variantCode,
+        a.path,
+      ]),
+    ).toEqual([
+      ['RICE_BLAST__V1', '/benh-cay-trong/lua/benh-dao-on-la'],
+      ['RICE_BLAST__V2', '/benh-cay-trong/lua/benh-dao-on-co-bong'],
+      ['RICE_BLAST__V3', '/benh-cay-trong/lua/benh-dao-on-dot-than'],
+    ]);
     expect(body.cover).toEqual({
       url: expect.stringContaining('dao-on-la-hinh-thoi.'),
       alt: expect.any(String),
@@ -178,6 +216,26 @@ describe('GET /knowledge/articles/* (e2e)', () => {
     expect(body.sources.length).toBeGreaterThan(0);
   });
 
+  it('returns a variant article with its variant and the main article as parent', async () => {
+    const res = await http()
+      .get('/knowledge/articles/lua/benh-dao-on-co-bong')
+      .expect(200);
+
+    expect(res.body).toMatchObject({
+      path: '/benh-cay-trong/lua/benh-dao-on-co-bong',
+      disease: { code: 'RICE_BLAST' },
+      variant: { code: 'RICE_BLAST__V2', name: expect.any(String) },
+      parentArticle: {
+        path: '/benh-cay-trong/lua/benh-dao-on',
+        title: expect.stringContaining('Bệnh đạo ôn'),
+      },
+      variantArticles: [],
+      cover: null,
+    });
+    expect(res.body.markdown).toContain('](/benh-cay-trong/lua/benh-dao-on)');
+    expect(res.body.markdown).not.toContain('/diseases/');
+  });
+
   it('returns 404 KNOWLEDGE_ARTICLE_NOT_FOUND for an unknown slug', async () => {
     const res = await http()
       .get('/knowledge/articles/lua/khong-co')
@@ -200,10 +258,15 @@ describe('GET /knowledge/articles/* (e2e)', () => {
         { slug: 'sau-rieng', updatedAt: '2026-10-16T00:00:00.000Z' },
       ],
       articles: [
-        {
-          path: '/benh-cay-trong/lua/benh-dao-on',
+        ...[
+          'benh-dao-on',
+          'benh-dao-on-co-bong',
+          'benh-dao-on-dot-than',
+          'benh-dao-on-la',
+        ].map((slug) => ({
+          path: `/benh-cay-trong/lua/${slug}`,
           updatedAt: '2026-10-16T00:00:00.000Z',
-        },
+        })),
         {
           path: '/benh-cay-trong/sau-rieng/benh-nut-than-xi-mu',
           updatedAt: '2026-10-16T00:00:00.000Z',
@@ -224,6 +287,18 @@ describe('GET /knowledge/articles/* (e2e)', () => {
       path: '/benh-cay-trong/lua/benh-dao-on',
       status: 'REVIEWED',
     });
+    expect(
+      blast.body.variants.map(
+        (v: { code: string; article: { path: string } | null }) => [
+          v.code,
+          v.article?.path ?? null,
+        ],
+      ),
+    ).toEqual([
+      ['RICE_BLAST__V1', '/benh-cay-trong/lua/benh-dao-on-la'],
+      ['RICE_BLAST__V2', '/benh-cay-trong/lua/benh-dao-on-co-bong'],
+      ['RICE_BLAST__V3', '/benh-cay-trong/lua/benh-dao-on-dot-than'],
+    ]);
     expect(brownSpot.body.article).toBeNull();
   });
 });

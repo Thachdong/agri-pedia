@@ -34,6 +34,12 @@ export class ArticleDiseaseSummaryResponse {
   category: EDiseaseCategory;
 }
 
+export class ArticleVariantSummaryResponse {
+  /** Variant code, e.g. `RICE_BLAST__V1`. */
+  code: string;
+  name: string;
+}
+
 export class ArticleListItemResponse {
   /** Site path, e.g. `/benh-cay-trong/lua/benh-dao-on`. */
   path: string;
@@ -46,6 +52,8 @@ export class ArticleListItemResponse {
   status: EArticleStatus;
   updatedAt: Date;
   disease: ArticleDiseaseSummaryResponse | null;
+  /** Set for an article about one variant of `disease`. */
+  variant: ArticleVariantSummaryResponse | null;
 }
 
 export class ListArticlesResponse {
@@ -65,6 +73,24 @@ export class ArticleDiseaseResponse {
   agentType: EAgentType;
   affectedParts: EPlantPart[];
   verification: EVerification;
+}
+
+export class ArticleVariantResponse {
+  code: string;
+  name: string;
+  affectedParts: string;
+}
+
+export class ArticleLinkResponse {
+  path: string;
+  title: string;
+}
+
+export class VariantArticleResponse {
+  path: string;
+  title: string;
+  variantCode: string;
+  variantName: string;
 }
 
 export class ArticleCoverResponse {
@@ -117,6 +143,12 @@ export class ArticleDetailResponse {
   markdown: string;
   crop: ArticleCropResponse;
   disease: ArticleDiseaseResponse | null;
+  /** Set for an article about one variant of `disease`. */
+  variant: ArticleVariantResponse | null;
+  /** Variant article: the disease's main article (breadcrumb); null otherwise. */
+  parentArticle: ArticleLinkResponse | null;
+  /** Main article: the disease's variant articles, in KB variant order. */
+  variantArticles: VariantArticleResponse[];
   cover: ArticleCoverResponse | null;
   /** In order of appearance in the body (credits list). */
   images: ArticleImageResponse[];

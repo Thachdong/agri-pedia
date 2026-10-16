@@ -54,6 +54,8 @@ export class DiseaseVariantResponse {
   name: string;
   affectedParts: string;
   symptoms: string[];
+  /** The variant's own article page; null when it has none. */
+  article: DiseaseArticleResponse | null;
 }
 
 export class DiseaseTreatmentsResponse {
