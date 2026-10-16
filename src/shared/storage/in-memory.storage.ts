@@ -5,14 +5,14 @@ import {
   TPresignedUploadInput,
 } from './storage.interface';
 
-/** Test fake: records presign requests and returns a fake URL for the key; keeps object keys in a set and uploaded content by key. */
+/** Test fake: records presign requests and returns a fake URL for the key; keeps object keys in a set and uploaded content by key; public URL = `https://storage.test/<key>`. */
 export class InMemoryFileStorage implements IFileStorage {
   readonly presigned: TPresignedUploadInput[] = [];
   readonly files = new Set<string>();
-  /** Content written by uploadFile, by key. */
+  /** Content written by uploadFile / uploadPublicFile, by key; `isPublic` marks uploadPublicFile. */
   readonly uploaded = new Map<
     string,
-    { content: Buffer; contentType: string }
+    { content: Buffer; contentType: string; isPublic: boolean }
   >();
 
   async createPresignedUploadUrl(
@@ -38,7 +38,20 @@ export class InMemoryFileStorage implements IFileStorage {
     contentType: string,
   ): Promise<void> {
     this.files.add(key);
-    this.uploaded.set(key, { content, contentType });
+    this.uploaded.set(key, { content, contentType, isPublic: false });
+  }
+
+  async uploadPublicFile(
+    key: string,
+    content: Buffer,
+    contentType: string,
+  ): Promise<void> {
+    this.files.add(key);
+    this.uploaded.set(key, { content, contentType, isPublic: true });
+  }
+
+  publicUrl(key: string): string {
+    return `https://storage.test/${key}`;
   }
 
   async moveFile(fromKey: string, toKey: string): Promise<void> {

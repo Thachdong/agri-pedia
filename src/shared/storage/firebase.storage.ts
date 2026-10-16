@@ -10,6 +10,7 @@ import {
 } from './storage.interface';
 
 const FIREBASE_APP_NAME = 'storage';
+const PUBLIC_CACHE_CONTROL = 'public, max-age=31536000, immutable';
 
 /** Firebase Storage (GCS) adapter. Signed URLs are V4 and signed locally with the service account key. */
 @Injectable()
@@ -17,11 +18,15 @@ export class FirebaseFileStorage implements IFileStorage {
   private readonly app: App;
   private readonly presignUrlTtlSeconds: number;
   private readonly downloadUrlTtlSeconds: number;
+  private readonly bucketName: string;
+  private readonly publicBaseUrl: string | undefined;
 
   constructor(@Inject(CONFIG_SERVICE) config: IConfigService) {
     const storage = config.get('storage');
     this.presignUrlTtlSeconds = storage.presignUrlTtlSeconds;
     this.downloadUrlTtlSeconds = storage.downloadUrlTtlSeconds;
+    this.bucketName = storage.firebaseStorageBucket;
+    this.publicBaseUrl = storage.publicBaseUrl?.replace(/\/+$/, '');
     // Reuse the named app: several Nest apps in one process (e2e) would otherwise fail on duplicate init.
     this.app =
       getApps().find((app) => app.name === FIREBASE_APP_NAME) ??
@@ -81,6 +86,27 @@ export class FirebaseFileStorage implements IFileStorage {
       .bucket()
       .file(key)
       .save(content, { contentType, resumable: false });
+  }
+
+  async uploadPublicFile(
+    key: string,
+    content: Buffer,
+    contentType: string,
+  ): Promise<void> {
+    await getStorage(this.app)
+      .bucket()
+      .file(key)
+      .save(content, {
+        contentType,
+        resumable: false,
+        metadata: { cacheControl: PUBLIC_CACHE_CONTROL },
+      });
+  }
+
+  publicUrl(key: string): string {
+    if (this.publicBaseUrl) return `${this.publicBaseUrl}/${key}`;
+    // Read is allowed by the Storage rule `match /public/{all=**} { allow read: if true; }`.
+    return `https://firebasestorage.googleapis.com/v0/b/${this.bucketName}/o/${encodeURIComponent(key)}?alt=media`;
   }
 
   async moveFile(fromKey: string, toKey: string): Promise<void> {
