@@ -40,7 +40,7 @@ defineApiDocs(ArticleController, {
       description:
         '`markdown` has public image URLs and `/diseases/<CODE>` links turned into article paths ' +
         "(a variant id without its own article links to the disease's main article; plain text when there is no article); " +
-        'a variant article has `variant` + `parentArticle` (breadcrumb), a main article lists `variantArticles`; directives `:::warning`, `:::tip`, ' +
+        'a variant article has `variant` + `parentArticle` (breadcrumb), a main article lists `variantArticles` (each with its `coverUrl`); every article has a 16:9 `cover` (cards, Open Graph); directives `:::warning`, `:::tip`, ' +
         '`::disease-card{code="..."}` and `::cta-diagnosis` stay for the client. `relatedDiseases` feeds the cards.' +
         CACHE_NOTE,
       validation: true,
