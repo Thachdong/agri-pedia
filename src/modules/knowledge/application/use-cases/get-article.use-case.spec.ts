@@ -173,6 +173,7 @@ describe('GetArticleUseCase', () => {
         variantCode: 'RICE_BLAST__V3',
         slug: 'benh-dao-on-hat',
         title: 'Đạo ôn hạt',
+        cover: null,
       }),
       buildArticle({
         variantCode: 'RICE_BLAST__V1',
@@ -204,12 +205,15 @@ describe('GetArticleUseCase', () => {
         title: 'Đạo ôn lá',
         variantCode: 'RICE_BLAST__V1',
         variantName: 'Đạo ôn lá',
+        coverUrl:
+          'https://storage.test/articles/RICE/RICE_BLAST/dao-on-1.1234abcd.webp',
       },
       {
         path: '/benh-cay-trong/lua/benh-dao-on-hat',
         title: 'Đạo ôn hạt',
         variantCode: 'RICE_BLAST__V3',
         variantName: 'Đạo ôn hạt',
+        coverUrl: null,
       },
     ]);
     // V1 has its own article; V2 has none and links to the main article

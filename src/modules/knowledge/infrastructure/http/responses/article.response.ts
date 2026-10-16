@@ -91,6 +91,8 @@ export class VariantArticleResponse {
   title: string;
   variantCode: string;
   variantName: string;
+  /** Public URL of the variant article's cover image; null without a cover. */
+  coverUrl: string | null;
 }
 
 export class ArticleCoverResponse {

@@ -37,7 +37,8 @@ const articleFrontmatter = z
     reviewedBy: z.string().min(1).nullable(),
     reviewedAt: z.coerce.date().nullable(),
     kbVersion: z.string(),
-    cover: z.string().nullable().optional(),
+    /** Reference image (cards, related articles, Open Graph); one of `images[].file`. */
+    cover: z.string().min(1),
     images: z
       .array(
         z.object({
@@ -189,7 +190,7 @@ export class FileArticleSource implements IArticleSource {
       fail(`code ${meta.code} is not a disease or variant in diseases.json`);
     }
     const imageFiles = new Set(meta.images.map((image) => image.file));
-    if (meta.cover && !imageFiles.has(meta.cover)) {
+    if (!imageFiles.has(meta.cover)) {
       fail(`cover ${meta.cover} is not listed in images`);
     }
     const prose = markdown.replace(CODE, '');
@@ -248,7 +249,7 @@ export class FileArticleSource implements IArticleSource {
       title: meta.title,
       summary: meta.summary,
       markdown,
-      cover: meta.cover ?? null,
+      cover: meta.cover,
       images,
       sources: meta.sources as TArticleSource[],
       status: meta.status,

@@ -58,6 +58,8 @@ export type TGetArticleOutput = {
     title: string;
     variantCode: string;
     variantName: string;
+    /** Public URL of the variant article's cover; null without a cover. */
+    coverUrl: string | null;
   }>;
   cover: { url: string; alt: string; width: number; height: number } | null;
   /** In order of appearance in the body, then images it does not show. */
@@ -200,6 +202,7 @@ export class GetArticleUseCase {
                       title: own.title,
                       variantCode: v.code,
                       variantName: v.names.vn,
+                      coverUrl: coverUrl(own),
                     },
                   ]
                 : [];

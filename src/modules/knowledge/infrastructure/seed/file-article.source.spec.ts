@@ -41,7 +41,7 @@ const BODY = [
 ].join('\n');
 
 type TArticleFile = {
-  frontmatter?: Record<string, string | null>;
+  frontmatter?: Record<string, string | null | undefined>;
   images?: string;
   body?: string;
 };
@@ -202,8 +202,7 @@ describe('FileArticleSource (invalid article)', () => {
   it('rejects a code missing from the crop KB', async () => {
     const dir = await packWith({
       'RICE_NOPE.md': articleText({
-        frontmatter: { code: 'RICE_NOPE', cover: null },
-        images: 'images: []',
+        frontmatter: { code: 'RICE_NOPE' },
         body: 'Mở đầu.',
       }),
     });
@@ -219,12 +218,14 @@ describe('FileArticleSource (invalid article)', () => {
       {
         'RICE_BLAST.md': articleText(),
         'RICE_BROWN_SPOT.md': articleText({
-          frontmatter: { code: 'RICE_BROWN_SPOT', cover: null },
-          images: 'images: []',
+          frontmatter: { code: 'RICE_BROWN_SPOT' },
           body: 'Mở đầu.',
         }),
       },
-      { 'RICE_BLAST/dao-on-1.webp': await webp() },
+      {
+        'RICE_BLAST/dao-on-1.webp': await webp(),
+        'RICE_BROWN_SPOT/dao-on-1.webp': await webp(),
+      },
     );
 
     await expectRejected(
@@ -251,6 +252,13 @@ describe('FileArticleSource (invalid article)', () => {
     const dir = await packWith({ 'RICE_BLAST.md': 'Chỉ có thân bài.' });
 
     await expectRejected(dir, 'missing --- frontmatter ---');
+  });
+
+  it('rejects an article without a cover', async () => {
+    await expectRejected(
+      await validPack({ frontmatter: { cover: undefined } }),
+      'crops/RICE/articles/RICE_BLAST.md: cover:',
+    );
   });
 
   it('rejects a cover that is not an image of the article', async () => {
@@ -311,9 +319,7 @@ describe('FileArticleSource (invalid article)', () => {
       frontmatter: {
         code: 'RICE_BLAST__V1',
         slug: 'benh-dao-on-la',
-        cover: null,
       },
-      images: 'images: []',
       body: 'Xem [bài chính](/diseases/RICE_BLAST) và [cổ bông](/diseases/RICE_BLAST__V2).',
     });
     const dir = await packWith(
@@ -323,7 +329,10 @@ describe('FileArticleSource (invalid article)', () => {
         }),
         'RICE_BLAST__V1.md': variant,
       },
-      { 'RICE_BLAST/dao-on-1.webp': await webp() },
+      {
+        'RICE_BLAST/dao-on-1.webp': await webp(),
+        'RICE_BLAST__V1/dao-on-1.webp': await webp(),
+      },
     );
 
     const seeds = await new FileArticleSource(dir).load();
@@ -335,13 +344,15 @@ describe('FileArticleSource (invalid article)', () => {
   });
 
   it('rejects a variant article without the main article of its disease', async () => {
-    const dir = await packWith({
-      'RICE_BLAST__V1.md': articleText({
-        frontmatter: { code: 'RICE_BLAST__V1', cover: null },
-        images: 'images: []',
-        body: 'Mở đầu.',
-      }),
-    });
+    const dir = await packWith(
+      {
+        'RICE_BLAST__V1.md': articleText({
+          frontmatter: { code: 'RICE_BLAST__V1' },
+          body: 'Mở đầu.',
+        }),
+      },
+      { 'RICE_BLAST__V1/dao-on-1.webp': await webp() },
+    );
 
     await expectRejected(
       dir,
