@@ -3,7 +3,7 @@ code: RICE_BLAST
 crop: RICE
 slug: benh-dao-on
 title: "Bệnh đạo ôn lúa: triệu chứng, nguyên nhân và cách phòng"
-summary: "Cách nhận biết bệnh đạo ôn trên lá, cổ bông và đốt thân lúa, điều kiện thời tiết làm bệnh bùng phát và các biện pháp phòng bệnh an toàn cho ruộng lúa."
+summary: "Cách nhận biết bệnh đạo ôn trên lá, cổ lá, đốt thân và cổ bông lúa, điều kiện làm bệnh bùng phát và các biện pháp canh tác giúp hạn chế thiệt hại."
 status: REVIEWED
 reviewedBy: AI
 reviewedAt: 2026-10-16
@@ -19,127 +19,127 @@ images:
       license: "CC BY 4.0"
       url: "https://doi.org/10.17632/hx6f852hw4.2"
 sources:
-  - title: "VIPA – Một số bệnh hại phổ biến: Bệnh đạo ôn"
-    url: "https://vipa.vn/wp-content/uploads/2020/08/7.-PL_Mot-so-benh-hai-pho-bien.pdf"
-  - title: "Chi cục Trồng trọt và BVTV Ninh Bình – Bệnh đạo ôn trên lúa và biện pháp phòng trừ (2023)"
-    url: "https://chicucttbvtv.ninhbinh.gov.vn/ky-thuat-phong-tru-dich-hai/benh-dao-on-tren-lua-va-bien-phap-phong-tru-146.html"
+  - title: "IRRI Rice Knowledge Bank – Rice Doctor: Blast (leaf and collar)"
+    url: "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/blast-leaf-collar"
+  - title: "IRRI Rice Knowledge Bank – Rice Doctor: Blast (node and neck)"
+    url: "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/blast-node-neck"
+  - title: "Garcia N., Kalicharan R., Fernandez Garcia J. (2024). Rice Blast Disease. UF/IFAS Extension, EDIS MB009"
+    url: "https://doi.org/10.32473/edis-MB009-2024"
+  - title: "Groth D., Hollier C. Rice Blast Disease Management. LSU AgCenter"
+    url: "https://www.lsuagcenter.com/~/media/system/7/4/7/1/747154045c7d7d11d292b15a75ec7846/blastmanagement.pdf"
+  - title: "IRRI Rice Knowledge Bank – Rice Doctor: Brown spot; Narrow brown spot"
+    url: "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/brown-spot"
 generator: { model: "claude-opus-5-5", prompt: article-v1, at: 2026-10-16 }
 updatedAt: 2026-10-16
 ---
 
-Bệnh đạo ôn là một trong những bệnh nguy hiểm nhất trên cây lúa, do nấm *Pyricularia oryzae* gây ra. Bệnh có thể xuất hiện từ lúc lúa còn là mạ cho đến khi chín, gây hại trên lá, bẹ lá, đốt thân, cổ bông, gié và hạt. Khi thời tiết thuận lợi, bệnh lây lan nhanh trên diện rộng; nếu bệnh tấn công cổ bông lúc lúa trỗ, năng suất có thể giảm mạnh.
+Bệnh đạo ôn là một trong những bệnh gây hại nặng nhất trên cây lúa, do nấm *Magnaporthe oryzae* (tên khác *Pyricularia oryzae*) gây ra. Bệnh có mặt ở hơn 85 quốc gia trồng lúa; theo ước tính, mỗi năm bệnh làm mất khoảng 10–30% sản lượng lúa thu hoạch trên thế giới. Nấm có thể tấn công lúa ở mọi giai đoạn và hầu hết các bộ phận trên mặt đất: lá, cổ lá, đốt thân, cổ bông, gié và đôi khi cả bẹ lá. Khi gặp điều kiện thuận lợi, bệnh lây lan rất nhanh và có thể phá hủy ruộng lúa trong thời gian ngắn.
 
 ## Dấu hiệu nhận biết nhanh
 
-- Trên lá có vết bệnh **hình thoi** (giống hình mắt én): giữa phình rộng, **hai đầu nhọn**.
-- **Tâm vết bệnh màu xám trắng** hoặc xám, **viền màu nâu** hoặc nâu đỏ.
-- Nhiều vết bệnh liền nhau làm lá khô cháy.
-- Cổ bông có vết màu nâu xám đến đen, hơi thắt lại; bông lép trắng hoặc gãy gục.
-- Đốt thân thâm đen, khô teo, cây dễ gãy ngang tại đốt.
+- Trên lá có vết bệnh **hình thoi** (hình mắt én): giữa phình rộng, **hai đầu nhọn**.
+- **Tâm vết bệnh màu trắng xám** hoặc xám, **viền nâu** hoặc nâu đỏ.
+- Nhiều vết bệnh liền nhau làm cả lá khô chết.
+- Cổ bông có vết màu nâu xám bao quanh; bông bị lép trắng hoặc gãy gục.
+- Đốt thân thâm đen theo dạng khoanh, thân dễ gãy tại đốt.
 
 ## Triệu chứng
 
-### Đạo ôn lá
+Đạo ôn được gọi tên theo bộ phận bị hại. Mỗi dạng có bài viết riêng với mô tả chi tiết.
 
-Lúc đầu, vết bệnh chỉ là những chấm nhỏ màu xanh lục hoặc xám xanh, trông như vết dầu loang, viền xanh đậm. Sau đó vết bệnh lớn dần và chuyển sang màu xám nhạt.
+### Đạo ôn lá và cổ lá
 
-Vết bệnh già có hình thoi rõ: phần giữa rộng, hai đầu thuôn nhọn, tâm màu xám trắng, xung quanh có viền nâu. Khi bệnh nặng, các vết bệnh lan rộng, nối vào nhau làm chết cả lá. Ruộng bị nặng ở giai đoạn đẻ nhánh có thể bị lùn, lụi.
+Vết bệnh ban đầu là đốm nhỏ trắng đến xám xanh, viền xanh đậm, sau lớn dần thành **hình thoi**, tâm trắng xám, viền nâu đỏ. Nhiều vết nối nhau làm chết cả lá. Vết bệnh cũng xuất hiện ở cổ lá. Đạo ôn lá có thể làm chết mạ và cây lúa đến giai đoạn đẻ nhánh.
 
 ![Vết đạo ôn hình thoi trên lá lúa: tâm xám trắng, viền nâu, hai đầu thuôn nhọn](dao-on-la-hinh-thoi.webp)
 
-Hình dạng và kích thước vết bệnh thay đổi theo giống lúa:
+Chi tiết: [Đạo ôn lá](/diseases/RICE_BLAST__V1).
 
-- Giống dễ nhiễm bệnh: vết bệnh to, hình thoi rõ.
-- Giống có khả năng chống chịu trung bình: vết bệnh nhỏ, hình tròn hoặc bầu dục, có viền nâu.
-- Giống chống chịu tốt: chỉ có những chấm rất nhỏ, không có hình dạng đặc trưng.
+### Đạo ôn cổ bông
 
-### Đạo ôn trên mạ
+Vết nâu xám ở đoạn thân ngay dưới bông, có thể bao quanh làm cổ bông thối, bông gục hoặc gãy; bông bạc trắng, ít hoặc không có hạt. Nhiễm trước giai đoạn ngậm sữa thì không có hạt; nhiễm muộn hơn thì hạt kém chất lượng. Khi phát hiện được đạo ôn cổ bông thì thiệt hại thường đã xảy ra.
 
-Vết bệnh lúc đầu hình bầu dục, sau thành hình thoi nhỏ, màu nâu hồng hoặc nâu vàng. Khi bệnh nặng, các đám vết bệnh nối nhau làm cây mạ héo khô hoặc chết.
-
-### Đạo ôn cổ bông (cổ gié)
-
-Ban đầu là một chấm nhỏ màu xám đen ở cổ bông, sau đó lan dần bao quanh cổ bông. Vết bệnh thon dài, màu nâu xám đến nâu đen, chỗ bị bệnh hơi thắt lại.
-
-- Bệnh xuất hiện **sớm** (lúc lúa trỗ): bông lúa bị lép, bạc trắng.
-- Bệnh xuất hiện **muộn** (khi hạt đã vào chắc): cổ bông bị thối, bông gãy gục xuống tại vết bệnh.
-
-Bệnh cũng có thể gây hại trên cổ gié và hạt. Vết bệnh trên hạt không có hình dạng rõ ràng, màu nâu xám hoặc nâu đen.
+Chi tiết: [Đạo ôn cổ bông](/diseases/RICE_BLAST__V2).
 
 ### Đạo ôn đốt thân
 
-Đốt thân bị thâm đen đến nâu xám, khô teo lại. Cây lúa dễ bị gãy ngang tại đốt bị bệnh.
+Đốt thân bị bệnh theo dạng khoanh, màu đen đến nâu xám; thân gãy tại đốt, bông bạc, cây đổ ngã không rõ nguyên nhân. Đạo ôn đốt thân thường đi cùng đạo ôn cổ bông.
+
+Chi tiết: [Đạo ôn đốt thân](/diseases/RICE_BLAST__V3).
 
 ## Phân biệt với bệnh dễ nhầm
 
-| Bệnh | Hình dạng vết bệnh | Điểm khác với đạo ôn |
+| Bệnh / sâu hại | Dấu hiệu chính | Điểm khác với đạo ôn |
 |---|---|---|
-| Đạo ôn | Hình thoi, hai đầu nhọn, tâm xám trắng, viền nâu | — |
-| [Bệnh đốm nâu](/diseases/RICE_BROWN_SPOT) | Bầu dục hoặc tròn nhỏ như mắt chim, tâm xám hoặc nâu nhạt | Có **quầng vàng sáng** bao quanh rõ rệt (vết đạo ôn đôi khi chỉ có quầng vàng nhạt); không có dạng hình thoi dài nhọn hai đầu |
-| [Bệnh đốm gạch](/diseases/RICE_NARROW_BROWN_SPOT) | Sọc ngắn, hẹp, màu nâu đỏ hoặc màu gạch non | Vết bệnh là **sọc ngắn, hẹp nằm dọc theo gân lá**, không phình rộng ở giữa như hình thoi của đạo ôn |
+| Đạo ôn | Vết hình thoi, hai đầu nhọn, tâm trắng xám, viền nâu | — |
+| [Bệnh đốm nâu](/diseases/RICE_BROWN_SPOT) | Vết tròn đến bầu dục, tâm nâu nhạt đến xám, viền nâu đỏ | Vết **tròn hơn**, màu nâu, thường có **quầng vàng** bao quanh; không thuôn nhọn hai đầu |
+| [Bệnh đốm gạch](/diseases/RICE_NARROW_BROWN_SPOT) | Vết nâu nhạt đến nâu đậm, dạng **sọc hẹp** (dài 2–10 mm, rộng 1–1,5 mm) | Vết chạy **song song theo gân lá**, không phình rộng ở giữa |
+| [Sâu đục thân](/diseases/STEM_BORER) | Bông bạc trắng giống đạo ôn cổ bông | **Kéo nhẹ bông**: bông bạc do sâu đục thân rút ra được, thân đứt tại chỗ sâu đục; bông bạc do đạo ôn thì không rút ra được |
 
 ::disease-card{code="RICE_BROWN_SPOT"}
 
-::disease-card{code="RICE_NARROW_BROWN_SPOT"}
+::disease-card{code="STEM_BORER"}
 
 ## Nguyên nhân và điều kiện phát sinh
 
-**Tác nhân:** nấm *Pyricularia oryzae* (giai đoạn hữu tính là *Magnaporthe oryzae*). Nấm có khả năng biến đổi cao, tạo ra nhiều nòi khác nhau, vì vậy một giống lúa kháng bệnh ở nơi này chưa chắc kháng ở nơi khác.
+**Tác nhân:** nấm *Magnaporthe oryzae*. Nấm có khả năng thích nghi cao, tạo ra nhiều nòi khác nhau, vì vậy giống lúa kháng bệnh thường giảm tính kháng sau một thời gian canh tác. Một giống kháng đạo ôn lá chưa chắc đã kháng đạo ôn cổ bông.
 
 **Nguồn bệnh và cách lây:**
 
-- Nấm tồn tại trong rơm rạ, hạt giống bị bệnh và trên một số loại cỏ dại.
-- Hạt giống nhiễm bệnh mang mầm bệnh từ vụ này sang vụ sau.
-- Bào tử nấm phát tán trong không khí, theo gió lây sang các ruộng xung quanh.
+- Nấm sống qua giữa các vụ trong **tàn dư rơm rạ** nhiễm bệnh và trong **hạt giống** nhiễm bệnh; hạt giống bệnh có thể mang bệnh đến vùng mới.
+- Trên vết bệnh, nấm tạo ra hàng nghìn bào tử. Bào tử phát tán theo **gió và nước mưa bắn**, có thể bay rất xa, lây sang ruộng xung quanh.
+- Bào tử cần lá ướt liên tục ít nhất khoảng 8 giờ để xâm nhiễm.
 
-**Thời tiết thuận lợi cho bệnh:**
+**Điều kiện thuận lợi cho bệnh:**
 
-- Trời mát, âm u, ít nắng, có sương mù nhiều vào sáng sớm, mưa nhỏ hoặc mưa phùn kéo dài.
-- Nhiệt độ khoảng 20–28 °C và độ ẩm không khí rất cao, gần bão hoà.
-- Vì vậy bệnh thường gây hại nặng trong vụ đông xuân.
+- Mưa rào thường xuyên và kéo dài, ẩm độ cao, sương đọng trên lá; ban ngày trời mát.
+- Bào tử nảy mầm tốt nhất khi ban ngày khoảng 25–28 °C, ban đêm khoảng 17–23 °C và ẩm độ không khí trên 90%.
+- **Ruộng thiếu nước**, đất khô hoặc ruộng bị rút cạn nước; lúa cạn bị bệnh nặng hơn lúa nước.
+- **Bón thừa đạm**, ruộng gieo dày làm tán lúa rậm, ẩm.
+- Đất nhẹ, đất cát; ruộng có nhiều cây cao che quanh bờ.
 
-**Giai đoạn dễ nhiễm bệnh:** mạ, đẻ nhánh, làm đòng và trổ.
-
-**Yếu tố làm bệnh nặng hơn:**
-
-- Bón nhiều phân đạm, bón đạm muộn hoặc bón lúc trời lạnh khi cây còn non.
-- Ruộng xanh tốt, rậm rạp, gieo cấy giống dễ nhiễm bệnh.
-- Ruộng trũng, nhiều mùn, khó thoát nước; hoặc đất nhẹ, giữ nước kém, dễ bị khô hạn. Cây lúa thiếu nước kéo dài hay ngập úng lâu ngày đều dễ nhiễm bệnh hơn.
+**Giai đoạn dễ nhiễm bệnh:** bệnh có thể xuất hiện ở mọi giai đoạn, thường gặp đạo ôn lá từ khi lúa đẻ nhánh và đạo ôn cổ bông lúc lúa trỗ. Đạo ôn lá giảm dần khi cây lúa già hơn.
 
 ## Phòng ngừa và xử lý
 
-**Chọn giống và hạt giống:**
+**Giống:**
 
-- Ưu tiên giống lúa chống chịu đạo ôn ở vùng thường xuyên bị bệnh nặng.
-- Kiểm tra hạt giống trước khi gieo. Hạt có nguy cơ nhiễm bệnh có thể xử lý bằng nước nóng 54 °C trong 10 phút để diệt mầm bệnh.
+- Trồng **giống kháng bệnh** là biện pháp chính và hiệu quả nhất. Hỏi cơ quan nông nghiệp địa phương để biết danh sách giống phù hợp.
+- Do tính kháng có thể giảm theo thời gian, nên theo dõi khuyến cáo giống mới của địa phương.
+- Dùng hạt giống sạch bệnh.
 
-**Chăm sóc đồng ruộng:**
+**Thời vụ và luân canh:**
 
-- Dọn sạch rơm rạ và cỏ dại mang bệnh trên ruộng và bờ ruộng.
-- Giữ mực nước ruộng vừa phải, tránh để ruộng khô hạn hoặc ngập úng kéo dài.
-- Thăm đồng thường xuyên khi trời âm u, mưa phùn, nhất là ruộng xanh tốt và ruộng gieo giống dễ nhiễm.
+- Gieo sớm trong khung thời vụ khuyến cáo, tránh gieo muộn.
+- Luân canh với cây trồng không phải ký chủ của bệnh để cắt đứt nguồn bệnh.
 
-**Phân bón:**
+**Nước và phân bón:**
 
-- Bón cân đối đạm, lân, kali; không bón đạm tập trung vào giai đoạn lúa dễ nhiễm bệnh.
-- Khi thấy bệnh xuất hiện, **tạm ngừng bón thúc đạm**.
-- Lượng kali bón cần cân đối với lượng đạm; bón thêm kali trên ruộng đã bón nhiều đạm có thể làm bệnh nặng hơn.
-- Bón phân silic giúp giảm mức độ nhiễm bệnh của cây lúa.
+- Giữ nước trên ruộng càng thường xuyên càng tốt; nếu ruộng đã bị rút nước mà có đạo ôn lá, cho nước vào lại và giữ mực nước khoảng 10–15 cm để phủ kín mặt đất.
+- Không bón thừa đạm. **Chia phân đạm bón làm 2 lần trở lên** thay vì bón một lần.
+- Trên đất thiếu silic, bón phân silic giúp tăng độ cứng của thành tế bào và giảm bệnh.
 
-**Biện pháp sinh học:** theo một số tài liệu, có thể dùng chế phẩm vi sinh chứa *Bacillus subtilis* hoặc nấm *Trichoderma* để hỗ trợ phòng bệnh. Hiệu quả thực tế cần hỏi thêm cán bộ bảo vệ thực vật tại địa phương.
+**Vệ sinh đồng ruộng:**
+
+- Tàn dư rơm rạ nhiễm bệnh là nguồn bệnh cho vụ sau. Không dùng rơm rạ từ ruộng bị bệnh làm phân bón hay vật liệu che phủ cho ruộng khác.
+
+**Thăm đồng:**
+
+- Với giống kháng kém, kiểm tra đạo ôn lá thường xuyên trong giai đoạn sinh trưởng.
+- Khi vùng xung quanh đã có đạo ôn, cần chủ động phòng đạo ôn cổ bông trước khi lúa trỗ, vì phát hiện ra thì thiệt hại đã xảy ra.
 
 :::warning
-Không tự ý phun thuốc khi chưa chắc chắn là bệnh đạo ôn. Nếu cần dùng thuốc bảo vệ thực vật, chỉ dùng loại có trong danh mục được phép sử dụng tại Việt Nam và làm theo hướng dẫn của cán bộ bảo vệ thực vật hoặc đại lý vật tư nông nghiệp.
+Không tự ý phun thuốc khi chưa chắc chắn là bệnh đạo ôn. Nếu cần dùng thuốc bảo vệ thực vật, chỉ dùng loại có trong danh mục được phép sử dụng tại Việt Nam và làm theo hướng dẫn của cán bộ bảo vệ thực vật hoặc đại lý vật tư nông nghiệp. Dùng mãi một loại thuốc dễ làm nấm kháng thuốc.
 :::
 
 ## Khi nào cần hỏi chuyên gia
 
-Hãy liên hệ ngay cán bộ khuyến nông, Trạm hoặc Chi cục Trồng trọt và Bảo vệ thực vật, hoặc đại lý vật tư gần nhất khi:
+Hãy liên hệ cán bộ khuyến nông, cơ quan bảo vệ thực vật địa phương hoặc đại lý vật tư gần nhất khi:
 
-- Vết bệnh hình thoi xuất hiện trên nhiều lá và tăng nhanh sau vài ngày trời âm u, mưa phùn.
-- Lúa đang làm đòng hoặc trỗ mà ruộng đã có đạo ôn lá: bệnh lan lên cổ bông lúc trỗ sẽ ảnh hưởng lớn đến năng suất.
-- Thấy cổ bông hoặc đốt thân thâm đen, bông bạc trắng.
-- Không chắc vết bệnh là đạo ôn hay đốm nâu.
+- Vết bệnh hình thoi xuất hiện trên nhiều lá và tăng nhanh sau những ngày mưa ẩm.
+- Ruộng đã có đạo ôn lá và lúa sắp trỗ.
+- Thấy cổ bông, đốt thân thâm đen hoặc nhiều bông bạc trắng.
+- Không chắc vết bệnh là đạo ôn hay đốm nâu, hoặc bông bạc do đạo ôn hay do sâu đục thân.
 
 :::tip
 Chụp rõ vết bệnh trên lá, cổ bông và gửi lên AgriPedia để được gợi ý chẩn đoán trước khi đi hỏi chuyên gia.
