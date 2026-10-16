@@ -12,5 +12,5 @@ Flow: app start → SeedKnowledgeBase → SeedArticles (upload ảnh public → 
 - [x] 8. [persistence]      FileArticleSource (frontmatter yaml + zod, validate mục 4, sharp width/height) + test pack tạm; 2 bài mẫu từ Design; nest-cli assets; thêm dependency `yaml`
 - [x] 9. [persistence]      NextArticleCacheInvalidator (fetch, retry 5/15/45s); KnowledgeSeeder gọi SeedArticles, RevalidateArticles sau listen$ (bỏ ArticleRevalidationQueue: seeder tự giữ kết quả)
 - [x] 10. [http]            GET /knowledge/articles/crops, /knowledge/articles, /knowledge/articles/sitemap, /knowledge/articles/:cropSlug/:slug (Cache-Control 60s); GET /knowledge/diseases/:code thêm `article`
-- [ ] 11. [api-docs]        4 endpoint mới + action 35
+- [x] 11. [api-docs]        4 endpoint mới + action 35
 - [ ] 12. [boundary-review]

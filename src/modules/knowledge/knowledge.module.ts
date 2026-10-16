@@ -20,6 +20,7 @@ import {
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
 import { ArticleController } from './infrastructure/http/article.controller';
+import './infrastructure/http/article.api-docs';
 import './infrastructure/http/knowledge.api-docs';
 import { KnowledgeController } from './infrastructure/http/knowledge.controller';
 import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';

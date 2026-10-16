@@ -23,7 +23,8 @@ defineApiDocs(KnowledgeController, {
     disease: {
       summary: 'Get the Vietnamese detail of a disease (public)',
       description:
-        'No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet.',
+        'No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet. ' +
+        "`article` = path and status of the disease's article (GET /knowledge/articles/:cropSlug/:slug), null when it has none.",
       validation: true,
       errors: [
         {
