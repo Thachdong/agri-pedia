@@ -13,6 +13,12 @@ export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
       );
   }
 
+  async listCrops(): Promise<Crop[]> {
+    return [...this.crops.values()].sort(
+      (a, b) => a.sortOrder - b.sortOrder || a.code.localeCompare(b.code),
+    );
+  }
+
   async findCrop(code: string): Promise<Crop | null> {
     return this.crops.get(code) ?? null;
   }

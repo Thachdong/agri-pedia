@@ -7,6 +7,7 @@ import {
   GetDiseaseDetailUseCase,
   ListCropsUseCase,
   ListDiseasesUseCase,
+  SeedArticlesUseCase,
   SeedKnowledgeBaseUseCase,
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
@@ -22,6 +23,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
   controllers: [KnowledgeController],
   providers: [
     SeedKnowledgeBaseUseCase,
+    SeedArticlesUseCase,
     ListCropsUseCase,
     ListDiseasesUseCase,
     GetDiseaseDetailUseCase,

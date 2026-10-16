@@ -5,7 +5,7 @@ Flow: app start → SeedKnowledgeBase → SeedArticles (upload ảnh public → 
 - [x] 1. [config-group]     `knowledge`: articleRevalidateUrl, articleRevalidateSecret (≥32 khi có URL); `storage`: publicBaseUrl; `.env.example`
 - [x] 2. [shared-wrapper]   storage: IFileStorage.uploadPublicFile + publicUrl (Firebase + InMemory)
 - [x] 3. [domain-model]     Crop.slug (kèm crop.json slug + validate unique, ORM column, mapper, fakes để build xanh; migration ở bước 7); entity Article, EArticleStatus, service ArticleMarkdownResolver; errors KnowledgeArticleNotFound, KnowledgeArticleInvalidCursor
-- [ ] 4. [use-case]         SeedArticles, ports IArticleSource, IArticleRepository (+ fakes)
+- [x] 4. [use-case]         SeedArticles, ports IArticleSource, IArticleRepository (+ fakes); IKnowledgeRepository.listCrops
 - [ ] 5. [use-case]         RevalidateArticles (tính tag + bài tham chiếu), port IArticleCacheInvalidator
 - [ ] 6. [use-case]         ListArticleCrops, ListArticles, GetArticle, GetArticleSitemap; GetDiseaseDetail thêm `article`
 - [ ] 7. [persistence]      PgArticleRepository, bảng `articles` + cột `crops.slug`, migration `knowledge-articles`

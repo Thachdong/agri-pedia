@@ -29,6 +29,13 @@ export class PgKnowledgeRepository
     return rows.map((row) => KnowledgeMapper.cropToDomain(row));
   }
 
+  async listCrops(): Promise<Crop[]> {
+    const rows = await this.crops.find({
+      order: { sortOrder: 'ASC', code: 'ASC' },
+    });
+    return rows.map((row) => KnowledgeMapper.cropToDomain(row));
+  }
+
   async findCrop(code: string): Promise<Crop | null> {
     const row = await this.crops.findOneBy({ code });
     return row ? KnowledgeMapper.cropToDomain(row) : null;
