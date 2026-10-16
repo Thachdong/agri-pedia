@@ -12,5 +12,5 @@ Hiện trạng: code chưa có variant ở phần bài viết; loader chỉ nh�
 - [x] 5. [persistence]    FileArticleSource: `code` = id bệnh hoặc id biến thể của crop; bài biến thể cần bài chính của bệnh; link nhận id biến thể; `disease-card` chỉ id bệnh; test pack có 1 bài biến thể
 - [x] 6. [http]           response class action 41, 42, 35 thêm trường; e2e
 - [x] 7. [api-docs]       action 35, 41, 42; openapi:export
-- [ ] 8. [boundary-review]
+- [x] 8. [boundary-review]
 - [x] 9. [sync]           copy 5 bài + ảnh từ Design (RICE_BLAST, RICE_BLAST__V1..V3, DURIAN_PHYTOPHTHORA_CANKER) vào crop pack, khởi động app kiểm seed
