@@ -7,6 +7,7 @@ import {
   GetDiseaseDetailUseCase,
   ListCropsUseCase,
   ListDiseasesUseCase,
+  RevalidateArticlesUseCase,
   SeedArticlesUseCase,
   SeedKnowledgeBaseUseCase,
 } from './application/use-cases';
@@ -24,6 +25,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
   providers: [
     SeedKnowledgeBaseUseCase,
     SeedArticlesUseCase,
+    RevalidateArticlesUseCase,
     ListCropsUseCase,
     ListDiseasesUseCase,
     GetDiseaseDetailUseCase,

@@ -6,7 +6,7 @@ Flow: app start → SeedKnowledgeBase → SeedArticles (upload ảnh public → 
 - [x] 2. [shared-wrapper]   storage: IFileStorage.uploadPublicFile + publicUrl (Firebase + InMemory)
 - [x] 3. [domain-model]     Crop.slug (kèm crop.json slug + validate unique, ORM column, mapper, fakes để build xanh; migration ở bước 7); entity Article, EArticleStatus, service ArticleMarkdownResolver; errors KnowledgeArticleNotFound, KnowledgeArticleInvalidCursor
 - [x] 4. [use-case]         SeedArticles, ports IArticleSource, IArticleRepository (+ fakes); IKnowledgeRepository.listCrops
-- [ ] 5. [use-case]         RevalidateArticles (tính tag + bài tham chiếu), port IArticleCacheInvalidator
+- [x] 5. [use-case]         RevalidateArticles (tính tag + bài tham chiếu), port IArticleCacheInvalidator
 - [ ] 6. [use-case]         ListArticleCrops, ListArticles, GetArticle, GetArticleSitemap; GetDiseaseDetail thêm `article`
 - [ ] 7. [persistence]      PgArticleRepository, bảng `articles` + cột `crops.slug`, migration `knowledge-articles`
 - [ ] 8. [persistence]      FileArticleSource (frontmatter yaml + zod, validate mục 4, sharp width/height) + fixtures; crop.json slug; nest-cli assets; thêm dependency `yaml`
