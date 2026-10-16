@@ -24,7 +24,7 @@ defineApiDocs(ArticleController, {
       summary: 'List article summaries of a crop, by title (public)',
       description:
         'Vietnamese title order, keyset-paginated (`nextCursor`). DRAFT articles are included: render them noindex. ' +
-        "`category` filters by the category of the article's disease." +
+        "`category` filters by the category of the article's disease. Variant articles are listed too (`variant` set)." +
         CACHE_NOTE,
       validation: true,
       errors: [
@@ -39,7 +39,8 @@ defineApiDocs(ArticleController, {
       summary: 'Get a disease article, ready to render (public)',
       description:
         '`markdown` has public image URLs and `/diseases/<CODE>` links turned into article paths ' +
-        '(plain text when that disease has no article); directives `:::warning`, `:::tip`, ' +
+        "(a variant id without its own article links to the disease's main article; plain text when there is no article); " +
+        'a variant article has `variant` + `parentArticle` (breadcrumb), a main article lists `variantArticles`; directives `:::warning`, `:::tip`, ' +
         '`::disease-card{code="..."}` and `::cta-diagnosis` stay for the client. `relatedDiseases` feeds the cards.' +
         CACHE_NOTE,
       validation: true,

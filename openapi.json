@@ -2570,7 +2570,7 @@
       "get": {
         "operationId": "KnowledgeController_disease",
         "summary": "Get the Vietnamese detail of a disease (public)",
-        "description": "No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet. `article` = path and status of the disease's article (GET /knowledge/articles/:cropSlug/:slug), null when it has none.",
+        "description": "No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet. `article` = path and status of the disease's main article (GET /knowledge/articles/:cropSlug/:slug), null when it has none; `variants[].article` = the variant's own article, if any.",
         "parameters": [
           {
             "name": "code",
@@ -2669,7 +2669,7 @@
       "get": {
         "operationId": "ArticleController_list",
         "summary": "List article summaries of a crop, by title (public)",
-        "description": "Vietnamese title order, keyset-paginated (`nextCursor`). DRAFT articles are included: render them noindex. `category` filters by the category of the article's disease. Sent with `Cache-Control: public, max-age=60`.",
+        "description": "Vietnamese title order, keyset-paginated (`nextCursor`). DRAFT articles are included: render them noindex. `category` filters by the category of the article's disease. Variant articles are listed too (`variant` set). Sent with `Cache-Control: public, max-age=60`.",
         "parameters": [
           {
             "name": "crop",
@@ -2764,7 +2764,7 @@
       "get": {
         "operationId": "ArticleController_detail",
         "summary": "Get a disease article, ready to render (public)",
-        "description": "`markdown` has public image URLs and `/diseases/<CODE>` links turned into article paths (plain text when that disease has no article); directives `:::warning`, `:::tip`, `::disease-card{code=\"...\"}` and `::cta-diagnosis` stay for the client. `relatedDiseases` feeds the cards. Sent with `Cache-Control: public, max-age=60`.",
+        "description": "`markdown` has public image URLs and `/diseases/<CODE>` links turned into article paths (a variant id without its own article links to the disease's main article; plain text when there is no article); a variant article has `variant` + `parentArticle` (breadcrumb), a main article lists `variantArticles`; directives `:::warning`, `:::tip`, `::disease-card{code=\"...\"}` and `::cta-diagnosis` stay for the client. `relatedDiseases` feeds the cards. Sent with `Cache-Control: public, max-age=60`.",
         "parameters": [
           {
             "name": "cropSlug",
@@ -5159,6 +5159,25 @@
           "diseases"
         ]
       },
+      "DiseaseArticleResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "REVIEWED"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "status"
+        ]
+      },
       "DiseaseVariantResponse": {
         "type": "object",
         "properties": {
@@ -5176,13 +5195,22 @@
             "items": {
               "type": "string"
             }
+          },
+          "article": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiseaseArticleResponse"
+              }
+            ]
           }
         },
         "required": [
           "code",
           "name",
           "affectedParts",
-          "symptoms"
+          "symptoms",
+          "article"
         ]
       },
       "DiseaseTreatmentsResponse": {
@@ -5246,25 +5274,6 @@
         "required": [
           "title",
           "url"
-        ]
-      },
-      "DiseaseArticleResponse": {
-        "type": "object",
-        "properties": {
-          "path": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "DRAFT",
-              "REVIEWED"
-            ]
-          }
-        },
-        "required": [
-          "path",
-          "status"
         ]
       },
       "DiseaseDetailResponse": {
@@ -5591,6 +5600,21 @@
           "category"
         ]
       },
+      "ArticleVariantSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ]
+      },
       "ArticleListItemResponse": {
         "type": "object",
         "properties": {
@@ -5628,6 +5652,14 @@
                 "$ref": "#/components/schemas/ArticleDiseaseSummaryResponse"
               }
             ]
+          },
+          "variant": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleVariantSummaryResponse"
+              }
+            ]
           }
         },
         "required": [
@@ -5638,7 +5670,8 @@
           "coverUrl",
           "status",
           "updatedAt",
-          "disease"
+          "disease",
+          "variant"
         ]
       },
       "ListArticlesResponse": {
@@ -5754,6 +5787,63 @@
           "agentType",
           "affectedParts",
           "verification"
+        ]
+      },
+      "ArticleVariantResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "affectedParts": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "affectedParts"
+        ]
+      },
+      "ArticleLinkResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "title"
+        ]
+      },
+      "VariantArticleResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "title",
+          "variantCode",
+          "variantName"
         ]
       },
       "ArticleCoverResponse": {
@@ -5915,6 +6005,28 @@
               }
             ]
           },
+          "variant": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleVariantResponse"
+              }
+            ]
+          },
+          "parentArticle": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleLinkResponse"
+              }
+            ]
+          },
+          "variantArticles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VariantArticleResponse"
+            }
+          },
           "cover": {
             "nullable": true,
             "allOf": [
@@ -5975,6 +6087,9 @@
           "markdown",
           "crop",
           "disease",
+          "variant",
+          "parentArticle",
+          "variantArticles",
           "cover",
           "images",
           "relatedDiseases",
