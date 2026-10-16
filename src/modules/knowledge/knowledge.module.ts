@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import {
+  ARTICLE_REPOSITORY,
   KNOWLEDGE_BASE_SOURCE,
   KNOWLEDGE_REPOSITORY,
 } from './application/ports';
@@ -19,6 +20,7 @@ import { KNOWLEDGE_QUERY_PORT } from './contracts';
 import './infrastructure/http/knowledge.api-docs';
 import { KnowledgeController } from './infrastructure/http/knowledge.controller';
 import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';
+import { PgArticleRepository } from './infrastructure/persistence/pg-article.repository';
 import { PgKnowledgeRepository } from './infrastructure/persistence/pg-knowledge.repository';
 import { JsonKnowledgeBaseSource } from './infrastructure/seed/json-knowledge-base.source';
 import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
@@ -39,6 +41,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
     GetArticleSitemapUseCase,
     KnowledgeSeeder,
     { provide: KNOWLEDGE_REPOSITORY, useClass: PgKnowledgeRepository },
+    { provide: ARTICLE_REPOSITORY, useClass: PgArticleRepository },
     {
       provide: KNOWLEDGE_BASE_SOURCE,
       useFactory: () => new JsonKnowledgeBaseSource(),
