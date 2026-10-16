@@ -8,7 +8,16 @@ status: REVIEWED
 reviewedBy: AI
 reviewedAt: 2026-10-16
 kbVersion: 2026-10-12
-images: []
+cover: benh-dao-on-dot-than.webp
+images:
+  - file: benh-dao-on-dot-than.webp
+    alt: "Ba thân lúa có đốt bị đạo ôn thâm đen theo khoanh"
+    caption: "Đạo ôn đốt thân: đốt thâm đen, nâu xám theo khoanh"
+    credit:
+      source: "Wikimedia Commons / Bugwood.org (ảnh 5390481)"
+      author: "Donald Groth, Louisiana State University AgCenter (ảnh đã cắt, thu nhỏ)"
+      license: "Public domain (theo Wikimedia Commons)"
+      url: "https://commons.wikimedia.org/wiki/File:Rice_blast_symptoms.jpg"
 sources:
   - title: "IRRI Rice Knowledge Bank – Rice Doctor: Blast (node and neck)"
     url: "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/blast-node-neck"
@@ -31,6 +40,8 @@ updatedAt: 2026-10-16
 ### Trên đốt thân
 
 Sau giai đoạn vươn lóng, nấm có thể tấn công các đốt trên thân. Vết bệnh bao quanh đốt thành khoanh, màu đen đến nâu xám. Đốt bị bệnh yếu đi, làm phần thân mang bông bị gãy ngang tại đốt.
+
+![Ba thân lúa có đốt bị đạo ôn thâm đen theo khoanh](benh-dao-on-dot-than.webp)
 
 ### Trên cả khóm lúa
 

@@ -8,11 +8,19 @@ status: REVIEWED
 reviewedBy: AI
 reviewedAt: 2026-10-16
 kbVersion: 2026-10-12
-cover: dao-on-la-hinh-thoi.webp
+cover: benh-dao-on.webp
 images:
   - file: dao-on-la-hinh-thoi.webp
     alt: "Vết đạo ôn hình thoi trên lá lúa: tâm xám trắng, viền nâu, hai đầu thuôn nhọn"
     caption: "Vết đạo ôn lá điển hình: hình thoi, tâm xám, viền nâu"
+    credit:
+      source: "Rice Leaf Bacterial and Fungal Disease Dataset (Mendeley Data)"
+      author: "Hasan M. (ảnh đã cắt, thu nhỏ)"
+      license: "CC BY 4.0"
+      url: "https://doi.org/10.17632/hx6f852hw4.2"
+  - file: benh-dao-on.webp
+    alt: "Vết đạo ôn hình thoi tâm xám, viền nâu trên lá lúa ngoài đồng"
+    caption: "Vết đạo ôn trên lá lúa"
     credit:
       source: "Rice Leaf Bacterial and Fungal Disease Dataset (Mendeley Data)"
       author: "Hasan M. (ảnh đã cắt, thu nhỏ)"

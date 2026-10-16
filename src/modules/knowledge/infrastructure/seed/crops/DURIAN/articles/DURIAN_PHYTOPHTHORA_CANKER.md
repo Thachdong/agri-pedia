@@ -3,141 +3,135 @@ code: DURIAN_PHYTOPHTHORA_CANKER
 crop: DURIAN
 slug: benh-nut-than-xi-mu
 title: "Bệnh nứt thân xì mủ sầu riêng: dấu hiệu, nguyên nhân, cách phòng"
-summary: "Nhận biết sớm bệnh nứt thân xì mủ trên thân, cành và gốc sầu riêng, hiểu vì sao bệnh bùng phát mùa mưa và các biện pháp canh tác, sinh học để bảo vệ vườn."
+summary: "Nhận biết sớm bệnh nứt thân xì mủ do Phytophthora trên thân, cành và gốc sầu riêng, hiểu cách bệnh lây lan và các biện pháp quản lý tổng hợp cho vườn."
 status: REVIEWED
 reviewedBy: AI
 reviewedAt: 2026-10-16
 kbVersion: 2026-10-15
-images: []
+cover: benh-nut-than-xi-mu.webp
+images:
+  - file: benh-nut-than-xi-mu.webp
+    alt: "Cây sầu riêng trưởng thành với tán rộng (ảnh minh hoạ cây trồng)"
+    caption: "Cây sầu riêng (ảnh minh hoạ cây trồng, không phải cây bị bệnh)"
+    credit:
+      source: "Wikimedia Commons"
+      author: "Sakurai Midori (ảnh đã cắt, thu nhỏ)"
+      license: "Public domain"
+      url: "https://commons.wikimedia.org/wiki/File:Durian_Kamarung_(Durio_zibethinus).JPG"
 sources:
-  - title: "Cục BVTV – TBKT 01-114:2021/BVTV: Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk"
-    url: "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
-  - title: "Đặng Thị Kim Uyên, Nguyễn Văn Hòa (SOFRI) – Một số dịch hại quan trọng phổ biến trên sầu riêng và biện pháp quản lý (Kỷ yếu hội thảo ĐH Cần Thơ – SOFRI, 2024)"
-    url: "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
-  - title: "Mai Văn Trị, Nguyễn Thị Thu Nga – Quản lý và giảm nhẹ nguy cơ bệnh hại trên vườn sầu riêng trong bối cảnh biến đổi khí hậu (Kỷ yếu hội thảo ĐH Cần Thơ – SOFRI, 2024)"
-    url: "https://coa.ctu.edu.vn/images/upload/Cacbomon/BVTV/hoithao/Ton-vn-ti-liu-Hi-tho-SU-RING-30-4-2024.pdf"
-  - title: "O'Gara E., Guest D.I. và cs. (2004) – Phytophthora diseases of durian, and durian-decline syndrome in northern Queensland. ACIAR Monograph 114"
+  - title: "O'Gara E., Guest D.I. và cs. (2004). Phytophthora diseases of durian, and durian-decline syndrome in northern Queensland, Australia. ACIAR Monograph 114, chương 6.6"
     url: "https://era.daf.qld.gov.au/id/eprint/10667/"
+  - title: "Guest D.I., Nguyen Minh Chau, Sangchote S., Vawdrey L., Diczbalis Y. (2004). Integrated management of phytophthora diseases of durian: recommendations and benefit–cost analysis. ACIAR Monograph 114, chương 8.7"
+    url: "https://era.dpi.qld.gov.au/id/eprint/10666/"
+  - title: "Cục Bảo vệ thực vật (2021). TBKT 01-114:2021/BVTV – Quy trình quản lý tổng hợp bệnh héo ngọn, chết cây và một số sinh vật gây hại chính trên cây sầu riêng tại Đắk Lắk"
+    url: "https://ppd.gov.vn/FileUpload/Documents/P.%20Ke%20hoach/TBKT/21.12.25_%20Quy%20tr%C3%ACnh%20QLSB%20sau%20rieng-revised%203.pdf"
 generator: { model: "claude-opus-5-5", prompt: article-v1, at: 2026-10-16 }
 updatedAt: 2026-10-16
 ---
 
-Bệnh nứt thân xì mủ (còn gọi là thối gốc chảy nhựa, thối thân xì mủ, thối cổ rễ) là bệnh nguy hiểm, phổ biến trên cây sầu riêng, gặp ở tất cả các vùng trồng sầu riêng trên thế giới và ở Việt Nam. Bệnh làm thối vỏ thân, cành và gốc, khiến cây vàng lá, khô cành và có thể chết cả cây. Bệnh gây hại quanh năm nhưng nặng nhất vào mùa mưa.
+Bệnh nứt thân xì mủ (còn gọi là thối thân xì mủ, thối gốc chảy nhựa) do *Phytophthora palmivora* gây ra là một trong những bệnh nghiêm trọng nhất trên cây sầu riêng ở Đông Nam Á. Bệnh tạo các vết thối trên vỏ thân, cành và gốc, làm cây suy yếu, giảm năng suất, khô cành và có thể chết cây. Điều kiện mưa nhiều ở các vùng trồng sầu riêng rất thuận lợi cho bệnh phát triển.
 
 ## Dấu hiệu nhận biết nhanh
 
-- Trên vỏ thân, cành hoặc gốc có **mảng vỏ ướt, đổi màu** khác hẳn vùng vỏ xung quanh.
-- Vỏ **nứt và chảy nhựa (mủ) màu nâu đỏ** ra ngoài.
-- **Cạo lớp vỏ ngoài** thấy mô bên dưới chuyển **màu nâu đỏ**, thay vì màu kem hoặc vàng sáng của vỏ khỏe.
-- Lá vàng, héo, rụng sớm; cành khô từ ngọn, tán cây thưa dần.
+- Trên vỏ thân, cành hoặc gốc có **mảng vỏ trông ướt**, tách biệt với vùng vỏ xung quanh.
+- Các mảng này lớn dần thành vết loét rõ, **chảy nhựa màu nâu đỏ**.
+- **Bóc lớp vỏ** ở vết bệnh thấy mô bên dưới **màu nâu đỏ**, trong khi mô khỏe có màu kem đến hồng.
+- Lá héo, vàng; cành khô dần từ ngọn.
 
 ## Triệu chứng
 
-### Xì mủ trên thân, cành
+### Vết loét trên thân, cành
 
-Dấu hiệu đầu tiên là những vết hơi ướt trên bề mặt vỏ, thường ở gần chỗ phân cành trên thân và cành chính. Vỏ cây đổi màu, sau đó nứt ra và tiết nhựa màu nâu đỏ, đi kèm với phần mô vỏ bị chết.
+Vết bệnh có thể bắt đầu ở sát mặt đất (gốc) hoặc ở chạc cành. Ở một số nơi, vết bệnh được phát hiện đầu tiên trên các cành cao trong tán.
 
-Khi bóc phần vỏ bệnh ra, phần mô bên trong bị xỉn màu, chuyển từ màu kem sang nâu đỏ. Vết bệnh có hình dạng không đều nhưng ranh giới với phần mô khỏe khá rõ. Dùng dao sắc cạo vào phần gỗ có thể thấy những sọc nâu chạy dọc theo mạch dẫn.
+Ban đầu là những mảng vỏ riêng lẻ trông ướt. Các mảng này dần nối vào nhau thành vết loét lớn, dễ thấy, tiết ra chất nhựa màu nâu đỏ. Khi bóc vỏ, phần mô vỏ bên dưới có vết nâu đỏ; ở cây khỏe phần mô này có màu kem đến hồng. Bệnh thường lan sâu vào phần gỗ.
 
-Vết bệnh làm cản trở nước và dinh dưỡng đi lên cành nên cành bị héo. Khi vết bệnh lan bao quanh thân hoặc cành, lá vàng và rụng sớm, ngọn khô, cành trơ trụi. Ở giai đoạn nặng, vỏ cây thối mục, nhiều cành lớn khô chết và cây có thể chết.
+Vết bệnh làm hỏng tầng phát sinh (cambium) nằm ngay dưới vỏ, khiến cây suy yếu và giảm năng suất. Khi vết bệnh bao quanh thân chính hoặc rễ chính, lá héo, vàng, cành khô dần, gây hiện tượng khô cành từ ngọn (chết ngược).
 
-### Thối cổ rễ, thối gốc
+### Vết bệnh trên rễ
 
-Vết bệnh nằm ở ngay mặt đất hoặc ngay dưới mặt đất, làm thối phần vỏ gốc. Ban đầu vết bệnh là vết loét sũng nước, sau đó khô dần, hơi lõm xuống và làm nứt vỏ thân, thường có màu nâu sẫm. Nhựa thường chảy ra ở chỗ bị bệnh. Phần vỏ bệnh dễ dàng tách ra khỏi phần gỗ bên trong.
+Nấm bệnh cũng tấn công rễ con và rễ bên lớn. Khi đó, thối rễ góp phần làm cây vàng lá, khô cành.
 
-Lá phía trên héo, rụng dần, tán thưa, khô ngọn và khô cành.
+### Diễn biến
 
-### Bệnh bắt đầu từ rễ
+Cây bị bệnh có thể sống thêm nhiều năm vì bệnh phát triển chậm lại rõ rệt trong mùa khô. Tuy nhiên, cây bị khô hạn trong mùa khô sẽ yếu đi và bệnh có thể phát triển nhanh hơn ở mùa mưa năm sau.
 
-Bệnh có thể bắt đầu từ rễ non (thối nâu đen, chết dần) rồi lan lên rễ lớn, gốc và thân, gây chảy nhựa, vàng lá và cây chết dần.
-
-Cùng tác nhân này còn gây [bệnh thối rễ](/diseases/DURIAN_ROOT_ROT), [cháy lá](/diseases/DURIAN_PHYTOPHTHORA_LEAF_BLIGHT) và [thối trái](/diseases/DURIAN_PHYTOPHTHORA_FRUIT_ROT) trên sầu riêng.
-
-Bệnh hoạt động chậm lại trong mùa khô nên cây bệnh có thể sống thêm nhiều năm, nhưng cây bị khô hạn sẽ suy yếu và bị bệnh nặng hơn vào mùa mưa năm sau.
+Cùng tác nhân này còn gây [chết cây con, cháy lá](/diseases/DURIAN_PHYTOPHTHORA_LEAF_BLIGHT), [thối rễ](/diseases/DURIAN_ROOT_ROT) và [thối trái](/diseases/DURIAN_PHYTOPHTHORA_FRUIT_ROT) trước và sau thu hoạch.
 
 ## Phân biệt với bệnh dễ nhầm
 
-| Bệnh / sâu hại | Dấu hiệu chính | Điểm khác với nứt thân xì mủ |
+| Bệnh / sâu hại | Liên quan đến xì mủ | Cách kiểm tra |
 |---|---|---|
-| Nứt thân xì mủ | Mảng vỏ ướt, nứt, chảy nhựa nâu đỏ; mô dưới vỏ nâu đỏ | — |
-| [Bệnh chết nhanh](/diseases/DURIAN_SUDDEN_DEATH) | Thân chuyển vàng rồi nâu sẫm, có nhiều lỗ nhỏ li ti | **Không chảy nhựa** |
-| [Mọt đục thân, cành](/diseases/DURIAN_SHOT_HOLE_BORER) | Lỗ đục nhỏ, có mùn gỗ hoặc phân mọt | Không có mảng vỏ ướt thối nâu. Lưu ý: cây bị xì mủ cũng có thể bị mọt tấn công thêm |
-| [Xén tóc đục thân](/diseases/DURIAN_STEM_BORER) | Lỗ đục lớn, mùn gỗ đùn ra, sâu non to trong gỗ | Không có mảng vỏ thối sũng nước |
+| [Mọt đục thân, cành](/diseases/DURIAN_SHOT_HOLE_BORER) | Vết xì mủ thu hút các loài bọ cánh cứng đục gỗ, nên cây bị xì mủ thường có cả lỗ mọt | Nếu vỏ quanh lỗ đục có mảng mô màu nâu đỏ, cây đang bị xì mủ, mọt chỉ tấn công sau |
 
-::disease-card{code="DURIAN_SUDDEN_DEATH"}
+Các bệnh khác cũng gây vàng lá, khô cành, chết cây trên sầu riêng: [bệnh chết nhanh](/diseases/DURIAN_SUDDEN_DEATH), [xén tóc đục thân](/diseases/DURIAN_STEM_BORER). Khi không chắc chắn, nên nhờ cán bộ chuyên môn kiểm tra.
 
 ::disease-card{code="DURIAN_SHOT_HOLE_BORER"}
 
+::disease-card{code="DURIAN_SUDDEN_DEATH"}
+
 ## Nguyên nhân và điều kiện phát sinh
 
-**Tác nhân:** *Phytophthora palmivora*. Tác nhân này thường được gọi là "nấm" nhưng thực ra là một loại vi sinh vật dạng sợi giống nấm (noãn khuẩn, sống trong môi trường ẩm nước), không phải nấm thật. Ở Việt Nam còn ghi nhận *P. citricola* gây hại tương tự ở Lâm Đồng và *P. heterospora* ở Đồng bằng sông Cửu Long.
+**Tác nhân:** *Phytophthora palmivora*. Đây là vi sinh vật dạng sợi giống nấm (thuộc nhóm noãn khuẩn, ưa nước), không phải nấm thật. Về bản chất nó sống trong đất, nhưng có khả năng tấn công cả các bộ phận trên cao nên gây hại được mọi bộ phận của cây sầu riêng và ở mọi giai đoạn. Ở Malaysia còn ghi nhận *P. nicotianae* gây thối rễ và loét thân sầu riêng.
 
 **Cách lây lan:**
 
-- Theo nước tưới, nước chảy tràn trong vườn và giọt mưa bắn đất có mầm bệnh lên gốc, thân, lá sát mặt đất.
-- Đất nhiễm bệnh bám theo chân người, dụng cụ, xe cộ và động vật đi lại trong vườn.
-- Kiến, mối, sên, côn trùng và gió mạnh trong cơn mưa cũng mang mầm bệnh sang cây khác.
-- Mầm bệnh xâm nhập dễ dàng qua **vết thương** trên cây do chăm sóc, dụng cụ hoặc côn trùng.
-
-Mầm bệnh tồn tại trong rễ, đất, mô cây bệnh và xác trái bị bệnh.
+- Đất và nước có mầm bệnh **bắn lên thân và tán** khi mưa hoặc tưới.
+- Kiến làm tổ, mối đắp đất quanh thân **mang đất có mầm bệnh lên cây**.
+- Côn trùng, bọ cánh cứng và các loài bò trên thân (như cuốn chiếu) có thể mang mầm bệnh từ vết bệnh hoặc trái thối sang chỗ khác.
+- **Trái bị thối** là nguồn bệnh rất lớn trong vườn.
+- Đất bám theo **giày dép, bánh xe, dụng cụ** mang mầm bệnh giữa các cây và giữa các vườn.
+- Mầm bệnh xâm nhập qua **vết thương** trên cây.
 
 **Điều kiện thuận lợi:**
 
-- **Mùa mưa**, nặng nhất vào giữa và cuối mùa mưa (ở Tây Nguyên khoảng tháng 8 đến tháng 11).
-- Vườn bị ngập úng, đọng nước, thoát nước kém, đất ướt sũng kéo dài.
-- Đất chua (pH thấp), bạc màu, thiếu chất hữu cơ; bón thừa phân đạm.
-- Cây có vết thương; cây suy yếu do khô hạn.
-- *P. palmivora* phát triển được trong khoảng 10–37 °C, thích hợp nhất khoảng 25–30 °C.
-
-**Giai đoạn cây dễ bị hại:** cây con, kiến thiết cơ bản, ra hoa, nuôi trái và phục hồi sau thu hoạch.
+- **Mưa nhiều**, ẩm độ trong vườn cao, vườn kém thông thoáng.
+- **Thoát nước kém, mực nước ngầm cao**. Ở một số vùng tại Việt Nam, nông dân đắp bờ bao giữ nước quanh gốc để tưới mùa khô; sang mùa mưa nước đọng sát thân gây bệnh.
+- Vườn trồng trên đất cũ của cây cao su, ca cao, đu đủ (đều là cây ký chủ của *P. palmivora*), hoặc trồng xen dày với đu đủ, dừa, ca cao.
+- **Bón thừa phân đạm vô cơ** làm tăng nguy cơ loét thân và thối rễ.
 
 ## Phòng ngừa và xử lý
 
-**Thoát nước – quan trọng nhất:**
+**Khi trồng mới:**
 
-- Không để vườn bị ngập úng, nước tràn qua hay đọng nước.
-- Vùng đất thấp, thoát nước kém: làm hệ thống mương – líp – mô hoặc luống trồng; cổ rễ cần cao hơn mực nước cao nhất hằng năm khoảng 70–100 cm.
+- Mua cây giống sạch bệnh từ vườn ươm uy tín.
+- Tránh trồng trực tiếp trên đất vừa trồng cao su, ca cao, đu đủ. Nếu buộc phải trồng, nên trồng cây họ đậu che phủ ít nhất 1 năm, cắt làm phân xanh để tăng chất hữu cơ và vi sinh vật có ích trong đất.
+- Mực nước ngầm cần thấp hơn mặt đất ít nhất 80 cm. Ở vùng đất thấp như Đồng bằng sông Cửu Long, trồng trên mô cao 50–60 cm; nơi khác khoảng 30–40 cm.
+- Trộn phân gà ủ hoai và vôi vào đất trước khi trồng.
+- Ưu tiên cây ghép trên gốc ghép chống chịu bệnh (ví dụ giống Lá Quéo của Việt Nam). Không trồng quá sâu, mắt ghép phải nằm cao hơn mặt đất.
+- Không trồng quá dày (thường không quá 80–100 cây/ha) và không trồng xen dày với cây dễ nhiễm bệnh.
 
-**Ngăn mầm bệnh vào vườn:**
+**Chăm sóc vườn:**
 
-- Dùng cây giống sạch bệnh; không trồng xen cây cũng bị *Phytophthora* gây hại.
-- Cẩn thận với đất, vật liệu tủ gốc, nguồn nước có thể mang mầm bệnh; không thả gia súc, gia cầm trong vườn.
+- Tỉa bỏ cành thấp trong khoảng 80–100 cm tính từ mặt đất để vườn thông thoáng, giảm ẩm và hạn chế đất bắn lên tán.
+- **Tủ gốc** bằng rơm và phân chuồng trong vùng tán để cải thiện đất, giúp rễ khỏe và giữ ẩm mùa khô. Mùa mưa, **dọn lớp tủ sát quanh gốc** để thân không bị ẩm kéo dài.
+- Tưới phun hoặc tưới nhỏ giọt thay vì tưới tràn; hướng vòi tưới vào vùng rễ, **không tưới vào thân**. Không dùng nguồn nước có thể nhiễm mầm bệnh.
+- Ưu tiên phân hữu cơ (nhất là phân gà ủ hoai) thay vì bón nhiều phân vô cơ.
+- Xử lý ra hoa (bằng hóa chất hoặc gây thiếu nước) cần thận trọng và không làm năm nào cũng như năm nào, để cây không bị suy kiệt.
 
-**Chăm sóc:**
+**Vệ sinh vườn:**
 
-- Không trồng quá dày; tỉa cành, quản lý cỏ dại để vườn thông thoáng. Chỉ tỉa cành khi trời khô ráo, hạn chế làm cây bị thương.
-- Vệ sinh vườn: thu gom, tiêu hủy cành, lá, trái bị bệnh và rác cây dưới gốc.
-- Trên vườn đã có bệnh, hạn chế tưới làm ướt thân, cành và tán; nên tưới nhỏ giọt hoặc phun nhỏ dưới tán.
+- Thu hái trái đều đặn, nhặt bỏ trái bị thối ra khỏi vườn; chôn hoặc ủ yếm khí, không để đống trái thối trong vườn.
+- Vệ sinh dụng cụ cắt tỉa, thu hoạch trước khi chuyển sang cây khác; rửa sạch giày ủng, dụng cụ để không mang đất từ vườn này sang vườn khác.
 
-**Cải tạo đất và dinh dưỡng:**
+**Biện pháp sinh học:** theo quy trình của Cục Bảo vệ thực vật, có thể ủ chế phẩm chứa vi sinh vật đối kháng (*Trichoderma*, *Bacillus*, *Streptomyces*) với phân chuồng hoai mục rồi bón vào vùng rễ trước mùa mưa, cho cả vườn chưa có bệnh và vườn đang có cây bệnh.
 
-- Bón vôi để nâng pH đất lên khoảng 5,8–6,8. Đất có pH 5,0–5,5 có thể bón 400–800 kg vôi/ha tùy đất nhiều hay ít sét.
-- Bón phân cân đối, tránh thừa đạm; bổ sung trung, vi lượng khi cây thiếu.
-- Tăng phân hữu cơ hoai mục, ví dụ phân gà hoai 5–12 tấn hoặc phân bò hoai 8–15 tấn/ha/năm.
-- Quét vôi quanh gốc và thân 1–3 lần mỗi năm (cuối mùa nắng hoặc đầu mùa mưa). Việc này còn giúp hạn chế mối và côn trùng hại vỏ bò từ đất lên cây.
+**Khi phát hiện vết bệnh:**
 
-**Biện pháp sinh học:**
-
-- Dùng chế phẩm sinh học chứa vi sinh vật đối kháng *Trichoderma* spp., *Bacillus* spp., *Streptomyces* spp. ủ với phân chuồng hoai mục (khoảng 3 kg chế phẩm cho 1 tấn phân, đủ ẩm, phủ bạt) 7–10 ngày trước khi bón.
-- Bón vào vùng rễ theo hình chiếu tán cây rồi phủ lớp đất mặt lên, **trước mùa mưa** (khoảng tháng 4 đến đầu tháng 5). Áp dụng cho cả vườn chưa có bệnh và vườn đang có cây bệnh.
-
-**Khi phát hiện cây bệnh:**
-
-- Theo dõi vườn thường xuyên trong mùa mưa (khoảng tháng 5 đến hết tháng 11).
-- Cây mới chớm bệnh: cạo sạch lớp vỏ ngoài ở chỗ xì mủ; cây bệnh nặng: loại bỏ toàn bộ phần mô đã chết, thối mục. Thu gom phần vỏ cạo ra và tiêu hủy, không để rơi lại trong vườn.
-- Việc xử lý vết cạo và các biện pháp tiếp theo cần làm theo hướng dẫn của cán bộ bảo vệ thực vật.
+- Cần xác định bệnh sớm và chính xác để tránh cây chết.
+- Cạo lớp vỏ trên bề mặt vết loét; cây bị nặng cần loại bỏ toàn bộ phần mô bệnh đã chết, thối mục. Việc xử lý vết cạo và các biện pháp tiếp theo cần làm theo hướng dẫn của cán bộ bảo vệ thực vật.
 
 :::warning
-Không tự ý dùng thuốc khi chưa xác định đúng bệnh. Nếu cần dùng thuốc bảo vệ thực vật, chỉ dùng loại có trong danh mục được phép sử dụng tại Việt Nam, theo hướng dẫn của cán bộ bảo vệ thực vật hoặc đại lý vật tư nông nghiệp. Khi dùng chế phẩm vi sinh đối kháng, hạn chế dùng các thuốc trừ nấm làm chết các vi sinh vật có ích này.
+Không tự ý dùng thuốc khi chưa xác định đúng bệnh. Nếu cần dùng thuốc bảo vệ thực vật, chỉ dùng loại có trong danh mục được phép sử dụng tại Việt Nam, theo hướng dẫn của cán bộ bảo vệ thực vật hoặc đại lý vật tư nông nghiệp.
 :::
 
 ## Khi nào cần hỏi chuyên gia
 
-Liên hệ cán bộ khuyến nông, Trạm hoặc Chi cục Trồng trọt và Bảo vệ thực vật, hoặc đại lý vật tư gần nhất khi:
+Liên hệ cán bộ khuyến nông, cơ quan bảo vệ thực vật địa phương hoặc đại lý vật tư gần nhất khi:
 
-- Vết chảy nhựa lan rộng, gần bao quanh thân hoặc cành chính.
-- Nhiều cây trong vườn cùng xuất hiện vết xì mủ, đặc biệt sau những đợt mưa kéo dài hoặc ngập úng.
-- Cây đang ra hoa, nuôi trái mà có dấu hiệu vàng lá, khô cành.
-- Không chắc là xì mủ, bệnh chết nhanh hay do mọt, xén tóc đục thân.
+- Thấy vết chảy nhựa nâu đỏ trên thân, cành hoặc gốc, đặc biệt khi vết bệnh lan rộng gần bao quanh thân.
+- Nhiều cây trong vườn cùng xuất hiện vết xì mủ hoặc trái thối sau những đợt mưa kéo dài.
+- Cây vàng lá, khô cành mà không rõ nguyên nhân.
+- Không chắc là xì mủ, bệnh chết nhanh hay do sâu đục thân.
 
 ::cta-diagnosis

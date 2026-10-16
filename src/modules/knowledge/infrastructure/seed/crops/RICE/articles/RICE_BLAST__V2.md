@@ -8,7 +8,16 @@ status: REVIEWED
 reviewedBy: AI
 reviewedAt: 2026-10-16
 kbVersion: 2026-10-12
-images: []
+cover: benh-dao-on-co-bong.webp
+images:
+  - file: benh-dao-on-co-bong.webp
+    alt: "Các bông lúa bị đạo ôn cổ bông: cổ bông thâm nâu, bông lép bạc"
+    caption: "Bông lúa bị đạo ôn cổ bông, phần cổ bông bị hoại tử"
+    credit:
+      source: "Wikimedia Commons – Les plantes cultivades. 1. Cereals (2008), ảnh 747"
+      author: "Miquel Pujol Palol (thay chú thích sang tiếng Việt) (ảnh đã cắt, thu nhỏ)"
+      license: "CC BY-SA 3.0"
+      url: "https://commons.wikimedia.org/wiki/File:LPCC-747-Arròs_amb_piriculariosi.jpg"
 sources:
   - title: "IRRI Rice Knowledge Bank – Rice Doctor: Blast (node and neck)"
     url: "http://www.knowledgebank.irri.org/decision-tools/rice-doctor/rice-doctor-fact-sheets/item/blast-node-neck"
@@ -34,6 +43,8 @@ updatedAt: 2026-10-16
 ### Trên cổ bông
 
 Vết bệnh màu nâu xám xuất hiện ở đoạn thân ngay dưới bông. Khi vết bệnh bao quanh cổ bông, phần cổ bông thối và yếu đi, bông gục hoặc gãy xuống. Vết bệnh ở cổ bông cản trở nước và chất dinh dưỡng đi lên bông, nên hạt không vào chắc được và bông chuyển màu trắng; nếu bị sớm, bông có thể không phát triển được.
+
+![Các bông lúa bị đạo ôn cổ bông: cổ bông thâm nâu, bông lép bạc](benh-dao-on-co-bong.webp)
 
 ### Trên gié và bông
 
