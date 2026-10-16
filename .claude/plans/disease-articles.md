@@ -13,4 +13,4 @@ Flow: app start → SeedKnowledgeBase → SeedArticles (upload ảnh public → 
 - [x] 9. [persistence]      NextArticleCacheInvalidator (fetch, retry 5/15/45s); KnowledgeSeeder gọi SeedArticles, RevalidateArticles sau listen$ (bỏ ArticleRevalidationQueue: seeder tự giữ kết quả)
 - [x] 10. [http]            GET /knowledge/articles/crops, /knowledge/articles, /knowledge/articles/sitemap, /knowledge/articles/:cropSlug/:slug (Cache-Control 60s); GET /knowledge/diseases/:code thêm `article`
 - [x] 11. [api-docs]        4 endpoint mới + action 35
-- [ ] 12. [boundary-review]
+- [x] 12. [boundary-review]
