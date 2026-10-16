@@ -8,6 +8,14 @@
       {
         "include": "modules/knowledge/infrastructure/seed/crops/*/*.json",
         "watchAssets": true
+      },
+      {
+        "include": "modules/knowledge/infrastructure/seed/crops/*/articles/*.md",
+        "watchAssets": true
+      },
+      {
+        "include": "modules/knowledge/infrastructure/seed/crops/*/articles/images/**/*.webp",
+        "watchAssets": true
       }
     ],
     "plugins": [
