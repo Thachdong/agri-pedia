@@ -23,6 +23,10 @@ export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
     return this.crops.get(code) ?? null;
   }
 
+  async findCropBySlug(slug: string): Promise<Crop | null> {
+    return [...this.crops.values()].find((crop) => crop.slug === slug) ?? null;
+  }
+
   async listDiseasesByCrop(cropType: string): Promise<Disease[]> {
     return [...this.diseases.values()].filter((d) => d.cropType === cropType);
   }

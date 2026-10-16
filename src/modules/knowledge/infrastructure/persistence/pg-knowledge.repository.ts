@@ -41,6 +41,11 @@ export class PgKnowledgeRepository
     return row ? KnowledgeMapper.cropToDomain(row) : null;
   }
 
+  async findCropBySlug(slug: string): Promise<Crop | null> {
+    const row = await this.crops.findOneBy({ slug });
+    return row ? KnowledgeMapper.cropToDomain(row) : null;
+  }
+
   async listDiseasesByCrop(cropType: string): Promise<Disease[]> {
     const rows = await this.repository.findBy({ cropType });
     return rows.map((row) => KnowledgeMapper.diseaseToDomain(row));

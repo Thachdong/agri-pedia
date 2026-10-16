@@ -1,5 +1,9 @@
 import { Article, referencedDiseaseCodes } from '../../../domain';
-import { IArticleRepository, TArticleRef } from '../article.repository';
+import {
+  IArticleRepository,
+  TArticlePageQuery,
+  TArticleRef,
+} from '../article.repository';
 
 export class InMemoryArticleRepository implements IArticleRepository {
   readonly articles = new Map<string, Article>();
@@ -22,4 +26,57 @@ export class InMemoryArticleRepository implements IArticleRepository {
       )
       .map(({ cropType, slug }) => ({ cropType, slug }));
   }
+
+  async countByCrop(): Promise<Map<string, number>> {
+    const counts = new Map<string, number>();
+    for (const { cropType } of this.articles.values()) {
+      counts.set(cropType, (counts.get(cropType) ?? 0) + 1);
+    }
+    return counts;
+  }
+
+  async listPage(
+    cropType: string,
+    query: TArticlePageQuery,
+  ): Promise<Article[]> {
+    const { after, diseaseCodes } = query;
+    return [...this.articles.values()]
+      .filter((a) => a.cropType === cropType)
+      .filter(
+        (a) =>
+          !diseaseCodes ||
+          (a.diseaseCode !== null && diseaseCodes.includes(a.diseaseCode)),
+      )
+      .sort((a, b) => compare(a.title, b.title) || compare(a.id, b.id))
+      .filter(
+        (a) =>
+          !after ||
+          compare(a.title, after.title) > 0 ||
+          (compare(a.title, after.title) === 0 && compare(a.id, after.id) > 0),
+      )
+      .slice(0, query.limit);
+  }
+
+  async findBySlug(cropType: string, slug: string): Promise<Article | null> {
+    return (
+      [...this.articles.values()].find(
+        (a) => a.cropType === cropType && a.slug === slug,
+      ) ?? null
+    );
+  }
+
+  async findByDiseaseCodes(diseaseCodes: string[]): Promise<Article[]> {
+    return [...this.articles.values()].filter(
+      (a) => a.diseaseCode !== null && diseaseCodes.includes(a.diseaseCode),
+    );
+  }
+
+  async listIndexable(): Promise<Article[]> {
+    return [...this.articles.values()].filter((a) => a.isIndexable());
+  }
+}
+
+/** Vietnamese order, like the collation the table sorts titles with. */
+function compare(a: string, b: string): number {
+  return a.localeCompare(b, 'vi');
 }

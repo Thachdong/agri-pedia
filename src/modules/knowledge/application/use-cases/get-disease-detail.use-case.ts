@@ -1,12 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   EAgentType,
+  EArticleStatus,
   ECropStage,
   EDiseaseCategory,
   EPlantPart,
   EVerification,
   KnowledgeDiseaseNotFoundException,
 } from '../../domain';
+import {
+  ARTICLE_REPOSITORY,
+  IArticleRepository,
+} from '../ports/article.repository';
 import {
   IKnowledgeRepository,
   KNOWLEDGE_REPOSITORY,
@@ -44,6 +49,8 @@ export type TGetDiseaseDetailOutput = {
   references: Array<{ title: string; url: string }>;
   verification: EVerification;
   kbVersion: string;
+  /** The disease's article page; null when it has none. */
+  article: { path: string; status: EArticleStatus } | null;
 };
 
 /** One KB entry for reading (public). */
@@ -52,6 +59,7 @@ export class GetDiseaseDetailUseCase {
   constructor(
     @Inject(KNOWLEDGE_REPOSITORY)
     private readonly knowledge: IKnowledgeRepository,
+    @Inject(ARTICLE_REPOSITORY) private readonly articles: IArticleRepository,
   ) {}
 
   async execute(
@@ -65,6 +73,10 @@ export class GetDiseaseDetailUseCase {
       content.similarDiseases.map((s) => s.code),
     );
     const nameByCode = new Map(similar.map((d) => [d.code, d.nameVi]));
+    const [article] = await this.articles.findByDiseaseCodes([disease.code]);
+    const crop = article
+      ? await this.knowledge.findCrop(article.cropType)
+      : null;
 
     return {
       code: disease.code,
@@ -101,6 +113,10 @@ export class GetDiseaseDetailUseCase {
       references: content.references,
       verification: disease.verification,
       kbVersion: disease.kbVersion,
+      article:
+        article && crop
+          ? { path: article.path(crop.slug), status: article.status }
+          : null,
     };
   }
 }

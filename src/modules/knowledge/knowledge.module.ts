@@ -4,7 +4,11 @@ import {
   KNOWLEDGE_REPOSITORY,
 } from './application/ports';
 import {
+  GetArticleSitemapUseCase,
+  GetArticleUseCase,
   GetDiseaseDetailUseCase,
+  ListArticleCropsUseCase,
+  ListArticlesUseCase,
   ListCropsUseCase,
   ListDiseasesUseCase,
   RevalidateArticlesUseCase,
@@ -29,6 +33,10 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
     ListCropsUseCase,
     ListDiseasesUseCase,
     GetDiseaseDetailUseCase,
+    ListArticleCropsUseCase,
+    ListArticlesUseCase,
+    GetArticleUseCase,
+    GetArticleSitemapUseCase,
     KnowledgeSeeder,
     { provide: KNOWLEDGE_REPOSITORY, useClass: PgKnowledgeRepository },
     {

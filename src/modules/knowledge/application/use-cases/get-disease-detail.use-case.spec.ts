@@ -1,9 +1,19 @@
-import { KnowledgeDiseaseNotFoundException } from '../../domain';
-import { buildDisease, InMemoryKnowledgeRepository } from '../ports/fakes';
+import {
+  EArticleStatus,
+  KnowledgeDiseaseNotFoundException,
+} from '../../domain';
+import {
+  buildArticle,
+  buildCrop,
+  buildDisease,
+  InMemoryArticleRepository,
+  InMemoryKnowledgeRepository,
+} from '../ports/fakes';
 import { GetDiseaseDetailUseCase } from './get-disease-detail.use-case';
 
 describe('GetDiseaseDetailUseCase', () => {
   let knowledge: InMemoryKnowledgeRepository;
+  let articles: InMemoryArticleRepository;
   let useCase: GetDiseaseDetailUseCase;
 
   beforeEach(() => {
@@ -46,7 +56,8 @@ describe('GetDiseaseDetailUseCase', () => {
         },
       }),
     );
-    useCase = new GetDiseaseDetailUseCase(knowledge);
+    articles = new InMemoryArticleRepository();
+    useCase = new GetDiseaseDetailUseCase(knowledge, articles);
   });
 
   it('returns the Vietnamese content with similar disease names', async () => {
@@ -92,6 +103,20 @@ describe('GetDiseaseDetailUseCase', () => {
       references: [{ title: 'IRRI', url: 'http://irri' }],
       verification: 'SOURCED',
       kbVersion: '2026-10-12',
+      article: null,
+    });
+  });
+
+  it('links the article of the disease', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    const article = buildArticle({ status: EArticleStatus.DRAFT });
+    articles.articles.set(article.id, article);
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on',
+      status: 'DRAFT',
     });
   });
 
