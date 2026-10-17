@@ -17,13 +17,13 @@ defineApiDocs(ArticleController, {
     sitemap: {
       summary: 'List indexable articles for the sitemap (public)',
       description:
-        "REVIEWED articles only, unpaginated; `crops[].updatedAt` = latest update of the crop's articles." +
+        "REVIEWED, published articles only, unpaginated; `crops[].updatedAt` = latest update of the crop's articles." +
         CACHE_NOTE,
     },
     list: {
       summary: 'List article summaries of a crop, by title (public)',
       description:
-        'Vietnamese title order, keyset-paginated (`nextCursor`). DRAFT articles are included: render them noindex. ' +
+        'Vietnamese title order, keyset-paginated (`nextCursor`). Unpublished articles are left out; DRAFT ones are included: render them noindex. ' +
         "`category` filters by the category of the article's disease. Variant articles are listed too (`variant` set)." +
         CACHE_NOTE,
       validation: true,
@@ -41,7 +41,8 @@ defineApiDocs(ArticleController, {
         '`markdown` has public image URLs and `/diseases/<CODE>` links turned into article paths ' +
         "(a variant id without its own article links to the disease's main article; plain text when there is no article); " +
         'a variant article has `variant` + `parentArticle` (breadcrumb), a main article lists `variantArticles` (each with its `coverUrl`); every article has a 16:9 `cover` (cards, Open Graph); directives `:::warning`, `:::tip`, ' +
-        '`::disease-card{code="..."}` and `::cta-diagnosis` stay for the client. `relatedDiseases` feeds the cards.' +
+        '`::disease-card{code="..."}` and `::cta-diagnosis` stay for the client. `relatedDiseases` feeds the cards. ' +
+        'An unpublished article answers 404 and counts as no article in links.' +
         CACHE_NOTE,
       validation: true,
       errors: [

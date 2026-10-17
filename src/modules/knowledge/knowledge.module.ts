@@ -29,6 +29,7 @@ import {
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
 import { AdminArticleController } from './infrastructure/http/admin-article.controller';
 import { ArticleController } from './infrastructure/http/article.controller';
+import './infrastructure/http/admin-article.api-docs';
 import './infrastructure/http/article.api-docs';
 import './infrastructure/http/knowledge.api-docs';
 import { KnowledgeController } from './infrastructure/http/knowledge.controller';
