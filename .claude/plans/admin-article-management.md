@@ -29,7 +29,7 @@ Flow:
 
 ## Module knowledge
 - [x] 6. [domain-model]     Article: EArticleOrigin (AI | ADMIN | AI_REVIEWED), `editedBy`, `published`; createByAdmin / editContent (slug cố định, chuyển origin) / unpublish / publish; isIndexable cần published; tách kiểm nội dung (link `/diseases/<CODE>`, `disease-card`, ảnh trong markdown, cover ∈ images) từ FileArticleSource sang domain service; errors KNOWLEDGE_ADMIN_REQUIRED (FORBIDDEN), KNOWLEDGE_ARTICLE_ALREADY_EXISTS, KNOWLEDGE_ARTICLE_SLUG_TAKEN (CONFLICT), KNOWLEDGE_ARTICLE_INVALID_CONTENT (VALIDATION, details.issues); kéo sớm từ bước 14 để build/e2e xanh: cột ORM `origin`, `edited_by`, `is_published` + mapper + migration `knowledge-article-admin`
-- [ ] 7. [use-case]         SeedArticles: chỉ revise / xoá bài origin AI, giữ `published`; log khi pack có bài trùng mã bài admin
+- [x] 7. [use-case]         SeedArticles: chỉ revise / xoá bài origin AI, giữ `published`; bỏ qua + log warn khi pack trùng mã hoặc slug bài admin
 - [ ] 8. [use-case]         Public read (ListArticleCrops, ListArticles, GetArticle, GetArticleSitemap, GetDiseaseDetail): chỉ bài published
 - [ ] 9. [use-case]         ListAdminArticleTargets(crop): bệnh + biến thể theo thứ tự KB, mỗi mục kèm bài (slug, title, origin, published, editedBy, updatedAt) hoặc null
 - [ ] 10. [use-case]        GetAdminArticle(code): nội dung gốc (markdown chưa resolve, images + publicUrl, sources, origin, published, editedBy), cả bài unpublished

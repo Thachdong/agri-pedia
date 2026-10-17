@@ -1,6 +1,9 @@
 import { InMemoryUnitOfWork } from '@shared/database';
+import { InMemoryLogger } from '@shared/logger';
 import { InMemoryFileStorage } from '@shared/storage';
+import { EArticleOrigin } from '../../domain';
 import {
+  buildArticle,
   buildArticleSeed,
   buildArticleSeedImage,
   buildCrop,
@@ -19,14 +22,16 @@ function setup() {
   const knowledge = new InMemoryKnowledgeRepository();
   knowledge.crops.set('RICE', buildCrop('RICE'));
   const storage = new InMemoryFileStorage();
+  const logger = new InMemoryLogger();
   const useCase = new SeedArticlesUseCase(
     source,
     articles,
     knowledge,
     storage,
     new InMemoryUnitOfWork(),
+    logger,
   );
-  return { source, articles, storage, useCase };
+  return { source, articles, storage, logger, useCase };
 }
 
 describe('SeedArticlesUseCase', () => {
@@ -225,5 +230,68 @@ describe('SeedArticlesUseCase', () => {
     await expect(useCase.execute()).rejects.toThrow(
       'Article crop CORN is not seeded',
     );
+  });
+
+  it.each([EArticleOrigin.ADMIN, EArticleOrigin.AI_REVIEWED])(
+    'skips a pack article whose code has an %s article, and never deletes it',
+    async (origin) => {
+      const { source, articles, storage, logger, useCase } = setup();
+      const admin = buildArticle({ origin, editedBy: 'admin-1', title: 'Sửa' });
+      articles.articles.set(admin.id, admin);
+
+      await expect(useCase.execute()).resolves.toEqual({
+        upserted: [],
+        deleted: [],
+      });
+      source.seeds = [];
+      await expect(useCase.execute()).resolves.toEqual({
+        upserted: [],
+        deleted: [],
+      });
+
+      expect(articles.articles.get(admin.id)?.title).toBe('Sửa');
+      expect(storage.uploaded.size).toBe(0);
+      expect(logger.entries).toContainEqual(
+        expect.objectContaining({
+          level: 'warn',
+          meta: { code: 'RICE_BLAST', origin },
+        }),
+      );
+    },
+  );
+
+  it('skips a pack article whose slug is taken by an admin article', async () => {
+    const { articles, logger, useCase } = setup();
+    const admin = buildArticle({
+      diseaseCode: 'RICE_BROWN_SPOT',
+      origin: EArticleOrigin.ADMIN,
+      editedBy: 'admin-1',
+    });
+    articles.articles.set(admin.id, admin);
+
+    const output = await useCase.execute();
+
+    expect(output.upserted).toEqual([]);
+    expect(articles.articles.size).toBe(1);
+    expect(logger.entries).toContainEqual(
+      expect.objectContaining({
+        level: 'warn',
+        meta: { code: 'RICE_BLAST', slug: 'benh-dao-on' },
+      }),
+    );
+  });
+
+  it('keeps an unpublished AI article hidden when the pack revises it', async () => {
+    const { source, articles, useCase } = setup();
+    await useCase.execute();
+    const [article] = [...articles.articles.values()];
+    article.unpublish();
+    source.seeds = [buildArticleSeed({ title: 'Đạo ôn mới' })];
+
+    await useCase.execute();
+
+    const revised = articles.articles.get(article.id);
+    expect(revised?.title).toBe('Đạo ôn mới');
+    expect(revised?.isPublished).toBe(false);
   });
 });

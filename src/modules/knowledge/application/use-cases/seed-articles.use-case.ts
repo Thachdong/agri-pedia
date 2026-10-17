@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
+import { ILogger, LOGGER } from '@shared/logger';
 import { FILE_STORAGE, IFileStorage } from '@shared/storage';
 import { Article, TArticleContent, TArticleImage } from '../../domain';
 import {
@@ -45,9 +46,13 @@ export type TSeedArticlesOutput = {
  * Writes the article seed into `articles` (run after the KB seed); idempotent by content hash.
  * New / changed images are uploaded first (public bucket, content hash in the key), then rows are
  * upserted (matched by KB code: variant code, else disease code) and articles no longer in the pack deleted, in one transaction.
+ * Only seed-managed (origin AI) articles are revised or deleted: a pack article whose KB code or slug
+ * belongs to an article an admin created / edited is skipped (logged), and admin articles are never deleted.
  */
 @Injectable()
 export class SeedArticlesUseCase {
+  private readonly logger: ILogger;
+
   constructor(
     @Inject(ARTICLE_SOURCE) private readonly source: IArticleSource,
     @Inject(ARTICLE_REPOSITORY) private readonly articles: IArticleRepository,
@@ -55,7 +60,10 @@ export class SeedArticlesUseCase {
     private readonly knowledge: IKnowledgeRepository,
     @Inject(FILE_STORAGE) private readonly storage: IFileStorage,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
-  ) {}
+    @Inject(LOGGER) logger: ILogger,
+  ) {
+    this.logger = logger.withContext(SeedArticlesUseCase.name);
+  }
 
   async execute(): Promise<TSeedArticlesOutput> {
     const seeds = await this.source.load();
@@ -68,6 +76,12 @@ export class SeedArticlesUseCase {
     };
     const existing = await this.articles.findAllForSeed();
     const byCode = new Map(existing.map((a) => [a.kbCode, a]));
+    /** Slugs of admin articles per crop: a pack article may not take them. */
+    const adminSlugs = new Set(
+      existing
+        .filter((a) => !a.isSeedManaged())
+        .map((a) => `${a.cropType}/${a.slug}`),
+    );
     const now = new Date();
 
     const save: Article[] = [];
@@ -75,7 +89,24 @@ export class SeedArticlesUseCase {
     const upserted: TSeededArticle[] = [];
     for (const seed of seeds) {
       const old = byCode.get(seedCode(seed));
+      if (old && !old.isSeedManaged()) {
+        this.logger.warn('Pack article skipped: edited by an admin', {
+          code: seedCode(seed),
+          origin: old.origin,
+        });
+        continue;
+      }
       if (old?.contentHash === seed.contentHash) continue;
+      if (adminSlugs.has(`${seed.cropType}/${seed.slug}`)) {
+        this.logger.warn(
+          'Pack article skipped: slug used by an admin article',
+          {
+            code: seedCode(seed),
+            slug: seed.slug,
+          },
+        );
+        continue;
+      }
 
       const content = toContent(seed);
       const oldKeys = new Set(old?.images.map((image) => image.key));
@@ -108,7 +139,7 @@ export class SeedArticlesUseCase {
 
     const seeded = new Set(seeds.map(seedCode));
     const removed = existing.filter(
-      (article) => !seeded.has(article.kbCode ?? ''),
+      (article) => article.isSeedManaged() && !seeded.has(article.kbCode ?? ''),
     );
 
     // Upload before writing rows: a failed upload leaves the table unchanged.
