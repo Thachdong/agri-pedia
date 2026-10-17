@@ -4,9 +4,8 @@ import { EArticleOrigin } from '../enums/article-origin.enum';
 import { EArticleStatus } from '../enums/article-status.enum';
 import { KnowledgeArticleInvalidContentException } from '../exceptions/knowledge-article-invalid-content.exception';
 import {
-  ARTICLE_SLUG,
-  ARTICLE_SLUG_MAX,
   articleContentIssues,
+  articleSlugIssues,
   TArticleKbCodes,
 } from '../services/article-content-rules';
 import { imageFilesInOrder } from '../services/article-markdown-resolver';
@@ -103,16 +102,14 @@ function assertValidContent(
   cropType: string,
   slug: string,
 ): void {
-  const issues = articleContentIssues(
-    { ...content, imageFiles: content.images.map((image) => image.file) },
-    kb,
-    cropType,
-  );
-  if (!ARTICLE_SLUG.test(slug) || slug.length > ARTICLE_SLUG_MAX) {
-    issues.unshift(
-      `slug must match ${ARTICLE_SLUG.source} (max ${ARTICLE_SLUG_MAX})`,
-    );
-  }
+  const issues = [
+    ...articleSlugIssues(slug),
+    ...articleContentIssues(
+      { ...content, imageFiles: content.images.map((image) => image.file) },
+      kb,
+      cropType,
+    ),
+  ];
   if (issues.length > 0)
     throw new KnowledgeArticleInvalidContentException(issues);
 }

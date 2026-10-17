@@ -71,6 +71,10 @@ export class PgArticleRepository
     return row ? ArticleMapper.toDomain(row) : null;
   }
 
+  async existsBySlug(cropType: string, slug: string): Promise<boolean> {
+    return this.repository.existsBy({ cropType, slug });
+  }
+
   async listByCrop(cropType: string): Promise<Article[]> {
     const rows = await this.repository.findBy({ cropType });
     return rows.map((row) => ArticleMapper.toDomain(row));

@@ -33,7 +33,7 @@ Flow:
 - [x] 8. [use-case]         Public read (ListArticleCrops, ListArticles, GetArticle, GetArticleSitemap, GetDiseaseDetail): chỉ bài published — port đổi tên countPublishedByCrop / listPublishedPage / findPublishedBySlug / findPublishedByDiseaseCodes, lọc ở fake + Pg (kéo sớm từ bước 14)
 - [x] 9. [use-case]         ListAdminArticleTargets(crop): bệnh + biến thể theo thứ tự KB, mỗi mục kèm bài (slug, title, origin, published, editedBy, updatedAt) hoặc null
 - [x] 10. [use-case]        GetAdminArticle(code): nội dung gốc (markdown chưa resolve, images + publicUrl, sources, origin, published, editedBy), cả bài unpublished; port findByKbCode (fake + Pg); không có bài → KNOWLEDGE_ARTICLE_NOT_FOUND (KnowledgeArticleCodeNotFoundException)
-- [ ] 11. [use-case]        CreateArticle(code, slug, content, ảnh tmp): mã KB tồn tại, chưa có bài, slug chưa dùng trong cây, bài biến thể cần bài chính; origin ADMIN, published; port IArticleImagePublisher (+ fake); revalidate sau commit
+- [x] 11. [use-case]        CreateArticle(code, slug, content, ảnh tmp): mã KB tồn tại, chưa có bài, slug chưa dùng trong cây, bài biến thể cần bài chính; origin ADMIN, published; port IArticleImagePublisher (+ fake), IArticleRepository.existsBySlug; kiểm nội dung trước khi publish ảnh; xoá tmp + revalidate (nền) sau commit; error mới KNOWLEDGE_ARTICLE_IMAGE_INVALID; helper chung `application/admin-article-support.ts`
 - [ ] 12. [use-case]        UpdateArticle(code, content): giữ ảnh cũ theo `file` + ảnh tmp mới; origin AI → AI_REVIEWED; revalidate sau commit
 - [ ] 13. [use-case]        UnpublishArticle / PublishArticle; revalidate sau commit
 - [ ] 14. [persistence]     repo findByKbCode, slugTaken, … (cột + migration ở bước 6, lọc published ở bước 8)

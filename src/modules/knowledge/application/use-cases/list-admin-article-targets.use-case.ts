@@ -7,7 +7,7 @@ import {
   EDiseaseCategory,
   KnowledgeCropNotFoundException,
 } from '../../domain';
-import { assertArticleAdmin } from '../admin-access';
+import { assertArticleAdmin } from '../admin-article-support';
 import {
   ARTICLE_REPOSITORY,
   IArticleRepository,

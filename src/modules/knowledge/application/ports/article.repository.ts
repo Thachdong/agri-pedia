@@ -23,6 +23,8 @@ export interface IArticleRepository {
   findReferencing(diseaseCodes: string[]): Promise<TArticleRef[]>;
   /** Article about this KB code (variant code, else main article of the disease code), published or not (admin). */
   findByKbCode(code: string): Promise<Article | null>;
+  /** An article of the crop, published or not, uses this slug. */
+  existsBySlug(cropType: string, slug: string): Promise<boolean>;
   /** Every article of the crop, published or not (admin). */
   listByCrop(cropType: string): Promise<Article[]>;
   // Public reads below: unpublished articles are left out.

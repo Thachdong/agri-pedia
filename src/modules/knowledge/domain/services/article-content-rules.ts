@@ -25,6 +25,13 @@ export type TArticleCheckedContent = {
   imageFiles: string[];
 };
 
+/** Problem of an article slug; empty = valid. */
+export function articleSlugIssues(slug: string): string[] {
+  return ARTICLE_SLUG.test(slug) && slug.length <= ARTICLE_SLUG_MAX
+    ? []
+    : [`slug must match ${ARTICLE_SLUG.source} (max ${ARTICLE_SLUG_MAX})`];
+}
+
 /** Fenced code blocks and inline code spans. */
 const CODE = /```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`/g;
 const IMAGE_TARGET = /!\[[^\]]*\]\(([^)\s]+)[^)]*\)/g;
