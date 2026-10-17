@@ -10,6 +10,7 @@ import {
 import {
   ActivateUserUseCase,
   ChangePasswordUseCase,
+  CreateAdminUseCase,
   CreateAddressUseCase,
   DeleteAddressUseCase,
   FindNearbyDistributorsUseCase,
@@ -44,6 +45,7 @@ import { UserQueryService } from './infrastructure/queries/user-query.service';
   imports: [LocationModule, MediaModule],
   controllers: [AuthController, UserController, DistributorController],
   providers: [
+    CreateAdminUseCase,
     RegisterUserUseCase,
     ActivateUserUseCase,
     LoginUserUseCase,

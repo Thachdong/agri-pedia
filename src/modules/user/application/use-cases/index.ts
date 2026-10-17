@@ -14,3 +14,4 @@ export * from './list-my-addresses.use-case';
 export * from './create-address.use-case';
 export * from './set-primary-address.use-case';
 export * from './delete-address.use-case';
+export * from './create-admin.use-case';
