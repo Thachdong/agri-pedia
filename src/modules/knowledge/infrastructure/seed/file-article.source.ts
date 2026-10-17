@@ -10,14 +10,18 @@ import {
   TArticleSeedImage,
 } from '../../application/ports';
 import {
-  diseaseCardCodes,
+  ARTICLE_IMAGE_FILE,
+  ARTICLE_SLUG,
+  ARTICLE_SLUG_MAX,
+  ARTICLE_SUMMARY_MAX,
+  ARTICLE_SUMMARY_MIN,
+  ARTICLE_TITLE_MAX,
+  articleContentIssues,
   EArticleStatus,
-  referencedDiseaseCodes,
   TArticleImageCredit,
+  TArticleKbCodes,
   TArticleSource,
 } from '../../domain';
-
-const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 const credit = z.object({
   source: z.string().min(1),
@@ -30,9 +34,9 @@ const articleFrontmatter = z
   .object({
     code: z.string(),
     crop: z.string(),
-    slug: z.string().regex(SLUG).max(100),
-    title: z.string().min(1).max(70),
-    summary: z.string().min(50).max(160),
+    slug: z.string().regex(ARTICLE_SLUG).max(ARTICLE_SLUG_MAX),
+    title: z.string().min(1).max(ARTICLE_TITLE_MAX),
+    summary: z.string().min(ARTICLE_SUMMARY_MIN).max(ARTICLE_SUMMARY_MAX),
     status: z.nativeEnum(EArticleStatus),
     reviewedBy: z.string().min(1).nullable(),
     reviewedAt: z.coerce.date().nullable(),
@@ -42,7 +46,7 @@ const articleFrontmatter = z
     images: z
       .array(
         z.object({
-          file: z.string().regex(/^[a-z0-9-]+\.webp$/),
+          file: z.string().regex(ARTICLE_IMAGE_FILE),
           alt: z.string().min(1),
           caption: z.string().nullable().optional(),
           credit,
@@ -72,14 +76,7 @@ const diseaseIdsSchema = z.object({
   ),
 });
 
-/** KB codes of one crop: disease ids, and variant id -> disease id. */
-type TKbCodes = { diseases: Set<string>; variantOf: Map<string, string> };
-
 const FRONTMATTER = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
-/** Fenced code blocks and inline code spans. */
-const CODE = /```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`/g;
-const IMAGE_TARGET = /!\[[^\]]*\]\(([^)\s]+)[^)]*\)/g;
-const HTML_TAG = /<[a-z!/]/i;
 
 type TFail = (message: string) => never;
 
@@ -124,7 +121,7 @@ export class FileArticleSource implements IArticleSource {
         await readFile(join(this.directory, crop, 'diseases.json'), 'utf8'),
       ),
     );
-    const kbCodes: TKbCodes = {
+    const kbCodes: TArticleKbCodes = {
       diseases: new Set(diseases.map((d) => d.id)),
       variantOf: new Map(
         diseases.flatMap((d) =>
@@ -160,7 +157,7 @@ export class FileArticleSource implements IArticleSource {
   private async loadArticle(
     crop: string,
     file: string,
-    kbCodes: TKbCodes,
+    kbCodes: TArticleKbCodes,
     fail: TFail,
   ): Promise<TArticleSeed> {
     const raw = await readFile(
@@ -189,26 +186,18 @@ export class FileArticleSource implements IArticleSource {
     if (!parent && !kbCodes.diseases.has(meta.code)) {
       fail(`code ${meta.code} is not a disease or variant in diseases.json`);
     }
-    const imageFiles = new Set(meta.images.map((image) => image.file));
-    if (!imageFiles.has(meta.cover)) {
-      fail(`cover ${meta.cover} is not listed in images`);
-    }
-    const prose = markdown.replace(CODE, '');
-    for (const [, target] of prose.matchAll(IMAGE_TARGET)) {
-      if (!imageFiles.has(target))
-        fail(`image ${target} is not listed in images`);
-    }
-    for (const code of referencedDiseaseCodes(markdown)) {
-      if (!kbCodes.diseases.has(code) && !kbCodes.variantOf.has(code)) {
-        fail(`disease ${code} is not in the ${crop} KB`);
-      }
-    }
-    for (const code of diseaseCardCodes(markdown)) {
-      if (!kbCodes.diseases.has(code)) {
-        fail(`disease-card ${code} must be a disease id, not a variant`);
-      }
-    }
-    if (HTML_TAG.test(prose)) fail('HTML tags are not allowed');
+    const [issue] = articleContentIssues(
+      {
+        title: meta.title as string,
+        summary: meta.summary as string,
+        markdown,
+        cover: meta.cover as string,
+        imageFiles: meta.images.map((image) => image.file as string),
+      },
+      kbCodes,
+      crop,
+    );
+    if (issue) fail(issue);
 
     const images: TArticleSeedImage[] = [];
     for (const image of meta.images) {

@@ -1,5 +1,10 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { Article, EArticleStatus, TArticleProps } from '../../../domain';
+import {
+  Article,
+  EArticleOrigin,
+  EArticleStatus,
+  TArticleProps,
+} from '../../../domain';
 import { TArticleSeed, TArticleSeedImage } from '../article-source';
 
 const sha256 = (data: string | Buffer): string =>
@@ -56,7 +61,7 @@ export function buildArticleSeed(
   return { ...seed, contentHash: sha256(JSON.stringify(fields)) };
 }
 
-/** Test helper: a stored REVIEWED RICE_BLAST article (cover `dao-on-1.webp`); override any prop. */
+/** Test helper: a stored REVIEWED, published AI RICE_BLAST article (cover `dao-on-1.webp`); override any prop. */
 export function buildArticle(
   overrides: Partial<TArticleProps> & { id?: string } = {},
 ): Article {
@@ -94,6 +99,9 @@ export function buildArticle(
     contentHash: 'hash',
     publishedAt: new Date('2026-10-17T00:00:00Z'),
     updatedAt: new Date('2026-10-16T00:00:00Z'),
+    origin: EArticleOrigin.AI,
+    editedBy: null,
+    isPublished: true,
     ...props,
   });
 }

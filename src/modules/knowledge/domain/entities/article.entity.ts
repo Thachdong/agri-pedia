@@ -1,6 +1,14 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { AggregateRoot } from '@shared/domain';
+import { EArticleOrigin } from '../enums/article-origin.enum';
 import { EArticleStatus } from '../enums/article-status.enum';
+import { KnowledgeArticleInvalidContentException } from '../exceptions/knowledge-article-invalid-content.exception';
+import {
+  ARTICLE_SLUG,
+  ARTICLE_SLUG_MAX,
+  articleContentIssues,
+  TArticleKbCodes,
+} from '../services/article-content-rules';
 import { imageFilesInOrder } from '../services/article-markdown-resolver';
 
 /** Public site path prefix of articles. */
@@ -57,9 +65,57 @@ export type TArticleContent = {
 };
 
 export type TArticleProps = TArticleContent & {
-  /** First seed; kept on revisions. */
+  /** First seed / creation; kept on revisions. */
   publishedAt: Date;
+  origin: EArticleOrigin;
+  /** Admin (user id) who created or last edited the content; null = never touched by an admin. */
+  editedBy: string | null;
+  /** Shown by the public API; an admin hides it with unpublish(). */
+  isPublished: boolean;
 };
+
+/** What an admin writes: the content of the page. Slug, crop and KB code stay fixed once created. */
+export type TArticleEditableContent = {
+  title: string;
+  summary: string;
+  markdown: string;
+  /** One of `images[].file`. */
+  cover: string;
+  images: TArticleImage[];
+  sources: TArticleSource[];
+};
+
+export type TArticleAdminCreate = TArticleEditableContent & {
+  cropType: string;
+  diseaseCode: string;
+  variantCode: string | null;
+  slug: string;
+  kbVersion: string;
+};
+
+const sha256 = (data: string): string =>
+  createHash('sha256').update(data).digest('hex');
+
+/** Throws KnowledgeArticleInvalidContentException unless the content follows the article rules. */
+function assertValidContent(
+  content: TArticleEditableContent,
+  kb: TArticleKbCodes,
+  cropType: string,
+  slug: string,
+): void {
+  const issues = articleContentIssues(
+    { ...content, imageFiles: content.images.map((image) => image.file) },
+    kb,
+    cropType,
+  );
+  if (!ARTICLE_SLUG.test(slug) || slug.length > ARTICLE_SLUG_MAX) {
+    issues.unshift(
+      `slug must match ${ARTICLE_SLUG.source} (max ${ARTICLE_SLUG_MAX})`,
+    );
+  }
+  if (issues.length > 0)
+    throw new KnowledgeArticleInvalidContentException(issues);
+}
 
 /** Markdown article about a crop disease, seeded from the crop pack. */
 export class Article extends AggregateRoot {
@@ -70,8 +126,43 @@ export class Article extends AggregateRoot {
     super(id);
   }
 
+  /** Seeded from the crop pack: origin AI, published. */
   static create(content: TArticleContent, publishedAt: Date): Article {
-    return new Article(randomUUID(), { ...content, publishedAt });
+    return new Article(randomUUID(), {
+      ...content,
+      publishedAt,
+      origin: EArticleOrigin.AI,
+      editedBy: null,
+      isPublished: true,
+    });
+  }
+
+  /** Written by an admin: origin ADMIN, REVIEWED by that admin, published. Content checked against the crop KB. */
+  static createByAdmin(
+    input: TArticleAdminCreate,
+    kb: TArticleKbCodes,
+    adminId: string,
+    now: Date = new Date(),
+  ): Article {
+    const content = Article.trimmed(input);
+    assertValidContent(content, kb, input.cropType, input.slug);
+    return new Article(randomUUID(), {
+      ...content,
+      cropType: input.cropType,
+      diseaseCode: input.diseaseCode,
+      variantCode: input.variantCode,
+      slug: input.slug,
+      status: EArticleStatus.REVIEWED,
+      reviewedBy: adminId,
+      reviewedAt: now,
+      kbVersion: input.kbVersion,
+      contentHash: Article.hashOf(content),
+      updatedAt: now,
+      publishedAt: now,
+      origin: EArticleOrigin.ADMIN,
+      editedBy: adminId,
+      isPublished: true,
+    });
   }
 
   static restore(id: string, props: TArticleProps): Article {
@@ -83,18 +174,95 @@ export class Article extends AggregateRoot {
     return `${ARTICLE_PATH_PREFIX}/${cropSlug}/${slug}`;
   }
 
-  /** Replaces the content with a newer seed; id and publishedAt stay. */
+  /** Replaces the content with a newer seed; id, publishedAt, origin and visibility stay. Only for seed-managed articles. */
   revise(content: TArticleContent): void {
-    this.props = { ...content, publishedAt: this.props.publishedAt };
+    if (!this.isSeedManaged()) {
+      throw new Error(
+        `Article ${this.id} is edited by an admin; the seed must skip it`,
+      );
+    }
+    this.props = {
+      ...content,
+      publishedAt: this.props.publishedAt,
+      origin: this.props.origin,
+      editedBy: this.props.editedBy,
+      isPublished: this.props.isPublished,
+    };
+  }
+
+  /**
+   * An admin replaces the page content (slug, crop and KB code stay): REVIEWED by that admin;
+   * an AI article becomes AI_REVIEWED (the seed stops touching it). Content checked against the crop KB.
+   */
+  editContent(
+    input: TArticleEditableContent,
+    kb: TArticleKbCodes,
+    adminId: string,
+    now: Date = new Date(),
+  ): void {
+    const content = Article.trimmed(input);
+    assertValidContent(content, kb, this.props.cropType, this.props.slug);
+    this.props = {
+      ...this.props,
+      ...content,
+      status: EArticleStatus.REVIEWED,
+      reviewedBy: adminId,
+      reviewedAt: now,
+      contentHash: Article.hashOf(content),
+      updatedAt: now,
+      origin:
+        this.props.origin === EArticleOrigin.AI
+          ? EArticleOrigin.AI_REVIEWED
+          : this.props.origin,
+      editedBy: adminId,
+    };
+  }
+
+  /** Hides the article from the public API; false when it was already hidden. */
+  unpublish(): boolean {
+    if (!this.props.isPublished) return false;
+    this.props.isPublished = false;
+    return true;
+  }
+
+  /** Shows the article again; false when it was already shown. */
+  publish(): boolean {
+    if (this.props.isPublished) return false;
+    this.props.isPublished = true;
+    return true;
+  }
+
+  /** Origin AI: the crop pack is its source (revised / deleted by the seed). */
+  isSeedManaged(): boolean {
+    return this.props.origin === EArticleOrigin.AI;
+  }
+
+  private static trimmed(
+    input: TArticleEditableContent,
+  ): TArticleEditableContent {
+    return {
+      title: input.title.trim(),
+      summary: input.summary.trim(),
+      markdown: input.markdown,
+      cover: input.cover,
+      images: input.images,
+      sources: input.sources,
+    };
+  }
+
+  private static hashOf(content: TArticleEditableContent): string {
+    return sha256(JSON.stringify(content));
   }
 
   path(cropSlug: string): string {
     return Article.pathOf(cropSlug, this.props.slug);
   }
 
-  /** Listed in the sitemap. */
+  /** Listed in the sitemap: REVIEWED and published. */
   isIndexable(): boolean {
-    return this.props.status === EArticleStatus.REVIEWED;
+    return (
+      this.props.status === EArticleStatus.REVIEWED && this.props.isPublished
+    );
   }
 
   coverImage(): TArticleImage | null {
@@ -183,5 +351,17 @@ export class Article extends AggregateRoot {
 
   get updatedAt(): Date {
     return this.props.updatedAt;
+  }
+
+  get origin(): EArticleOrigin {
+    return this.props.origin;
+  }
+
+  get editedBy(): string | null {
+    return this.props.editedBy;
+  }
+
+  get isPublished(): boolean {
+    return this.props.isPublished;
   }
 }

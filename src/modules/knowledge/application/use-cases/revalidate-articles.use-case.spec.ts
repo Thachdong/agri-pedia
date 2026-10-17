@@ -1,4 +1,4 @@
-import { Article, EArticleStatus } from '../../domain';
+import { Article, EArticleOrigin, EArticleStatus } from '../../domain';
 import {
   buildCrop,
   buildDisease,
@@ -47,6 +47,9 @@ function storeArticle(
     contentHash: slug,
     publishedAt: new Date(),
     updatedAt: new Date(),
+    origin: EArticleOrigin.AI,
+    editedBy: null,
+    isPublished: true,
   });
   articles.articles.set(article.id, article);
 }

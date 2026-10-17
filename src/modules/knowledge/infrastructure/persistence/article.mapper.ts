@@ -1,4 +1,4 @@
-import { Article, EArticleStatus } from '../../domain';
+import { Article, EArticleOrigin, EArticleStatus } from '../../domain';
 import { ArticleOrmEntity } from './article.orm-entity';
 
 export class ArticleMapper {
@@ -21,6 +21,9 @@ export class ArticleMapper {
       contentHash: row.contentHash,
       publishedAt: row.publishedAt,
       updatedAt: row.updatedAt,
+      origin: row.origin as EArticleOrigin,
+      editedBy: row.editedBy,
+      isPublished: row.isPublished,
     });
   }
 
@@ -45,6 +48,9 @@ export class ArticleMapper {
       contentHash: article.contentHash,
       publishedAt: article.publishedAt,
       updatedAt: article.updatedAt,
+      origin: article.origin,
+      editedBy: article.editedBy,
+      isPublished: article.isPublished,
     });
   }
 }

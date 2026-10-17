@@ -101,7 +101,18 @@ export class ArticleOrmEntity {
   @Column({ name: 'published_at', type: 'timestamptz' })
   publishedAt: Date;
 
-  /** From the seed file, not the write time. */
+  /** From the seed file, or the time an admin wrote the content. */
   @Column({ name: 'updated_at', type: 'timestamptz' })
   updatedAt: Date;
+
+  /** EArticleOrigin; only AI rows are revised / deleted by the seed. */
+  @Column({ type: 'varchar', length: 20, default: 'AI' })
+  origin: string;
+
+  /** Admin user id (user module; no foreign key across modules). */
+  @Column({ name: 'edited_by', type: 'uuid', nullable: true })
+  editedBy: string | null;
+
+  @Column({ name: 'is_published', type: 'boolean', default: true })
+  isPublished: boolean;
 }
