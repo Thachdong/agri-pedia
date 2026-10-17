@@ -62,6 +62,11 @@ export class PgArticleRepository
     return rows.map(({ cropType, slug }) => ({ cropType, slug }));
   }
 
+  async listByCrop(cropType: string): Promise<Article[]> {
+    const rows = await this.repository.findBy({ cropType });
+    return rows.map((row) => ArticleMapper.toDomain(row));
+  }
+
   async countPublishedByCrop(): Promise<Map<string, number>> {
     const rows = await this.repository
       .createQueryBuilder('a')

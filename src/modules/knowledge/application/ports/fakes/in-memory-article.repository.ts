@@ -27,6 +27,10 @@ export class InMemoryArticleRepository implements IArticleRepository {
       .map(({ cropType, slug }) => ({ cropType, slug }));
   }
 
+  async listByCrop(cropType: string): Promise<Article[]> {
+    return [...this.articles.values()].filter((a) => a.cropType === cropType);
+  }
+
   async countPublishedByCrop(): Promise<Map<string, number>> {
     const counts = new Map<string, number>();
     for (const { cropType } of this.published()) {

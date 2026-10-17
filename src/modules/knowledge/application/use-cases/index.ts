@@ -8,3 +8,4 @@ export * from './list-diseases.use-case';
 export * from './revalidate-articles.use-case';
 export * from './seed-articles.use-case';
 export * from './seed-knowledge-base.use-case';
+export * from './list-admin-article-targets.use-case';

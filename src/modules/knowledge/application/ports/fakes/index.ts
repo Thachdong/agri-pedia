@@ -5,3 +5,4 @@ export * from './in-memory-article.source';
 export * from './in-memory-knowledge-base.source';
 export * from './in-memory-knowledge.repository';
 export * from './disease.fixture';
+export * from './user-query.stub';
