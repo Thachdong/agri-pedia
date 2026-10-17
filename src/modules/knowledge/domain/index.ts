@@ -11,6 +11,7 @@ export * from './enums/plant-part.enum';
 export * from './enums/verification.enum';
 export * from './exceptions/knowledge-admin-required.exception';
 export * from './exceptions/knowledge-article-already-exists.exception';
+export * from './exceptions/knowledge-article-code-not-found.exception';
 export * from './exceptions/knowledge-article-invalid-content.exception';
 export * from './exceptions/knowledge-article-invalid-cursor.exception';
 export * from './exceptions/knowledge-article-not-found.exception';

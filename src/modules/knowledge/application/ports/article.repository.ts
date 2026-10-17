@@ -21,6 +21,8 @@ export interface IArticleRepository {
   replaceArticles(save: Article[], deleteIds: string[]): Promise<void>;
   /** Articles whose body links to (`/diseases/<CODE>`) or shows a card of (`::disease-card`) any of these codes. */
   findReferencing(diseaseCodes: string[]): Promise<TArticleRef[]>;
+  /** Article about this KB code (variant code, else main article of the disease code), published or not (admin). */
+  findByKbCode(code: string): Promise<Article | null>;
   /** Every article of the crop, published or not (admin). */
   listByCrop(cropType: string): Promise<Article[]>;
   // Public reads below: unpublished articles are left out.

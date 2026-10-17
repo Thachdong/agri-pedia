@@ -62,6 +62,15 @@ export class PgArticleRepository
     return rows.map(({ cropType, slug }) => ({ cropType, slug }));
   }
 
+  async findByKbCode(code: string): Promise<Article | null> {
+    const row = await this.repository
+      .createQueryBuilder('a')
+      .where('a.variant_code = :code', { code })
+      .orWhere('(a.disease_code = :code AND a.variant_code IS NULL)', { code })
+      .getOne();
+    return row ? ArticleMapper.toDomain(row) : null;
+  }
+
   async listByCrop(cropType: string): Promise<Article[]> {
     const rows = await this.repository.findBy({ cropType });
     return rows.map((row) => ArticleMapper.toDomain(row));

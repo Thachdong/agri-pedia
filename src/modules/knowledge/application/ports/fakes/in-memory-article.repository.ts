@@ -27,6 +27,10 @@ export class InMemoryArticleRepository implements IArticleRepository {
       .map(({ cropType, slug }) => ({ cropType, slug }));
   }
 
+  async findByKbCode(code: string): Promise<Article | null> {
+    return [...this.articles.values()].find((a) => a.kbCode === code) ?? null;
+  }
+
   async listByCrop(cropType: string): Promise<Article[]> {
     return [...this.articles.values()].filter((a) => a.cropType === cropType);
   }

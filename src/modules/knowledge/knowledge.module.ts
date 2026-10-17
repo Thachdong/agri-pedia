@@ -8,6 +8,7 @@ import {
   KNOWLEDGE_REPOSITORY,
 } from './application/ports';
 import {
+  GetAdminArticleUseCase,
   GetArticleSitemapUseCase,
   GetArticleUseCase,
   GetDiseaseDetailUseCase,
@@ -48,6 +49,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
     GetArticleUseCase,
     GetArticleSitemapUseCase,
     ListAdminArticleTargetsUseCase,
+    GetAdminArticleUseCase,
     KnowledgeSeeder,
     { provide: KNOWLEDGE_REPOSITORY, useClass: PgKnowledgeRepository },
     { provide: ARTICLE_REPOSITORY, useClass: PgArticleRepository },
