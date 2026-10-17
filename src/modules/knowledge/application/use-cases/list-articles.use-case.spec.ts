@@ -174,4 +174,19 @@ describe('ListArticlesUseCase', () => {
       useCase.execute({ crop: 'lua', limit: 50, cursor: 'not-a-cursor' }),
     ).rejects.toBeInstanceOf(KnowledgeArticleInvalidCursorException);
   });
+
+  it('leaves out unpublished articles', async () => {
+    const { store, useCase } = setup();
+    const hidden = buildArticle({
+      diseaseCode: 'RICE_BPH',
+      slug: 'ray-nau',
+      title: 'Rầy nâu',
+    });
+    hidden.unpublish();
+    store(buildArticle({ title: 'Đạo ôn' }), hidden);
+
+    const page = await useCase.execute({ crop: 'lua', limit: 10 });
+
+    expect(page.articles.map((item) => item.slug)).toEqual(['benh-dao-on']);
+  });
 });

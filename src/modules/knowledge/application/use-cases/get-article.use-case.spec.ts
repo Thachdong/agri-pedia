@@ -264,4 +264,24 @@ describe('GetArticleUseCase', () => {
       useCase.execute({ cropSlug: 'lua', slug: 'khong-co' }),
     ).rejects.toBeInstanceOf(KnowledgeArticleNotFoundException);
   });
+
+  it('treats an unpublished article as missing, and links to it as plain text', async () => {
+    const { articles, useCase } = setup();
+    const brownSpot = [...articles.articles.values()].find(
+      (a) => a.slug === 'benh-dom-nau',
+    );
+    brownSpot?.unpublish();
+
+    await expect(
+      useCase.execute({ cropSlug: 'lua', slug: 'benh-dom-nau' }),
+    ).rejects.toBeInstanceOf(KnowledgeArticleNotFoundException);
+    const article = await useCase.execute({
+      cropSlug: 'lua',
+      slug: 'benh-dao-on',
+    });
+    expect(article.markdown).toContain('| Đốm nâu | Đốm gạch |');
+    expect(article.relatedDiseases).toContainEqual(
+      expect.objectContaining({ code: 'RICE_BROWN_SPOT', path: null }),
+    );
+  });
 });

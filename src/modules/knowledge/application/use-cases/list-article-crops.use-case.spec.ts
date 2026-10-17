@@ -52,4 +52,34 @@ describe('ListArticleCropsUseCase', () => {
       ],
     });
   });
+
+  it('counts only published articles; a crop with none is left out', async () => {
+    const knowledge = new InMemoryKnowledgeRepository();
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    knowledge.crops.set(
+      'DURIAN',
+      buildCrop('DURIAN', true, { slug: 'sau-rieng', sortOrder: 2 }),
+    );
+    const articles = new InMemoryArticleRepository();
+    const hiddenDurian = buildArticle({
+      cropType: 'DURIAN',
+      diseaseCode: 'DURIAN_A',
+      slug: 'a',
+    });
+    const hiddenRice = buildArticle({ diseaseCode: 'RICE_B', slug: 'b' });
+    hiddenDurian.unpublish();
+    hiddenRice.unpublish();
+    for (const article of [hiddenDurian, buildArticle(), hiddenRice]) {
+      articles.articles.set(article.id, article);
+    }
+
+    const result = await new ListArticleCropsUseCase(
+      articles,
+      knowledge,
+    ).execute();
+
+    expect(result.crops).toEqual([
+      expect.objectContaining({ code: 'RICE', articleCount: 1 }),
+    ]);
+  });
 });

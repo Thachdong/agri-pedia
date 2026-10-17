@@ -75,7 +75,9 @@ export class GetDiseaseDetailUseCase {
       content.similarDiseases.map((s) => s.code),
     );
     const nameByCode = new Map(similar.map((d) => [d.code, d.nameVi]));
-    const articles = await this.articles.findByDiseaseCodes([disease.code]);
+    const articles = await this.articles.findPublishedByDiseaseCodes([
+      disease.code,
+    ]);
     const crop =
       articles.length > 0
         ? await this.knowledge.findCrop(disease.cropType)

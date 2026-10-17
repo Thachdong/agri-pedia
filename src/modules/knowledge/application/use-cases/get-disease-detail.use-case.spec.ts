@@ -150,4 +150,15 @@ describe('GetDiseaseDetailUseCase', () => {
       KnowledgeDiseaseNotFoundException,
     );
   });
+
+  it('links no article when the article is unpublished', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    const article = buildArticle();
+    article.unpublish();
+    articles.articles.set(article.id, article);
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toBeNull();
+  });
 });

@@ -62,24 +62,26 @@ export class PgArticleRepository
     return rows.map(({ cropType, slug }) => ({ cropType, slug }));
   }
 
-  async countByCrop(): Promise<Map<string, number>> {
+  async countPublishedByCrop(): Promise<Map<string, number>> {
     const rows = await this.repository
       .createQueryBuilder('a')
       .select('a.crop_type', 'cropType')
       .addSelect('COUNT(*)::int', 'count')
+      .where('a.is_published')
       .groupBy('a.crop_type')
       .getRawMany<{ cropType: string; count: number }>();
     return new Map(rows.map((row) => [row.cropType, row.count]));
   }
 
-  async listPage(
+  async listPublishedPage(
     cropType: string,
     query: TArticlePageQuery,
   ): Promise<Article[]> {
     if (query.diseaseCodes?.length === 0) return [];
     const builder = this.repository
       .createQueryBuilder('a')
-      .where('a.crop_type = :cropType', { cropType });
+      .where('a.crop_type = :cropType', { cropType })
+      .andWhere('a.is_published');
     if (query.diseaseCodes) {
       builder.andWhere('a.disease_code IN (:...codes)', {
         codes: query.diseaseCodes,
@@ -100,15 +102,25 @@ export class PgArticleRepository
     return rows.map((row) => ArticleMapper.toDomain(row));
   }
 
-  async findBySlug(cropType: string, slug: string): Promise<Article | null> {
-    const row = await this.repository.findOneBy({ cropType, slug });
+  async findPublishedBySlug(
+    cropType: string,
+    slug: string,
+  ): Promise<Article | null> {
+    const row = await this.repository.findOneBy({
+      cropType,
+      slug,
+      isPublished: true,
+    });
     return row ? ArticleMapper.toDomain(row) : null;
   }
 
-  async findByDiseaseCodes(diseaseCodes: string[]): Promise<Article[]> {
+  async findPublishedByDiseaseCodes(
+    diseaseCodes: string[],
+  ): Promise<Article[]> {
     if (diseaseCodes.length === 0) return [];
     const rows = await this.repository.findBy({
       diseaseCode: In(diseaseCodes),
+      isPublished: true,
     });
     return rows.map((row) => ArticleMapper.toDomain(row));
   }
@@ -116,6 +128,7 @@ export class PgArticleRepository
   async listIndexable(): Promise<Article[]> {
     const rows = await this.repository.findBy({
       status: EArticleStatus.REVIEWED,
+      isPublished: true,
     });
     return rows.map((row) => ArticleMapper.toDomain(row));
   }

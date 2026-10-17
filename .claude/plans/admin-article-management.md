@@ -30,13 +30,13 @@ Flow:
 ## Module knowledge
 - [x] 6. [domain-model]     Article: EArticleOrigin (AI | ADMIN | AI_REVIEWED), `editedBy`, `published`; createByAdmin / editContent (slug cố định, chuyển origin) / unpublish / publish; isIndexable cần published; tách kiểm nội dung (link `/diseases/<CODE>`, `disease-card`, ảnh trong markdown, cover ∈ images) từ FileArticleSource sang domain service; errors KNOWLEDGE_ADMIN_REQUIRED (FORBIDDEN), KNOWLEDGE_ARTICLE_ALREADY_EXISTS, KNOWLEDGE_ARTICLE_SLUG_TAKEN (CONFLICT), KNOWLEDGE_ARTICLE_INVALID_CONTENT (VALIDATION, details.issues); kéo sớm từ bước 14 để build/e2e xanh: cột ORM `origin`, `edited_by`, `is_published` + mapper + migration `knowledge-article-admin`
 - [x] 7. [use-case]         SeedArticles: chỉ revise / xoá bài origin AI, giữ `published`; bỏ qua + log warn khi pack trùng mã hoặc slug bài admin
-- [ ] 8. [use-case]         Public read (ListArticleCrops, ListArticles, GetArticle, GetArticleSitemap, GetDiseaseDetail): chỉ bài published
+- [x] 8. [use-case]         Public read (ListArticleCrops, ListArticles, GetArticle, GetArticleSitemap, GetDiseaseDetail): chỉ bài published — port đổi tên countPublishedByCrop / listPublishedPage / findPublishedBySlug / findPublishedByDiseaseCodes, lọc ở fake + Pg (kéo sớm từ bước 14)
 - [ ] 9. [use-case]         ListAdminArticleTargets(crop): bệnh + biến thể theo thứ tự KB, mỗi mục kèm bài (slug, title, origin, published, editedBy, updatedAt) hoặc null
 - [ ] 10. [use-case]        GetAdminArticle(code): nội dung gốc (markdown chưa resolve, images + publicUrl, sources, origin, published, editedBy), cả bài unpublished
 - [ ] 11. [use-case]        CreateArticle(code, slug, content, ảnh tmp): mã KB tồn tại, chưa có bài, slug chưa dùng trong cây, bài biến thể cần bài chính; origin ADMIN, published; port IArticleImagePublisher (+ fake); revalidate sau commit
 - [ ] 12. [use-case]        UpdateArticle(code, content): giữ ảnh cũ theo `file` + ảnh tmp mới; origin AI → AI_REVIEWED; revalidate sau commit
 - [ ] 13. [use-case]        UnpublishArticle / PublishArticle; revalidate sau commit
-- [ ] 14. [persistence]     repo lọc published cho public, findByKbCode, slugTaken (cột + migration đã làm ở bước 6)
+- [ ] 14. [persistence]     repo findByKbCode, slugTaken, … (cột + migration ở bước 6, lọc published ở bước 8)
 - [ ] 15. [persistence]     SharpArticleImagePublisher (IFileStorage.downloadFile + sharp → webp → uploadPublicFile → deleteFile tmp)
 - [ ] 16. [http]            `admin/knowledge`: GET crops/:cropSlug/articles, GET articles/:code, POST articles, PATCH articles/:code, POST articles/:code/unpublish, POST articles/:code/publish; e2e
 - [ ] 17. [api-docs]        6 endpoint trên (auth: true, 403 KNOWLEDGE_ADMIN_REQUIRED); openapi:export

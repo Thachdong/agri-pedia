@@ -30,7 +30,7 @@ export class ListArticleCropsUseCase {
   async execute(): Promise<TListArticleCropsOutput> {
     const [crops, counts] = await Promise.all([
       this.knowledge.listCrops(),
-      this.articles.countByCrop(),
+      this.articles.countPublishedByCrop(),
     ]);
     return {
       crops: crops

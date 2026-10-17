@@ -51,4 +51,20 @@ describe('GetArticleSitemapUseCase', () => {
       ],
     });
   });
+
+  it('leaves out unpublished articles', async () => {
+    const knowledge = new InMemoryKnowledgeRepository();
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    const articles = new InMemoryArticleRepository();
+    const hidden = buildArticle();
+    hidden.unpublish();
+    articles.articles.set(hidden.id, hidden);
+
+    const result = await new GetArticleSitemapUseCase(
+      articles,
+      knowledge,
+    ).execute();
+
+    expect(result).toEqual({ crops: [], articles: [] });
+  });
 });

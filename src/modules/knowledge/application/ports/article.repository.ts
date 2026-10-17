@@ -21,14 +21,18 @@ export interface IArticleRepository {
   replaceArticles(save: Article[], deleteIds: string[]): Promise<void>;
   /** Articles whose body links to (`/diseases/<CODE>`) or shows a card of (`::disease-card`) any of these codes. */
   findReferencing(diseaseCodes: string[]): Promise<TArticleRef[]>;
-  /** Number of articles per crop code; crops without articles left out. */
-  countByCrop(): Promise<Map<string, number>>;
-  /** Articles of the crop by title then id. */
-  listPage(cropType: string, query: TArticlePageQuery): Promise<Article[]>;
-  findBySlug(cropType: string, slug: string): Promise<Article | null>;
-  /** Articles about these diseases; codes without an article left out. */
-  findByDiseaseCodes(diseaseCodes: string[]): Promise<Article[]>;
-  /** Every REVIEWED article. */
+  // Public reads below: unpublished articles are left out.
+  /** Number of published articles per crop code; crops without one left out. */
+  countPublishedByCrop(): Promise<Map<string, number>>;
+  /** Published articles of the crop by title then id. */
+  listPublishedPage(
+    cropType: string,
+    query: TArticlePageQuery,
+  ): Promise<Article[]>;
+  findPublishedBySlug(cropType: string, slug: string): Promise<Article | null>;
+  /** Published articles about these diseases; codes without one left out. */
+  findPublishedByDiseaseCodes(diseaseCodes: string[]): Promise<Article[]>;
+  /** Every REVIEWED, published article. */
   listIndexable(): Promise<Article[]>;
 }
 

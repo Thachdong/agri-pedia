@@ -100,7 +100,7 @@ export class ListArticlesUseCase {
           .map((disease) => disease.code)
       : undefined;
     // One extra row tells whether a next page exists.
-    const rows = await this.articles.listPage(crop.code, {
+    const rows = await this.articles.listPublishedPage(crop.code, {
       diseaseCodes,
       after,
       limit: input.limit + 1,

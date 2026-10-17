@@ -92,7 +92,7 @@ export class RevalidateArticlesUseCase {
       if (cropSlug) tags.push(ARTICLE_CACHE_TAGS.article(cropSlug, slug));
     };
 
-    const sameDisease = await this.articles.findByDiseaseCodes([
+    const sameDisease = await this.articles.findPublishedByDiseaseCodes([
       ...new Set(ofDiseases.map((article) => article.diseaseCode as string)),
     ]);
     for (const article of ofDiseases) {

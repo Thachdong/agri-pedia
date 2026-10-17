@@ -100,7 +100,10 @@ export class GetArticleUseCase {
   async execute(input: TGetArticleInput): Promise<TGetArticleOutput> {
     const crop = await this.knowledge.findCropBySlug(input.cropSlug);
     if (!crop) throw new KnowledgeCropNotFoundException(input.cropSlug);
-    const article = await this.articles.findBySlug(crop.code, input.slug);
+    const article = await this.articles.findPublishedBySlug(
+      crop.code,
+      input.slug,
+    );
     if (!article) {
       throw new KnowledgeArticleNotFoundException(input.cropSlug, input.slug);
     }
@@ -121,7 +124,7 @@ export class GetArticleUseCase {
       ]),
     ];
     const [linkedArticles, relatedDiseases] = await Promise.all([
-      this.articles.findByDiseaseCodes([
+      this.articles.findPublishedByDiseaseCodes([
         ...new Set([
           ...linkedCodes.map(diseaseCodeOf),
           ...(article.diseaseCode ? [article.diseaseCode] : []),

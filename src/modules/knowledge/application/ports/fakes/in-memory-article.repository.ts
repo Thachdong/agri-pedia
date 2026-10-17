@@ -27,20 +27,20 @@ export class InMemoryArticleRepository implements IArticleRepository {
       .map(({ cropType, slug }) => ({ cropType, slug }));
   }
 
-  async countByCrop(): Promise<Map<string, number>> {
+  async countPublishedByCrop(): Promise<Map<string, number>> {
     const counts = new Map<string, number>();
-    for (const { cropType } of this.articles.values()) {
+    for (const { cropType } of this.published()) {
       counts.set(cropType, (counts.get(cropType) ?? 0) + 1);
     }
     return counts;
   }
 
-  async listPage(
+  async listPublishedPage(
     cropType: string,
     query: TArticlePageQuery,
   ): Promise<Article[]> {
     const { after, diseaseCodes } = query;
-    return [...this.articles.values()]
+    return this.published()
       .filter((a) => a.cropType === cropType)
       .filter(
         (a) =>
@@ -57,22 +57,31 @@ export class InMemoryArticleRepository implements IArticleRepository {
       .slice(0, query.limit);
   }
 
-  async findBySlug(cropType: string, slug: string): Promise<Article | null> {
+  async findPublishedBySlug(
+    cropType: string,
+    slug: string,
+  ): Promise<Article | null> {
     return (
-      [...this.articles.values()].find(
+      this.published().find(
         (a) => a.cropType === cropType && a.slug === slug,
       ) ?? null
     );
   }
 
-  async findByDiseaseCodes(diseaseCodes: string[]): Promise<Article[]> {
-    return [...this.articles.values()].filter(
+  async findPublishedByDiseaseCodes(
+    diseaseCodes: string[],
+  ): Promise<Article[]> {
+    return this.published().filter(
       (a) => a.diseaseCode !== null && diseaseCodes.includes(a.diseaseCode),
     );
   }
 
   async listIndexable(): Promise<Article[]> {
     return [...this.articles.values()].filter((a) => a.isIndexable());
+  }
+
+  private published(): Article[] {
+    return [...this.articles.values()].filter((a) => a.isPublished);
   }
 }
 
