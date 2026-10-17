@@ -35,7 +35,7 @@ Flow:
 - [x] 10. [use-case]        GetAdminArticle(code): nội dung gốc (markdown chưa resolve, images + publicUrl, sources, origin, published, editedBy), cả bài unpublished; port findByKbCode (fake + Pg); không có bài → KNOWLEDGE_ARTICLE_NOT_FOUND (KnowledgeArticleCodeNotFoundException)
 - [x] 11. [use-case]        CreateArticle(code, slug, content, ảnh tmp): mã KB tồn tại, chưa có bài, slug chưa dùng trong cây, bài biến thể cần bài chính; origin ADMIN, published; port IArticleImagePublisher (+ fake), IArticleRepository.existsBySlug; kiểm nội dung trước khi publish ảnh; xoá tmp + revalidate (nền) sau commit; error mới KNOWLEDGE_ARTICLE_IMAGE_INVALID; helper chung `application/admin-article-support.ts`
 - [x] 12. [use-case]        UpdateArticle(code, content): giữ ảnh cũ theo `file` + ảnh tmp mới, ảnh không gửi lên bị bỏ; origin AI → AI_REVIEWED; giữ trạng thái published; revalidate sau commit
-- [ ] 13. [use-case]        UnpublishArticle / PublishArticle; revalidate sau commit
+- [x] 13. [use-case]        UnpublishArticle / PublishArticle; revalidate sau commit
 - [ ] 14. [persistence]     repo findByKbCode, slugTaken, … (cột + migration ở bước 6, lọc published ở bước 8)
 - [x] 15. [persistence]     SharpArticleImagePublisher (`infrastructure/images/`; IFileStorage.downloadFile + sharp → webp ≤1600px → uploadPublicFile; xoá tmp do use case sau commit) — làm ngay sau bước 11 để app boot
 - [ ] 16. [http]            `admin/knowledge`: GET crops/:cropSlug/articles, GET articles/:code, POST articles, PATCH articles/:code, POST articles/:code/unpublish, POST articles/:code/publish; e2e

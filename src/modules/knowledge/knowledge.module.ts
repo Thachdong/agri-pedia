@@ -18,10 +18,12 @@ import {
   ListArticleCropsUseCase,
   ListArticlesUseCase,
   ListCropsUseCase,
+  PublishArticleUseCase,
   ListDiseasesUseCase,
   RevalidateArticlesUseCase,
   SeedArticlesUseCase,
   SeedKnowledgeBaseUseCase,
+  UnpublishArticleUseCase,
   UpdateArticleUseCase,
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
@@ -56,6 +58,8 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
     GetAdminArticleUseCase,
     CreateArticleUseCase,
     UpdateArticleUseCase,
+    UnpublishArticleUseCase,
+    PublishArticleUseCase,
     KnowledgeSeeder,
     { provide: KNOWLEDGE_REPOSITORY, useClass: PgKnowledgeRepository },
     { provide: ARTICLE_REPOSITORY, useClass: PgArticleRepository },

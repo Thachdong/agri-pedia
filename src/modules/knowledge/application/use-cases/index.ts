@@ -12,3 +12,5 @@ export * from './list-admin-article-targets.use-case';
 export * from './get-admin-article.use-case';
 export * from './create-article.use-case';
 export * from './update-article.use-case';
+export * from './unpublish-article.use-case';
+export * from './publish-article.use-case';
