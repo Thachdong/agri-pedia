@@ -11,3 +11,4 @@ export * from './seed-knowledge-base.use-case';
 export * from './list-admin-article-targets.use-case';
 export * from './get-admin-article.use-case';
 export * from './create-article.use-case';
+export * from './update-article.use-case';

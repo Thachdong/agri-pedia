@@ -22,6 +22,7 @@ import {
   RevalidateArticlesUseCase,
   SeedArticlesUseCase,
   SeedKnowledgeBaseUseCase,
+  UpdateArticleUseCase,
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
 import { ArticleController } from './infrastructure/http/article.controller';
@@ -54,6 +55,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
     ListAdminArticleTargetsUseCase,
     GetAdminArticleUseCase,
     CreateArticleUseCase,
+    UpdateArticleUseCase,
     KnowledgeSeeder,
     { provide: KNOWLEDGE_REPOSITORY, useClass: PgKnowledgeRepository },
     { provide: ARTICLE_REPOSITORY, useClass: PgArticleRepository },
