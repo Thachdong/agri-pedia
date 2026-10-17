@@ -27,6 +27,7 @@ import {
   UpdateArticleUseCase,
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
+import { AdminArticleController } from './infrastructure/http/admin-article.controller';
 import { ArticleController } from './infrastructure/http/article.controller';
 import './infrastructure/http/article.api-docs';
 import './infrastructure/http/knowledge.api-docs';
@@ -42,7 +43,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
 
 @Module({
   imports: [UserModule],
-  controllers: [KnowledgeController, ArticleController],
+  controllers: [KnowledgeController, ArticleController, AdminArticleController],
   providers: [
     SeedKnowledgeBaseUseCase,
     SeedArticlesUseCase,
