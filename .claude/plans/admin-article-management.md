@@ -37,7 +37,7 @@ Flow:
 - [ ] 12. [use-case]        UpdateArticle(code, content): giữ ảnh cũ theo `file` + ảnh tmp mới; origin AI → AI_REVIEWED; revalidate sau commit
 - [ ] 13. [use-case]        UnpublishArticle / PublishArticle; revalidate sau commit
 - [ ] 14. [persistence]     repo findByKbCode, slugTaken, … (cột + migration ở bước 6, lọc published ở bước 8)
-- [ ] 15. [persistence]     SharpArticleImagePublisher (IFileStorage.downloadFile + sharp → webp → uploadPublicFile → deleteFile tmp)
+- [x] 15. [persistence]     SharpArticleImagePublisher (`infrastructure/images/`; IFileStorage.downloadFile + sharp → webp ≤1600px → uploadPublicFile; xoá tmp do use case sau commit) — làm ngay sau bước 11 để app boot
 - [ ] 16. [http]            `admin/knowledge`: GET crops/:cropSlug/articles, GET articles/:code, POST articles, PATCH articles/:code, POST articles/:code/unpublish, POST articles/:code/publish; e2e
 - [ ] 17. [api-docs]        6 endpoint trên (auth: true, 403 KNOWLEDGE_ADMIN_REQUIRED); openapi:export
 - [ ] 18. [boundary-review]

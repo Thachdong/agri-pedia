@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserModule } from '@modules/user/user.module';
 import {
   ARTICLE_CACHE_INVALIDATOR,
+  ARTICLE_IMAGE_PUBLISHER,
   ARTICLE_REPOSITORY,
   ARTICLE_SOURCE,
   KNOWLEDGE_BASE_SOURCE,
@@ -27,6 +28,7 @@ import { ArticleController } from './infrastructure/http/article.controller';
 import './infrastructure/http/article.api-docs';
 import './infrastructure/http/knowledge.api-docs';
 import { KnowledgeController } from './infrastructure/http/knowledge.controller';
+import { SharpArticleImagePublisher } from './infrastructure/images/sharp-article-image.publisher';
 import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';
 import { NextArticleCacheInvalidator } from './infrastructure/revalidate/next-article-cache-invalidator';
 import { PgArticleRepository } from './infrastructure/persistence/pg-article.repository';
@@ -64,6 +66,7 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
       useClass: NextArticleCacheInvalidator,
     },
     { provide: ARTICLE_SOURCE, useFactory: () => new FileArticleSource() },
+    { provide: ARTICLE_IMAGE_PUBLISHER, useClass: SharpArticleImagePublisher },
     { provide: KNOWLEDGE_QUERY_PORT, useClass: KnowledgeQueryService },
   ],
   exports: [KNOWLEDGE_QUERY_PORT],
