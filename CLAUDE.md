@@ -12,6 +12,7 @@ NestJS 10 (TypeScript) backend. Postgres 16 via `docker-compose.yml` (pgAdmin on
 - `npm test` — unit tests (`*.spec.ts` under `src/`)
 - `npm run test:e2e` — e2e tests (`test/`)
 - `npm run sync-article [-- --dry-run] [-- <CROP>...]` — copy articles + images from `Design/desease-detection/articles` into the crop packs (checked with the server loader first); then restart the server to seed them
+- `npm run create-admin -- <email|phone> [username]` — create an ACTIVE ADMIN account (password asked on the terminal); log in with `POST /auth/login`
 - `npm run migration:generate -- src/migrations/<module>-<desc>` / `migration:run` / `migration:revert`
 
 Run `npm run lint` and `npm test` before calling a task done.

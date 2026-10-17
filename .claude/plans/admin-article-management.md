@@ -24,7 +24,7 @@ Flow:
 ## Module user
 - [x] 2. [domain-model]     EUserRole.ADMIN; User.createAdmin (ACTIVE); đăng ký public chỉ nhận FARMER | DISTRIBUTOR (domain USER_ROLE_NOT_ALLOWED + DTO @IsIn); contracts role union thêm ADMIN (để build xanh)
 - [x] 3. [use-case]         CreateAdmin (email + password; identifier đã dùng → lỗi có sẵn)
-- [ ] 4. [script]           `scripts/create-admin.ts` + `npm run create-admin` (Nest application context → CreateAdmin)
+- [x] 4. [script]           `scripts/create-admin.ts` + `npm run create-admin -- <email|phone> [username]` (password hỏi trên terminal; module CLI tối giản → CreateAdmin)
 - [ ] 5. [query-port]       knowledge inject USER_QUERY_PORT (role union đã thêm ADMIN ở bước 2)
 
 ## Module knowledge
