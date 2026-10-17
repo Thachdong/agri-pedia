@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { UserModule } from '@modules/user/user.module';
 import {
   ARTICLE_CACHE_INVALIDATOR,
   ARTICLE_REPOSITORY,
@@ -32,7 +33,7 @@ import { JsonKnowledgeBaseSource } from './infrastructure/seed/json-knowledge-ba
 import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
 
 @Module({
-  imports: [],
+  imports: [UserModule],
   controllers: [KnowledgeController, ArticleController],
   providers: [
     SeedKnowledgeBaseUseCase,

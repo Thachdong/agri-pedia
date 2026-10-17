@@ -91,6 +91,22 @@ describe('UserQueryService.findRoleById', () => {
     });
   });
 
+  it('reports an admin as active', async () => {
+    const admin = User.createAdmin({
+      loginType: ELoginType.EMAIL,
+      hashedIdentifier: 'hash(admin@mail.com)',
+      encryptedIdentifier: 'enc',
+      passwordHash: 'pwd',
+      username: 'admin',
+    });
+    await users.save(admin);
+    await expect(service.findRoleById(admin.id)).resolves.toEqual({
+      userId: admin.id,
+      role: 'ADMIN',
+      isActive: true,
+    });
+  });
+
   it('returns null for an unknown id', async () => {
     await expect(service.findRoleById('missing')).resolves.toBeNull();
   });

@@ -25,7 +25,7 @@ Flow:
 - [x] 2. [domain-model]     EUserRole.ADMIN; User.createAdmin (ACTIVE); đăng ký public chỉ nhận FARMER | DISTRIBUTOR (domain USER_ROLE_NOT_ALLOWED + DTO @IsIn); contracts role union thêm ADMIN (để build xanh)
 - [x] 3. [use-case]         CreateAdmin (email + password; identifier đã dùng → lỗi có sẵn)
 - [x] 4. [script]           `scripts/create-admin.ts` + `npm run create-admin -- <email|phone> [username]` (password hỏi trên terminal; module CLI tối giản → CreateAdmin)
-- [ ] 5. [query-port]       knowledge inject USER_QUERY_PORT (role union đã thêm ADMIN ở bước 2)
+- [x] 5. [query-port]       knowledge inject USER_QUERY_PORT (role union đã thêm ADMIN ở bước 2)
 
 ## Module knowledge
 - [ ] 6. [domain-model]     Article: EArticleOrigin (AI | ADMIN | AI_REVIEWED), `editedBy`, `published`; createByAdmin / editContent (slug cố định, chuyển origin) / unpublish / publish; isIndexable cần published; tách kiểm nội dung (link `/diseases/<CODE>`, `disease-card`, ảnh trong markdown, cover ∈ images) từ FileArticleSource sang domain service; errors KNOWLEDGE_ADMIN_REQUIRED (FORBIDDEN), KNOWLEDGE_ARTICLE_ALREADY_EXISTS, KNOWLEDGE_ARTICLE_SLUG_TAKEN (CONFLICT), KNOWLEDGE_ARTICLE_INVALID_CONTENT (VALIDATION)
