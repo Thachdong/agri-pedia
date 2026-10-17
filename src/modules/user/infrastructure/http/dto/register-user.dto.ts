@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   IsDefined,
   IsEnum,
+  IsIn,
   IsOptional,
   IsString,
   Length,
@@ -11,7 +12,12 @@ import {
   ValidationArguments,
   isEmail,
 } from 'class-validator';
-import { EBusinessType, ELoginType, EUserRole } from '../../../domain';
+import {
+  EBusinessType,
+  ELoginType,
+  EUserRole,
+  SELF_REGISTER_ROLES,
+} from '../../../domain';
 import { RegisterAddressDto } from './register-address.dto';
 
 const PHONE_SEPARATORS = /[\s.\-()]/g;
@@ -64,7 +70,8 @@ export class RegisterUserDto {
   @Length(1, 100)
   username?: string;
 
-  @IsEnum(EUserRole)
+  /** FARMER | DISTRIBUTOR; ADMIN accounts are created by the CLI. */
+  @IsIn(SELF_REGISTER_ROLES)
   role: EUserRole;
 
   /** Spelling follows the API contract. Required for DISTRIBUTOR, null for FARMER (domain rule). */

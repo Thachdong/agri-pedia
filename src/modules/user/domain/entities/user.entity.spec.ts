@@ -5,6 +5,7 @@ import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
 import { UserNotActiveException } from '../exceptions/user-not-active.exception';
+import { UserRoleNotAllowedException } from '../exceptions/user-role-not-allowed.exception';
 import { USER_IDENTIFIER_VERIFICATION_REQUESTED } from '../events/user-identifier-verification-requested.domain-event';
 import { TRegisterUserProps, User } from './user.entity';
 
@@ -72,6 +73,12 @@ describe('User.register', () => {
     expect(user.pullEvents()).toEqual([]);
   });
 
+  it('rejects the ADMIN role', () => {
+    expect(() => User.register({ ...base, role: EUserRole.ADMIN })).toThrow(
+      UserRoleNotAllowedException,
+    );
+  });
+
   it('records no event for an active farmer', () => {
     expect(User.register(base).pullEvents()).toEqual([]);
   });
@@ -97,6 +104,26 @@ describe('User.register', () => {
     expect(restored.id).toBe(user.id);
     expect(restored.status).toBe(EUserStatus.PENDING);
     expect(restored.pullEvents()).toEqual([]);
+  });
+});
+
+describe('User.createAdmin', () => {
+  it('creates an ACTIVE admin with a verified identifier and no event', () => {
+    const user = User.createAdmin({
+      loginType: ELoginType.EMAIL,
+      hashedIdentifier: 'hash',
+      encryptedIdentifier: 'enc',
+      passwordHash: 'pwd',
+      username: '  admin  ',
+    });
+
+    expect(user.role).toBe(EUserRole.ADMIN);
+    expect(user.status).toBe(EUserStatus.ACTIVE);
+    expect(user.canLogin()).toBe(true);
+    expect(user.businessType).toBeNull();
+    expect(user.username).toBe('admin');
+    expect(user.identifierVerifiedAt).toEqual(user.createdAt);
+    expect(user.pullEvents()).toEqual([]);
   });
 });
 
