@@ -40,6 +40,6 @@ Flow:
 - [x] 15. [persistence]     SharpArticleImagePublisher (`infrastructure/images/`; IFileStorage.downloadFile + sharp → webp ≤1600px → uploadPublicFile; xoá tmp do use case sau commit) — làm ngay sau bước 11 để app boot
 - [x] 16. [http]            `admin/knowledge`: GET crops/:cropSlug/articles, GET articles/:code, POST articles, PUT articles/:code (thay toàn bộ nội dung nên PUT thay PATCH), POST articles/:code/unpublish, POST articles/:code/publish; e2e `test/knowledge/admin-articles.e2e-spec.ts`
 - [x] 17. [api-docs]        6 endpoint trên (auth: true, 403 KNOWLEDGE_ADMIN_REQUIRED); openapi:export
-- [ ] 18. [boundary-review]
+- [x] 18. [boundary-review] — 0 HIGH, 0 MED, 2 LOW (xem báo cáo)
 
 7. `status` + `reviewedBy`/`reviewedAt` giữ cho bài AI (từ frontmatter); bài admin tạo/sửa → REVIEWED, reviewedBy = userId admin, reviewedAt = now. Sitemap = REVIEWED + published.
