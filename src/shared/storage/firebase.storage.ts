@@ -110,6 +110,21 @@ export class FirebaseFileStorage implements IFileStorage {
     return `https://storage.googleapis.com/${this.publicBucket}/${path}`;
   }
 
+  async downloadFile(key: string): Promise<Buffer> {
+    try {
+      const [content] = await getStorage(this.app)
+        .bucket()
+        .file(key)
+        .download();
+      return content;
+    } catch (error) {
+      if ((error as { code?: unknown }).code === 404) {
+        throw new StorageFileNotFoundError(key);
+      }
+      throw error;
+    }
+  }
+
   async moveFile(fromKey: string, toKey: string): Promise<void> {
     try {
       await getStorage(this.app).bucket().file(fromKey).move(toKey);

@@ -54,11 +54,25 @@ export class InMemoryFileStorage implements IFileStorage {
     return `https://storage.test/${key}`;
   }
 
+  /** Content written by uploadFile / uploadPublicFile (moves carry it along). */
+  async downloadFile(key: string): Promise<Buffer> {
+    const file = this.uploaded.get(key);
+    if (!this.files.has(key) || !file) {
+      throw new StorageFileNotFoundError(key);
+    }
+    return file.content;
+  }
+
   async moveFile(fromKey: string, toKey: string): Promise<void> {
     if (!this.files.delete(fromKey)) {
       throw new StorageFileNotFoundError(fromKey);
     }
     this.files.add(toKey);
+    const file = this.uploaded.get(fromKey);
+    if (file) {
+      this.uploaded.delete(fromKey);
+      this.uploaded.set(toKey, file);
+    }
   }
 
   async deleteFile(key: string): Promise<void> {

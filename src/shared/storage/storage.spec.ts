@@ -157,3 +157,26 @@ describe('InMemoryFileStorage.uploadPublicFile', () => {
     );
   });
 });
+
+describe('InMemoryFileStorage.downloadFile', () => {
+  it('returns the uploaded content, also after a move', async () => {
+    const storage = new InMemoryFileStorage();
+    await storage.uploadFile('tmp/u1/a.png', Buffer.from('png'), 'image/png');
+
+    await expect(storage.downloadFile('tmp/u1/a.png')).resolves.toEqual(
+      Buffer.from('png'),
+    );
+    await storage.moveFile('tmp/u1/a.png', 'users/u1/a.png');
+    await expect(storage.downloadFile('users/u1/a.png')).resolves.toEqual(
+      Buffer.from('png'),
+    );
+  });
+
+  it('throws StorageFileNotFoundError when the object is missing', async () => {
+    const storage = new InMemoryFileStorage();
+
+    await expect(storage.downloadFile('tmp/u1/missing.png')).rejects.toEqual(
+      new StorageFileNotFoundError('tmp/u1/missing.png'),
+    );
+  });
+});
