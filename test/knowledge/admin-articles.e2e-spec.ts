@@ -157,6 +157,25 @@ describe('/admin/knowledge (e2e)', () => {
     expect(farmer.body.code).toBe('KNOWLEDGE_ADMIN_REQUIRED');
   });
 
+  it('lists every crop with its article counts', async () => {
+    const res = await asAdmin(http().get('/admin/knowledge/crops')).expect(200);
+
+    const crops = res.body.crops as Array<{
+      code: string;
+      targetCount: number;
+      articleCount: number;
+      publishedCount: number;
+      diagnosisEnabled: boolean;
+    }>;
+    expect(crops.map((crop) => crop.code)).toEqual(
+      expect.arrayContaining(['RICE', 'DURIAN']),
+    );
+    const rice = crops.find((crop) => crop.code === 'RICE');
+    expect(rice).toMatchObject({ slug: 'lua', diagnosisEnabled: true });
+    expect(rice?.targetCount).toBeGreaterThan(rice?.articleCount ?? 0);
+    expect(rice?.publishedCount).toBe(rice?.articleCount);
+  });
+
   it('lists the diseases and variants of a crop with their articles', async () => {
     const res = await asAdmin(
       http().get('/admin/knowledge/crops/lua/articles'),

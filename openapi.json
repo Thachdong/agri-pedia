@@ -2826,6 +2826,54 @@
         ]
       }
     },
+    "/admin/knowledge/crops": {
+      "get": {
+        "operationId": "AdminArticleController_crops",
+        "summary": "List every crop with its article counts (admin)",
+        "description": "All crops by display order, including crops not enabled for diagnosis and crops without any article. `targetCount` = diseases + variants of the crop; `targetCount - articleCount` entries have no article yet (see GET /admin/knowledge/crops/:cropSlug/articles).",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAdminArticleCropsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
     "/admin/knowledge/crops/{cropSlug}/articles": {
       "get": {
         "operationId": "AdminArticleController_targets",
@@ -6625,6 +6673,55 @@
           "reviewedAt",
           "publishedAt",
           "updatedAt"
+        ]
+      },
+      "AdminArticleCropItemResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "diagnosisEnabled": {
+            "type": "boolean"
+          },
+          "targetCount": {
+            "type": "number"
+          },
+          "articleCount": {
+            "type": "number"
+          },
+          "publishedCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "nameVi",
+          "diagnosisEnabled",
+          "targetCount",
+          "articleCount",
+          "publishedCount"
+        ]
+      },
+      "ListAdminArticleCropsResponse": {
+        "type": "object",
+        "properties": {
+          "crops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleCropItemResponse"
+            }
+          }
+        },
+        "required": [
+          "crops"
         ]
       },
       "AdminArticleCropResponse": {

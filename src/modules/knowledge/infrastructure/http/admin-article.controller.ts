@@ -16,6 +16,7 @@ import {
 import {
   CreateArticleUseCase,
   GetAdminArticleUseCase,
+  ListAdminArticleCropsUseCase,
   ListAdminArticleTargetsUseCase,
   PublishArticleUseCase,
   TAdminArticleImageInput,
@@ -33,6 +34,7 @@ import {
   AdminArticleDetailResponse,
   ArticleVisibilityResponse,
   CreateArticleResponse,
+  ListAdminArticleCropsResponse,
   ListAdminArticleTargetsResponse,
   UpdateArticleResponse,
 } from './responses/admin-article.response';
@@ -42,6 +44,7 @@ import {
 @UseGuards(AccessTokenGuard)
 export class AdminArticleController {
   constructor(
+    private readonly listCrops: ListAdminArticleCropsUseCase,
     private readonly listTargets: ListAdminArticleTargetsUseCase,
     private readonly getArticle: GetAdminArticleUseCase,
     private readonly createArticle: CreateArticleUseCase,
@@ -49,6 +52,13 @@ export class AdminArticleController {
     private readonly unpublishArticle: UnpublishArticleUseCase,
     private readonly publishArticle: PublishArticleUseCase,
   ) {}
+
+  @Get('crops')
+  async crops(
+    @CurrentUser() caller: TAccessTokenPayload,
+  ): Promise<ListAdminArticleCropsResponse> {
+    return this.listCrops.execute({ userId: caller.userId });
+  }
 
   @Get('crops/:cropSlug/articles')
   async targets(

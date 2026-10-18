@@ -43,3 +43,10 @@ Flow:
 - [x] 18. [boundary-review] — 0 HIGH, 0 MED, 2 LOW (xem báo cáo)
 
 7. `status` + `reviewedBy`/`reviewedAt` giữ cho bài AI (từ frontmatter); bài admin tạo/sửa → REVIEWED, reviewedBy = userId admin, reviewedAt = now. Sitemap = REVIEWED + published.
+
+## Change: admin crop list
+Flow: `GET /admin/knowledge/crops` → ListAdminArticleCrops (admin check) → mọi crop + targetCount / articleCount / publishedCount → admin chọn `cropSlug` cho action 44. Lý do: action 33 chỉ trả crop đang bật, action 40 chỉ crop có bài publish.
+- [x] 19. [use-case]        ListAdminArticleCrops
+- [x] 20. [http]            GET /admin/knowledge/crops; e2e
+- [x] 21. [api-docs]        GET /admin/knowledge/crops; openapi:export; specs/api.md action 50
+

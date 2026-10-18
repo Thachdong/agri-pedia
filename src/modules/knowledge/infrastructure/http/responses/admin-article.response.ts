@@ -4,6 +4,24 @@ import {
   EDiseaseCategory,
 } from '../../../domain';
 
+export class AdminArticleCropItemResponse {
+  code: string;
+  /** Value for `cropSlug` of GET /admin/knowledge/crops/:cropSlug/articles. */
+  slug: string;
+  nameVi: string;
+  diagnosisEnabled: boolean;
+  /** KB entries an article can be about (diseases + variants); `targetCount - articleCount` have no article yet. */
+  targetCount: number;
+  /** Articles of the crop, published or not. */
+  articleCount: number;
+  publishedCount: number;
+}
+
+export class ListAdminArticleCropsResponse {
+  /** Every crop by display order, enabled or not, with or without articles. */
+  crops: AdminArticleCropItemResponse[];
+}
+
 export class AdminArticleSummaryResponse {
   slug: string;
   title: string;

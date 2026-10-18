@@ -33,6 +33,15 @@ const CONTENT_NOTE =
 defineApiDocs(AdminArticleController, {
   tag: 'Admin Articles',
   operations: {
+    crops: {
+      summary: 'List every crop with its article counts (admin)',
+      description:
+        'All crops by display order, including crops not enabled for diagnosis and crops without any article. ' +
+        '`targetCount` = diseases + variants of the crop; `targetCount - articleCount` entries have no article yet ' +
+        '(see GET /admin/knowledge/crops/:cropSlug/articles).',
+      auth: true,
+      errors: [ADMIN],
+    },
     targets: {
       summary: 'List the diseases of a crop with their articles (admin)',
       description:
