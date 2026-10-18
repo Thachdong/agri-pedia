@@ -381,6 +381,69 @@ describe('/admin/knowledge (e2e)', () => {
     expect(page.body.origin).toBe('AI_REVIEWED');
   });
 
+  it('replaces the markdown and the cover with a new upload', async () => {
+    const stored = (
+      await asAdmin(http().get(`/admin/knowledge/articles/${freeCode}`))
+    ).body;
+    const before = await http()
+      .get('/knowledge/articles/lua/bai-admin-e2e')
+      .expect(200);
+    const kept = stored.images.map(
+      (i: {
+        file: string;
+        alt: string;
+        caption: string | null;
+        credit: object;
+      }) => ({
+        file: i.file,
+        alt: i.alt,
+        caption: i.caption,
+        credit: i.credit,
+      }),
+    );
+
+    await asAdmin(http().put(`/admin/knowledge/articles/${freeCode}`))
+      .send({
+        title: stored.title,
+        summary: stored.summary,
+        markdown: 'Nội dung mới.\n\n![Triệu chứng](trieu-chung.webp)\n',
+        cover: 'anh-bia-moi.webp',
+        images: [
+          ...kept,
+          {
+            file: 'anh-bia-moi.webp',
+            tmpKey: await upload('anh-bia-moi'),
+            alt: 'Ảnh bìa mới',
+            credit: CREDIT,
+          },
+        ],
+        sources: stored.sources,
+      })
+      .expect(200);
+
+    const page = await http()
+      .get('/knowledge/articles/lua/bai-admin-e2e')
+      .expect(200);
+    expect(page.body.markdown).toMatch(/^Nội dung mới\./);
+    expect(page.body.cover).toEqual({
+      url: expect.stringMatching(
+        new RegExp(
+          `/articles/RICE/${freeCode}/anh-bia-moi\\.[0-9a-f]{8}\\.webp$`,
+        ),
+      ),
+      alt: 'Ảnh bìa mới',
+      width: 1600,
+      height: 800,
+    });
+    expect(page.body.cover.url).not.toBe(before.body.cover.url);
+    const list = await http().get('/knowledge/articles?crop=lua').expect(200);
+    expect(
+      list.body.articles.find(
+        (a: { slug: string }) => a.slug === 'bai-admin-e2e',
+      )?.coverUrl,
+    ).toBe(page.body.cover.url);
+  });
+
   it('unpublishes an article (public 404) and publishes it again', async () => {
     const hidden = await asAdmin(
       http().post(`/admin/knowledge/articles/${freeCode}/unpublish`),
