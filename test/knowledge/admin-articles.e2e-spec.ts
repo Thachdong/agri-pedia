@@ -252,7 +252,10 @@ describe('/admin/knowledge (e2e)', () => {
       }),
     ]);
     expect(storage.files.has(body.images[0].tmpKey)).toBe(false);
-    await http().get('/knowledge/articles/lua/bai-admin-e2e').expect(200);
+    const page = await http()
+      .get('/knowledge/articles/lua/bai-admin-e2e')
+      .expect(200);
+    expect(page.body.origin).toBe('ADMIN');
   });
 
   it('rejects a second article for the code (409), a taken slug (409)', async () => {
@@ -356,6 +359,7 @@ describe('/admin/knowledge (e2e)', () => {
       .expect(200);
     expect(page.body.title).toBe('Bệnh đạo ôn lúa (đã duyệt)');
     expect(page.body.reviewedBy).toBe(adminId);
+    expect(page.body.origin).toBe('AI_REVIEWED');
   });
 
   it('unpublishes an article (public 404) and publishes it again', async () => {

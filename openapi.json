@@ -6144,6 +6144,14 @@
               "REVIEWED"
             ]
           },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "AI",
+              "ADMIN",
+              "AI_REVIEWED"
+            ]
+          },
           "updatedAt": {
             "format": "date-time",
             "type": "string"
@@ -6172,6 +6180,7 @@
           "summary",
           "coverUrl",
           "status",
+          "origin",
           "updatedAt",
           "disease",
           "variant"
@@ -6568,6 +6577,14 @@
               "REVIEWED"
             ]
           },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "AI",
+              "ADMIN",
+              "AI_REVIEWED"
+            ]
+          },
           "reviewedBy": {
             "type": "string",
             "nullable": true
@@ -6603,6 +6620,7 @@
           "relatedDiseases",
           "sources",
           "status",
+          "origin",
           "reviewedBy",
           "reviewedAt",
           "publishedAt",

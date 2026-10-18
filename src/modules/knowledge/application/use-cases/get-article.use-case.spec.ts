@@ -161,6 +161,7 @@ describe('GetArticleUseCase', () => {
     ]);
     expect(article).toMatchObject({
       status: 'REVIEWED',
+      origin: 'AI',
       reviewedBy: 'AI',
       sources: [{ title: 'VIPA', url: 'https://vipa.vn' }],
     });

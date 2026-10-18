@@ -188,5 +188,6 @@ describe('ListArticlesUseCase', () => {
     const page = await useCase.execute({ crop: 'lua', limit: 10 });
 
     expect(page.articles.map((item) => item.slug)).toEqual(['benh-dao-on']);
+    expect(page.articles[0].origin).toBe('AI');
   });
 });

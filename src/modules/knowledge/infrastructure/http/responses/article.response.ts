@@ -1,5 +1,6 @@
 import {
   EAgentType,
+  EArticleOrigin,
   EArticleStatus,
   EDiseaseCategory,
   EPlantPart,
@@ -50,6 +51,8 @@ export class ArticleListItemResponse {
   coverUrl: string | null;
   /** DRAFT pages should be noindex. */
   status: EArticleStatus;
+  /** AI = generated ("Nội dung được tạo bởi AI"); ADMIN / AI_REVIEWED = written or edited by an admin ("Nội dung được kiểm duyệt bởi Admin"). */
+  origin: EArticleOrigin;
   updatedAt: Date;
   disease: ArticleDiseaseSummaryResponse | null;
   /** Set for an article about one variant of `disease`. */
@@ -158,6 +161,8 @@ export class ArticleDetailResponse {
   relatedDiseases: RelatedDiseaseResponse[];
   sources: ArticleSourceResponse[];
   status: EArticleStatus;
+  /** AI = generated ("Nội dung được tạo bởi AI"); ADMIN / AI_REVIEWED = written or edited by an admin ("Nội dung được kiểm duyệt bởi Admin"). */
+  origin: EArticleOrigin;
   /** Temporarily `AI`. */
   reviewedBy: string | null;
   reviewedAt: Date | null;

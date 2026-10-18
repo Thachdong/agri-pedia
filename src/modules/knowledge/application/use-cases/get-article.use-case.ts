@@ -5,6 +5,7 @@ import {
   diseaseCardCodes,
   diseaseCodeOf,
   EAgentType,
+  EArticleOrigin,
   EArticleStatus,
   EDiseaseCategory,
   EPlantPart,
@@ -81,6 +82,8 @@ export type TGetArticleOutput = {
   }>;
   sources: TArticleSource[];
   status: EArticleStatus;
+  /** AI = generated ("Nội dung được tạo bởi AI"); ADMIN / AI_REVIEWED = written or edited by an admin ("Nội dung được kiểm duyệt bởi Admin"). */
+  origin: EArticleOrigin;
   reviewedBy: string | null;
   reviewedAt: Date | null;
   publishedAt: Date;
@@ -241,6 +244,7 @@ export class GetArticleUseCase {
       }),
       sources: article.sources,
       status: article.status,
+      origin: article.origin,
       reviewedBy: article.reviewedBy,
       reviewedAt: article.reviewedAt,
       publishedAt: article.publishedAt,

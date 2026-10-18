@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { FILE_STORAGE, IFileStorage } from '@shared/storage';
 import {
+  EArticleOrigin,
   EArticleStatus,
   EDiseaseCategory,
   KnowledgeArticleInvalidCursorException,
@@ -40,6 +41,8 @@ export type TArticleListItem = {
   /** Public URL of the cover image; null without a cover. */
   coverUrl: string | null;
   status: EArticleStatus;
+  /** AI = generated ("Nội dung được tạo bởi AI"); ADMIN / AI_REVIEWED = written or edited by an admin ("Nội dung được kiểm duyệt bởi Admin"). */
+  origin: EArticleOrigin;
   updatedAt: Date;
   disease: {
     code: string;
@@ -140,6 +143,7 @@ export class ListArticlesUseCase {
           summary: article.summary,
           coverUrl: cover ? this.storage.publicUrl(cover.key) : null,
           status: article.status,
+          origin: article.origin,
           updatedAt: article.updatedAt,
           disease: disease
             ? {
