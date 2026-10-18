@@ -25,7 +25,7 @@ const IMAGE_INVALID = {
 
 const CONTENT_NOTE =
   ' Content rules (`details.issues` of KNOWLEDGE_ARTICLE_INVALID_CONTENT lists every broken one): title 1-70 chars, ' +
-  'summary 50-160 chars, image `file` names `^[a-z0-9-]+\\.webp$` without duplicates, `cover` one of them, every body image ' +
+  'summary 50-160 chars, image `file` names like `dao-on-1.webp` (lowercase letters, digits, hyphens + .webp) without duplicates, `cover` one of them, every body image ' +
   '(`![alt](<file>)`) listed, `/diseases/<CODE>` links and `::disease-card{code="..."}` (disease ids only) inside the crop KB, ' +
   'no HTML outside code. A new image is a key from POST /media/presign-url (jpg, png or webp, uploaded by the caller); ' +
   'it is stored as webp at most 1600px wide. The client page cache is revalidated in the background.';
