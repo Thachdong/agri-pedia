@@ -69,6 +69,8 @@ export class SimilarDiseaseResponse {
   name: string;
   /** null when the KB has no distinguishing feature yet. */
   distinguishingFeature: string | null;
+  /** The similar disease's main article page; null when it has none. */
+  article: DiseaseArticleResponse | null;
 }
 
 export class DiseaseReferenceResponse {

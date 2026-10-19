@@ -25,7 +25,8 @@ defineApiDocs(KnowledgeController, {
       description:
         'No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet. ' +
         "`article` = path and status of the disease's main article (GET /knowledge/articles/:cropSlug/:slug), null when it has none or it is unpublished; " +
-        "`variants[].article` = the variant's own article, if any.",
+        "`variants[].article` = the variant's own article, if any; " +
+        "`similarDiseases[].article` = the similar disease's main article, if any.",
       validation: true,
       errors: [
         {

@@ -94,11 +94,13 @@ describe('GetDiseaseDetailUseCase', () => {
           code: 'RICE_BROWN_SPOT',
           name: 'Bệnh đốm nâu',
           distinguishingFeature: 'Đốm tròn',
+          article: null,
         },
         {
           code: 'RICE_UNKNOWN',
           name: 'RICE_UNKNOWN',
           distinguishingFeature: null,
+          article: null,
         },
       ],
       references: [{ title: 'IRRI', url: 'http://irri' }],
@@ -143,6 +145,31 @@ describe('GetDiseaseDetailUseCase', () => {
       path: '/benh-cay-trong/lua/benh-dao-on-la',
       status: 'REVIEWED',
     });
+  });
+
+  it('links the main article of a similar disease', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    for (const article of [
+      buildArticle({
+        diseaseCode: 'RICE_BROWN_SPOT',
+        slug: 'benh-dom-nau',
+      }),
+      buildArticle({
+        diseaseCode: 'RICE_BROWN_SPOT',
+        variantCode: 'RICE_BROWN_SPOT__V1',
+        slug: 'benh-dom-nau-la',
+      }),
+    ]) {
+      articles.articles.set(article.id, article);
+    }
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toBeNull();
+    expect(detail.similarDiseases.map((s) => s.article)).toEqual([
+      { path: '/benh-cay-trong/lua/benh-dom-nau', status: 'REVIEWED' },
+      null,
+    ]);
   });
 
   it('throws KnowledgeDiseaseNotFound for an unknown code', async () => {

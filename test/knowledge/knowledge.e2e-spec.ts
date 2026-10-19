@@ -122,6 +122,10 @@ describe('GET /knowledge/crops, /knowledge/diseases, /knowledge/diseases/:code (
       expect.objectContaining({
         code: 'RICE_BROWN_SPOT',
         name: expect.any(String),
+        article: {
+          path: '/benh-cay-trong/lua/benh-dom-nau',
+          status: 'REVIEWED',
+        },
       }),
     );
     expect(res.body.treatments).toEqual({

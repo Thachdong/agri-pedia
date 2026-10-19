@@ -47,6 +47,8 @@ export type TGetDiseaseDetailOutput = {
     code: string;
     name: string;
     distinguishingFeature: string | null;
+    /** The similar disease's main article page; null when it has none. */
+    article: { path: string; status: EArticleStatus } | null;
   }>;
   references: Array<{ title: string; url: string }>;
   verification: EVerification;
@@ -77,17 +79,23 @@ export class GetDiseaseDetailUseCase {
     const nameByCode = new Map(similar.map((d) => [d.code, d.nameVi]));
     const articles = await this.articles.findPublishedByDiseaseCodes([
       disease.code,
+      ...similar.map((d) => d.code),
     ]);
-    const crop =
-      articles.length > 0
-        ? await this.knowledge.findCrop(disease.cropType)
-        : null;
+    const crops = await Promise.all(
+      [...new Set(articles.map((a) => a.cropType))].map((code) =>
+        this.knowledge.findCrop(code),
+      ),
+    );
+    const slugByCrop = new Map(
+      crops.flatMap((crop) => (crop ? [[crop.code, crop.slug] as const] : [])),
+    );
     const articleRef = (
       code: string,
     ): { path: string; status: EArticleStatus } | null => {
       const article = articles.find((a) => a.kbCode === code);
-      return article && crop
-        ? { path: article.path(crop.slug), status: article.status }
+      const cropSlug = article && slugByCrop.get(article.cropType);
+      return article && cropSlug
+        ? { path: article.path(cropSlug), status: article.status }
         : null;
     };
 
@@ -123,6 +131,7 @@ export class GetDiseaseDetailUseCase {
         code: s.code,
         name: nameByCode.get(s.code) ?? s.code,
         distinguishingFeature: s.distinguishingFeature?.vn ?? null,
+        article: articleRef(s.code),
       })),
       references: content.references,
       verification: disease.verification,
