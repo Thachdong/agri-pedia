@@ -8,7 +8,7 @@ Admin page `admin/setting`: xem + cập nhật
 Ownership: diagnosis settings thuộc `diagnosis` (dùng trong CreateDiagnosis); top articles + limit thuộc `knowledge` (sở hữu articles + crops). Không tạo module mới.
 
 - [x] 1. [domain-model]  diagnosis: DiagnosisSettings (dailyFreeLimit=3, defaultCropType=null, maxImages=5, maxImageBytes=5MB, maxImageWidth=4096, maxImageHeight=4096); error DiagnosisInvalidSettings; Diagnosis.create nhận maxImages thay hằng MAX_DIAGNOSIS_IMAGES
-- [ ] 2. [domain-model]  knowledge: TopArticleSettings (limit=10) + CropTopArticles (cropType, articleIds có thứ tự, không trùng, ≤ limit); errors KnowledgeInvalidTopArticleSettings, KnowledgeTopArticlesInvalid
+- [x] 2. [domain-model]  knowledge: TopArticleSettings (limit=10) + CropTopArticles (cropType, articleIds có thứ tự, không trùng, ≤ limit); errors KnowledgeInvalidTopArticleSettings, KnowledgeTopArticlesInvalid
 - [ ] 3. [use-case]      diagnosis: GetDiagnosisSettings (admin), UpdateDiagnosisSettings (admin; defaultCropType phải là crop enabled qua IKnowledgeQueryPort), GetDiagnosisFormSettings (user); port IDiagnosisSettingsRepository; CreateDiagnosis đọc settings (limit/ngày, số ảnh, byte, width/height) thay env DIAGNOSIS_DAILY_LIMIT + DIAGNOSIS_MAX_IMAGE_BYTES (bỏ 2 env); IImageProcessor trả width/height gốc để check
 - [ ] 4. [use-case]      knowledge: GetTopArticleSettings + UpdateTopArticleSettings (admin, limit), GetCropTopArticles + SetCropTopArticles (admin; article tồn tại, cùng crop, PUBLISHED, ≤ limit), ListTopArticles (public, chỉ PUBLISHED, cắt theo limit); ports ITopArticleSettingsRepository, ICropTopArticlesRepository
 - [ ] 5. [persistence]   PgDiagnosisSettingsRepository, table `diagnosis_settings` (1 row; chưa có row = defaults)
