@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { FILE_STORAGE, IFileStorage } from '@shared/storage';
 import {
+  Article,
+  Disease,
   EArticleOrigin,
   EArticleStatus,
   EDiseaseCategory,
@@ -127,36 +129,46 @@ export class ListArticlesUseCase {
         nameVi: crop.nameVi,
         diagnosisEnabled: crop.enabled,
       },
-      articles: page.map((article) => {
-        const disease = article.diseaseCode
-          ? diseaseByCode.get(article.diseaseCode)
-          : undefined;
-        const cover = article.coverImage();
-        const variant =
-          disease && article.variantCode
-            ? disease.variant(article.variantCode)
-            : null;
-        return {
-          path: article.path(crop.slug),
-          slug: article.slug,
-          title: article.title,
-          summary: article.summary,
-          coverUrl: cover ? this.storage.publicUrl(cover.key) : null,
-          status: article.status,
-          origin: article.origin,
-          updatedAt: article.updatedAt,
-          disease: disease
-            ? {
-                code: disease.code,
-                nameVi: disease.nameVi,
-                scientificName: disease.scientificName,
-                category: disease.category,
-              }
-            : null,
-          variant: variant && { code: variant.code, name: variant.names.vn },
-        };
-      }),
+      articles: page.map((article) =>
+        toArticleListItem(article, crop.slug, diseaseByCode, this.storage),
+      ),
       nextCursor,
     };
   }
+}
+
+/** Public summary of an article; `diseaseByCode` holds its disease (when it has one). */
+export function toArticleListItem(
+  article: Article,
+  cropSlug: string,
+  diseaseByCode: Map<string, Disease>,
+  storage: IFileStorage,
+): TArticleListItem {
+  const disease = article.diseaseCode
+    ? diseaseByCode.get(article.diseaseCode)
+    : undefined;
+  const cover = article.coverImage();
+  const variant =
+    disease && article.variantCode
+      ? disease.variant(article.variantCode)
+      : null;
+  return {
+    path: article.path(cropSlug),
+    slug: article.slug,
+    title: article.title,
+    summary: article.summary,
+    coverUrl: cover ? storage.publicUrl(cover.key) : null,
+    status: article.status,
+    origin: article.origin,
+    updatedAt: article.updatedAt,
+    disease: disease
+      ? {
+          code: disease.code,
+          nameVi: disease.nameVi,
+          scientificName: disease.scientificName,
+          category: disease.category,
+        }
+      : null,
+    variant: variant && { code: variant.code, name: variant.names.vn },
+  };
 }

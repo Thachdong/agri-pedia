@@ -27,6 +27,8 @@ export interface IArticleRepository {
   existsBySlug(cropType: string, slug: string): Promise<boolean>;
   /** Every article of the crop, published or not (admin). */
   listByCrop(cropType: string): Promise<Article[]>;
+  /** Articles with these ids, published or not, any order; unknown ids left out. */
+  findByIds(ids: string[]): Promise<Article[]>;
   // Public reads below: unpublished articles are left out.
   /** Number of published articles per crop code; crops without one left out. */
   countPublishedByCrop(): Promise<Map<string, number>>;

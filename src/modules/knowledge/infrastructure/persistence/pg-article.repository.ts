@@ -80,6 +80,12 @@ export class PgArticleRepository
     return rows.map((row) => ArticleMapper.toDomain(row));
   }
 
+  async findByIds(ids: string[]): Promise<Article[]> {
+    if (ids.length === 0) return [];
+    const rows = await this.repository.findBy({ id: In(ids) });
+    return rows.map((row) => ArticleMapper.toDomain(row));
+  }
+
   async countPublishedByCrop(): Promise<Map<string, number>> {
     const rows = await this.repository
       .createQueryBuilder('a')

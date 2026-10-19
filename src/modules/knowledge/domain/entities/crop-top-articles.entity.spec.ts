@@ -46,7 +46,7 @@ describe('CropTopArticles', () => {
     ).toThrow(
       expect.objectContaining({
         code: 'KNOWLEDGE_TOP_ARTICLES_INVALID',
-        details: { reason: 'duplicated articles', articleIds: ['a'] },
+        details: { reason: 'duplicated articles', articles: ['a'] },
       }),
     );
   });

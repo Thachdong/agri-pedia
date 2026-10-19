@@ -79,7 +79,7 @@ export class ListAdminArticleTargetsUseCase {
     const byCode = new Map(articles.map((a) => [a.kbCode, a]));
     const summary = (code: string): TAdminArticleSummary | null => {
       const article = byCode.get(code);
-      return article ? toSummary(article, crop.slug) : null;
+      return article ? toAdminArticleSummary(article, crop.slug) : null;
     };
 
     const targets = diseases
@@ -109,7 +109,10 @@ export class ListAdminArticleTargetsUseCase {
   }
 }
 
-function toSummary(article: Article, cropSlug: string): TAdminArticleSummary {
+export function toAdminArticleSummary(
+  article: Article,
+  cropSlug: string,
+): TAdminArticleSummary {
   return {
     slug: article.slug,
     title: article.title,
