@@ -164,6 +164,7 @@ describe('ProcessDiagnosisUseCase', () => {
       promptVersion: 'd1+v1',
       kbVersion: '2026-10-12',
       plantParts: [EPlantPart.LEAF, EPlantPart.PANICLE],
+      maxImages: 5,
     });
     await diagnoses.save(diagnosis);
   });

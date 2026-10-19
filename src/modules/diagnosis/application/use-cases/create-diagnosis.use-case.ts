@@ -15,7 +15,7 @@ import {
   DiagnosisUserNotAllowedException,
   EDiagnosisStatus,
   EPlantPart,
-  MAX_DIAGNOSIS_IMAGES,
+  DEFAULT_DIAGNOSIS_SETTINGS,
   MIN_DIAGNOSIS_IMAGES,
   TInvalidImage,
 } from '../../domain';
@@ -110,6 +110,7 @@ export class CreateDiagnosisUseCase {
         ...this.vision.info(crop),
         kbVersion: crop.kbVersion,
         plantParts: input.plantParts,
+        maxImages: DEFAULT_DIAGNOSIS_SETTINGS.maxImages,
       });
       await this.diagnoses.save(created);
       return created;
@@ -125,11 +126,12 @@ export class CreateDiagnosisUseCase {
     crop: TKnowledgeDiagnosisCrop,
   ): void {
     const count = input.files.length;
-    if (count < MIN_DIAGNOSIS_IMAGES || count > MAX_DIAGNOSIS_IMAGES) {
+    const { maxImages } = DEFAULT_DIAGNOSIS_SETTINGS;
+    if (count < MIN_DIAGNOSIS_IMAGES || count > maxImages) {
       throw new DiagnosisInvalidImageException([
         {
           index: null,
-          reason: `Expected ${MIN_DIAGNOSIS_IMAGES}..${MAX_DIAGNOSIS_IMAGES} images, got ${count}`,
+          reason: `Expected ${MIN_DIAGNOSIS_IMAGES}..${maxImages} images, got ${count}`,
         },
       ]);
     }

@@ -1,5 +1,6 @@
 export * from './diagnosis-result.types';
 export * from './entities/diagnosis-image.entity';
+export * from './entities/diagnosis-settings.entity';
 export * from './entities/diagnosis.entity';
 export * from './enums/confidence-level.enum';
 export * from './enums/diagnosis-feedback.enum';
@@ -9,6 +10,7 @@ export * from './enums/plant-part.enum';
 export * from './exceptions/diagnosis-crop-not-supported.exception';
 export * from './exceptions/diagnosis-daily-limit-exceeded.exception';
 export * from './exceptions/diagnosis-invalid-image.exception';
+export * from './exceptions/diagnosis-invalid-settings.exception';
 export * from './exceptions/diagnosis-not-completed.exception';
 export * from './exceptions/diagnosis-not-found.exception';
 export * from './exceptions/diagnosis-not-processing.exception';
