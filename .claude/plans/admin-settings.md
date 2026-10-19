@@ -17,7 +17,7 @@ Ownership: diagnosis settings thuộc `diagnosis` (dùng trong CreateDiagnosis);
 - [x] 8. [api-docs]      3 endpoint diagnosis settings
 - [x] 9. [http]          GET/PUT /admin/knowledge/settings (limit), GET/PUT /admin/knowledge/crops/:cropSlug/top-articles, GET /knowledge/articles/top?crop=
 - [x] 10. [api-docs]     5 endpoint knowledge top articles
-- [ ] 11. [boundary-review]
+- [x] 11. [boundary-review]
 
 Decisions:
 - Endpoint public giữ (GET /diagnoses/settings, GET /knowledge/articles/top).
