@@ -5,8 +5,10 @@ import {
   ARTICLE_IMAGE_PUBLISHER,
   ARTICLE_REPOSITORY,
   ARTICLE_SOURCE,
+  CROP_TOP_ARTICLES_REPOSITORY,
   KNOWLEDGE_BASE_SOURCE,
   KNOWLEDGE_REPOSITORY,
+  TOP_ARTICLE_SETTINGS_REPOSITORY,
 } from './application/ports';
 import {
   CreateArticleUseCase,
@@ -43,7 +45,9 @@ import { SharpArticleImagePublisher } from './infrastructure/images/sharp-articl
 import { KnowledgeQueryService } from './infrastructure/queries/knowledge-query.service';
 import { NextArticleCacheInvalidator } from './infrastructure/revalidate/next-article-cache-invalidator';
 import { PgArticleRepository } from './infrastructure/persistence/pg-article.repository';
+import { PgCropTopArticlesRepository } from './infrastructure/persistence/pg-crop-top-articles.repository';
 import { PgKnowledgeRepository } from './infrastructure/persistence/pg-knowledge.repository';
+import { PgTopArticleSettingsRepository } from './infrastructure/persistence/pg-top-article-settings.repository';
 import { FileArticleSource } from './infrastructure/seed/file-article.source';
 import { JsonKnowledgeBaseSource } from './infrastructure/seed/json-knowledge-base.source';
 import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
@@ -78,6 +82,14 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
     KnowledgeSeeder,
     { provide: KNOWLEDGE_REPOSITORY, useClass: PgKnowledgeRepository },
     { provide: ARTICLE_REPOSITORY, useClass: PgArticleRepository },
+    {
+      provide: TOP_ARTICLE_SETTINGS_REPOSITORY,
+      useClass: PgTopArticleSettingsRepository,
+    },
+    {
+      provide: CROP_TOP_ARTICLES_REPOSITORY,
+      useClass: PgCropTopArticlesRepository,
+    },
     {
       provide: KNOWLEDGE_BASE_SOURCE,
       useFactory: () => new JsonKnowledgeBaseSource(),

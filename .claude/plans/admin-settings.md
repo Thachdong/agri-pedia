@@ -11,8 +11,8 @@ Ownership: diagnosis settings thuộc `diagnosis` (dùng trong CreateDiagnosis);
 - [x] 2. [domain-model]  knowledge: TopArticleSettings (limit=10) + CropTopArticles (cropType, articleIds có thứ tự, không trùng, ≤ limit); errors KnowledgeInvalidTopArticleSettings, KnowledgeTopArticlesInvalid
 - [x] 3. [use-case]      diagnosis: GetDiagnosisSettings (admin), UpdateDiagnosisSettings (admin; defaultCropType phải là crop enabled qua IKnowledgeQueryPort), GetDiagnosisFormSettings (user); port IDiagnosisSettingsRepository; CreateDiagnosis đọc settings (limit/ngày, số ảnh, byte, width/height) thay env DIAGNOSIS_DAILY_LIMIT + DIAGNOSIS_MAX_IMAGE_BYTES (bỏ 2 env); IImageProcessor trả width/height gốc để check
 - [x] 4. [use-case]      knowledge: GetTopArticleSettings + UpdateTopArticleSettings (admin, limit), GetCropTopArticles + SetCropTopArticles (admin; article tồn tại, cùng crop, PUBLISHED, ≤ limit), ListTopArticles (public, chỉ PUBLISHED, cắt theo limit); ports ITopArticleSettingsRepository, ICropTopArticlesRepository
-- [ ] 5. [persistence]   PgDiagnosisSettingsRepository, table `diagnosis_settings` (1 row; chưa có row = defaults)
-- [ ] 6. [persistence]   knowledge: table `knowledge_settings` (1 row, top_articles_limit) + `knowledge_crop_top_articles` (crop_type, position, article_id)
+- [x] 5. [persistence]   PgDiagnosisSettingsRepository, table `diagnosis_settings` (1 row; chưa có row = defaults)
+- [x] 6. [persistence]   knowledge: table `knowledge_settings` (1 row, top_articles_limit) + `knowledge_crop_top_articles` (crop_type, position, article_id)
 - [ ] 7. [http]          GET/PUT /admin/diagnosis/settings, GET /diagnoses/settings
 - [ ] 8. [api-docs]      3 endpoint diagnosis settings
 - [ ] 9. [http]          GET/PUT /admin/knowledge/settings (limit), GET/PUT /admin/knowledge/crops/:cropSlug/top-articles, GET /knowledge/articles/top?crop=
