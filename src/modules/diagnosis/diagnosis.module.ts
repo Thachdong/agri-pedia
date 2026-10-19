@@ -16,6 +16,7 @@ import {
 import {
   DIAGNOSIS_JOB_RUNNER,
   DIAGNOSIS_REPOSITORY,
+  DIAGNOSIS_SETTINGS_REPOSITORY,
   IMAGE_PROCESSOR,
   VISION_DIAGNOSIS_PROVIDER,
 } from './application/ports';
@@ -26,6 +27,7 @@ import { DiagnosisStartup } from './infrastructure/jobs/diagnosis-startup';
 import { InProcessDiagnosisJobRunner } from './infrastructure/jobs/in-process-diagnosis-job.runner';
 import { AiVisionProvider } from './infrastructure/vision/ai-vision.provider';
 import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis.repository';
+import { PgDiagnosisSettingsRepository } from './infrastructure/persistence/pg-diagnosis-settings.repository';
 
 @Module({
   imports: [UserModule, KnowledgeModule, MediaModule],
@@ -44,6 +46,10 @@ import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis
     GetDiagnosisFormSettingsUseCase,
     DiagnosisStartup,
     { provide: DIAGNOSIS_REPOSITORY, useClass: PgDiagnosisRepository },
+    {
+      provide: DIAGNOSIS_SETTINGS_REPOSITORY,
+      useClass: PgDiagnosisSettingsRepository,
+    },
     { provide: IMAGE_PROCESSOR, useClass: SharpImageProcessor },
     { provide: VISION_DIAGNOSIS_PROVIDER, useClass: AiVisionProvider },
     { provide: DIAGNOSIS_JOB_RUNNER, useClass: InProcessDiagnosisJobRunner },
