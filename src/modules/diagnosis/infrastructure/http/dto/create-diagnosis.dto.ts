@@ -11,7 +11,7 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { EPlantPart } from '../../../domain';
+import { DIAGNOSIS_SETTINGS_BOUNDS, EPlantPart } from '../../../domain';
 
 export class DiagnosisImageMetaDto {
   /** Plant part the photo shows (a hint for the AI). */
@@ -24,10 +24,10 @@ export class CreateDiagnosisMetaDto {
   @Matches('^[A-Z0-9_]{1,50}$')
   cropType: string;
 
-  /** One per uploaded file, same order. */
+  /** One per uploaded file, same order (max images: GET /diagnoses/settings). */
   @IsArray()
   @ArrayMinSize(1)
-  @ArrayMaxSize(5)
+  @ArrayMaxSize(DIAGNOSIS_SETTINGS_BOUNDS.maxImages.max)
   @ValidateNested({ each: true })
   @Type(() => DiagnosisImageMetaDto)
   images: DiagnosisImageMetaDto[];

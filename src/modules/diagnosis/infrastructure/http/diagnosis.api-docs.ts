@@ -9,19 +9,22 @@ defineApiDocs(DiagnosisController, {
       summary:
         'Send plant photos for disease diagnosis (processed in background)',
       description:
-        'multipart/form-data: `images` = 1..5 files (jpg/png/webp, <= DIAGNOSIS_MAX_IMAGE_BYTES each; ' +
-        'format checked by content), `meta` = JSON string `{ cropType, images: [{ plantPart }], note? }` ' +
+        'multipart/form-data: `images` = 1..`maxImages` files (jpg/png/webp, at most `maxImageBytes` bytes and ' +
+        '`maxImageWidth` x `maxImageHeight` px each, see GET /diagnoses/settings; format checked by content), `meta` = JSON string `{ cropType, images: [{ plantPart }], note? }` ' +
         'with one entry per file in the same order; `cropType` from GET /knowledge/crops and each `plantPart` ' +
         "from that crop's `plantParts` (otherwise DIAGNOSIS_INVALID_IMAGE). " +
         'Answers 202 with status PROCESSING; the result comes via ' +
         'realtime `diagnosis.completed` { id, status } or by polling GET /diagnoses/{diagnosisId}. ' +
-        'Daily limit per user: DIAGNOSIS_DAILY_LIMIT (Vietnam day).',
+        'Daily limit per user: `dailyFreeLimit` of the admin diagnosis settings (Vietnam day).',
       auth: true,
       validation: true,
       multipart: {
         required: ['images', 'meta'],
         fields: {
-          images: { kind: 'files', description: '1..5 photos' },
+          images: {
+            kind: 'files',
+            description: '1..maxImages photos (GET /diagnoses/settings)',
+          },
           meta: {
             kind: 'text',
             description:
@@ -55,6 +58,14 @@ defineApiDocs(DiagnosisController, {
       errors: [
         { type: EDomainErrorType.VALIDATION, code: 'DIAGNOSIS_INVALID_CURSOR' },
       ],
+    },
+    settings: {
+      summary: 'Get the diagnosis form settings',
+      description:
+        'Default crop to preselect (null = none), image count range and per-image limits as sent ' +
+        '(bytes, pixel width/height after EXIF orientation). Resize larger photos before POST /diagnoses; ' +
+        'images over a limit answer DIAGNOSIS_INVALID_IMAGE with the image index.',
+      auth: true,
     },
     get: {
       summary: 'Get one of my diagnoses with per-image results',

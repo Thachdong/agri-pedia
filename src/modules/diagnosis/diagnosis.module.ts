@@ -20,7 +20,9 @@ import {
   IMAGE_PROCESSOR,
   VISION_DIAGNOSIS_PROVIDER,
 } from './application/ports';
+import './infrastructure/http/admin-diagnosis-settings.api-docs';
 import './infrastructure/http/diagnosis.api-docs';
+import { AdminDiagnosisSettingsController } from './infrastructure/http/admin-diagnosis-settings.controller';
 import { DiagnosisController } from './infrastructure/http/diagnosis.controller';
 import { SharpImageProcessor } from './infrastructure/image/sharp-image.processor';
 import { DiagnosisStartup } from './infrastructure/jobs/diagnosis-startup';
@@ -31,7 +33,7 @@ import { PgDiagnosisSettingsRepository } from './infrastructure/persistence/pg-d
 
 @Module({
   imports: [UserModule, KnowledgeModule, MediaModule],
-  controllers: [DiagnosisController],
+  controllers: [DiagnosisController, AdminDiagnosisSettingsController],
   providers: [
     CreateDiagnosisUseCase,
     ProcessDiagnosisUseCase,

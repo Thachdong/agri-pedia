@@ -13,8 +13,8 @@ Ownership: diagnosis settings thuộc `diagnosis` (dùng trong CreateDiagnosis);
 - [x] 4. [use-case]      knowledge: GetTopArticleSettings + UpdateTopArticleSettings (admin, limit), GetCropTopArticles + SetCropTopArticles (admin; article tồn tại, cùng crop, PUBLISHED, ≤ limit), ListTopArticles (public, chỉ PUBLISHED, cắt theo limit); ports ITopArticleSettingsRepository, ICropTopArticlesRepository
 - [x] 5. [persistence]   PgDiagnosisSettingsRepository, table `diagnosis_settings` (1 row; chưa có row = defaults)
 - [x] 6. [persistence]   knowledge: table `knowledge_settings` (1 row, top_articles_limit) + `knowledge_crop_top_articles` (crop_type, position, article_id)
-- [ ] 7. [http]          GET/PUT /admin/diagnosis/settings, GET /diagnoses/settings
-- [ ] 8. [api-docs]      3 endpoint diagnosis settings
+- [x] 7. [http]          GET/PUT /admin/diagnosis/settings, GET /diagnoses/settings
+- [x] 8. [api-docs]      3 endpoint diagnosis settings
 - [ ] 9. [http]          GET/PUT /admin/knowledge/settings (limit), GET/PUT /admin/knowledge/crops/:cropSlug/top-articles, GET /knowledge/articles/top?crop=
 - [ ] 10. [api-docs]     5 endpoint knowledge top articles
 - [ ] 11. [boundary-review]
