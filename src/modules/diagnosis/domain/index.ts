@@ -7,6 +7,7 @@ export * from './enums/diagnosis-feedback.enum';
 export * from './enums/diagnosis-image-status.enum';
 export * from './enums/diagnosis-status.enum';
 export * from './enums/plant-part.enum';
+export * from './exceptions/diagnosis-admin-required.exception';
 export * from './exceptions/diagnosis-crop-not-supported.exception';
 export * from './exceptions/diagnosis-daily-limit-exceeded.exception';
 export * from './exceptions/diagnosis-invalid-image.exception';

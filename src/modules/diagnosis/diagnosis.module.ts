@@ -5,10 +5,13 @@ import { UserModule } from '@modules/user/user.module';
 import {
   CreateDiagnosisUseCase,
   FailStaleDiagnosesUseCase,
+  GetDiagnosisFormSettingsUseCase,
+  GetDiagnosisSettingsUseCase,
   GetDiagnosisUseCase,
   ListMyDiagnosesUseCase,
   ProcessDiagnosisUseCase,
   SubmitDiagnosisFeedbackUseCase,
+  UpdateDiagnosisSettingsUseCase,
 } from './application/use-cases';
 import {
   DIAGNOSIS_JOB_RUNNER,
@@ -30,10 +33,15 @@ import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis
   providers: [
     CreateDiagnosisUseCase,
     ProcessDiagnosisUseCase,
+    GetDiagnosisFormSettingsUseCase,
+    GetDiagnosisSettingsUseCase,
     GetDiagnosisUseCase,
     ListMyDiagnosesUseCase,
     SubmitDiagnosisFeedbackUseCase,
     FailStaleDiagnosesUseCase,
+    GetDiagnosisSettingsUseCase,
+    UpdateDiagnosisSettingsUseCase,
+    GetDiagnosisFormSettingsUseCase,
     DiagnosisStartup,
     { provide: DIAGNOSIS_REPOSITORY, useClass: PgDiagnosisRepository },
     { provide: IMAGE_PROCESSOR, useClass: SharpImageProcessor },

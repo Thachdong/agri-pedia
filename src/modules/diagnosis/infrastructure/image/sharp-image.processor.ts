@@ -3,6 +3,7 @@ import * as sharp from 'sharp';
 import {
   IImageProcessor,
   ImageUnreadableError,
+  TNormalizedImage,
   TProcessedImage,
 } from '../../application/ports';
 import { TBox } from '../../domain';
@@ -40,20 +41,25 @@ function span(center: number, size: number, total: number) {
 /** sharp (libvips) adapter. Output never carries metadata: sharp drops it unless asked to keep it. */
 @Injectable()
 export class SharpImageProcessor implements IImageProcessor {
-  async normalize(data: Buffer): Promise<TProcessedImage> {
-    let format: string | undefined;
+  async normalize(data: Buffer): Promise<TNormalizedImage> {
+    let metadata: sharp.Metadata;
     try {
-      format = (await sharp(data).metadata()).format;
+      metadata = await sharp(data).metadata();
     } catch {
       throw new ImageUnreadableError('Unreadable image');
     }
+    const { format } = metadata;
     if (!format || !ACCEPTED_FORMATS.includes(format)) {
       throw new ImageUnreadableError(
         `Unsupported image format ${format ?? 'unknown'} (jpg, png, webp only)`,
       );
     }
+    // EXIF orientations 5..8 turn the image a quarter.
+    const turned = (metadata.orientation ?? 1) >= 5;
+    const width = metadata.width ?? 0;
+    const height = metadata.height ?? 0;
     try {
-      return await toJpeg(
+      const image = await toJpeg(
         sharp(data, { failOn: 'error' }).rotate().resize({
           width: MAX_SIDE_PX,
           height: MAX_SIDE_PX,
@@ -61,6 +67,11 @@ export class SharpImageProcessor implements IImageProcessor {
           withoutEnlargement: true,
         }),
       );
+      return {
+        ...image,
+        sourceWidth: turned ? height : width,
+        sourceHeight: turned ? width : height,
+      };
     } catch {
       throw new ImageUnreadableError('Unreadable image');
     }

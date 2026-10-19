@@ -1,6 +1,5 @@
 import { IKnowledgeQueryPort } from '@modules/knowledge/contracts';
 import { IUserQueryPort } from '@modules/user/contracts';
-import { IConfigService } from '@shared/config';
 import { InMemoryUnitOfWork } from '@shared/database';
 import {
   DiagnosisCropNotSupportedException,
@@ -16,16 +15,13 @@ import {
   FakeVisionDiagnosisProvider,
   InMemoryDiagnosisJobRunner,
   InMemoryDiagnosisRepository,
+  InMemoryDiagnosisSettingsRepository,
 } from '../ports/fakes';
 import {
   CreateDiagnosisUseCase,
   startOfLocalDay,
   TCreateDiagnosisInput,
 } from './create-diagnosis.use-case';
-
-const config = {
-  get: () => ({ maxImageBytes: 20, dailyLimit: 2 }),
-} as unknown as IConfigService;
 
 describe('startOfLocalDay', () => {
   it('is local (UTC+7) midnight', () => {
@@ -40,6 +36,7 @@ describe('startOfLocalDay', () => {
 
 describe('CreateDiagnosisUseCase', () => {
   let diagnoses: InMemoryDiagnosisRepository;
+  let settings: InMemoryDiagnosisSettingsRepository;
   let jobs: InMemoryDiagnosisJobRunner;
   let userActive: boolean | null;
   let crop: { enabled: boolean } | null;
@@ -58,6 +55,15 @@ describe('CreateDiagnosisUseCase', () => {
 
   beforeEach(() => {
     diagnoses = new InMemoryDiagnosisRepository();
+    settings = new InMemoryDiagnosisSettingsRepository();
+    settings.saved = {
+      dailyFreeLimit: 2,
+      defaultCropType: null,
+      maxImages: 3,
+      maxImageBytes: 20,
+      maxImageWidth: 2000,
+      maxImageHeight: 1500,
+    };
     jobs = new InMemoryDiagnosisJobRunner();
     userActive = true;
     crop = { enabled: true };
@@ -73,12 +79,12 @@ describe('CreateDiagnosisUseCase', () => {
     } as unknown as IKnowledgeQueryPort;
     useCase = new CreateDiagnosisUseCase(
       diagnoses,
+      settings,
       new FakeImageProcessor(),
       new FakeVisionDiagnosisProvider(),
       jobs,
       userQuery,
       knowledgeQuery,
-      config,
       new InMemoryUnitOfWork(),
     );
   });
@@ -168,6 +174,46 @@ describe('CreateDiagnosisUseCase', () => {
       { index: 0, reason: 'Unsupported image format' },
     ]);
     expect(jobs.jobs).toHaveLength(0);
+  });
+
+  it('rejects more images than the max images setting', async () => {
+    const error = await useCase
+      .execute(
+        input({
+          files: Array(4).fill(Buffer.from('ok')),
+          plantParts: Array(4).fill(EPlantPart.LEAF),
+        }),
+      )
+      .catch((e) => e);
+
+    expect(error).toBeInstanceOf(DiagnosisInvalidImageException);
+    expect(error.details.images).toEqual([
+      { index: null, reason: 'Expected 1..3 images, got 4' },
+    ]);
+  });
+
+  it('reports images larger than the max pixel size by index', async () => {
+    const error = await useCase
+      .execute(input({ files: [Buffer.from('2000x1501'), Buffer.from('ok')] }))
+      .catch((e) => e);
+
+    expect(error).toBeInstanceOf(DiagnosisInvalidImageException);
+    expect(error.details.images).toEqual([
+      {
+        index: 0,
+        reason: '2000x1501 px is larger than 2000x1500 px',
+      },
+    ]);
+    expect(jobs.jobs).toHaveLength(0);
+  });
+
+  it('uses the default settings when none were saved', async () => {
+    settings.saved = null;
+    for (let i = 0; i < 3; i++) await useCase.execute(input());
+
+    await expect(useCase.execute(input())).rejects.toBeInstanceOf(
+      DiagnosisDailyLimitExceededException,
+    );
   });
 
   it('rejects past the daily limit', async () => {
