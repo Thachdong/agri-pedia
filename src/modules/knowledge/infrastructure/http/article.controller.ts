@@ -4,11 +4,13 @@ import {
   GetArticleUseCase,
   ListArticleCropsUseCase,
   ListArticlesUseCase,
+  ListTopArticlesUseCase,
 } from '../../application/use-cases';
 import {
   ArticleParamsDto,
   DEFAULT_ARTICLE_PAGE_SIZE,
   ListArticlesQueryDto,
+  TopArticlesQueryDto,
 } from './dto';
 import {
   ArticleDetailResponse,
@@ -16,6 +18,7 @@ import {
   ListArticleCropsResponse,
   ListArticlesResponse,
 } from './responses/article.response';
+import { ListTopArticlesResponse } from './responses/top-articles.response';
 
 /** Short HTTP cache: the client caches pages itself and is told when they change. */
 const CACHE_CONTROL = 'public, max-age=60';
@@ -28,6 +31,7 @@ export class ArticleController {
     private readonly listArticles: ListArticlesUseCase,
     private readonly getArticle: GetArticleUseCase,
     private readonly getArticleSitemap: GetArticleSitemapUseCase,
+    private readonly listTopArticles: ListTopArticlesUseCase,
   ) {}
 
   @Get('crops')
@@ -40,6 +44,14 @@ export class ArticleController {
   @Header('Cache-Control', CACHE_CONTROL)
   async sitemap(): Promise<ArticleSitemapResponse> {
     return this.getArticleSitemap.execute();
+  }
+
+  @Get('top')
+  @Header('Cache-Control', CACHE_CONTROL)
+  async top(
+    @Query() query: TopArticlesQueryDto,
+  ): Promise<ListTopArticlesResponse> {
+    return this.listTopArticles.execute({ crop: query.crop });
   }
 
   @Get()

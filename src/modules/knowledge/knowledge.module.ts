@@ -36,8 +36,10 @@ import {
 } from './application/use-cases';
 import { KNOWLEDGE_QUERY_PORT } from './contracts';
 import { AdminArticleController } from './infrastructure/http/admin-article.controller';
+import { AdminTopArticleController } from './infrastructure/http/admin-top-article.controller';
 import { ArticleController } from './infrastructure/http/article.controller';
 import './infrastructure/http/admin-article.api-docs';
+import './infrastructure/http/admin-top-article.api-docs';
 import './infrastructure/http/article.api-docs';
 import './infrastructure/http/knowledge.api-docs';
 import { KnowledgeController } from './infrastructure/http/knowledge.controller';
@@ -54,7 +56,12 @@ import { KnowledgeSeeder } from './infrastructure/seed/knowledge.seeder';
 
 @Module({
   imports: [UserModule],
-  controllers: [KnowledgeController, ArticleController, AdminArticleController],
+  controllers: [
+    KnowledgeController,
+    ArticleController,
+    AdminArticleController,
+    AdminTopArticleController,
+  ],
   providers: [
     SeedKnowledgeBaseUseCase,
     SeedArticlesUseCase,

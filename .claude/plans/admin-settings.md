@@ -15,8 +15,8 @@ Ownership: diagnosis settings thuộc `diagnosis` (dùng trong CreateDiagnosis);
 - [x] 6. [persistence]   knowledge: table `knowledge_settings` (1 row, top_articles_limit) + `knowledge_crop_top_articles` (crop_type, position, article_id)
 - [x] 7. [http]          GET/PUT /admin/diagnosis/settings, GET /diagnoses/settings
 - [x] 8. [api-docs]      3 endpoint diagnosis settings
-- [ ] 9. [http]          GET/PUT /admin/knowledge/settings (limit), GET/PUT /admin/knowledge/crops/:cropSlug/top-articles, GET /knowledge/articles/top?crop=
-- [ ] 10. [api-docs]     5 endpoint knowledge top articles
+- [x] 9. [http]          GET/PUT /admin/knowledge/settings (limit), GET/PUT /admin/knowledge/crops/:cropSlug/top-articles, GET /knowledge/articles/top?crop=
+- [x] 10. [api-docs]     5 endpoint knowledge top articles
 - [ ] 11. [boundary-review]
 
 Decisions:

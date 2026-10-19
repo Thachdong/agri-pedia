@@ -20,6 +20,20 @@ defineApiDocs(ArticleController, {
         "REVIEWED, published articles only, unpaginated; `crops[].updatedAt` = latest update of the crop's articles." +
         CACHE_NOTE,
     },
+    top: {
+      summary: 'List the top articles of a crop (public)',
+      description:
+        "In the order an admin chose (PUT /admin/knowledge/crops/:cropSlug/top-articles), published only, at most the admin's `limit`; " +
+        'empty when none were chosen.' +
+        CACHE_NOTE,
+      validation: true,
+      errors: [
+        {
+          type: EDomainErrorType.NOT_FOUND,
+          code: 'KNOWLEDGE_CROP_NOT_FOUND',
+        },
+      ],
+    },
     list: {
       summary: 'List article summaries of a crop, by title (public)',
       description:
