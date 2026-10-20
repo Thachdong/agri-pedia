@@ -268,6 +268,50 @@ describe('ProcessDiagnosisUseCase', () => {
           })),
         },
       }),
+      expect.objectContaining({
+        name: 'diagnosis.case.completed',
+        payload: {
+          diagnosisId: diagnosis.id,
+          cropType: 'RICE',
+          provider: 'GEMINI',
+          model: 'm',
+          promptVersion: 'd1+v1',
+          kbVersion: '2026-10-12',
+          conflict: false,
+          images: [
+            {
+              sortOrder: 0,
+              key: result.storedFiles[0].key,
+              plantPart: 'LEAF',
+              detectedPart: 'LEAF',
+              diseases: [
+                {
+                  diseaseCode: 'RICE_BLAST',
+                  variantCode: 'RICE_BLAST__V1',
+                  level: 'HIGH',
+                  score: 0.9,
+                },
+              ],
+              regions: [
+                {
+                  box: spot.box,
+                  diseaseCode: 'RICE_BLAST',
+                  level: first.regions[0].confidence?.level,
+                  score: first.regions[0].confidence?.score,
+                },
+              ],
+            },
+            {
+              sortOrder: 1,
+              key: result.storedFiles[1].key,
+              plantPart: 'PANICLE',
+              detectedPart: second.detectedPart,
+              diseases: [],
+              regions: [],
+            },
+          ],
+        },
+      }),
     ]);
   });
 
@@ -338,6 +382,9 @@ describe('ProcessDiagnosisUseCase', () => {
     expect(result.status).toBe(EDiagnosisStatus.FAILED);
     expect(diagnosis.failureReason).toBe('Crop RICE not found');
     expect(vision.describeRequests).toHaveLength(0);
+    expect(eventBus.published.map((e) => e.name)).not.toContain(
+      'diagnosis.case.completed',
+    );
     expect(realtime.emitted[0].payload).toEqual({
       id: diagnosis.id,
       status: EDiagnosisStatus.FAILED,
@@ -353,6 +400,9 @@ describe('ProcessDiagnosisUseCase', () => {
     expect(result.status).toBe(EDiagnosisStatus.FAILED);
     expect(diagnosis.failureReason).toBe(
       'Every image failed at the AI provider',
+    );
+    expect(eventBus.published.map((e) => e.name)).not.toContain(
+      'diagnosis.case.completed',
     );
     expect(realtime.emitted[0].payload).toEqual({
       id: diagnosis.id,
@@ -396,7 +446,17 @@ describe('ProcessDiagnosisUseCase', () => {
     expect(result.status).toBe(EDiagnosisStatus.COMPLETED);
     expect(result.storedFiles).toEqual([]);
     expect(diagnosis.images.map((i) => i.mediaId)).toEqual([null, null]);
-    expect(eventBus.published).toEqual([]);
+    expect(eventBus.published).toEqual([
+      expect.objectContaining({
+        name: 'diagnosis.case.completed',
+        payload: expect.objectContaining({
+          images: [
+            expect.objectContaining({ sortOrder: 0, key: null }),
+            expect.objectContaining({ sortOrder: 1, key: null }),
+          ],
+        }),
+      }),
+    ]);
   });
 
   it('skips a diagnosis that is no longer processing', async () => {

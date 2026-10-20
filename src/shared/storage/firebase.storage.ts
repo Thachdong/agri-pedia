@@ -136,6 +136,17 @@ export class FirebaseFileStorage implements IFileStorage {
     }
   }
 
+  async copyFile(fromKey: string, toKey: string): Promise<void> {
+    try {
+      await getStorage(this.app).bucket().file(fromKey).copy(toKey);
+    } catch (error) {
+      if ((error as { code?: unknown }).code === 404) {
+        throw new StorageFileNotFoundError(fromKey);
+      }
+      throw error;
+    }
+  }
+
   async deleteFile(key: string): Promise<void> {
     await getStorage(this.app)
       .bucket()

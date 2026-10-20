@@ -31,7 +31,9 @@ import {
 } from '../../domain';
 import { TDiagnosisJob } from '../ports/diagnosis-job-runner';
 import {
+  DIAGNOSIS_CASE_COMPLETED_EVENT,
   DIAGNOSIS_IMAGES_STORED_EVENT,
+  TDiagnosisCaseCompletedEventPayload,
   TDiagnosisImagesStoredEventPayload,
 } from '../../contracts';
 import {
@@ -75,7 +77,8 @@ type TImageOutcome = {
  * per image (in parallel) B1 describe -> prepare regions ->
  * B2 knowledge candidates -> B3 verify -> B4 confidence; then stores the images, completes
  * (or fails when every image failed at the AI, or the crop is gone), asks media to record the stored images
- * (`diagnosis.images.stored`) and notifies the owner in realtime.
+ * (`diagnosis.images.stored`), notifies the owner in realtime, then, when COMPLETED, publishes the result
+ * (`diagnosis.case.completed`) last so its subscribers never delay the owner.
  */
 @Injectable()
 export class ProcessDiagnosisUseCase {
@@ -175,6 +178,14 @@ export class ProcessDiagnosisUseCase {
       DIAGNOSIS_COMPLETED_REALTIME_EVENT,
       { id: finished.id, status: finished.status },
     );
+    if (finished.status === EDiagnosisStatus.COMPLETED) {
+      await this.eventBus.publish(
+        createIntegrationEvent<
+          typeof DIAGNOSIS_CASE_COMPLETED_EVENT,
+          TDiagnosisCaseCompletedEventPayload
+        >(DIAGNOSIS_CASE_COMPLETED_EVENT, caseCompleted(finished, storedFiles)),
+      );
+    }
     return { status: finished.status, storedFiles };
   }
 
@@ -383,6 +394,40 @@ export class ProcessDiagnosisUseCase {
       }
     }
   }
+}
+
+function caseCompleted(
+  diagnosis: Diagnosis,
+  storedFiles: TStoredDiagnosisFile[],
+): TDiagnosisCaseCompletedEventPayload {
+  const keys = new Map(storedFiles.map((file) => [file.sortOrder, file.key]));
+  return {
+    diagnosisId: diagnosis.id,
+    cropType: diagnosis.cropType,
+    provider: diagnosis.provider,
+    model: diagnosis.model,
+    promptVersion: diagnosis.promptVersion,
+    kbVersion: diagnosis.kbVersion,
+    conflict: diagnosis.summary?.conflict ?? false,
+    images: diagnosis.images.map((image) => ({
+      sortOrder: image.sortOrder,
+      key: keys.get(image.sortOrder) ?? null,
+      plantPart: image.plantPart,
+      detectedPart: image.detectedPart,
+      diseases: image.diseases.map((disease) => ({
+        diseaseCode: disease.diseaseCode,
+        variantCode: disease.variantCode,
+        level: disease.confidence.level,
+        score: disease.confidence.score,
+      })),
+      regions: image.regions.map((region) => ({
+        box: region.box,
+        diseaseCode: region.verdict?.diseaseCode ?? null,
+        level: region.confidence?.level ?? null,
+        score: region.confidence?.score ?? null,
+      })),
+    })),
+  };
 }
 
 function toRegion(

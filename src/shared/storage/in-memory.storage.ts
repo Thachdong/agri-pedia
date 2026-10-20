@@ -75,6 +75,15 @@ export class InMemoryFileStorage implements IFileStorage {
     }
   }
 
+  async copyFile(fromKey: string, toKey: string): Promise<void> {
+    if (!this.files.has(fromKey)) {
+      throw new StorageFileNotFoundError(fromKey);
+    }
+    this.files.add(toKey);
+    const file = this.uploaded.get(fromKey);
+    if (file) this.uploaded.set(toKey, file);
+  }
+
   async deleteFile(key: string): Promise<void> {
     this.files.delete(key);
   }

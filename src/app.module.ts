@@ -20,6 +20,7 @@ import { ChatModule } from '@modules/chat/chat.module';
 import { LocationModule } from '@modules/location/location.module';
 import { KnowledgeModule } from '@modules/knowledge/knowledge.module';
 import { DiagnosisModule } from '@modules/diagnosis/diagnosis.module';
+import { DatasetModule } from '@modules/dataset/dataset.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -48,6 +49,7 @@ import { AppService } from './app.service';
     LocationModule,
     KnowledgeModule,
     DiagnosisModule,
+    DatasetModule,
   ],
   controllers: [AppController],
   providers: [AppService],
