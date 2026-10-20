@@ -4,7 +4,7 @@ Flow: ProcessDiagnosis (COMPLETED) → after realtime emit, emits `diagnosis.cas
 
 - [x] 1. [shared-wrapper]     storage: `IFileStorage.copyFile(fromKey, toKey)` (GCS server-side copy) + in-memory fake
 - [x] 2. [config-group]       `dataset`: minShortSidePx, minSharpness, minBrightness, maxBrightness
-- [ ] 3. [adapter-tweak]      diagnosis: SharpImageProcessor.normalize → JPEG quality 90, chromaSubsampling 4:4:4, mozjpeg (no dedicated skill)
+- [x] 3. [adapter-tweak]      diagnosis: SharpImageProcessor.normalize → JPEG quality 90, chromaSubsampling 4:4:4, mozjpeg (no dedicated skill)
 - [ ] 4. [module-scaffold]    module `dataset`
 - [ ] 5. [domain-model]       entity TrainingSample, enum ELabelSource (AI_HIGH); selection rule: no conflict, stored image, exactly one HIGH disease
 - [ ] 6. [use-case]           CollectTrainingSamples; ports ITrainingSampleRepository, IImageQualityInspector (+ IFileStorage)

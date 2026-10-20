@@ -10,7 +10,8 @@ import { TBox } from '../../domain';
 
 const ACCEPTED_FORMATS = ['jpeg', 'png', 'webp'];
 const MAX_SIDE_PX = 2048;
-const JPEG_QUALITY = 85;
+/** Full chroma (no 4:2:0 subsampling): lesion color and edges are what diagnosis and training rely on. */
+const JPEG_QUALITY = 90;
 /** Crops are enlarged around the region center and never smaller than this a side. */
 const CROP_SCALE = 2;
 const CROP_MIN_SIDE_PX = 256;
@@ -18,7 +19,7 @@ const THUMBNAIL_SIDE_PX = 768;
 
 async function toJpeg(pipeline: sharp.Sharp): Promise<TProcessedImage> {
   const { data, info } = await pipeline
-    .jpeg({ quality: JPEG_QUALITY })
+    .jpeg({ quality: JPEG_QUALITY, chromaSubsampling: '4:4:4', mozjpeg: true })
     .toBuffer({ resolveWithObject: true });
   return {
     data,
