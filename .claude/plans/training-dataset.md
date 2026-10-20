@@ -8,7 +8,7 @@ Flow: ProcessDiagnosis (COMPLETED) → after realtime emit, emits `diagnosis.cas
 - [x] 4. [module-scaffold]    module `dataset`
 - [x] 5. [domain-model]       entity TrainingSample, enum ELabelSource (AI_HIGH); selection rule: no conflict, stored image, exactly one disease, HIGH, no uncertain region; regions = HIGH regions of it
 - [x] 6. [use-case]           CollectTrainingSamples; ports ITrainingSampleRepository, IImageQualityInspector (+ IFileStorage)
-- [ ] 7. [persistence]        PgTrainingSampleRepository, table `training_samples` unique (diagnosis_id, sort_order); + SharpImageQualityInspector adapter
+- [x] 7. [persistence]        PgTrainingSampleRepository, table `training_samples` unique (diagnosis_id, sort_order); + SharpImageQualityInspector adapter
 - [ ] 8. [integration-event]  ProcessDiagnosis emits `diagnosis.case.completed` after `emitToUser`, only when COMPLETED
 - [ ] 9. [event-handler]      dataset: `diagnosis.case.completed` → CollectTrainingSamples (catch + log)
 - [ ] 10. [boundary-review]
