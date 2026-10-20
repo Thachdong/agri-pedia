@@ -23,7 +23,7 @@ Mọi NOT_FOUND ghi log miss; admin xem gộp theo tên chuẩn hóa. Admin CRUD
 - [x] 9. [api-docs]       POST /products/suggestions
 - [x] 10. [http]          /admin/product-catalog (GET, POST, PATCH /:id, DELETE /:id); GET/PUT /admin/product-suggestion/settings; GET /admin/product-suggestion/misses
 - [x] 11. [api-docs]      admin endpoints
-- [ ] 12. [boundary-review]
+- [x] 12. [boundary-review]
 
 Decisions:
 - Defaults: invalidImageLimit = 50, notFoundLimit = 50.
