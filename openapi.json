@@ -2570,7 +2570,7 @@
       "get": {
         "operationId": "KnowledgeController_disease",
         "summary": "Get the Vietnamese detail of a disease (public)",
-        "description": "No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet.",
+        "description": "No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet. `article` = path and status of the disease's main article (GET /knowledge/articles/:cropSlug/:slug), null when it has none or it is unpublished; `variants[].article` = the variant's own article, if any.",
         "parameters": [
           {
             "name": "code",
@@ -2616,6 +2616,763 @@
         },
         "tags": [
           "Knowledge"
+        ]
+      }
+    },
+    "/knowledge/articles/crops": {
+      "get": {
+        "operationId": "ArticleController_crops",
+        "summary": "List crops that have disease articles (public)",
+        "description": "Crops with at least one article, by display order, including crops not yet enabled for diagnosis (`diagnosisEnabled` = false). `slug` is the value for `crop` of GET /knowledge/articles. Sent with `Cache-Control: public, max-age=60`.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListArticleCropsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/knowledge/articles/sitemap": {
+      "get": {
+        "operationId": "ArticleController_sitemap",
+        "summary": "List indexable articles for the sitemap (public)",
+        "description": "REVIEWED, published articles only, unpaginated; `crops[].updatedAt` = latest update of the crop's articles. Sent with `Cache-Control: public, max-age=60`.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleSitemapResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/knowledge/articles": {
+      "get": {
+        "operationId": "ArticleController_list",
+        "summary": "List article summaries of a crop, by title (public)",
+        "description": "Vietnamese title order, keyset-paginated (`nextCursor`). Unpublished articles are left out; DRAFT ones are included: render them noindex. `category` filters by the category of the article's disease. Variant articles are listed too (`variant` set). Sent with `Cache-Control: public, max-age=60`.",
+        "parameters": [
+          {
+            "name": "crop",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "DISEASE",
+                "PEST",
+                "DISORDER"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListArticlesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: KNOWLEDGE_ARTICLE_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/knowledge/articles/{cropSlug}/{slug}": {
+      "get": {
+        "operationId": "ArticleController_detail",
+        "summary": "Get a disease article, ready to render (public)",
+        "description": "`markdown` has public image URLs and `/diseases/<CODE>` links turned into article paths (a variant id without its own article links to the disease's main article; plain text when there is no article); a variant article has `variant` + `parentArticle` (breadcrumb), a main article lists `variantArticles` (each with its `coverUrl`); every article has a 16:9 `cover` (cards, Open Graph); directives `:::warning`, `:::tip`, `::disease-card{code=\"...\"}` and `::cta-diagnosis` stay for the client. `relatedDiseases` feeds the cards. An unpublished article answers 404 and counts as no article in links. Sent with `Cache-Control: public, max-age=60`.",
+        "parameters": [
+          {
+            "name": "cropSlug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "SLUG",
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "SLUG",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_CROP_NOT_FOUND, KNOWLEDGE_ARTICLE_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/admin/knowledge/crops": {
+      "get": {
+        "operationId": "AdminArticleController_crops",
+        "summary": "List every crop with its article counts (admin)",
+        "description": "All crops by display order, including crops not enabled for diagnosis and crops without any article. `targetCount` = diseases + variants of the crop; `targetCount - articleCount` entries have no article yet (see GET /admin/knowledge/crops/:cropSlug/articles).",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAdminArticleCropsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/knowledge/crops/{cropSlug}/articles": {
+      "get": {
+        "operationId": "AdminArticleController_targets",
+        "summary": "List the diseases of a crop with their articles (admin)",
+        "description": "Every disease of the crop by Vietnamese name, each followed by its variants (KB order). `article` is the article in any visibility (`origin` AI | ADMIN | AI_REVIEWED, `isPublished`), or null when none is written yet: create it with POST /admin/knowledge/articles and `code`.",
+        "parameters": [
+          {
+            "name": "cropSlug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "SLUG",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAdminArticleTargetsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/knowledge/articles/{code}": {
+      "get": {
+        "operationId": "AdminArticleController_detail",
+        "summary": "Get the stored content of an article (admin)",
+        "description": "`code` = variant code, else disease code (main article). Published or not. `markdown` is as stored (image file names, `/diseases/<CODE>` links): send it back as is in PUT. `images[].url` is the public URL to preview.",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "pattern": "KB_CODE",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminArticleDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_ARTICLE_NOT_FOUND, KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "AdminArticleController_update",
+        "summary": "Replace the content of an article (admin)",
+        "description": "Slug, crop and code stay; visibility is kept. `images` is the full list: an entry without `tmpKey` keeps the stored image of that `file` (alt / caption / credit updated), images left out are dropped. The article becomes REVIEWED by the caller; an AI article becomes AI_REVIEWED and the crop pack seed no longer overwrites it. Content rules (`details.issues` of KNOWLEDGE_ARTICLE_INVALID_CONTENT lists every broken one): title 1-70 chars, summary 50-160 chars, image `file` names like `dao-on-1.webp` (lowercase letters, digits, hyphens + .webp) without duplicates, `cover` one of them, every body image (`![alt](<file>)`) listed, `/diseases/<CODE>` links and `::disease-card{code=\"...\"}` (disease ids only) inside the crop KB, no HTML outside code. A new image is a key from POST /media/presign-url (jpg, png or webp, uploaded by the caller); it is stored as webp at most 1600px wide. The client page cache is revalidated in the background.",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "pattern": "KB_CODE",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArticleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateArticleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: KNOWLEDGE_ARTICLE_INVALID_CONTENT, KNOWLEDGE_ARTICLE_IMAGE_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_ARTICLE_NOT_FOUND, KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/knowledge/articles": {
+      "post": {
+        "operationId": "AdminArticleController_create",
+        "summary": "Write the article of a disease or variant without one (admin)",
+        "description": "Created published, `origin` ADMIN, `status` REVIEWED by the caller. `slug` is fixed afterwards and unique in the crop. A variant article needs the main article of its disease. Every image needs a `tmpKey`. Content rules (`details.issues` of KNOWLEDGE_ARTICLE_INVALID_CONTENT lists every broken one): title 1-70 chars, summary 50-160 chars, image `file` names like `dao-on-1.webp` (lowercase letters, digits, hyphens + .webp) without duplicates, `cover` one of them, every body image (`![alt](<file>)`) listed, `/diseases/<CODE>` links and `::disease-card{code=\"...\"}` (disease ids only) inside the crop KB, no HTML outside code. A new image is a key from POST /media/presign-url (jpg, png or webp, uploaded by the caller); it is stored as webp at most 1600px wide. The client page cache is revalidated in the background.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateArticleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: KNOWLEDGE_ARTICLE_INVALID_CONTENT, KNOWLEDGE_ARTICLE_IMAGE_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_DISEASE_NOT_FOUND, KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "KNOWLEDGE_ARTICLE_ALREADY_EXISTS, KNOWLEDGE_ARTICLE_SLUG_TAKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/knowledge/articles/{code}/unpublish": {
+      "post": {
+        "operationId": "AdminArticleController_unpublish",
+        "summary": "Hide an article from the public API (admin)",
+        "description": "The page answers 404, the article leaves lists, counts, the sitemap and disease detail, and links to it render as plain text. It stays editable. Already hidden = no-op.",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "pattern": "KB_CODE",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleVisibilityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_ARTICLE_NOT_FOUND, KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/knowledge/articles/{code}/publish": {
+      "post": {
+        "operationId": "AdminArticleController_publish",
+        "summary": "Show an unpublished article again (admin)",
+        "description": "Already published = no-op.",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "pattern": "KB_CODE",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleVisibilityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_ARTICLE_NOT_FOUND, KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
         ]
       }
     },
@@ -3183,7 +3940,8 @@
           "role": {
             "enum": [
               "FARMER",
-              "DISTRIBUTOR"
+              "DISTRIBUTOR",
+              "ADMIN"
             ],
             "type": "string"
           },
@@ -4952,6 +5710,25 @@
           "diseases"
         ]
       },
+      "DiseaseArticleResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "REVIEWED"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "status"
+        ]
+      },
       "DiseaseVariantResponse": {
         "type": "object",
         "properties": {
@@ -4969,13 +5746,22 @@
             "items": {
               "type": "string"
             }
+          },
+          "article": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiseaseArticleResponse"
+              }
+            ]
           }
         },
         "required": [
           "code",
           "name",
           "affectedParts",
-          "symptoms"
+          "symptoms",
+          "article"
         ]
       },
       "DiseaseTreatmentsResponse": {
@@ -5186,6 +5972,14 @@
           },
           "kbVersion": {
             "type": "string"
+          },
+          "article": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiseaseArticleResponse"
+              }
+            ]
           }
         },
         "required": [
@@ -5207,7 +6001,1297 @@
           "similarDiseases",
           "references",
           "verification",
-          "kbVersion"
+          "kbVersion",
+          "article"
+        ]
+      },
+      "ArticleCropItemResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "diagnosisEnabled": {
+            "type": "boolean"
+          },
+          "articleCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "nameVi",
+          "diagnosisEnabled",
+          "articleCount"
+        ]
+      },
+      "ListArticleCropsResponse": {
+        "type": "object",
+        "properties": {
+          "crops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleCropItemResponse"
+            }
+          }
+        },
+        "required": [
+          "crops"
+        ]
+      },
+      "ArticleSitemapCropResponse": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "updatedAt"
+        ]
+      },
+      "ArticleSitemapItemResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "updatedAt"
+        ]
+      },
+      "ArticleSitemapResponse": {
+        "type": "object",
+        "properties": {
+          "crops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSitemapCropResponse"
+            }
+          },
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSitemapItemResponse"
+            }
+          }
+        },
+        "required": [
+          "crops",
+          "articles"
+        ]
+      },
+      "ArticleCropResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "diagnosisEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "nameVi",
+          "diagnosisEnabled"
+        ]
+      },
+      "ArticleDiseaseSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "scientificName": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "DISEASE",
+              "PEST",
+              "DISORDER"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "nameVi",
+          "scientificName",
+          "category"
+        ]
+      },
+      "ArticleVariantSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ]
+      },
+      "ArticleListItemResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "coverUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "REVIEWED"
+            ]
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "AI",
+              "ADMIN",
+              "AI_REVIEWED"
+            ]
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "disease": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleDiseaseSummaryResponse"
+              }
+            ]
+          },
+          "variant": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleVariantSummaryResponse"
+              }
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "slug",
+          "title",
+          "summary",
+          "coverUrl",
+          "status",
+          "origin",
+          "updatedAt",
+          "disease",
+          "variant"
+        ]
+      },
+      "ListArticlesResponse": {
+        "type": "object",
+        "properties": {
+          "crop": {
+            "$ref": "#/components/schemas/ArticleCropResponse"
+          },
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleListItemResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "crop",
+          "articles",
+          "nextCursor"
+        ]
+      },
+      "ArticleDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "nameEn": {
+            "type": "string"
+          },
+          "scientificName": {
+            "type": "string",
+            "nullable": true
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "DISEASE",
+              "PEST",
+              "DISORDER"
+            ]
+          },
+          "agentType": {
+            "type": "string",
+            "enum": [
+              "FUNGUS",
+              "OOMYCETE",
+              "ALGA",
+              "BACTERIA",
+              "VIRUS",
+              "NEMATODE",
+              "INSECT",
+              "MITE",
+              "MOLLUSC",
+              "VERTEBRATE",
+              "NUTRIENT",
+              "ABIOTIC",
+              "COMPLEX",
+              "UNKNOWN"
+            ]
+          },
+          "affectedParts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "LEAF",
+                "SHEATH",
+                "STEM",
+                "PANICLE",
+                "ROOT",
+                "WHOLE_PLANT",
+                "SHOOT",
+                "BRANCH",
+                "TRUNK",
+                "COLLAR",
+                "FLOWER",
+                "FRUIT",
+                "ARIL"
+              ]
+            }
+          },
+          "verification": {
+            "type": "string",
+            "enum": [
+              "SOURCED",
+              "SECONDARY",
+              "GEMINI_REVIEWED",
+              "GEMINI_ONLY"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "nameVi",
+          "nameEn",
+          "scientificName",
+          "aliases",
+          "category",
+          "agentType",
+          "affectedParts",
+          "verification"
+        ]
+      },
+      "ArticleVariantResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "affectedParts": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "affectedParts"
+        ]
+      },
+      "ArticleLinkResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "title"
+        ]
+      },
+      "VariantArticleResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string"
+          },
+          "coverUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "path",
+          "title",
+          "variantCode",
+          "variantName",
+          "coverUrl"
+        ]
+      },
+      "ArticleCoverResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "alt": {
+            "type": "string"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "url",
+          "alt",
+          "width",
+          "height"
+        ]
+      },
+      "ArticleImageCreditResponse": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "author",
+          "license",
+          "url"
+        ]
+      },
+      "ArticleImageResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "alt": {
+            "type": "string"
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "credit": {
+            "$ref": "#/components/schemas/ArticleImageCreditResponse"
+          }
+        },
+        "required": [
+          "url",
+          "alt",
+          "caption",
+          "width",
+          "height",
+          "credit"
+        ]
+      },
+      "RelatedDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "DISEASE",
+              "PEST",
+              "DISORDER"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "coverUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "code",
+          "nameVi",
+          "category",
+          "path",
+          "coverUrl"
+        ]
+      },
+      "ArticleSourceResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "url"
+        ]
+      },
+      "ArticleDetailResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "markdown": {
+            "type": "string"
+          },
+          "crop": {
+            "$ref": "#/components/schemas/ArticleCropResponse"
+          },
+          "disease": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleDiseaseResponse"
+              }
+            ]
+          },
+          "variant": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleVariantResponse"
+              }
+            ]
+          },
+          "parentArticle": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleLinkResponse"
+              }
+            ]
+          },
+          "variantArticles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VariantArticleResponse"
+            }
+          },
+          "cover": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArticleCoverResponse"
+              }
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleImageResponse"
+            }
+          },
+          "relatedDiseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RelatedDiseaseResponse"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSourceResponse"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "REVIEWED"
+            ]
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "AI",
+              "ADMIN",
+              "AI_REVIEWED"
+            ]
+          },
+          "reviewedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "slug",
+          "title",
+          "summary",
+          "markdown",
+          "crop",
+          "disease",
+          "variant",
+          "parentArticle",
+          "variantArticles",
+          "cover",
+          "images",
+          "relatedDiseases",
+          "sources",
+          "status",
+          "origin",
+          "reviewedBy",
+          "reviewedAt",
+          "publishedAt",
+          "updatedAt"
+        ]
+      },
+      "AdminArticleCropItemResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "diagnosisEnabled": {
+            "type": "boolean"
+          },
+          "targetCount": {
+            "type": "number"
+          },
+          "articleCount": {
+            "type": "number"
+          },
+          "publishedCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "nameVi",
+          "diagnosisEnabled",
+          "targetCount",
+          "articleCount",
+          "publishedCount"
+        ]
+      },
+      "ListAdminArticleCropsResponse": {
+        "type": "object",
+        "properties": {
+          "crops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleCropItemResponse"
+            }
+          }
+        },
+        "required": [
+          "crops"
+        ]
+      },
+      "AdminArticleCropResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "nameVi": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "nameVi"
+        ]
+      },
+      "AdminArticleSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "AI",
+              "ADMIN",
+              "AI_REVIEWED"
+            ]
+          },
+          "isPublished": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "REVIEWED"
+            ]
+          },
+          "editedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "path",
+          "origin",
+          "isPublished",
+          "status",
+          "editedBy",
+          "updatedAt"
+        ]
+      },
+      "AdminArticleTargetResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "diseaseCode": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameVi": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "DISEASE",
+              "PEST",
+              "DISORDER"
+            ]
+          },
+          "article": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdminArticleSummaryResponse"
+              }
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "diseaseCode",
+          "variantCode",
+          "nameVi",
+          "category",
+          "article"
+        ]
+      },
+      "ListAdminArticleTargetsResponse": {
+        "type": "object",
+        "properties": {
+          "crop": {
+            "$ref": "#/components/schemas/AdminArticleCropResponse"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleTargetResponse"
+            }
+          }
+        },
+        "required": [
+          "crop",
+          "targets"
+        ]
+      },
+      "AdminArticleCropRefResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "slug"
+        ]
+      },
+      "AdminArticleImageCreditResponse": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "author",
+          "license",
+          "url"
+        ]
+      },
+      "AdminArticleImageResponse": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "alt": {
+            "type": "string"
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "credit": {
+            "$ref": "#/components/schemas/AdminArticleImageCreditResponse"
+          }
+        },
+        "required": [
+          "file",
+          "url",
+          "width",
+          "height",
+          "alt",
+          "caption",
+          "credit"
+        ]
+      },
+      "AdminArticleSourceResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "url"
+        ]
+      },
+      "AdminArticleDetailResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "crop": {
+            "$ref": "#/components/schemas/AdminArticleCropRefResponse"
+          },
+          "diseaseCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "slug": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "markdown": {
+            "type": "string"
+          },
+          "cover": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleImageResponse"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleSourceResponse"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "REVIEWED"
+            ]
+          },
+          "reviewedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "AI",
+              "ADMIN",
+              "AI_REVIEWED"
+            ]
+          },
+          "isPublished": {
+            "type": "boolean"
+          },
+          "editedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "kbVersion": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "crop",
+          "diseaseCode",
+          "variantCode",
+          "slug",
+          "path",
+          "title",
+          "summary",
+          "markdown",
+          "cover",
+          "images",
+          "sources",
+          "status",
+          "reviewedBy",
+          "reviewedAt",
+          "origin",
+          "isPublished",
+          "editedBy",
+          "kbVersion",
+          "publishedAt",
+          "updatedAt"
+        ]
+      },
+      "ArticleImageCreditDto": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "author": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "license": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "author",
+          "license",
+          "url"
+        ]
+      },
+      "AdminArticleImageDto": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "IMAGE_FILE"
+          },
+          "tmpKey": {
+            "type": "string",
+            "maxLength": 300,
+            "pattern": "^tmp/"
+          },
+          "alt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 500
+          },
+          "credit": {
+            "$ref": "#/components/schemas/ArticleImageCreditDto"
+          }
+        },
+        "required": [
+          "file",
+          "alt",
+          "credit"
+        ]
+      },
+      "ArticleSourceDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "url"
+        ]
+      },
+      "CreateArticleDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "KB_CODE"
+          },
+          "slug": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "SLUG"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "markdown": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          },
+          "cover": {
+            "type": "string",
+            "pattern": "IMAGE_FILE"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleImageDto"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSourceDto"
+            }
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "title",
+          "summary",
+          "markdown",
+          "cover",
+          "images",
+          "sources"
+        ]
+      },
+      "CreateArticleResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "path"
+        ]
+      },
+      "UpdateArticleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "markdown": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          },
+          "cover": {
+            "type": "string",
+            "pattern": "IMAGE_FILE"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleImageDto"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSourceDto"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "markdown",
+          "cover",
+          "images",
+          "sources"
+        ]
+      },
+      "UpdateArticleResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "AI",
+              "ADMIN",
+              "AI_REVIEWED"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "slug",
+          "path",
+          "origin"
+        ]
+      },
+      "ArticleVisibilityResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "isPublished": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "isPublished"
         ]
       },
       "CreateDiagnosisResponse": {

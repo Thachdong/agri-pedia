@@ -59,6 +59,7 @@ export function buildCrop(
 ): Crop {
   return Crop.restore({
     code,
+    slug: code === 'RICE' ? 'lua' : code.toLowerCase(),
     nameVi: code === 'RICE' ? 'Lúa' : code,
     nameEn: code.toLowerCase(),
     enabled,

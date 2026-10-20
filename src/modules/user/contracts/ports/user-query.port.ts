@@ -12,7 +12,7 @@ export type TUserIdentifierSummary = {
 
 export type TUserRoleSummary = {
   userId: string;
-  role: 'FARMER' | 'DISTRIBUTOR';
+  role: 'FARMER' | 'DISTRIBUTOR' | 'ADMIN';
   /** Account status is ACTIVE (a DISTRIBUTOR stays PENDING until activated). */
   isActive: boolean;
 };
@@ -21,7 +21,7 @@ export type TUserRoleSummary = {
 export type TUserProfileSummary = {
   userId: string;
   username: string;
-  role: 'FARMER' | 'DISTRIBUTOR';
+  role: 'FARMER' | 'DISTRIBUTOR' | 'ADMIN';
 };
 
 export interface IUserQueryPort {

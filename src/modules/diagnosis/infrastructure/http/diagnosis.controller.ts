@@ -20,6 +20,7 @@ import {
 } from '@shared/access-token';
 import {
   CreateDiagnosisUseCase,
+  GetDiagnosisFormSettingsUseCase,
   GetDiagnosisUseCase,
   ListMyDiagnosesUseCase,
   SubmitDiagnosisFeedbackUseCase,
@@ -35,12 +36,17 @@ import {
   GetDiagnosisResponse,
   ListMyDiagnosesResponse,
 } from './responses/diagnosis.response';
+import { DiagnosisFormSettingsResponse } from './responses/diagnosis-settings.response';
+import { DIAGNOSIS_SETTINGS_BOUNDS } from '../../domain';
 
 /**
- * Upload guard only: files are kept in memory, so the parser stops far above the business limits
- * (count and DIAGNOSIS_MAX_IMAGE_BYTES are checked by the use case, with per-file details).
+ * Upload guard only: files are kept in memory, so the parser stops at the highest values the settings allow
+ * (the current count / bytes / pixel limits are checked by the use case, with per-file details).
  */
-const UPLOAD_LIMITS = { files: 10, fileSize: 20 * 1024 * 1024 };
+const UPLOAD_LIMITS = {
+  files: DIAGNOSIS_SETTINGS_BOUNDS.maxImages.max,
+  fileSize: DIAGNOSIS_SETTINGS_BOUNDS.maxImageBytes.max,
+};
 
 @Controller('diagnoses')
 @UseGuards(AccessTokenGuard)
@@ -50,6 +56,7 @@ export class DiagnosisController {
     private readonly getDiagnosis: GetDiagnosisUseCase,
     private readonly listMyDiagnoses: ListMyDiagnosesUseCase,
     private readonly submitDiagnosisFeedback: SubmitDiagnosisFeedbackUseCase,
+    private readonly getFormSettings: GetDiagnosisFormSettingsUseCase,
   ) {}
 
   @Post()
@@ -81,6 +88,11 @@ export class DiagnosisController {
       cursor: query.cursor,
       limit: query.limit ?? DEFAULT_DIAGNOSIS_PAGE_SIZE,
     });
+  }
+
+  @Get('settings')
+  async settings(): Promise<DiagnosisFormSettingsResponse> {
+    return this.getFormSettings.execute();
   }
 
   @Get(':diagnosisId')

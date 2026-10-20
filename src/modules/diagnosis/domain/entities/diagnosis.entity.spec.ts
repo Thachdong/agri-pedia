@@ -18,6 +18,7 @@ const create = (overrides: Partial<TCreateDiagnosisProps> = {}) =>
     promptVersion: 'd1+v1',
     kbVersion: '2026-10-12',
     plantParts: [EPlantPart.LEAF, EPlantPart.PANICLE],
+    maxImages: 5,
     ...overrides,
   });
 
@@ -55,13 +56,17 @@ describe('Diagnosis.create', () => {
     ]);
   });
 
-  it('rejects 0 or more than 5 images', () => {
+  it('rejects 0 or more than maxImages images', () => {
     expect(() => create({ plantParts: [] })).toThrow(
       DiagnosisInvalidImageException,
     );
     expect(() =>
-      create({ plantParts: Array(6).fill(EPlantPart.LEAF) }),
+      create({ plantParts: Array(3).fill(EPlantPart.LEAF), maxImages: 2 }),
     ).toThrow(DiagnosisInvalidImageException);
+    expect(
+      create({ plantParts: Array(2).fill(EPlantPart.LEAF), maxImages: 2 })
+        .images,
+    ).toHaveLength(2);
   });
 });
 

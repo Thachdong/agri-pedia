@@ -3,7 +3,10 @@ import { Crop, Disease } from '../../domain';
 export interface IKnowledgeRepository {
   /** Crops with `enabled` = true, by sortOrder then code. */
   listEnabledCrops(): Promise<Crop[]>;
+  /** Every crop, enabled or not, by sortOrder then code. */
+  listCrops(): Promise<Crop[]>;
   findCrop(code: string): Promise<Crop | null>;
+  findCropBySlug(slug: string): Promise<Crop | null>;
   /** Every disease of the crop, any order. */
   listDiseasesByCrop(cropType: string): Promise<Disease[]>;
   findDisease(code: string): Promise<Disease | null>;

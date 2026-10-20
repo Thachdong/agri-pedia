@@ -2,11 +2,12 @@ import { randomUUID } from 'node:crypto';
 import { AggregateRoot } from '@shared/domain';
 import { EBusinessType } from '../enums/business-type.enum';
 import { ELoginType } from '../enums/login-type.enum';
-import { EUserRole } from '../enums/user-role.enum';
+import { EUserRole, SELF_REGISTER_ROLES } from '../enums/user-role.enum';
 import { EUserStatus } from '../enums/user-status.enum';
 import { BusinessTypeNotAllowedException } from '../exceptions/business-type-not-allowed.exception';
 import { BusinessTypeRequiredException } from '../exceptions/business-type-required.exception';
 import { UserNotActiveException } from '../exceptions/user-not-active.exception';
+import { UserRoleNotAllowedException } from '../exceptions/user-role-not-allowed.exception';
 import { userIdentifierVerificationRequested } from '../events/user-identifier-verification-requested.domain-event';
 
 export type TUserProps = {
@@ -39,6 +40,14 @@ export type TRegisterUserProps = {
   bio?: string | null;
 };
 
+export type TCreateAdminProps = {
+  loginType: ELoginType;
+  hashedIdentifier: string;
+  encryptedIdentifier: string;
+  passwordHash: string;
+  username: string;
+};
+
 /** Fields left undefined stay unchanged. */
 export type TUpdateUserProfileProps = {
   username?: string;
@@ -62,8 +71,12 @@ export class User extends AggregateRoot {
    * Registers a new user. Only DISTRIBUTOR has (and must have) a business type.
    * FARMER is active immediately; DISTRIBUTOR stays PENDING and records
    * UserIdentifierVerificationRequested so an activation code gets sent.
+   * ADMIN cannot register (see createAdmin).
    */
   static register(input: TRegisterUserProps): User {
+    if (!SELF_REGISTER_ROLES.includes(input.role)) {
+      throw new UserRoleNotAllowedException(input.role);
+    }
     User.assertBusinessType(input.role, input.businessType);
     const now = new Date();
     const user = new User(randomUUID(), {
@@ -94,6 +107,27 @@ export class User extends AggregateRoot {
       );
     }
     return user;
+  }
+
+  /** Back-office account: ACTIVE at once (identifier taken as verified), no business type, no event. */
+  static createAdmin(input: TCreateAdminProps): User {
+    const now = new Date();
+    return new User(randomUUID(), {
+      loginType: input.loginType,
+      hashedIdentifier: input.hashedIdentifier,
+      encryptedIdentifier: input.encryptedIdentifier,
+      passwordHash: input.passwordHash,
+      username: input.username.trim(),
+      role: EUserRole.ADMIN,
+      businessType: null,
+      status: EUserStatus.ACTIVE,
+      identifierVerifiedAt: now,
+      avatar: null,
+      bio: null,
+      businessLicense: null,
+      createdAt: now,
+      updatedAt: now,
+    });
   }
 
   static restore(id: string, props: TUserProps): User {

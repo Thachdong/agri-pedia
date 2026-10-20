@@ -1,22 +1,30 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
+import { DataSource } from 'typeorm';
+import { FILE_STORAGE, InMemoryFileStorage } from '@shared/storage';
 import { AppModule } from '../../src/app.module';
 
 // Reads the KB seeded on app start (51 rice entries); never modifies it.
+// Article images go to a fake storage; the articles table is emptied afterwards
+// so the next real start uploads them.
 describe('GET /knowledge/crops, /knowledge/diseases, /knowledge/diseases/:code (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(FILE_STORAGE)
+      .useValue(new InMemoryFileStorage())
+      .compile();
     moduleRef.useLogger(false);
     app = moduleRef.createNestApplication();
     await app.init();
   });
 
   afterAll(async () => {
+    await app.get(DataSource).query('DELETE FROM articles');
     await app.close();
   });
 
@@ -25,10 +33,8 @@ describe('GET /knowledge/crops, /knowledge/diseases, /knowledge/diseases/:code (
   it('lists enabled crops with their plant parts and stages, without login', async () => {
     const res = await http().get('/knowledge/crops').expect(200);
 
-    // DURIAN is seeded but disabled
-    expect(res.body.crops.map((c: { code: string }) => c.code)).toEqual([
-      'RICE',
-    ]);
+    // RICE first by sortOrder; DURIAN (seeded disabled) only shows when KNOWLEDGE_ENABLED_CROPS enables it
+    expect(res.body.crops[0].code).toBe('RICE');
     expect(res.body.crops[0]).toEqual({
       code: 'RICE',
       nameVi: 'Lúa',
@@ -116,6 +122,10 @@ describe('GET /knowledge/crops, /knowledge/diseases, /knowledge/diseases/:code (
       expect.objectContaining({
         code: 'RICE_BROWN_SPOT',
         name: expect.any(String),
+        article: {
+          path: '/benh-cay-trong/lua/benh-dom-nau',
+          status: 'REVIEWED',
+        },
       }),
     );
     expect(res.body.treatments).toEqual({

@@ -1,9 +1,19 @@
-import { KnowledgeDiseaseNotFoundException } from '../../domain';
-import { buildDisease, InMemoryKnowledgeRepository } from '../ports/fakes';
+import {
+  EArticleStatus,
+  KnowledgeDiseaseNotFoundException,
+} from '../../domain';
+import {
+  buildArticle,
+  buildCrop,
+  buildDisease,
+  InMemoryArticleRepository,
+  InMemoryKnowledgeRepository,
+} from '../ports/fakes';
 import { GetDiseaseDetailUseCase } from './get-disease-detail.use-case';
 
 describe('GetDiseaseDetailUseCase', () => {
   let knowledge: InMemoryKnowledgeRepository;
+  let articles: InMemoryArticleRepository;
   let useCase: GetDiseaseDetailUseCase;
 
   beforeEach(() => {
@@ -46,7 +56,8 @@ describe('GetDiseaseDetailUseCase', () => {
         },
       }),
     );
-    useCase = new GetDiseaseDetailUseCase(knowledge);
+    articles = new InMemoryArticleRepository();
+    useCase = new GetDiseaseDetailUseCase(knowledge, articles);
   });
 
   it('returns the Vietnamese content with similar disease names', async () => {
@@ -67,6 +78,7 @@ describe('GetDiseaseDetailUseCase', () => {
           name: 'Đạo ôn lá',
           affectedParts: 'Lá',
           symptoms: ['Tâm xám'],
+          article: null,
         },
       ],
       transmissionMode: 'Qua gió. Qua hạt.',
@@ -82,22 +94,98 @@ describe('GetDiseaseDetailUseCase', () => {
           code: 'RICE_BROWN_SPOT',
           name: 'Bệnh đốm nâu',
           distinguishingFeature: 'Đốm tròn',
+          article: null,
         },
         {
           code: 'RICE_UNKNOWN',
           name: 'RICE_UNKNOWN',
           distinguishingFeature: null,
+          article: null,
         },
       ],
       references: [{ title: 'IRRI', url: 'http://irri' }],
       verification: 'SOURCED',
       kbVersion: '2026-10-12',
+      article: null,
     });
+  });
+
+  it('links the article of the disease', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    const article = buildArticle({ status: EArticleStatus.DRAFT });
+    articles.articles.set(article.id, article);
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on',
+      status: 'DRAFT',
+    });
+  });
+
+  it('links the main article to the disease and a variant article to its variant', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    for (const article of [
+      buildArticle({
+        variantCode: 'RICE_BLAST__V1',
+        slug: 'benh-dao-on-la',
+      }),
+      buildArticle(),
+    ]) {
+      articles.articles.set(article.id, article);
+    }
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on',
+      status: 'REVIEWED',
+    });
+    expect(detail.variants[0].article).toEqual({
+      path: '/benh-cay-trong/lua/benh-dao-on-la',
+      status: 'REVIEWED',
+    });
+  });
+
+  it('links the main article of a similar disease', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    for (const article of [
+      buildArticle({
+        diseaseCode: 'RICE_BROWN_SPOT',
+        slug: 'benh-dom-nau',
+      }),
+      buildArticle({
+        diseaseCode: 'RICE_BROWN_SPOT',
+        variantCode: 'RICE_BROWN_SPOT__V1',
+        slug: 'benh-dom-nau-la',
+      }),
+    ]) {
+      articles.articles.set(article.id, article);
+    }
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toBeNull();
+    expect(detail.similarDiseases.map((s) => s.article)).toEqual([
+      { path: '/benh-cay-trong/lua/benh-dom-nau', status: 'REVIEWED' },
+      null,
+    ]);
   });
 
   it('throws KnowledgeDiseaseNotFound for an unknown code', async () => {
     await expect(useCase.execute({ code: 'NOPE' })).rejects.toBeInstanceOf(
       KnowledgeDiseaseNotFoundException,
     );
+  });
+
+  it('links no article when the article is unpublished', async () => {
+    knowledge.crops.set('RICE', buildCrop('RICE'));
+    const article = buildArticle();
+    article.unpublish();
+    articles.articles.set(article.id, article);
+
+    const detail = await useCase.execute({ code: 'RICE_BLAST' });
+
+    expect(detail.article).toBeNull();
   });
 });

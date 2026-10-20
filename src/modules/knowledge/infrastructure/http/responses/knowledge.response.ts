@@ -1,5 +1,6 @@
 import {
   EAgentType,
+  EArticleStatus,
   ECropStage,
   EDiseaseCategory,
   EPlantPart,
@@ -53,6 +54,8 @@ export class DiseaseVariantResponse {
   name: string;
   affectedParts: string;
   symptoms: string[];
+  /** The variant's own article page; null when it has none. */
+  article: DiseaseArticleResponse | null;
 }
 
 export class DiseaseTreatmentsResponse {
@@ -66,11 +69,19 @@ export class SimilarDiseaseResponse {
   name: string;
   /** null when the KB has no distinguishing feature yet. */
   distinguishingFeature: string | null;
+  /** The similar disease's main article page; null when it has none. */
+  article: DiseaseArticleResponse | null;
 }
 
 export class DiseaseReferenceResponse {
   title: string;
   url: string;
+}
+
+export class DiseaseArticleResponse {
+  /** GET /knowledge/articles/:cropSlug/:slug path, e.g. `/benh-cay-trong/lua/benh-dao-on`. */
+  path: string;
+  status: EArticleStatus;
 }
 
 export class DiseaseDetailResponse {
@@ -94,4 +105,6 @@ export class DiseaseDetailResponse {
   /** Not SOURCED: show "not yet confirmed by experts". */
   verification: EVerification;
   kbVersion: string;
+  /** null when the disease has no article. */
+  article: DiseaseArticleResponse | null;
 }

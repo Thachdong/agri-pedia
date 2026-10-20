@@ -13,9 +13,8 @@ import {
   TDiagnosisImageResult,
 } from './diagnosis-image.entity';
 
-/** Images per diagnosis. */
+/** Images per diagnosis; the max is a setting (DiagnosisSettings.maxImages). */
 export const MIN_DIAGNOSIS_IMAGES = 1;
-export const MAX_DIAGNOSIS_IMAGES = 5;
 
 export type TDiagnosisProps = {
   userId: string;
@@ -48,6 +47,8 @@ export type TCreateDiagnosisProps = {
   kbVersion: string;
   /** One per image, in the order the files were sent. */
   plantParts: EPlantPart[];
+  /** Images allowed per diagnosis. */
+  maxImages: number;
 };
 
 /** Crop disease diagnosis of a set of images sent by a user. */
@@ -59,14 +60,14 @@ export class Diagnosis extends AggregateRoot {
     super(id);
   }
 
-  /** New PROCESSING diagnosis with one image per plant part (1..5). */
+  /** New PROCESSING diagnosis with one image per plant part (1..maxImages). */
   static create(input: TCreateDiagnosisProps): Diagnosis {
     const count = input.plantParts.length;
-    if (count < MIN_DIAGNOSIS_IMAGES || count > MAX_DIAGNOSIS_IMAGES) {
+    if (count < MIN_DIAGNOSIS_IMAGES || count > input.maxImages) {
       throw new DiagnosisInvalidImageException([
         {
           index: null,
-          reason: `Expected ${MIN_DIAGNOSIS_IMAGES}..${MAX_DIAGNOSIS_IMAGES} images, got ${count}`,
+          reason: `Expected ${MIN_DIAGNOSIS_IMAGES}..${input.maxImages} images, got ${count}`,
         },
       ]);
     }

@@ -16,10 +16,17 @@ const config = {
     firebaseClientEmail: 'svc@test-project.iam.gserviceaccount.com',
     firebasePrivateKey: privateKey,
     firebaseStorageBucket: 'test-bucket',
+    firebasePublicStorageBucket: 'test-public-bucket',
     presignUrlTtlSeconds: 600,
     downloadUrlTtlSeconds: 3600,
+    publicBaseUrl: undefined as string | undefined,
   }),
 } as unknown as IConfigService;
+
+const configWith = (publicBaseUrl: string): IConfigService =>
+  ({
+    get: () => ({ ...config.get('storage'), publicBaseUrl }),
+  }) as unknown as IConfigService;
 
 describe('FirebaseFileStorage', () => {
   it('signs a V4 PUT URL bound to content type and size range (offline)', async () => {
@@ -53,6 +60,22 @@ describe('FirebaseFileStorage', () => {
     expect(url.searchParams.get('X-Goog-Algorithm')).toBe('GOOG4-RSA-SHA256');
     expect(url.searchParams.get('X-Goog-Expires')).toBe('3600');
     expect(url.searchParams.get('X-Goog-SignedHeaders')).toBe('host');
+  });
+
+  it('builds an unsigned URL of the public bucket', () => {
+    const storage = new FirebaseFileStorage(config);
+
+    expect(storage.publicUrl('articles/RICE/RICE_BLAST/a.1234abcd.webp')).toBe(
+      'https://storage.googleapis.com/test-public-bucket/articles/RICE/RICE_BLAST/a.1234abcd.webp',
+    );
+  });
+
+  it('uses STORAGE_PUBLIC_BASE_URL for the public bucket when set', () => {
+    const storage = new FirebaseFileStorage(configWith('https://cdn.test/'));
+
+    expect(storage.publicUrl('articles/RICE/a.webp')).toBe(
+      'https://cdn.test/articles/RICE/a.webp',
+    );
   });
 
   it('reuses the named Firebase app across instances', () => {
@@ -111,6 +134,49 @@ describe('InMemoryFileStorage.uploadFile', () => {
     expect([...storage.files]).toEqual(['diagnoses/d1/m1.jpg']);
     expect(storage.uploaded.get('diagnoses/d1/m1.jpg')?.contentType).toBe(
       'image/jpeg',
+    );
+  });
+});
+
+describe('InMemoryFileStorage.uploadPublicFile', () => {
+  it('stores the object as public and serves a fake public URL', async () => {
+    const storage = new InMemoryFileStorage();
+
+    await storage.uploadPublicFile(
+      'articles/RICE/a.webp',
+      Buffer.from('webp'),
+      'image/webp',
+    );
+
+    expect(storage.uploaded.get('articles/RICE/a.webp')).toMatchObject({
+      contentType: 'image/webp',
+      isPublic: true,
+    });
+    expect(storage.publicUrl('articles/RICE/a.webp')).toBe(
+      'https://storage.test/articles/RICE/a.webp',
+    );
+  });
+});
+
+describe('InMemoryFileStorage.downloadFile', () => {
+  it('returns the uploaded content, also after a move', async () => {
+    const storage = new InMemoryFileStorage();
+    await storage.uploadFile('tmp/u1/a.png', Buffer.from('png'), 'image/png');
+
+    await expect(storage.downloadFile('tmp/u1/a.png')).resolves.toEqual(
+      Buffer.from('png'),
+    );
+    await storage.moveFile('tmp/u1/a.png', 'users/u1/a.png');
+    await expect(storage.downloadFile('users/u1/a.png')).resolves.toEqual(
+      Buffer.from('png'),
+    );
+  });
+
+  it('throws StorageFileNotFoundError when the object is missing', async () => {
+    const storage = new InMemoryFileStorage();
+
+    await expect(storage.downloadFile('tmp/u1/missing.png')).rejects.toEqual(
+      new StorageFileNotFoundError('tmp/u1/missing.png'),
     );
   });
 });

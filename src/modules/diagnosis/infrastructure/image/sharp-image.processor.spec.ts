@@ -26,6 +26,7 @@ describe('SharpImageProcessor', () => {
 
     expect(out.mimeType).toBe('image/jpeg');
     expect([out.width, out.height]).toEqual([683, 2048]);
+    expect([out.sourceWidth, out.sourceHeight]).toEqual([1000, 3000]);
     const meta = await sharp(out.data).metadata();
     expect(meta.format).toBe('jpeg');
     expect(meta.orientation).toBeUndefined();
@@ -37,6 +38,7 @@ describe('SharpImageProcessor', () => {
       await solid(400, 300).webp().toBuffer(),
     );
     expect([out.width, out.height]).toEqual([400, 300]);
+    expect([out.sourceWidth, out.sourceHeight]).toEqual([400, 300]);
   });
 
   it('rejects content that is not a supported image, whatever the name', async () => {

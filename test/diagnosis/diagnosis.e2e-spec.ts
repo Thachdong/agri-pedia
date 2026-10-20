@@ -313,13 +313,27 @@ describe('/diagnoses (e2e)', () => {
   });
 
   it('returns DIAGNOSIS_CROP_NOT_SUPPORTED for a seeded but disabled crop (DURIAN)', async () => {
-    const token = await signUp('farmer@mail.com');
-    const res = await create(
-      token,
-      { cropType: 'DURIAN', images: [{ plantPart: 'FRUIT' }] },
-      [png],
-    ).expect(400);
-    expect(res.body.code).toBe('DIAGNOSIS_CROP_NOT_SUPPORTED');
+    // Disabled here whatever KNOWLEDGE_ENABLED_CROPS says; restored for the next app start.
+    const [{ enabled }] = await dataSource.query(
+      `SELECT enabled FROM crops WHERE code = 'DURIAN'`,
+    );
+    await dataSource.query(
+      `UPDATE crops SET enabled = false WHERE code = 'DURIAN'`,
+    );
+    try {
+      const token = await signUp('farmer@mail.com');
+      const res = await create(
+        token,
+        { cropType: 'DURIAN', images: [{ plantPart: 'FRUIT' }] },
+        [png],
+      ).expect(400);
+      expect(res.body.code).toBe('DIAGNOSIS_CROP_NOT_SUPPORTED');
+    } finally {
+      await dataSource.query(
+        `UPDATE crops SET enabled = $1 WHERE code = 'DURIAN'`,
+        [enabled],
+      );
+    }
   });
 
   it('returns DIAGNOSIS_INVALID_IMAGE for a plant part the crop does not have', async () => {

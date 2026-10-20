@@ -1,5 +1,6 @@
 {
   "code": "RICE",
+  "slug": "lua",
   "nameVi": "Lúa",
   "nameEn": "rice",
   "enabled": true,

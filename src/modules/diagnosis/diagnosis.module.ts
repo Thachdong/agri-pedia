@@ -5,37 +5,53 @@ import { UserModule } from '@modules/user/user.module';
 import {
   CreateDiagnosisUseCase,
   FailStaleDiagnosesUseCase,
+  GetDiagnosisFormSettingsUseCase,
+  GetDiagnosisSettingsUseCase,
   GetDiagnosisUseCase,
   ListMyDiagnosesUseCase,
   ProcessDiagnosisUseCase,
   SubmitDiagnosisFeedbackUseCase,
+  UpdateDiagnosisSettingsUseCase,
 } from './application/use-cases';
 import {
   DIAGNOSIS_JOB_RUNNER,
   DIAGNOSIS_REPOSITORY,
+  DIAGNOSIS_SETTINGS_REPOSITORY,
   IMAGE_PROCESSOR,
   VISION_DIAGNOSIS_PROVIDER,
 } from './application/ports';
+import './infrastructure/http/admin-diagnosis-settings.api-docs';
 import './infrastructure/http/diagnosis.api-docs';
+import { AdminDiagnosisSettingsController } from './infrastructure/http/admin-diagnosis-settings.controller';
 import { DiagnosisController } from './infrastructure/http/diagnosis.controller';
 import { SharpImageProcessor } from './infrastructure/image/sharp-image.processor';
 import { DiagnosisStartup } from './infrastructure/jobs/diagnosis-startup';
 import { InProcessDiagnosisJobRunner } from './infrastructure/jobs/in-process-diagnosis-job.runner';
 import { AiVisionProvider } from './infrastructure/vision/ai-vision.provider';
 import { PgDiagnosisRepository } from './infrastructure/persistence/pg-diagnosis.repository';
+import { PgDiagnosisSettingsRepository } from './infrastructure/persistence/pg-diagnosis-settings.repository';
 
 @Module({
   imports: [UserModule, KnowledgeModule, MediaModule],
-  controllers: [DiagnosisController],
+  controllers: [DiagnosisController, AdminDiagnosisSettingsController],
   providers: [
     CreateDiagnosisUseCase,
     ProcessDiagnosisUseCase,
+    GetDiagnosisFormSettingsUseCase,
+    GetDiagnosisSettingsUseCase,
     GetDiagnosisUseCase,
     ListMyDiagnosesUseCase,
     SubmitDiagnosisFeedbackUseCase,
     FailStaleDiagnosesUseCase,
+    GetDiagnosisSettingsUseCase,
+    UpdateDiagnosisSettingsUseCase,
+    GetDiagnosisFormSettingsUseCase,
     DiagnosisStartup,
     { provide: DIAGNOSIS_REPOSITORY, useClass: PgDiagnosisRepository },
+    {
+      provide: DIAGNOSIS_SETTINGS_REPOSITORY,
+      useClass: PgDiagnosisSettingsRepository,
+    },
     { provide: IMAGE_PROCESSOR, useClass: SharpImageProcessor },
     { provide: VISION_DIAGNOSIS_PROVIDER, useClass: AiVisionProvider },
     { provide: DIAGNOSIS_JOB_RUNNER, useClass: InProcessDiagnosisJobRunner },

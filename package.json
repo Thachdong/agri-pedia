@@ -24,7 +24,9 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "seed:fake": "ts-node -r tsconfig-paths/register scripts/seed-fake.ts",
-    "openapi:export": "nest build && node dist/export-openapi"
+    "create-admin": "ts-node -r tsconfig-paths/register scripts/create-admin.ts",
+    "openapi:export": "nest build && node dist/export-openapi",
+    "sync-article": "python3 ../../Design/desease-detection/articles/scripts/sync_to_server.py"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.131",
@@ -52,6 +54,7 @@
     "rxjs": "^7.8.1",
     "sharp": "^0.34.5",
     "typeorm": "^0.3.31",
+    "yaml": "^2.9.1",
     "zod": "^3.25.76"
   },
   "devDependencies": {

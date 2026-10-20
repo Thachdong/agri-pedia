@@ -1,12 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   EAgentType,
+  EArticleStatus,
   ECropStage,
   EDiseaseCategory,
   EPlantPart,
   EVerification,
   KnowledgeDiseaseNotFoundException,
 } from '../../domain';
+import {
+  ARTICLE_REPOSITORY,
+  IArticleRepository,
+} from '../ports/article.repository';
 import {
   IKnowledgeRepository,
   KNOWLEDGE_REPOSITORY,
@@ -31,6 +36,8 @@ export type TGetDiseaseDetailOutput = {
     name: string;
     affectedParts: string;
     symptoms: string[];
+    /** The variant's own article page; null when it has none. */
+    article: { path: string; status: EArticleStatus } | null;
   }>;
   transmissionMode: string | null;
   cropStages: ECropStage[];
@@ -40,10 +47,14 @@ export type TGetDiseaseDetailOutput = {
     code: string;
     name: string;
     distinguishingFeature: string | null;
+    /** The similar disease's main article page; null when it has none. */
+    article: { path: string; status: EArticleStatus } | null;
   }>;
   references: Array<{ title: string; url: string }>;
   verification: EVerification;
   kbVersion: string;
+  /** The disease's main article page; null when it has none. */
+  article: { path: string; status: EArticleStatus } | null;
 };
 
 /** One KB entry for reading (public). */
@@ -52,6 +63,7 @@ export class GetDiseaseDetailUseCase {
   constructor(
     @Inject(KNOWLEDGE_REPOSITORY)
     private readonly knowledge: IKnowledgeRepository,
+    @Inject(ARTICLE_REPOSITORY) private readonly articles: IArticleRepository,
   ) {}
 
   async execute(
@@ -65,6 +77,27 @@ export class GetDiseaseDetailUseCase {
       content.similarDiseases.map((s) => s.code),
     );
     const nameByCode = new Map(similar.map((d) => [d.code, d.nameVi]));
+    const articles = await this.articles.findPublishedByDiseaseCodes([
+      disease.code,
+      ...similar.map((d) => d.code),
+    ]);
+    const crops = await Promise.all(
+      [...new Set(articles.map((a) => a.cropType))].map((code) =>
+        this.knowledge.findCrop(code),
+      ),
+    );
+    const slugByCrop = new Map(
+      crops.flatMap((crop) => (crop ? [[crop.code, crop.slug] as const] : [])),
+    );
+    const articleRef = (
+      code: string,
+    ): { path: string; status: EArticleStatus } | null => {
+      const article = articles.find((a) => a.kbCode === code);
+      const cropSlug = article && slugByCrop.get(article.cropType);
+      return article && cropSlug
+        ? { path: article.path(cropSlug), status: article.status }
+        : null;
+    };
 
     return {
       code: disease.code,
@@ -82,6 +115,7 @@ export class GetDiseaseDetailUseCase {
         name: variant.names.vn,
         affectedParts: variant.affectedPart.vn,
         symptoms: variant.symptoms.vn,
+        article: articleRef(variant.code),
       })),
       transmissionMode: content.transmissionMode
         ? content.transmissionMode.vn.join(' ')
@@ -97,10 +131,12 @@ export class GetDiseaseDetailUseCase {
         code: s.code,
         name: nameByCode.get(s.code) ?? s.code,
         distinguishingFeature: s.distinguishingFeature?.vn ?? null,
+        article: articleRef(s.code),
       })),
       references: content.references,
       verification: disease.verification,
       kbVersion: disease.kbVersion,
+      article: articleRef(disease.code),
     };
   }
 }

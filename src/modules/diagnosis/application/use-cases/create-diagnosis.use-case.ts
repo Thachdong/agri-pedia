@@ -5,17 +5,16 @@ import {
   TKnowledgeDiagnosisCrop,
 } from '@modules/knowledge/contracts';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
-import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
   Diagnosis,
   DiagnosisCropNotSupportedException,
   DiagnosisDailyLimitExceededException,
   DiagnosisInvalidImageException,
+  DiagnosisSettings,
   DiagnosisUserNotAllowedException,
   EDiagnosisStatus,
   EPlantPart,
-  MAX_DIAGNOSIS_IMAGES,
   MIN_DIAGNOSIS_IMAGES,
   TInvalidImage,
 } from '../../domain';
@@ -24,6 +23,10 @@ import {
   IDiagnosisJobRunner,
 } from '../ports/diagnosis-job-runner';
 import {
+  DIAGNOSIS_SETTINGS_REPOSITORY,
+  IDiagnosisSettingsRepository,
+} from '../ports/diagnosis-settings.repository';
+import {
   DIAGNOSIS_REPOSITORY,
   IDiagnosisRepository,
 } from '../ports/diagnosis.repository';
@@ -31,6 +34,7 @@ import {
   IImageProcessor,
   IMAGE_PROCESSOR,
   ImageUnreadableError,
+  TNormalizedImage,
   TProcessedImage,
 } from '../ports/image-processor';
 import {
@@ -63,7 +67,8 @@ export function startOfLocalDay(now: Date): Date {
 }
 
 /**
- * Checks the request (plant parts must belong to the crop), normalizes the images, records a PROCESSING diagnosis and starts the
+ * Checks the request against the diagnosis settings (image count, bytes and pixel size, daily limit)
+ * and the crop (plant parts must belong to it), normalizes the images, records a PROCESSING diagnosis and starts the
  * pipeline in the background with the normalized images; returns without waiting for it.
  */
 @Injectable()
@@ -71,6 +76,8 @@ export class CreateDiagnosisUseCase {
   constructor(
     @Inject(DIAGNOSIS_REPOSITORY)
     private readonly diagnoses: IDiagnosisRepository,
+    @Inject(DIAGNOSIS_SETTINGS_REPOSITORY)
+    private readonly settings: IDiagnosisSettingsRepository,
     @Inject(IMAGE_PROCESSOR) private readonly images: IImageProcessor,
     @Inject(VISION_DIAGNOSIS_PROVIDER)
     private readonly vision: IVisionDiagnosisProvider,
@@ -78,13 +85,10 @@ export class CreateDiagnosisUseCase {
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(KNOWLEDGE_QUERY_PORT)
     private readonly knowledgeQuery: IKnowledgeQueryPort,
-    @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
   ) {}
 
   async execute(input: TCreateDiagnosisInput): Promise<TCreateDiagnosisOutput> {
-    const { maxImageBytes, dailyLimit } = this.config.get('diagnosis');
-
     const user = await this.userQuery.findRoleById(input.userId);
     if (!user?.isActive) {
       throw new DiagnosisUserNotAllowedException(input.userId);
@@ -94,14 +98,15 @@ export class CreateDiagnosisUseCase {
       throw new DiagnosisCropNotSupportedException(input.cropType);
     }
 
-    this.checkFiles(input, maxImageBytes, crop);
-    const normalized = await this.normalizeAll(input.files);
+    const settings = await this.settings.get();
+    this.checkFiles(input, settings, crop);
+    const normalized = await this.normalizeAll(input.files, settings);
 
     const since = startOfLocalDay(new Date());
     const diagnosis = await this.unitOfWork.runInTransaction(async () => {
       const today = await this.diagnoses.countByUserSince(input.userId, since);
-      if (today >= dailyLimit) {
-        throw new DiagnosisDailyLimitExceededException(dailyLimit);
+      if (today >= settings.dailyFreeLimit) {
+        throw new DiagnosisDailyLimitExceededException(settings.dailyFreeLimit);
       }
       const created = Diagnosis.create({
         userId: input.userId,
@@ -110,6 +115,7 @@ export class CreateDiagnosisUseCase {
         ...this.vision.info(crop),
         kbVersion: crop.kbVersion,
         plantParts: input.plantParts,
+        maxImages: settings.maxImages,
       });
       await this.diagnoses.save(created);
       return created;
@@ -121,15 +127,16 @@ export class CreateDiagnosisUseCase {
 
   private checkFiles(
     input: TCreateDiagnosisInput,
-    maxImageBytes: number,
+    settings: DiagnosisSettings,
     crop: TKnowledgeDiagnosisCrop,
   ): void {
     const count = input.files.length;
-    if (count < MIN_DIAGNOSIS_IMAGES || count > MAX_DIAGNOSIS_IMAGES) {
+    const { maxImages, maxImageBytes } = settings;
+    if (count < MIN_DIAGNOSIS_IMAGES || count > maxImages) {
       throw new DiagnosisInvalidImageException([
         {
           index: null,
-          reason: `Expected ${MIN_DIAGNOSIS_IMAGES}..${MAX_DIAGNOSIS_IMAGES} images, got ${count}`,
+          reason: `Expected ${MIN_DIAGNOSIS_IMAGES}..${maxImages} images, got ${count}`,
         },
       ]);
     }
@@ -164,7 +171,11 @@ export class CreateDiagnosisUseCase {
     if (tooLarge.length > 0) throw new DiagnosisInvalidImageException(tooLarge);
   }
 
-  private async normalizeAll(files: Buffer[]): Promise<TProcessedImage[]> {
+  /** Normalized images; throws DiagnosisInvalidImage for unreadable ones, then for ones larger than the max pixel size. */
+  private async normalizeAll(
+    files: Buffer[],
+    settings: DiagnosisSettings,
+  ): Promise<TProcessedImage[]> {
     const results = await Promise.allSettled(
       files.map((file) => this.images.normalize(file)),
     );
@@ -178,8 +189,26 @@ export class CreateDiagnosisUseCase {
       }
     });
     if (invalid.length > 0) throw new DiagnosisInvalidImageException(invalid);
-    return results.map(
-      (result) => (result as PromiseFulfilledResult<TProcessedImage>).value,
+    const images = results.map(
+      (result) => (result as PromiseFulfilledResult<TNormalizedImage>).value,
     );
+    const { maxImageWidth, maxImageHeight } = settings;
+    const tooBig: TInvalidImage[] = images.flatMap((image, index) =>
+      image.sourceWidth > maxImageWidth || image.sourceHeight > maxImageHeight
+        ? [
+            {
+              index,
+              reason: `${image.sourceWidth}x${image.sourceHeight} px is larger than ${maxImageWidth}x${maxImageHeight} px`,
+            },
+          ]
+        : [],
+    );
+    if (tooBig.length > 0) throw new DiagnosisInvalidImageException(tooBig);
+    return images.map(({ data, mimeType, width, height }) => ({
+      data,
+      mimeType,
+      width,
+      height,
+    }));
   }
 }

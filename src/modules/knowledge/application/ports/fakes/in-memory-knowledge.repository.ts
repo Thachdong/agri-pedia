@@ -13,8 +13,18 @@ export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
       );
   }
 
+  async listCrops(): Promise<Crop[]> {
+    return [...this.crops.values()].sort(
+      (a, b) => a.sortOrder - b.sortOrder || a.code.localeCompare(b.code),
+    );
+  }
+
   async findCrop(code: string): Promise<Crop | null> {
     return this.crops.get(code) ?? null;
+  }
+
+  async findCropBySlug(slug: string): Promise<Crop | null> {
+    return [...this.crops.values()].find((crop) => crop.slug === slug) ?? null;
   }
 
   async listDiseasesByCrop(cropType: string): Promise<Disease[]> {
@@ -56,6 +66,7 @@ export class InMemoryKnowledgeRepository implements IKnowledgeRepository {
 function cropProps(crop: Crop): TCropProps {
   return {
     code: crop.code,
+    slug: crop.slug,
     nameVi: crop.nameVi,
     nameEn: crop.nameEn,
     enabled: crop.enabled,
