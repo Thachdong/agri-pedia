@@ -7,6 +7,7 @@ import {
   GetProductDetailUseCase,
   ListCategoriesUseCase,
   ListDistributorProductsUseCase,
+  SuggestProductUseCase,
   UpdateProductUseCase,
 } from './application/use-cases';
 import { CATEGORY_REPOSITORY, PRODUCT_REPOSITORY } from './application/ports';
@@ -28,6 +29,7 @@ import { ProductQueryService } from './infrastructure/queries/product-query.serv
     GetProductDetailUseCase,
     ListCategoriesUseCase,
     ListDistributorProductsUseCase,
+    SuggestProductUseCase,
     UpdateProductUseCase,
     { provide: PRODUCT_REPOSITORY, useClass: PgProductRepository },
     { provide: CATEGORY_REPOSITORY, useClass: PgCategoryRepository },

@@ -4,3 +4,4 @@ export * from './update-product.use-case';
 export * from './delete-product.use-case';
 export * from './list-distributor-products.use-case';
 export * from './get-product-detail.use-case';
+export * from './suggest-product.use-case';
