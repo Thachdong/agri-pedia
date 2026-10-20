@@ -4,6 +4,7 @@ import {
   TRAINING_SAMPLE_REPOSITORY,
 } from './application/ports';
 import { CollectTrainingSamplesUseCase } from './application/use-cases';
+import { DiagnosisCaseCompletedHandler } from './infrastructure/handlers/diagnosis-case-completed.handler';
 import { SharpImageQualityInspector } from './infrastructure/image/sharp-image-quality.inspector';
 import { PgTrainingSampleRepository } from './infrastructure/persistence/pg-training-sample.repository';
 
@@ -12,6 +13,7 @@ import { PgTrainingSampleRepository } from './infrastructure/persistence/pg-trai
   controllers: [],
   providers: [
     CollectTrainingSamplesUseCase,
+    DiagnosisCaseCompletedHandler,
     {
       provide: TRAINING_SAMPLE_REPOSITORY,
       useClass: PgTrainingSampleRepository,

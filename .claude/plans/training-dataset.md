@@ -10,5 +10,5 @@ Flow: ProcessDiagnosis (COMPLETED) → after realtime emit, emits `diagnosis.cas
 - [x] 6. [use-case]           CollectTrainingSamples; ports ITrainingSampleRepository, IImageQualityInspector (+ IFileStorage)
 - [x] 7. [persistence]        PgTrainingSampleRepository, table `training_samples` unique (diagnosis_id, sort_order); + SharpImageQualityInspector adapter
 - [x] 8. [integration-event]  ProcessDiagnosis emits `diagnosis.case.completed` after `emitToUser`, only when COMPLETED
-- [ ] 9. [event-handler]      dataset: `diagnosis.case.completed` → CollectTrainingSamples (catch + log)
+- [x] 9. [event-handler]      dataset: `diagnosis.case.completed` → CollectTrainingSamples (catch + log)
 - [ ] 10. [boundary-review]
