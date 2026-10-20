@@ -19,7 +19,7 @@ Mọi NOT_FOUND ghi log miss; admin xem gộp theo tên chuẩn hóa. Admin CRUD
 - [x] 5. [use-case]       admin: GetProductSuggestionSettings, UpdateProductSuggestionSettings, ListProductSuggestionMisses (gộp normalizedName: count, số shop, lần cuối; sort count desc)
 - [x] 6. [persistence]    tables `product_catalog_items` (unique + trigram index normalized_name; migration bật `pg_trgm`), `product_suggestion_settings` (1 row; chưa có = defaults), `product_suggestion_usages`, `product_suggestion_misses`; Pg repos
 - [x] 7. [adapter]        AiProductNameReader (infrastructure/vision, `shared/ai`, sharp resize trong memory; prompt: tên thương phẩm nổi bật nhất, rỗng nếu không đọc được)
-- [ ] 8. [http]           POST /products/suggestions (multipart `image`, distributor)
+- [x] 8. [http]           POST /products/suggestions (multipart `image`, distributor)
 - [ ] 9. [api-docs]       POST /products/suggestions
 - [ ] 10. [http]          /admin/product-catalog (GET, POST, PATCH /:id, DELETE /:id); GET/PUT /admin/product-suggestion/settings; GET /admin/product-suggestion/misses
 - [ ] 11. [api-docs]      admin endpoints

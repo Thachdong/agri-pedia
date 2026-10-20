@@ -31,6 +31,7 @@ import './infrastructure/http/category.api-docs';
 import './infrastructure/http/product.api-docs';
 import { CategoryController } from './infrastructure/http/category.controller';
 import { ProductController } from './infrastructure/http/product.controller';
+import { ProductSuggestionController } from './infrastructure/http/product-suggestion.controller';
 import { PgCatalogRepository } from './infrastructure/persistence/pg-catalog.repository';
 import { PgCategoryRepository } from './infrastructure/persistence/pg-category.repository';
 import { PgProductSuggestionMissRepository } from './infrastructure/persistence/pg-product-suggestion-miss.repository';
@@ -42,7 +43,11 @@ import { AiProductNameReader } from './infrastructure/vision/ai-product-name.rea
 
 @Module({
   imports: [UserModule, MediaModule],
-  controllers: [ProductController, CategoryController],
+  controllers: [
+    ProductController,
+    ProductSuggestionController,
+    CategoryController,
+  ],
   providers: [
     CreateCatalogItemUseCase,
     CreateProductUseCase,
