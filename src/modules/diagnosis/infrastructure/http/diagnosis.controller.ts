@@ -16,6 +16,8 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import {
   AccessTokenGuard,
   CurrentUser,
+  OptionalAccessTokenGuard,
+  OptionalCurrentUser,
   TAccessTokenPayload,
 } from '@shared/access-token';
 import {
@@ -49,7 +51,6 @@ const UPLOAD_LIMITS = {
 };
 
 @Controller('diagnoses')
-@UseGuards(AccessTokenGuard)
 export class DiagnosisController {
   constructor(
     private readonly createDiagnosis: CreateDiagnosisUseCase,
@@ -60,6 +61,7 @@ export class DiagnosisController {
   ) {}
 
   @Post()
+  @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.ACCEPTED)
   @UseInterceptors(
     FilesInterceptor('images', UPLOAD_LIMITS.files, { limits: UPLOAD_LIMITS }),
@@ -79,6 +81,7 @@ export class DiagnosisController {
   }
 
   @Get()
+  @UseGuards(AccessTokenGuard)
   async listMine(
     @CurrentUser() caller: TAccessTokenPayload,
     @Query() query: ListMyDiagnosesQueryDto,
@@ -90,12 +93,17 @@ export class DiagnosisController {
     });
   }
 
+  /** Public: the access token is optional (used for the caller's diagnoses left today). */
   @Get('settings')
-  async settings(): Promise<DiagnosisFormSettingsResponse> {
-    return this.getFormSettings.execute();
+  @UseGuards(OptionalAccessTokenGuard)
+  async settings(
+    @OptionalCurrentUser() caller: TAccessTokenPayload | null,
+  ): Promise<DiagnosisFormSettingsResponse> {
+    return this.getFormSettings.execute({ userId: caller?.userId ?? null });
   }
 
   @Get(':diagnosisId')
+  @UseGuards(AccessTokenGuard)
   async get(
     @CurrentUser() caller: TAccessTokenPayload,
     @Param('diagnosisId', ParseUUIDPipe) diagnosisId: string,
@@ -104,6 +112,7 @@ export class DiagnosisController {
   }
 
   @Post(':diagnosisId/feedback')
+  @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.OK)
   async feedback(
     @CurrentUser() caller: TAccessTokenPayload,

@@ -117,24 +117,34 @@ describe('diagnosis settings (e2e)', () => {
       .expect(settings);
   });
 
-  it('gives the form settings to any signed-in user', async () => {
+  it('gives the form settings to anyone, with the diagnoses left today for a signed-in user', async () => {
     await as(
       adminToken,
       http().put('/admin/diagnosis/settings').send(settings),
     ).expect(200);
-
-    const res = await as(farmerToken, http().get('/diagnoses/settings')).expect(
-      200,
-    );
-    expect(res.body).toEqual({
+    const form = {
       defaultCropType: 'RICE',
       minImages: 1,
       maxImages: 2,
       maxImageBytes: 1048576,
       maxImageWidth: 800,
       maxImageHeight: 600,
-    });
-    await http().get('/diagnoses/settings').expect(401);
+    };
+
+    const guest = await http().get('/diagnoses/settings').expect(200);
+    expect(guest.body).toEqual({ ...form, remainingToday: null });
+
+    await dataSource.query(
+      `INSERT INTO diagnoses (id, user_id, crop_type, status, provider, model, prompt_version, kb_version, created_at)
+       SELECT gen_random_uuid(), users.id, 'RICE', 'COMPLETED', 'GEMINI', 'm', 'p', 'k', t.at
+       FROM users, (VALUES (now()), (now() - interval '2 days')) AS t(at)
+       WHERE username = 'e2e-settings-farmer'`,
+    );
+    const farmer = await as(
+      farmerToken,
+      http().get('/diagnoses/settings'),
+    ).expect(200);
+    expect(farmer.body).toEqual({ ...form, remainingToday: 4 });
   });
 
   it('rejects images over the pixel limit by index', async () => {
