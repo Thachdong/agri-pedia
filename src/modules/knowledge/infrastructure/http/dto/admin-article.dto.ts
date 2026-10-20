@@ -12,21 +12,16 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-const SLUG = '^[a-z0-9]+(-[a-z0-9]+)*$';
-/** Disease code (`RICE_BLAST`) or variant code (`RICE_BLAST__V1`). */
-const KB_CODE = '^[A-Z0-9_]{1,100}$';
-const IMAGE_FILE = '^[a-z0-9-]+\\.webp$';
-
 export class AdminArticleCropParamsDto {
   /** Crop slug, e.g. `lua`. */
-  @Matches(SLUG)
+  @Matches('^[a-z0-9]+(-[a-z0-9]+)*$')
   @Length(1, 100)
   cropSlug: string;
 }
 
 export class AdminArticleCodeParamsDto {
   /** Disease code (main article) or variant code, e.g. `RICE_BLAST__V1`. */
-  @Matches(KB_CODE)
+  @Matches('^[A-Z0-9_]{1,100}$')
   code: string;
 }
 
@@ -50,7 +45,7 @@ export class ArticleImageCreditDto {
 
 export class AdminArticleImageDto {
   /** Name used in the markdown and `cover`, e.g. `dao-on-la-1.webp` (stored as webp whatever the upload). */
-  @Matches(IMAGE_FILE)
+  @Matches('^[a-z0-9-]+\\.webp$')
   @MaxLength(100)
   file: string;
 
@@ -99,7 +94,7 @@ export class UpdateArticleDto {
   markdown: string;
 
   /** One of `images[].file`. */
-  @Matches(IMAGE_FILE)
+  @Matches('^[a-z0-9-]+\\.webp$')
   cover: string;
 
   /** Full list: images left out are dropped. */
@@ -119,11 +114,11 @@ export class UpdateArticleDto {
 
 export class CreateArticleDto extends UpdateArticleDto {
   /** Disease code (main article) or variant code (its disease needs a main article). */
-  @Matches(KB_CODE)
+  @Matches('^[A-Z0-9_]{1,100}$')
   code: string;
 
   /** Fixed once created; unique within the crop. */
-  @Matches(SLUG)
+  @Matches('^[a-z0-9]+(-[a-z0-9]+)*$')
   @Length(1, 100)
   slug: string;
 }
