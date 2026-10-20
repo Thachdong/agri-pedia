@@ -20,6 +20,7 @@ import {
 import {
   CATALOG_REPOSITORY,
   CATEGORY_REPOSITORY,
+  PRODUCT_NAME_READER,
   PRODUCT_REPOSITORY,
   PRODUCT_SUGGESTION_MISS_REPOSITORY,
   PRODUCT_SUGGESTION_SETTINGS_REPOSITORY,
@@ -37,6 +38,7 @@ import { PgProductSuggestionSettingsRepository } from './infrastructure/persiste
 import { PgProductSuggestionUsageRepository } from './infrastructure/persistence/pg-product-suggestion-usage.repository';
 import { PgProductRepository } from './infrastructure/persistence/pg-product.repository';
 import { ProductQueryService } from './infrastructure/queries/product-query.service';
+import { AiProductNameReader } from './infrastructure/vision/ai-product-name.reader';
 
 @Module({
   imports: [UserModule, MediaModule],
@@ -59,6 +61,7 @@ import { ProductQueryService } from './infrastructure/queries/product-query.serv
     { provide: PRODUCT_REPOSITORY, useClass: PgProductRepository },
     { provide: CATEGORY_REPOSITORY, useClass: PgCategoryRepository },
     { provide: CATALOG_REPOSITORY, useClass: PgCatalogRepository },
+    { provide: PRODUCT_NAME_READER, useClass: AiProductNameReader },
     {
       provide: PRODUCT_SUGGESTION_SETTINGS_REPOSITORY,
       useClass: PgProductSuggestionSettingsRepository,
