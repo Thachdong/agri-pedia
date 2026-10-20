@@ -13,4 +13,11 @@ export class InMemoryProductSuggestionSettingsRepository implements IProductSugg
       ? ProductSuggestionSettings.restore(this.saved)
       : ProductSuggestionSettings.defaults();
   }
+
+  async save(settings: ProductSuggestionSettings): Promise<void> {
+    this.saved = {
+      invalidImageLimit: settings.invalidImageLimit,
+      notFoundLimit: settings.notFoundLimit,
+    };
+  }
 }

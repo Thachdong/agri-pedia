@@ -9,3 +9,6 @@ export * from './list-catalog-items.use-case';
 export * from './create-catalog-item.use-case';
 export * from './update-catalog-item.use-case';
 export * from './delete-catalog-item.use-case';
+export * from './get-product-suggestion-settings.use-case';
+export * from './update-product-suggestion-settings.use-case';
+export * from './list-product-suggestion-misses.use-case';

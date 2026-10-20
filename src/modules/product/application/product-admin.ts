@@ -1,5 +1,9 @@
 import { IUserQueryPort } from '@modules/user/contracts';
-import { CatalogItem, ProductAdminRequiredException } from '../domain';
+import {
+  CatalogItem,
+  ProductAdminRequiredException,
+  ProductSuggestionSettings,
+} from '../domain';
 
 /** Throws ProductAdminRequiredException unless `userId` is an ACTIVE admin. */
 export async function assertProductAdmin(
@@ -27,5 +31,19 @@ export function toCatalogItemOutput(item: CatalogItem): TCatalogItemOutput {
     description: item.description,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
+  };
+}
+
+export type TProductSuggestionSettingsOutput = {
+  invalidImageLimit: number;
+  notFoundLimit: number;
+};
+
+export function toSuggestionSettingsOutput(
+  settings: ProductSuggestionSettings,
+): TProductSuggestionSettingsOutput {
+  return {
+    invalidImageLimit: settings.invalidImageLimit,
+    notFoundLimit: settings.notFoundLimit,
   };
 }
