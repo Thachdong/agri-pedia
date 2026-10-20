@@ -9,6 +9,10 @@ import {
 import { knowledgeConfig, TKnowledgeConfig } from './knowledge.config';
 import { loggerConfig, TLoggerConfig } from './logger.config';
 import { otpConfig, TOtpConfig } from './otp.config';
+import {
+  productSuggestionConfig,
+  TProductSuggestionConfig,
+} from './product-suggestion.config';
 import { securityConfig, TSecurityConfig } from './security.config';
 import { storageConfig, TStorageConfig } from './storage.config';
 
@@ -20,6 +24,7 @@ export * from './distributor-search.config';
 export * from './knowledge.config';
 export * from './logger.config';
 export * from './otp.config';
+export * from './product-suggestion.config';
 export * from './security.config';
 export * from './storage.config';
 
@@ -35,6 +40,7 @@ export const configGroups = [
   distributorSearchConfig,
   diagnosisConfig,
   knowledgeConfig,
+  productSuggestionConfig,
 ];
 
 /** Namespace -> type map used by IConfigService.get(). Keep in sync with configGroups. */
@@ -49,4 +55,5 @@ export type TConfigMap = {
   distributorSearch: TDistributorSearchConfig;
   diagnosis: TDiagnosisConfig;
   knowledge: TKnowledgeConfig;
+  productSuggestion: TProductSuggestionConfig;
 };
