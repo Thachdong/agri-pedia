@@ -17,4 +17,6 @@ export class DiagnosisFormSettingsResponse {
   /** Per image as sent (EXIF orientation applied); resize larger photos before upload. */
   maxImageWidth: number;
   maxImageHeight: number;
+  /** Diagnoses the caller may still send today (resets at 00:00 UTC+7); null without an access token. */
+  remainingToday: number | null;
 }

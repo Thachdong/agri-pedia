@@ -1,1 +1,1 @@
-export {};
+export const DIAGNOSIS_QUERY_PORT = Symbol('DIAGNOSIS_QUERY_PORT');

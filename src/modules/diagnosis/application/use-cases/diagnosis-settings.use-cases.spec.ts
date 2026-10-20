@@ -8,7 +8,9 @@ import {
   TDiagnosisSettingsProps,
 } from '../../domain';
 import {
+  buildDiagnosis,
   buildDiagnosisCrop,
+  InMemoryDiagnosisRepository,
   InMemoryDiagnosisSettingsRepository,
 } from '../ports/fakes';
 import { GetDiagnosisFormSettingsUseCase } from './get-diagnosis-form-settings.use-case';
@@ -129,33 +131,66 @@ describe('diagnosis settings use cases', () => {
   });
 
   describe('GetDiagnosisFormSettingsUseCase', () => {
+    let diagnoses: InMemoryDiagnosisRepository;
     const useCase = () =>
-      new GetDiagnosisFormSettingsUseCase(settings, knowledgeQuery);
+      new GetDiagnosisFormSettingsUseCase(settings, diagnoses, knowledgeQuery);
+    const seed = (userId: string, createdAt: Date) => {
+      const diagnosis = buildDiagnosis({ userId, createdAt });
+      diagnoses.items.set(diagnosis.id, diagnosis);
+    };
 
-    it('returns what the form needs', async () => {
+    beforeEach(() => {
+      diagnoses = new InMemoryDiagnosisRepository();
+    });
+
+    it('returns what the form needs; no remaining count for a guest', async () => {
       settings.saved = changed;
 
-      expect(await useCase().execute()).toEqual({
+      expect(await useCase().execute({ userId: null })).toEqual({
         defaultCropType: 'RICE',
         minImages: 1,
         maxImages: 3,
         maxImageBytes: 2 * 1024 * 1024,
         maxImageWidth: 3000,
         maxImageHeight: 2000,
+        remainingToday: null,
       });
+    });
+
+    it('counts only the caller diagnoses sent today', async () => {
+      settings.saved = changed;
+      seed('u1', new Date());
+      seed('u1', new Date());
+      seed('u1', new Date(Date.now() - 2 * 24 * 60 * 60 * 1000));
+      seed('u2', new Date());
+
+      expect((await useCase().execute({ userId: 'u1' })).remainingToday).toBe(
+        5,
+      );
+    });
+
+    it('never returns a negative remaining count', async () => {
+      for (let i = 0; i < 4; i++) seed('u1', new Date());
+
+      expect((await useCase().execute({ userId: 'u1' })).remainingToday).toBe(
+        0,
+      );
     });
 
     it('drops a default crop no longer enabled for diagnosis', async () => {
       settings.saved = changed;
       crops.RICE = false;
 
-      expect((await useCase().execute()).defaultCropType).toBeNull();
+      expect(
+        (await useCase().execute({ userId: null })).defaultCropType,
+      ).toBeNull();
     });
 
     it('returns the defaults until settings are saved', async () => {
-      expect(await useCase().execute()).toMatchObject({
+      expect(await useCase().execute({ userId: 'u1' })).toMatchObject({
         defaultCropType: null,
         maxImages: 5,
+        remainingToday: 3,
       });
     });
   });

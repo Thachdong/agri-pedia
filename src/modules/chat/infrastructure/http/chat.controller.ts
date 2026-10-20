@@ -12,6 +12,7 @@ import {
   TAccessTokenPayload,
 } from '@shared/access-token';
 import {
+  GetMessageDiagnosisReportUseCase,
   ListMyChatRoomsUseCase,
   ListRoomMessagesUseCase,
 } from '../../application/use-cases';
@@ -23,12 +24,14 @@ import {
 } from './dto';
 import { ListMyChatRoomsResponse } from './responses/list-my-chat-rooms.response';
 import { ListRoomMessagesResponse } from './responses/list-room-messages.response';
+import { MessageDiagnosisReportResponse } from './responses/message-diagnosis-report.response';
 
 @Controller('chat')
 export class ChatController {
   constructor(
     private readonly listMyChatRooms: ListMyChatRoomsUseCase,
     private readonly listRoomMessages: ListRoomMessagesUseCase,
+    private readonly getMessageDiagnosisReport: GetMessageDiagnosisReportUseCase,
   ) {}
 
   /** The caller's chat rooms, most recent message first, with unread counts. */
@@ -55,6 +58,8 @@ export class ChatController {
           messageId: room.lastMessage.messageId,
           senderId: room.lastMessage.senderId,
           message: room.lastMessage.message,
+          type: room.lastMessage.type,
+          diagnosisId: room.lastMessage.diagnosisId,
         },
         lastMessageAt: room.lastMessageAt,
         unreadCount: room.unreadCount,
@@ -84,9 +89,26 @@ export class ChatController {
         senderUsername: message.senderUsername,
         senderAvatar: message.senderAvatar,
         message: message.message,
+        type: message.type,
+        diagnosisId: message.diagnosisId,
         createdAt: message.createdAt,
       })),
       nextCursor,
     };
+  }
+
+  /** The diagnosis shared by a DIAGNOSIS_REPORT message, for either member of the room. */
+  @Get('rooms/:roomId/messages/:messageId/diagnosis')
+  @UseGuards(AccessTokenGuard)
+  async messageDiagnosis(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Param('roomId', ParseUUIDPipe) roomId: string,
+    @Param('messageId', ParseUUIDPipe) messageId: string,
+  ): Promise<MessageDiagnosisReportResponse> {
+    return this.getMessageDiagnosisReport.execute({
+      userId: caller.userId,
+      roomId,
+      messageId,
+    });
   }
 }

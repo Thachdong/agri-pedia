@@ -60,11 +60,14 @@ defineApiDocs(DiagnosisController, {
       ],
     },
     settings: {
-      summary: 'Get the diagnosis form settings',
+      summary: 'Get the diagnosis form settings (public)',
       description:
+        'No login needed; the access token is optional (an invalid one → 401). ' +
         'Default crop to preselect (null = none), image count range and per-image limits as sent ' +
         '(bytes, pixel width/height after EXIF orientation). Resize larger photos before POST /diagnoses; ' +
-        'images over a limit answer DIAGNOSIS_INVALID_IMAGE with the image index.',
+        'images over a limit answer DIAGNOSIS_INVALID_IMAGE with the image index. ' +
+        "`remainingToday`: diagnoses the caller may still send today (`dailyFreeLimit` minus the caller's " +
+        'diagnoses since 00:00 UTC+7, at least 0); null without an access token.',
       auth: true,
     },
     get: {

@@ -22,6 +22,11 @@ export class PgChatMessageRepository
     await this.repository.insert(ChatMessageMapper.toOrm(message));
   }
 
+  async findById(id: string): Promise<ChatMessage | null> {
+    const row = await this.repository.findOneBy({ id });
+    return row ? ChatMessageMapper.toDomain(row) : null;
+  }
+
   async findPageByRoom(
     roomId: string,
     { after, limit }: TChatMessagePageQuery,

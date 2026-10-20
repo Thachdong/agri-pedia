@@ -1,5 +1,6 @@
 import { ChatNotRoomMemberException } from '../exceptions/chat-not-room-member.exception';
 import { InvalidChatReceiverException } from '../exceptions/invalid-chat-receiver.exception';
+import { EChatMessageType } from '../enums/chat-message-type.enum';
 import { ChatMessage } from './chat-message.entity';
 import { ChatRoom } from './chat-room.entity';
 
@@ -20,6 +21,8 @@ const messageAt = (senderId: string, iso: string, roomId = 'r1') =>
     roomId,
     senderId,
     message: 'hi',
+    type: EChatMessageType.TEXT,
+    diagnosisId: null,
     createdAt: at(iso),
   });
 

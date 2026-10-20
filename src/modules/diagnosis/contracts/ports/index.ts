@@ -1,1 +1,1 @@
-export {};
+export * from './diagnosis-query.port';

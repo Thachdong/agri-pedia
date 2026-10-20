@@ -8,6 +8,7 @@ import {
   EPlantPart,
 } from '../../domain';
 import { buildDiagnosis, InMemoryDiagnosisRepository } from '../ports/fakes';
+import { DiagnosisReportBuilder } from './diagnosis-report.builder';
 import { GetDiagnosisUseCase } from './get-diagnosis.use-case';
 
 const high = { level: EConfidenceLevel.HIGH, score: 0.85 };
@@ -53,7 +54,10 @@ describe('GetDiagnosisUseCase', () => {
 
   beforeEach(() => {
     diagnoses = new InMemoryDiagnosisRepository();
-    useCase = new GetDiagnosisUseCase(diagnoses, mediaQuery, knowledgeQuery);
+    useCase = new GetDiagnosisUseCase(
+      diagnoses,
+      new DiagnosisReportBuilder(mediaQuery, knowledgeQuery),
+    );
   });
 
   it('returns a completed diagnosis with URLs, names, regions and messages', async () => {

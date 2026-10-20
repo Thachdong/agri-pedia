@@ -9,6 +9,7 @@ export type TChatMessagePageQuery = {
 
 export interface IChatMessageRepository {
   save(message: ChatMessage): Promise<void>;
+  findById(id: string): Promise<ChatMessage | null>;
   /** Messages of `roomId`, createdAt desc then id desc, strictly after `after`. */
   findPageByRoom(
     roomId: string,

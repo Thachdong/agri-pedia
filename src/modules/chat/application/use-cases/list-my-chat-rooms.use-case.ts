@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
-import { InvalidChatCursorException } from '../../domain';
+import { EChatMessageType, InvalidChatCursorException } from '../../domain';
 import {
   CHAT_ROOM_REPOSITORY,
   IChatRoomRepository,
@@ -22,7 +22,13 @@ export type TChatRoomItem = {
   otherUsername: string | null;
   /** Signed read URL of the other user's avatar; null when none. */
   otherUserAvatar: string | null;
-  lastMessage: { messageId: string; senderId: string; message: string } | null;
+  lastMessage: {
+    messageId: string;
+    senderId: string;
+    message: string;
+    type: EChatMessageType;
+    diagnosisId: string | null;
+  } | null;
   lastMessageAt: Date;
   unreadCount: number;
 };
@@ -119,6 +125,8 @@ export class ListMyChatRoomsUseCase {
             messageId: lastMessage.id,
             senderId: lastMessage.senderId,
             message: lastMessage.message,
+            type: lastMessage.type,
+            diagnosisId: lastMessage.diagnosisId,
           },
           lastMessageAt: room.lastMessageAt,
           unreadCount,

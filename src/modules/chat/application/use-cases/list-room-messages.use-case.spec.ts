@@ -6,6 +6,7 @@ import {
   ChatRoom,
   ChatRoomNotFoundException,
   InvalidChatCursorException,
+  EChatMessageType,
 } from '../../domain';
 import {
   InMemoryChatMessageRepository,
@@ -77,6 +78,8 @@ describe('ListRoomMessagesUseCase', () => {
       roomId: room,
       senderId,
       message: `msg ${n}`,
+      type: EChatMessageType.TEXT,
+      diagnosisId: null,
       createdAt,
     });
     messages.items.set(message.id, message);
@@ -107,6 +110,8 @@ describe('ListRoomMessagesUseCase', () => {
           senderUsername: 'Shop B',
           senderAvatar: 'https://cdn/shop.jpg',
           message: 'msg 2',
+          type: EChatMessageType.TEXT,
+          diagnosisId: null,
           createdAt: at(3),
         },
         {
@@ -115,6 +120,8 @@ describe('ListRoomMessagesUseCase', () => {
           senderUsername: 'Farmer A',
           senderAvatar: null,
           message: 'msg 1',
+          type: EChatMessageType.TEXT,
+          diagnosisId: null,
           createdAt: at(2),
         },
       ],

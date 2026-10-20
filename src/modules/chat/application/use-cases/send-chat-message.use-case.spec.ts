@@ -1,3 +1,7 @@
+import {
+  IDiagnosisQueryPort,
+  TDiagnosisOwnership,
+} from '@modules/diagnosis/contracts';
 import { IMediaQueryPort, TMediaThumbnail } from '@modules/media/contracts';
 import {
   IUserQueryPort,
@@ -10,12 +14,18 @@ import {
   InMemoryRealtimePublisher,
 } from '@shared/realtime';
 import {
+  ChatDiagnosisNotCompletedException,
+  ChatDiagnosisNotFoundException,
+  ChatDiagnosisReportNotAllowedException,
+  ChatInvalidDiagnosisReferenceException,
   ChatNotRoomMemberException,
   ChatReceiverNotFoundException,
   ChatRoom,
   ChatRoomNotFoundException,
+  ChatRoomOpenNotAllowedException,
   ChatRoomOrReceiverRequiredException,
   ChatSenderNotAllowedException,
+  EChatMessageType,
   InvalidChatMessageException,
   InvalidChatReceiverException,
 } from '../../domain';
@@ -43,6 +53,7 @@ describe('SendChatMessageUseCase', () => {
   let roles: Map<string, TUserRoleSummary>;
   let profiles: TUserProfileSummary[];
   let avatars: TMediaThumbnail[];
+  let diagnoses: TDiagnosisOwnership[];
   let useCase: SendChatMessageUseCase;
 
   beforeEach(() => {
@@ -54,7 +65,9 @@ describe('SendChatMessageUseCase', () => {
       summary('farmer-1', 'FARMER'),
       summary('farmer-2', 'FARMER'),
       summary('distributor-1', 'DISTRIBUTOR'),
+      summary('distributor-2', 'DISTRIBUTOR'),
       summary('distributor-pending', 'DISTRIBUTOR', false),
+      summary('admin-1', 'ADMIN'),
     ]);
     profiles = [{ userId: 'farmer-1', username: 'Farmer A', role: 'FARMER' }];
     avatars = [{ ownerId: 'farmer-1', url: 'https://cdn/farmer-1.jpg' }];
@@ -73,6 +86,16 @@ describe('SendChatMessageUseCase', () => {
           ? avatars.filter((avatar) => ownerIds.includes(avatar.ownerId))
           : [],
     };
+    diagnoses = [
+      { diagnosisId: 'd-done', userId: 'farmer-1', status: 'COMPLETED' },
+      { diagnosisId: 'd-running', userId: 'farmer-1', status: 'PROCESSING' },
+      { diagnosisId: 'd-other', userId: 'farmer-2', status: 'COMPLETED' },
+    ];
+    const diagnosisQuery: IDiagnosisQueryPort = {
+      findOwnership: async (id) =>
+        diagnoses.find((d) => d.diagnosisId === id) ?? null,
+      findReport: async () => null,
+    };
     useCase = new SendChatMessageUseCase(
       rooms,
       messages,
@@ -81,6 +104,7 @@ describe('SendChatMessageUseCase', () => {
       new InMemoryUnitOfWork(),
       realtime,
       channels,
+      diagnosisQuery,
     );
   });
 
@@ -118,6 +142,8 @@ describe('SendChatMessageUseCase', () => {
           senderUsername: 'Farmer A',
           senderAvatar: 'https://cdn/farmer-1.jpg',
           message: 'Chào anh',
+          type: EChatMessageType.TEXT,
+          diagnosisId: null,
           createdAt: output.createdAt.toISOString(),
         },
       },
@@ -228,8 +254,8 @@ describe('SendChatMessageUseCase', () => {
     ).rejects.toThrow(ChatRoomOrReceiverRequiredException);
   });
 
-  it.each(['unknown', 'distributor-pending'])(
-    'rejects sender %s (missing or not ACTIVE)',
+  it.each(['unknown', 'distributor-pending', 'admin-1'])(
+    'rejects sender %s (missing, not ACTIVE or not FARMER / DISTRIBUTOR)',
     async (senderId) => {
       await expect(
         useCase.execute({ senderId, receiverId: 'farmer-1', message: 'Hi' }),
@@ -267,11 +293,109 @@ describe('SendChatMessageUseCase', () => {
     ['oneself', 'farmer-1'],
     ['same role', 'farmer-2'],
     ['not ACTIVE', 'distributor-pending'],
+    ['ADMIN', 'admin-1'],
   ])('rejects a receiver: %s', async (_case, receiverId) => {
     await expect(
       useCase.execute({ senderId: 'farmer-1', receiverId, message: 'Hi' }),
     ).rejects.toThrow(InvalidChatReceiverException);
     expect(rooms.items.size).toBe(0);
+  });
+
+  it('lets only a FARMER open a new room', async () => {
+    await expect(
+      useCase.execute({
+        senderId: 'distributor-2',
+        receiverId: 'farmer-1',
+        message: 'Hi',
+      }),
+    ).rejects.toThrow(ChatRoomOpenNotAllowedException);
+    expect(rooms.items.size).toBe(0);
+    expect(messages.items.size).toBe(0);
+    expect(realtime.emitted).toEqual([]);
+  });
+
+  describe('diagnosis report', () => {
+    const report = (diagnosisId?: string) => ({
+      message: 'Báo cáo chẩn đoán',
+      type: EChatMessageType.DIAGNOSIS_REPORT,
+      diagnosisId,
+    });
+
+    it("shares the farmer's completed diagnosis and pushes it", async () => {
+      const output = await useCase.execute({
+        senderId: 'farmer-1',
+        receiverId: 'distributor-1',
+        ...report('d-done'),
+      });
+
+      const message = messages.items.get(output.messageId);
+      expect(message?.type).toBe(EChatMessageType.DIAGNOSIS_REPORT);
+      expect(message?.diagnosisId).toBe('d-done');
+      expect(realtime.emitted[0].payload).toMatchObject({
+        type: EChatMessageType.DIAGNOSIS_REPORT,
+        diagnosisId: 'd-done',
+      });
+    });
+
+    it('rejects a distributor', async () => {
+      const room = seedRoom();
+
+      await expect(
+        useCase.execute({
+          senderId: 'distributor-1',
+          roomId: room.id,
+          ...report('d-done'),
+        }),
+      ).rejects.toThrow(ChatDiagnosisReportNotAllowedException);
+    });
+
+    it.each(['d-other', 'unknown'])(
+      "rejects diagnosis %s (not the sender's or missing)",
+      async (diagnosisId) => {
+        const room = seedRoom();
+
+        await expect(
+          useCase.execute({
+            senderId: 'farmer-1',
+            roomId: room.id,
+            ...report(diagnosisId),
+          }),
+        ).rejects.toThrow(ChatDiagnosisNotFoundException);
+      },
+    );
+
+    it('rejects a diagnosis not COMPLETED', async () => {
+      const room = seedRoom();
+
+      await expect(
+        useCase.execute({
+          senderId: 'farmer-1',
+          roomId: room.id,
+          ...report('d-running'),
+        }),
+      ).rejects.toThrow(ChatDiagnosisNotCompletedException);
+    });
+
+    it('rejects a report without diagnosisId, or a TEXT message with one', async () => {
+      const room = seedRoom();
+
+      await expect(
+        useCase.execute({
+          senderId: 'farmer-1',
+          roomId: room.id,
+          ...report(),
+        }),
+      ).rejects.toThrow(ChatInvalidDiagnosisReferenceException);
+      await expect(
+        useCase.execute({
+          senderId: 'farmer-1',
+          roomId: room.id,
+          message: 'Hi',
+          diagnosisId: 'd-done',
+        }),
+      ).rejects.toThrow(ChatInvalidDiagnosisReferenceException);
+      expect(messages.items.size).toBe(0);
+    });
   });
 
   it('rejects an empty message without pushing', async () => {

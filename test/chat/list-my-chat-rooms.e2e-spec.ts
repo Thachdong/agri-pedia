@@ -133,6 +133,8 @@ describe('GET /chat/rooms (e2e)', () => {
             messageId: newest,
             senderId: shopB,
             message: 'Chưa đọc',
+            type: 'TEXT',
+            diagnosisId: null,
           },
           lastMessageAt: '2026-09-05T00:00:00.000Z',
           unreadCount: 1,

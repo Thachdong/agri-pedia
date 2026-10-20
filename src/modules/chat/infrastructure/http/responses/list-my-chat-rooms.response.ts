@@ -1,7 +1,13 @@
+import { EChatMessageType } from '../../../domain';
+
 export class ChatRoomLastMessageResponse {
   messageId: string;
   senderId: string;
+  /** Preview text (for DIAGNOSIS_REPORT: the text sent with the report). */
   message: string;
+  type: EChatMessageType;
+  /** Shared diagnosis (DIAGNOSIS_REPORT); null for TEXT. */
+  diagnosisId: string | null;
 }
 
 export class ChatRoomResponse {

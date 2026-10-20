@@ -3,6 +3,7 @@ import { IMediaQueryPort, MEDIA_QUERY_PORT } from '@modules/media/contracts';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
 import {
   ChatRoomNotFoundException,
+  EChatMessageType,
   InvalidChatCursorException,
 } from '../../domain';
 import {
@@ -31,6 +32,9 @@ export type TRoomMessageItem = {
   /** Signed read URL of the sender's avatar; null when none. */
   senderAvatar: string | null;
   message: string;
+  type: EChatMessageType;
+  /** Shared diagnosis (DIAGNOSIS_REPORT); null for TEXT. */
+  diagnosisId: string | null;
   createdAt: Date;
 };
 
@@ -120,6 +124,8 @@ export class ListRoomMessagesUseCase {
         senderUsername: usernames.get(message.senderId) ?? null,
         senderAvatar: avatarUrls.get(message.senderId) ?? null,
         message: message.message,
+        type: message.type,
+        diagnosisId: message.diagnosisId,
         createdAt: message.createdAt,
       })),
       nextCursor,

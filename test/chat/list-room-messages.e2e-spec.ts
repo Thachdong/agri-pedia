@@ -114,6 +114,8 @@ describe('GET /chat/rooms/:roomId/messages (e2e)', () => {
           senderUsername: null, // not a registered user in this test
           senderAvatar: null,
           message: 'Còn hàng',
+          type: 'TEXT',
+          diagnosisId: null,
           createdAt: '2026-09-02T01:00:00.000Z',
         },
         {
@@ -122,6 +124,8 @@ describe('GET /chat/rooms/:roomId/messages (e2e)', () => {
           senderUsername: null,
           senderAvatar: null,
           message: 'Chào anh',
+          type: 'TEXT',
+          diagnosisId: null,
           createdAt: '2026-09-02T00:00:00.000Z',
         },
       ],
