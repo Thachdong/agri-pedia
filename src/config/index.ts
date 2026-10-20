@@ -1,6 +1,7 @@
 import { appConfig, TAppConfig } from './app.config';
 import { authConfig, TAuthConfig } from './auth.config';
 import { databaseConfig, TDatabaseConfig } from './database.config';
+import { datasetConfig, TDatasetConfig } from './dataset.config';
 import { diagnosisConfig, TDiagnosisConfig } from './diagnosis.config';
 import {
   distributorSearchConfig,
@@ -19,6 +20,7 @@ import { storageConfig, TStorageConfig } from './storage.config';
 export * from './app.config';
 export * from './auth.config';
 export * from './database.config';
+export * from './dataset.config';
 export * from './diagnosis.config';
 export * from './distributor-search.config';
 export * from './knowledge.config';
@@ -41,6 +43,7 @@ export const configGroups = [
   diagnosisConfig,
   knowledgeConfig,
   productSuggestionConfig,
+  datasetConfig,
 ];
 
 /** Namespace -> type map used by IConfigService.get(). Keep in sync with configGroups. */
@@ -56,4 +59,5 @@ export type TConfigMap = {
   diagnosis: TDiagnosisConfig;
   knowledge: TKnowledgeConfig;
   productSuggestion: TProductSuggestionConfig;
+  dataset: TDatasetConfig;
 };

@@ -3,7 +3,7 @@ Feature: training dataset — collect HIGH-confidence diagnosis images (best-eff
 Flow: ProcessDiagnosis (COMPLETED) → after realtime emit, emits `diagnosis.case.completed` → dataset handles → CollectTrainingSamples (filter per image → download → quality gate → copy to `datasets/<crop>/<sampleId>.jpg` → save). Errors logged and dropped; no retry/backfill/feedback.
 
 - [x] 1. [shared-wrapper]     storage: `IFileStorage.copyFile(fromKey, toKey)` (GCS server-side copy) + in-memory fake
-- [ ] 2. [config-group]       `dataset`: minShortSidePx, minSharpness, minBrightness, maxBrightness
+- [x] 2. [config-group]       `dataset`: minShortSidePx, minSharpness, minBrightness, maxBrightness
 - [ ] 3. [adapter-tweak]      diagnosis: SharpImageProcessor.normalize → JPEG quality 90, chromaSubsampling 4:4:4, mozjpeg (no dedicated skill)
 - [ ] 4. [module-scaffold]    module `dataset`
 - [ ] 5. [domain-model]       entity TrainingSample, enum ELabelSource (AI_HIGH); selection rule: no conflict, stored image, exactly one HIGH disease
