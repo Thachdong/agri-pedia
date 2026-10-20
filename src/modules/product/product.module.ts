@@ -27,6 +27,8 @@ import {
   PRODUCT_SUGGESTION_USAGE_REPOSITORY,
 } from './application/ports';
 import { PRODUCT_QUERY_PORT } from './contracts';
+import './infrastructure/http/admin-product-catalog.api-docs';
+import './infrastructure/http/admin-product-suggestion.api-docs';
 import './infrastructure/http/category.api-docs';
 import './infrastructure/http/product.api-docs';
 import './infrastructure/http/product-suggestion.api-docs';

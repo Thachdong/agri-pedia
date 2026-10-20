@@ -22,7 +22,7 @@ Mọi NOT_FOUND ghi log miss; admin xem gộp theo tên chuẩn hóa. Admin CRUD
 - [x] 8. [http]           POST /products/suggestions (multipart `image`, distributor)
 - [x] 9. [api-docs]       POST /products/suggestions
 - [x] 10. [http]          /admin/product-catalog (GET, POST, PATCH /:id, DELETE /:id); GET/PUT /admin/product-suggestion/settings; GET /admin/product-suggestion/misses
-- [ ] 11. [api-docs]      admin endpoints
+- [x] 11. [api-docs]      admin endpoints
 - [ ] 12. [boundary-review]
 
 Decisions:
