@@ -15,6 +15,10 @@ export class InMemoryChatMessageRepository implements IChatMessageRepository {
     this.items.set(message.id, message);
   }
 
+  async findById(id: string): Promise<ChatMessage | null> {
+    return this.items.get(id) ?? null;
+  }
+
   async findPageByRoom(
     roomId: string,
     { after, limit }: TChatMessagePageQuery,

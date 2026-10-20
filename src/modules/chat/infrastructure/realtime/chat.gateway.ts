@@ -21,16 +21,21 @@ import { SendChatMessageResponse } from './responses/send-chat-message.response'
  * Every client → server event takes an ack; errors come back as `{ error: { code, message, details? } }`
  * (REALTIME_VALIDATION_FAILED for a malformed payload).
  *
- * `chat.message.send` `{ roomId?, receiverId?, message }` → `{ messageId, roomId, createdAt }`
+ * `chat.message.send` `{ roomId?, receiverId?, message, type?, diagnosisId? }` → `{ messageId, roomId, createdAt }`
  *   Only FARMER <-> DISTRIBUTOR; only a FARMER opens a new room (a DISTRIBUTOR replies in an existing one).
+ *   `type` TEXT (default) | DIAGNOSIS_REPORT: a FARMER shares one of its COMPLETED diagnoses (`diagnosisId`, required);
+ *   `message` is the text shown with it. The receiver reads it with GET /chat/rooms/{roomId}/messages/{messageId}/diagnosis.
  *   errors: CHAT_ROOM_OR_RECEIVER_REQUIRED, CHAT_SENDER_NOT_ALLOWED, CHAT_ROOM_NOT_FOUND, CHAT_NOT_ROOM_MEMBER,
- *           CHAT_RECEIVER_NOT_FOUND, CHAT_INVALID_RECEIVER, CHAT_ROOM_OPEN_NOT_ALLOWED, CHAT_INVALID_MESSAGE
+ *           CHAT_RECEIVER_NOT_FOUND, CHAT_INVALID_RECEIVER, CHAT_ROOM_OPEN_NOT_ALLOWED, CHAT_INVALID_MESSAGE,
+ *           CHAT_INVALID_DIAGNOSIS_REFERENCE, CHAT_DIAGNOSIS_REPORT_NOT_ALLOWED, CHAT_DIAGNOSIS_NOT_FOUND,
+ *           CHAT_DIAGNOSIS_NOT_COMPLETED
  * `chat.room.enter` `{ roomId }` → `{ roomId }` — chat window opened: all messages read, and messages arriving
  *   while it stays open are read on arrival. errors: CHAT_ROOM_NOT_FOUND, CHAT_NOT_ROOM_MEMBER
  * `chat.room.leave` `{ roomId }` → `{ roomId }` — chat window closed: new messages count as unread again.
  *   Disconnecting leaves every room.
  *
- * Server → other room member `chat.message.received` `{ messageId, roomId, senderId, message, createdAt }`.
+ * Server → other room member `chat.message.received`
+ *   `{ messageId, roomId, senderId, senderUsername, senderAvatar, message, type, diagnosisId, createdAt }`.
  */
 @RealtimeGateway()
 export class ChatGateway {
@@ -50,6 +55,8 @@ export class ChatGateway {
       roomId: dto.roomId,
       receiverId: dto.receiverId,
       message: dto.message,
+      type: dto.type,
+      diagnosisId: dto.diagnosisId,
     });
   }
 

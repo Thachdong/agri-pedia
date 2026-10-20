@@ -4,6 +4,7 @@ import {
   ChatMessage,
   ChatRoom,
   InvalidChatCursorException,
+  EChatMessageType,
 } from '../../domain';
 import {
   InMemoryChatMessageRepository,
@@ -74,6 +75,8 @@ describe('ListMyChatRoomsUseCase', () => {
       roomId: room.id,
       senderId,
       message: `msg ${seq}`,
+      type: EChatMessageType.TEXT,
+      diagnosisId: null,
       createdAt,
     });
     messages.items.set(message.id, message);
@@ -107,6 +110,8 @@ describe('ListMyChatRoomsUseCase', () => {
             messageId: newest.id,
             senderId: 'shop-b',
             message: newest.message,
+            type: EChatMessageType.TEXT,
+            diagnosisId: null,
           },
           lastMessageAt: at(5),
           unreadCount: 1,

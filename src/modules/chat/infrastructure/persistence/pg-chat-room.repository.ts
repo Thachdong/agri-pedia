@@ -6,7 +6,7 @@ import {
   TChatRoomPageQuery,
   TChatRoomSummary,
 } from '../../application/ports';
-import { ChatMessage, ChatRoom } from '../../domain';
+import { ChatMessage, ChatRoom, EChatMessageType } from '../../domain';
 import { ChatRoomMapper } from './chat-room.mapper';
 import { ChatRoomOrmEntity } from './chat-room.orm-entity';
 
@@ -21,6 +21,8 @@ type TRoomSummaryRow = {
   lm_id: string | null;
   lm_sender_id: string | null;
   lm_message: string | null;
+  lm_type: string | null;
+  lm_diagnosis_id: string | null;
   lm_created_at: Date | null;
   unread_count: string;
 };
@@ -90,11 +92,12 @@ export class PgChatRoomRepository
   ): Promise<TChatRoomSummary[]> {
     const rows: TRoomSummaryRow[] = await this.repository.query(
       `SELECT r.*,
-              lm.id AS lm_id, lm.sender_id AS lm_sender_id, lm.message AS lm_message, lm.created_at AS lm_created_at,
+              lm.id AS lm_id, lm.sender_id AS lm_sender_id, lm.message AS lm_message, lm.type AS lm_type,
+              lm.diagnosis_id AS lm_diagnosis_id, lm.created_at AS lm_created_at,
               (SELECT COUNT(*) FROM chat_messages m WHERE m.room_id = r.id AND ${UNREAD_OF_MEMBER}) AS unread_count
          FROM chat_rooms r
          LEFT JOIN LATERAL (
-           SELECT id, sender_id, message, created_at FROM chat_messages
+           SELECT id, sender_id, message, type, diagnosis_id, created_at FROM chat_messages
             WHERE room_id = r.id
             ORDER BY created_at DESC, id DESC
             LIMIT 1
@@ -120,6 +123,8 @@ export class PgChatRoomRepository
               roomId: row.id,
               senderId: row.lm_sender_id,
               message: row.lm_message ?? '',
+              type: (row.lm_type ?? EChatMessageType.TEXT) as EChatMessageType,
+              diagnosisId: row.lm_diagnosis_id,
               createdAt: row.lm_created_at,
             })
           : null,

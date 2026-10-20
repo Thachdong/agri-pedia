@@ -17,6 +17,14 @@ export class ChatMessageOrmEntity {
   @Column({ type: 'text' })
   message: string;
 
+  /** EChatMessageType. */
+  @Column({ type: 'varchar', length: 30, default: 'TEXT' })
+  type: string;
+
+  /** Shared diagnosis (DIAGNOSIS_REPORT); owned by the diagnosis module, so no FK. */
+  @Column({ name: 'diagnosis_id', type: 'uuid', nullable: true })
+  diagnosisId: string | null;
+
   @Column({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
 }

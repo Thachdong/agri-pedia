@@ -1,3 +1,5 @@
+import { EChatMessageType } from '../../../domain';
+
 export class RoomMessageResponse {
   id: string;
   senderId: string;
@@ -6,6 +8,9 @@ export class RoomMessageResponse {
   /** Signed read URL of the sender's avatar (expires); null when none. */
   senderAvatar: string | null;
   message: string;
+  type: EChatMessageType;
+  /** Shared diagnosis (DIAGNOSIS_REPORT): read it with GET /chat/rooms/{roomId}/messages/{messageId}/diagnosis; null for TEXT. */
+  diagnosisId: string | null;
   createdAt: Date;
 }
 

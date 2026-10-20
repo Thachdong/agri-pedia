@@ -1,4 +1,4 @@
-import { ChatMessage } from '../../domain';
+import { ChatMessage, EChatMessageType } from '../../domain';
 import { ChatMessageOrmEntity } from './chat-message.orm-entity';
 
 export class ChatMessageMapper {
@@ -7,6 +7,8 @@ export class ChatMessageMapper {
       roomId: row.roomId,
       senderId: row.senderId,
       message: row.message,
+      type: row.type as EChatMessageType,
+      diagnosisId: row.diagnosisId,
       createdAt: row.createdAt,
     });
   }
@@ -17,6 +19,8 @@ export class ChatMessageMapper {
       roomId: message.roomId,
       senderId: message.senderId,
       message: message.message,
+      type: message.type,
+      diagnosisId: message.diagnosisId,
       createdAt: message.createdAt,
     });
   }

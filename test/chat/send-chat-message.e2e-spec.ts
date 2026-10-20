@@ -61,6 +61,7 @@ describe('socket chat.message.send (e2e)', () => {
   });
 
   beforeEach(async () => {
+    await dataSource.query('DELETE FROM diagnoses');
     await dataSource.query('DELETE FROM chat_messages');
     await dataSource.query('DELETE FROM chat_rooms');
     await dataSource.query('DELETE FROM refresh_tokens');
@@ -147,6 +148,8 @@ describe('socket chat.message.send (e2e)', () => {
       senderUsername: 'farmer@mail.com', // username defaults to the identifier
       senderAvatar: null,
       message: 'Còn lúa giống OM18 không?',
+      type: 'TEXT',
+      diagnosisId: null,
       createdAt: ack.createdAt,
     });
     expect(await dataSource.query('SELECT * FROM chat_rooms')).toEqual([
@@ -307,6 +310,142 @@ describe('socket chat.message.send (e2e)', () => {
     expect(await dataSource.query('SELECT id FROM chat_messages')).toHaveLength(
       1,
     );
+  });
+
+  describe('diagnosis report', () => {
+    /** Inserts a diagnosis of `userId`; returns its id. */
+    const seedDiagnosis = async (userId: string, status = 'COMPLETED') => {
+      const [{ id }] = await dataSource.query(
+        `INSERT INTO diagnoses (id, user_id, crop_type, status, provider, model, prompt_version, kb_version, created_at)
+         VALUES (gen_random_uuid(), $1, 'RICE', $2, 'GEMINI', 'm', 'p', 'k', now())
+         RETURNING id`,
+        [userId, status],
+      );
+      return id as string;
+    };
+
+    const report = (diagnosisId?: string) => ({
+      message: 'Báo cáo chẩn đoán lúa',
+      type: 'DIAGNOSIS_REPORT',
+      diagnosisId,
+    });
+
+    it('shares a completed diagnosis; both members read it over HTTP', async () => {
+      const shop = await signUp(distributorAccount('0912345678'));
+      const farmer = await signUp(farmerAccount('farmer@mail.com'));
+      const diagnosisId = await seedDiagnosis(farmer.id);
+      const shopSocket = await connect(shop.token);
+      const received = nextReceived(shopSocket);
+
+      const ack = await send(await connect(farmer.token), {
+        receiverId: shop.id,
+        ...report(diagnosisId),
+      });
+
+      expect(await received).toMatchObject({
+        messageId: ack.messageId,
+        type: 'DIAGNOSIS_REPORT',
+        diagnosisId,
+      });
+      const listed = await request(app.getHttpServer())
+        .get(`/chat/rooms/${ack.roomId}/messages`)
+        .set('Authorization', `Bearer ${shop.token}`)
+        .expect(200);
+      expect(listed.body.messages[0]).toMatchObject({
+        id: ack.messageId,
+        type: 'DIAGNOSIS_REPORT',
+        diagnosisId,
+      });
+      for (const user of [shop, farmer]) {
+        const res = await request(app.getHttpServer())
+          .get(`/chat/rooms/${ack.roomId}/messages/${ack.messageId}/diagnosis`)
+          .set('Authorization', `Bearer ${user.token}`)
+          .expect(200);
+        expect(res.body).toMatchObject({
+          id: diagnosisId,
+          status: 'COMPLETED',
+          cropType: 'RICE',
+          images: [],
+        });
+      }
+    });
+
+    it('rejects a report from a distributor, of another farmer, not completed, or without diagnosisId', async () => {
+      const shop = await signUp(distributorAccount('0912345678'));
+      const farmer = await signUp(farmerAccount('farmer@mail.com'));
+      const other = await signUp(farmerAccount('other@mail.com'));
+      const farmerSocket = await connect(farmer.token);
+      const { roomId } = await send(farmerSocket, {
+        receiverId: shop.id,
+        message: 'Hi',
+      });
+
+      expect(
+        await errorCode(await connect(shop.token), {
+          roomId,
+          ...report(await seedDiagnosis(farmer.id)),
+        }),
+      ).toBe('CHAT_DIAGNOSIS_REPORT_NOT_ALLOWED');
+      expect(
+        await errorCode(farmerSocket, {
+          roomId,
+          ...report(await seedDiagnosis(other.id)),
+        }),
+      ).toBe('CHAT_DIAGNOSIS_NOT_FOUND');
+      expect(
+        await errorCode(farmerSocket, {
+          roomId,
+          ...report(await seedDiagnosis(farmer.id, 'PROCESSING')),
+        }),
+      ).toBe('CHAT_DIAGNOSIS_NOT_COMPLETED');
+      expect(await errorCode(farmerSocket, { roomId, ...report() })).toBe(
+        'CHAT_INVALID_DIAGNOSIS_REFERENCE',
+      );
+      expect(
+        await errorCode(farmerSocket, { roomId, message: 'Hi', type: 'IMAGE' }),
+      ).toBe('REALTIME_VALIDATION_FAILED');
+      expect(
+        await dataSource.query('SELECT id FROM chat_messages'),
+      ).toHaveLength(1);
+    });
+
+    it('reads a report only as a room member, and only from a report message', async () => {
+      const shop = await signUp(distributorAccount('0912345678'));
+      const farmer = await signUp(farmerAccount('farmer@mail.com'));
+      const outsider = await signUp(farmerAccount('other@mail.com'));
+      const farmerSocket = await connect(farmer.token);
+      const text = await send(farmerSocket, {
+        receiverId: shop.id,
+        message: 'Hi',
+      });
+      const shared = await send(farmerSocket, {
+        roomId: text.roomId,
+        ...report(await seedDiagnosis(farmer.id)),
+      });
+      const get = (token: string, messageId: string, roomId = text.roomId) =>
+        request(app.getHttpServer())
+          .get(`/chat/rooms/${roomId}/messages/${messageId}/diagnosis`)
+          .set('Authorization', `Bearer ${token}`);
+
+      expect(
+        (await get(outsider.token, shared.messageId).expect(403)).body.code,
+      ).toBe('CHAT_NOT_ROOM_MEMBER');
+      expect(
+        (await get(shop.token, text.messageId).expect(400)).body.code,
+      ).toBe('CHAT_MESSAGE_NOT_DIAGNOSIS_REPORT');
+      expect((await get(shop.token, unknownId).expect(404)).body.code).toBe(
+        'CHAT_MESSAGE_NOT_FOUND',
+      );
+      expect(
+        (await get(shop.token, shared.messageId, unknownId).expect(404)).body
+          .code,
+      ).toBe('CHAT_ROOM_NOT_FOUND');
+      await request(app.getHttpServer())
+        .get(
+          `/chat/rooms/${text.roomId}/messages/${shared.messageId}/diagnosis`,
+        )
+        .expect(401);
+    });
   });
 
   it('rejects a blank message', async () => {

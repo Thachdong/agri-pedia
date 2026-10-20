@@ -1,4 +1,5 @@
 export * from './create-diagnosis.use-case';
+export * from './diagnosis-report.builder';
 export * from './fail-stale-diagnoses.use-case';
 export * from './get-diagnosis-form-settings.use-case';
 export * from './get-diagnosis-settings.use-case';

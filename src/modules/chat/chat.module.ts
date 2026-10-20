@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { DiagnosisModule } from '@modules/diagnosis/diagnosis.module';
 import { MediaModule } from '@modules/media/media.module';
 import { UserModule } from '@modules/user/user.module';
 import {
@@ -7,6 +8,7 @@ import {
 } from './application/ports';
 import {
   EnterChatRoomUseCase,
+  GetMessageDiagnosisReportUseCase,
   LeaveChatRoomUseCase,
   ListMyChatRoomsUseCase,
   ListRoomMessagesUseCase,
@@ -19,7 +21,7 @@ import { PgChatRoomRepository } from './infrastructure/persistence/pg-chat-room.
 import { ChatGateway } from './infrastructure/realtime/chat.gateway';
 
 @Module({
-  imports: [UserModule, MediaModule],
+  imports: [UserModule, MediaModule, DiagnosisModule],
   controllers: [ChatController],
   providers: [
     SendChatMessageUseCase,
@@ -27,6 +29,7 @@ import { ChatGateway } from './infrastructure/realtime/chat.gateway';
     ListRoomMessagesUseCase,
     EnterChatRoomUseCase,
     LeaveChatRoomUseCase,
+    GetMessageDiagnosisReportUseCase,
     ChatGateway,
     { provide: CHAT_ROOM_REPOSITORY, useClass: PgChatRoomRepository },
     { provide: CHAT_MESSAGE_REPOSITORY, useClass: PgChatMessageRepository },
