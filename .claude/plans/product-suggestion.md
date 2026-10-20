@@ -13,7 +13,7 @@ Quota (lifetime, không reset, admin chỉnh):
 Mọi NOT_FOUND ghi log miss; admin xem gộp theo tên chuẩn hóa. Admin CRUD catalog (name, description). Tất cả trong module `product`. Bỏ hẳn làm giàu KB từ user.
 
 - [x] 1. [config-group]   `productSuggestion`: provider, apiKey, model, timeoutMs, matchThreshold
-- [ ] 2. [domain-model]   product: CatalogItem (name, normalizedName, description); normalizeProductName (lowercase, bỏ dấu, gộp space); ProductSuggestionSettings (invalidImageLimit, notFoundLimit); ProductSuggestionUsage (usedL1, usedL2; quy tắc trừ/hoàn/chuyển); errors CatalogItemNotFound, CatalogItemNameTaken, SuggestionQuotaExceeded, InvalidSuggestionSettings, SuggestionImageInvalid
+- [x] 2. [domain-model]   product: CatalogItem (name, normalizedName, description); normalizeProductName (lowercase, bỏ dấu, gộp space); ProductSuggestionSettings (invalidImageLimit, notFoundLimit); ProductSuggestionUsage (used, bonusUsed; reserve/refund/settleNotFound); ProductSuggestionMiss; EProductSuggestionStatus; errors CatalogItemNotFound, CatalogItemNameTaken, InvalidCatalogItem, SuggestionQuotaExceeded, InvalidSuggestionSettings, SuggestionImageInvalid
 - [ ] 3. [use-case]       SuggestProduct (distributor); ports IProductNameReader, ICatalogRepository (findBestMatch), IProductSuggestionUsageRepository (reserve/refund/moveToBonus atomic), IProductSuggestionSettingsRepository, IProductSuggestionMissRepository
 - [ ] 4. [use-case]       admin catalog: ListCatalogItems (search + phân trang), CreateCatalogItem, UpdateCatalogItem, DeleteCatalogItem
 - [ ] 5. [use-case]       admin: GetProductSuggestionSettings, UpdateProductSuggestionSettings, ListProductSuggestionMisses (gộp normalizedName: count, số shop, lần cuối; sort count desc)
