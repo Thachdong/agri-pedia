@@ -2,12 +2,16 @@ import { Module } from '@nestjs/common';
 import { MediaModule } from '@modules/media/media.module';
 import { UserModule } from '@modules/user/user.module';
 import {
+  CreateCatalogItemUseCase,
   CreateProductUseCase,
+  DeleteCatalogItemUseCase,
   DeleteProductUseCase,
   GetProductDetailUseCase,
+  ListCatalogItemsUseCase,
   ListCategoriesUseCase,
   ListDistributorProductsUseCase,
   SuggestProductUseCase,
+  UpdateCatalogItemUseCase,
   UpdateProductUseCase,
 } from './application/use-cases';
 import { CATEGORY_REPOSITORY, PRODUCT_REPOSITORY } from './application/ports';
@@ -24,12 +28,16 @@ import { ProductQueryService } from './infrastructure/queries/product-query.serv
   imports: [UserModule, MediaModule],
   controllers: [ProductController, CategoryController],
   providers: [
+    CreateCatalogItemUseCase,
     CreateProductUseCase,
+    DeleteCatalogItemUseCase,
     DeleteProductUseCase,
     GetProductDetailUseCase,
+    ListCatalogItemsUseCase,
     ListCategoriesUseCase,
     ListDistributorProductsUseCase,
     SuggestProductUseCase,
+    UpdateCatalogItemUseCase,
     UpdateProductUseCase,
     { provide: PRODUCT_REPOSITORY, useClass: PgProductRepository },
     { provide: CATEGORY_REPOSITORY, useClass: PgCategoryRepository },

@@ -5,3 +5,7 @@ export * from './delete-product.use-case';
 export * from './list-distributor-products.use-case';
 export * from './get-product-detail.use-case';
 export * from './suggest-product.use-case';
+export * from './list-catalog-items.use-case';
+export * from './create-catalog-item.use-case';
+export * from './update-catalog-item.use-case';
+export * from './delete-catalog-item.use-case';
