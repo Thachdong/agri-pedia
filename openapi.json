@@ -1664,6 +1664,97 @@
         ]
       }
     },
+    "/products/suggestions": {
+      "post": {
+        "operationId": "ProductSuggestionController_suggest",
+        "summary": "Suggest product name + description from a photo of its label",
+        "description": "multipart/form-data: `image` = 1 photo (jpg/png/webp, at most 5MB; format checked by content), focused on the product name. The photo is not stored. Distributor only. Answers 200 with `status`: UNREADABLE (no name read: retake or type it), NOT_FOUND (`detectedName` read but not in the catalog), FOUND (`suggestion` { name, description } to prefill the product form). `remaining` = suggestions left for the caller (lifetime quota, set by admins); over 5MB the upload is refused with 413.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "image"
+                ],
+                "properties": {
+                  "image": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "One product photo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PRODUCT_SUGGESTION_INVALID_IMAGE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_SELLER_NOT_ALLOWED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "PRODUCT_SUGGESTION_QUOTA_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
     "/categories": {
       "get": {
         "operationId": "CategoryController_list",
@@ -1683,6 +1774,547 @@
         },
         "tags": [
           "Category"
+        ]
+      }
+    },
+    "/admin/product-catalog": {
+      "get": {
+        "operationId": "AdminProductCatalogController_list",
+        "summary": "List catalog items (product suggestion knowledge base)",
+        "description": "Sorted by name; `search` matches part of the name ignoring case, diacritics and punctuation. Page-based (`page` 1-based, `limit` 1..100, default 20).",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 255,
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCatalogItemsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Product Catalog"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "AdminProductCatalogController_create",
+        "summary": "Add a catalog item",
+        "description": "Suggested to distributors whose photo shows this name. The name is unique ignoring case, diacritics and punctuation.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCatalogItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: PRODUCT_CATALOG_ITEM_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "PRODUCT_CATALOG_ITEM_NAME_TAKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Product Catalog"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/product-catalog/{catalogItemId}": {
+      "patch": {
+        "operationId": "AdminProductCatalogController_update",
+        "summary": "Change a catalog item (omitted fields are kept)",
+        "parameters": [
+          {
+            "name": "catalogItemId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCatalogItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: PRODUCT_CATALOG_ITEM_INVALID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PRODUCT_CATALOG_ITEM_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "PRODUCT_CATALOG_ITEM_NAME_TAKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Product Catalog"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "AdminProductCatalogController_delete",
+        "summary": "Delete a catalog item for good",
+        "description": "Empty body. Products already listed are not affected.",
+        "parameters": [
+          {
+            "name": "catalogItemId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PRODUCT_CATALOG_ITEM_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Product Catalog"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/product-suggestion/settings": {
+      "get": {
+        "operationId": "AdminProductSuggestionController_get",
+        "summary": "Get the product suggestion quotas",
+        "description": "Defaults (50 / 50) until saved. Lifetime quotas per distributor, never reset.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductSuggestionSettingsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Product Suggestion"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "AdminProductSuggestionController_update",
+        "summary": "Replace the product suggestion quotas",
+        "description": "`invalidImageLimit` (1..10000): suggestions a distributor sees as its quota, charged by UNREADABLE and FOUND. `notFoundLimit` (0..10000): hidden bonus charged by NOT_FOUND first (then the visible quota); raise it while the catalog is thin. Applies to what distributors already used.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductSuggestionSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductSuggestionSettingsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: PRODUCT_SUGGESTION_INVALID_SETTINGS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Product Suggestion"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/product-suggestion/misses": {
+      "get": {
+        "operationId": "AdminProductSuggestionController_misses",
+        "summary": "List product names read from photos but missing in the catalog",
+        "description": "Grouped by normalized name: count, distinct distributors, last seen; most frequent first. Page-based (`page` 1-based, `limit` 1..100, default 20).",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListProductSuggestionMissesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "PRODUCT_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Product Suggestion"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
         ]
       }
     },
@@ -2291,7 +2923,7 @@
       "get": {
         "operationId": "ChatController_listMyRooms",
         "summary": "List the caller's chat rooms with unread counts",
-        "description": "Any logged-in user. Rooms the caller is a member of, most recent message first (`lastMessageAt` desc). Each room carries the other member: `otherUserId`, `otherUsername` (null if that user no longer exists) and `otherUserAvatar` (signed read URL that expires; null when none). `unreadCount` = messages from the other member not read by the caller; a message is read when it arrives while the caller has the room open (socket `chat.room.enter`), or once the caller enters the room later. The caller’s own messages never count. `totalUnread` covers all rooms, not only this page. `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` for the next page (null on the last page).",
+        "description": "Any logged-in user. Rooms the caller is a member of, most recent message first (`lastMessageAt` desc). Each room carries the other member: `otherUserId`, `otherUsername` (null if that user no longer exists) and `otherUserAvatar` (signed read URL that expires; null when none). `unreadCount` = messages from the other member not read by the caller; a message is read when it arrives while the caller has the room open (socket `chat.room.enter`), or once the caller enters the room later. The caller’s own messages never count. `totalUnread` covers all rooms, not only this page. `lastMessage.type` TEXT | DIAGNOSIS_REPORT (`diagnosisId` set for a report). `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` for the next page (null on the last page).",
         "parameters": [
           {
             "name": "cursor",
@@ -2367,7 +2999,7 @@
       "get": {
         "operationId": "ChatController_listMessages",
         "summary": "List the messages of a chat room",
-        "description": "Caller must be a member of the room. Newest message first (`createdAt` desc); `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` to get older messages (null on the last page). Each message carries its sender's `senderUsername` (null when the user no longer exists) and `senderAvatar` (signed read URL that expires; null when none). Read-only: does not mark messages read (socket `chat.room.enter` does). New messages arrive live through socket `chat.message.received` (same sender fields).",
+        "description": "Caller must be a member of the room. Newest message first (`createdAt` desc); `limit` 1..50, default 20; pass the returned `nextCursor` as `cursor` to get older messages (null on the last page). Each message carries its sender's `senderUsername` (null when the user no longer exists) and `senderAvatar` (signed read URL that expires; null when none). Read-only: does not mark messages read (socket `chat.room.enter` does). `type` TEXT | DIAGNOSIS_REPORT; a report carries `diagnosisId`, read it with GET /chat/rooms/{roomId}/messages/{messageId}/diagnosis. New messages arrive live through socket `chat.message.received` (same sender fields).",
         "parameters": [
           {
             "name": "roomId",
@@ -2459,6 +3091,581 @@
         },
         "tags": [
           "Chat"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/chat/rooms/{roomId}/messages/{messageId}/diagnosis": {
+      "get": {
+        "operationId": "ChatController_messageDiagnosis",
+        "summary": "Get the diagnosis shared by a chat message",
+        "description": "Caller must be a member of the room (the FARMER who shared it or the DISTRIBUTOR). The message must be a DIAGNOSIS_REPORT (socket `chat.message.send` with `type` + `diagnosisId`). Same body as GET /diagnoses/{diagnosisId} for its owner, as of now (later feedback shows), image URLs signed and expiring. Only the shared diagnosis is readable, not the farmer’s others.",
+        "parameters": [
+          {
+            "name": "roomId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "messageId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageDiagnosisReportResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: CHAT_MESSAGE_NOT_DIAGNOSIS_REPORT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "CHAT_NOT_ROOM_MEMBER",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CHAT_ROOM_NOT_FOUND, CHAT_MESSAGE_NOT_FOUND, CHAT_DIAGNOSIS_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chat"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/diagnoses": {
+      "post": {
+        "operationId": "DiagnosisController_create",
+        "summary": "Send plant photos for disease diagnosis (processed in background)",
+        "description": "multipart/form-data: `images` = 1..`maxImages` files (jpg/png/webp, at most `maxImageBytes` bytes and `maxImageWidth` x `maxImageHeight` px each, see GET /diagnoses/settings; format checked by content), `meta` = JSON string `{ cropType, images: [{ plantPart }], note? }` with one entry per file in the same order; `cropType` from GET /knowledge/crops and each `plantPart` from that crop's `plantParts` (otherwise DIAGNOSIS_INVALID_IMAGE). Answers 202 with status PROCESSING; the result comes via realtime `diagnosis.completed` { id, status } or by polling GET /diagnoses/{diagnosisId}. Daily limit per user: `dailyFreeLimit` of the admin diagnosis settings (Vietnam day).",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "images",
+                  "meta"
+                ],
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "1..maxImages photos (GET /diagnoses/settings)"
+                  },
+                  "meta": {
+                    "type": "string",
+                    "description": "JSON: { \"cropType\": \"RICE\", \"images\": [{ \"plantPart\": \"LEAF\" }], \"note\": \"...\" }; plantPart: one of the crop's plantParts (GET /knowledge/crops)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDiagnosisResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: DIAGNOSIS_CROP_NOT_SUPPORTED, DIAGNOSIS_INVALID_IMAGE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "DIAGNOSIS_USER_NOT_ALLOWED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "DIAGNOSIS_DAILY_LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "DiagnosisController_listMine",
+        "summary": "List my diagnoses, newest first",
+        "description": "Cursor pagination. `thumbnail` = signed URL of the first stored image; `diseases` empty while PROCESSING or when FAILED.",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 512,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListMyDiagnosesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: DIAGNOSIS_INVALID_CURSOR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/diagnoses/settings": {
+      "get": {
+        "operationId": "DiagnosisController_settings",
+        "summary": "Get the diagnosis form settings (public)",
+        "description": "No login needed; the access token is optional (an invalid one → 401). Default crop to preselect (null = none), image count range and per-image limits as sent (bytes, pixel width/height after EXIF orientation). Resize larger photos before POST /diagnoses; images over a limit answer DIAGNOSIS_INVALID_IMAGE with the image index. `remainingToday`: diagnoses the caller may still send today (`dailyFreeLimit` minus the caller's diagnoses since 00:00 UTC+7, at least 0); null without an access token.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiagnosisFormSettingsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/diagnoses/{diagnosisId}": {
+      "get": {
+        "operationId": "DiagnosisController_get",
+        "summary": "Get one of my diagnoses with per-image results",
+        "description": "While PROCESSING: `summary` null, image `status` null, `regions` empty. Region `box` is 0..1 on the stored (EXIF-rotated) image at `url`; `diagnosis` null = uncertain region. Use `diseaseCode` with GET /knowledge/diseases/{code}. Another user's diagnosis answers 404.",
+        "parameters": [
+          {
+            "name": "diagnosisId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDiagnosisResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "DIAGNOSIS_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/diagnoses/{diagnosisId}/feedback": {
+      "post": {
+        "operationId": "DiagnosisController_feedback",
+        "summary": "Give feedback on a completed diagnosis (overwrites)",
+        "description": "Empty body (null) on success.",
+        "parameters": [
+          {
+            "name": "diagnosisId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitDiagnosisFeedbackDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "DIAGNOSIS_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "DIAGNOSIS_NOT_COMPLETED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diagnosis"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/admin/diagnosis/settings": {
+      "get": {
+        "operationId": "AdminDiagnosisSettingsController_get",
+        "summary": "Get the diagnosis settings (admin)",
+        "description": "Defaults until saved: dailyFreeLimit 3, defaultCropType null, maxImages 5, maxImageBytes 5242880, maxImageWidth / maxImageHeight 4096.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiagnosisSettingsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "DIAGNOSIS_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Diagnosis Settings"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "AdminDiagnosisSettingsController_update",
+        "summary": "Replace the diagnosis settings (admin)",
+        "description": "Every field is required. Ranges: dailyFreeLimit 1..1000, maxImages 1..10, maxImageBytes 102400..20971520, maxImageWidth / maxImageHeight 256..8192 (DIAGNOSIS_INVALID_SETTINGS with `details.field` otherwise). `defaultCropType` must be a crop enabled for diagnosis, or null.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDiagnosisSettingsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiagnosisSettingsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: DIAGNOSIS_INVALID_SETTINGS, DIAGNOSIS_CROP_NOT_SUPPORTED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DomainErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "DIAGNOSIS_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Diagnosis Settings"
         ],
         "security": [
           {
@@ -2570,7 +3777,7 @@
       "get": {
         "operationId": "KnowledgeController_disease",
         "summary": "Get the Vietnamese detail of a disease (public)",
-        "description": "No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet. `article` = path and status of the disease's main article (GET /knowledge/articles/:cropSlug/:slug), null when it has none or it is unpublished; `variants[].article` = the variant's own article, if any.",
+        "description": "No chemical recommendations. When `verification` is not SOURCED, show that experts have not confirmed the content yet. `article` = path and status of the disease's main article (GET /knowledge/articles/:cropSlug/:slug), null when it has none or it is unpublished; `variants[].article` = the variant's own article, if any; `similarDiseases[].article` = the similar disease's main article, if any.",
         "parameters": [
           {
             "name": "code",
@@ -2655,6 +3862,29 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ArticleSitemapResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/knowledge/articles/top": {
+      "get": {
+        "operationId": "ArticleController_top",
+        "summary": "List the top articles of every crop (public)",
+        "description": "One entry per crop, by crop sortOrder; each crop's articles in the order an admin chose (PUT /admin/knowledge/crops/:cropSlug/top-articles), published only, at most the admin's `limit`. Crops without a published top article are left out; `crops` is empty when none were chosen. Sent with `Cache-Control: public, max-age=60`.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListTopArticlesResponse"
                 }
               }
             }
@@ -2773,7 +4003,7 @@
             "schema": {
               "minLength": 1,
               "maxLength": 100,
-              "pattern": "SLUG",
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
               "type": "string"
             }
           },
@@ -2784,7 +4014,7 @@
             "schema": {
               "minLength": 1,
               "maxLength": 100,
-              "pattern": "SLUG",
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
               "type": "string"
             }
           }
@@ -2887,7 +4117,7 @@
             "schema": {
               "minLength": 1,
               "maxLength": 100,
-              "pattern": "SLUG",
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
               "type": "string"
             }
           }
@@ -2965,7 +4195,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "pattern": "KB_CODE",
+              "pattern": "^[A-Z0-9_]{1,100}$",
               "type": "string"
             }
           }
@@ -3041,7 +4271,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "pattern": "KB_CODE",
+              "pattern": "^[A-Z0-9_]{1,100}$",
               "type": "string"
             }
           }
@@ -3231,7 +4461,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "pattern": "KB_CODE",
+              "pattern": "^[A-Z0-9_]{1,100}$",
               "type": "string"
             }
           }
@@ -3309,7 +4539,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "pattern": "KB_CODE",
+              "pattern": "^[A-Z0-9_]{1,100}$",
               "type": "string"
             }
           }
@@ -3376,53 +4606,81 @@
         ]
       }
     },
-    "/diagnoses": {
-      "post": {
-        "operationId": "DiagnosisController_create",
-        "summary": "Send plant photos for disease diagnosis (processed in background)",
-        "description": "multipart/form-data: `images` = 1..5 files (jpg/png/webp, <= DIAGNOSIS_MAX_IMAGE_BYTES each; format checked by content), `meta` = JSON string `{ cropType, images: [{ plantPart }], note? }` with one entry per file in the same order; `cropType` from GET /knowledge/crops and each `plantPart` from that crop's `plantParts` (otherwise DIAGNOSIS_INVALID_IMAGE). Answers 202 with status PROCESSING; the result comes via realtime `diagnosis.completed` { id, status } or by polling GET /diagnoses/{diagnosisId}. Daily limit per user: DIAGNOSIS_DAILY_LIMIT (Vietnam day).",
+    "/admin/knowledge/settings": {
+      "get": {
+        "operationId": "AdminTopArticleController_settings",
+        "summary": "Get the top articles settings (admin)",
+        "description": "`limit` defaults to 10 until saved.",
         "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "images",
-                  "meta"
-                ],
-                "properties": {
-                  "images": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "1..5 photos"
-                  },
-                  "meta": {
-                    "type": "string",
-                    "description": "JSON: { \"cropType\": \"RICE\", \"images\": [{ \"plantPart\": \"LEAF\" }], \"note\": \"...\" }; plantPart: one of the crop's plantParts (GET /knowledge/crops)"
-                  }
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopArticleSettingsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
                 }
               }
             }
           }
         },
+        "tags": [
+          "Admin Top Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "AdminTopArticleController_updateSettingsOf",
+        "summary": "Change the number of top articles per crop (admin)",
+        "description": "`limit` 1..50. Lists already longer stay as they are; the public list shows their first `limit` articles.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTopArticleSettingsDto"
+              }
+            }
+          }
+        },
         "responses": {
-          "202": {
+          "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateDiagnosisResponse"
+                  "$ref": "#/components/schemas/TopArticleSettingsResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Request validation failed, or: DIAGNOSIS_CROP_NOT_SUPPORTED, DIAGNOSIS_INVALID_IMAGE",
+            "description": "Request validation failed, or: KNOWLEDGE_INVALID_TOP_ARTICLE_SETTINGS",
             "content": {
               "application/json": {
                 "schema": {
@@ -3449,17 +4707,7 @@
             }
           },
           "403": {
-            "description": "DIAGNOSIS_USER_NOT_ALLOWED",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DomainErrorResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "DIAGNOSIS_DAILY_LIMIT_EXCEEDED",
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
             "content": {
               "application/json": {
                 "schema": {
@@ -3470,37 +4718,30 @@
           }
         },
         "tags": [
-          "Diagnosis"
+          "Admin Top Articles"
         ],
         "security": [
           {
             "access-token": []
           }
         ]
-      },
+      }
+    },
+    "/admin/knowledge/crops/{cropSlug}/top-articles": {
       "get": {
-        "operationId": "DiagnosisController_listMine",
-        "summary": "List my diagnoses, newest first",
-        "description": "Cursor pagination. `thumbnail` = signed URL of the first stored image; `diseases` empty while PROCESSING or when FAILED.",
+        "operationId": "AdminTopArticleController_topArticles",
+        "summary": "Get the top articles of a crop (admin)",
+        "description": "In order, with the current `limit`. Articles unpublished since they were chosen stay listed (`isPublished` false); the public list skips them.",
         "parameters": [
           {
-            "name": "cursor",
-            "required": false,
-            "in": "query",
+            "name": "cropSlug",
+            "required": true,
+            "in": "path",
             "schema": {
               "minLength": 1,
-              "maxLength": 512,
+              "maxLength": 100,
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
               "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "minimum": 1,
-              "maximum": 50,
-              "type": "number"
             }
           }
         ],
@@ -3510,13 +4751,101 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListMyDiagnosesResponse"
+                  "$ref": "#/components/schemas/CropTopArticlesResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Request validation failed, or: DIAGNOSIS_INVALID_CURSOR",
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_INVALID_ACCESS_TOKEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "KNOWLEDGE_CROP_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin Top Articles"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "AdminTopArticleController_setTopArticlesOf",
+        "summary": "Replace the top articles of a crop (admin)",
+        "description": "`articleSlugs` in order (first = top), at most `limit`, each a published article of the crop, no duplicates; an empty list clears it. KNOWLEDGE_TOP_ARTICLES_INVALID `details` = { reason, articles } with the offending slugs.",
+        "parameters": [
+          {
+            "name": "cropSlug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "minLength": 1,
+              "maxLength": 100,
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetCropTopArticlesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CropTopArticlesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed, or: KNOWLEDGE_TOP_ARTICLES_INVALID",
             "content": {
               "application/json": {
                 "schema": {
@@ -3541,56 +4870,9 @@
                 }
               }
             }
-          }
-        },
-        "tags": [
-          "Diagnosis"
-        ],
-        "security": [
-          {
-            "access-token": []
-          }
-        ]
-      }
-    },
-    "/diagnoses/{diagnosisId}": {
-      "get": {
-        "operationId": "DiagnosisController_get",
-        "summary": "Get one of my diagnoses with per-image results",
-        "description": "While PROCESSING: `summary` null, image `status` null, `regions` empty. Region `box` is 0..1 on the stored (EXIF-rotated) image at `url`; `diagnosis` null = uncertain region. Use `diseaseCode` with GET /knowledge/diseases/{code}. Another user's diagnosis answers 404.",
-        "parameters": [
-          {
-            "name": "diagnosisId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetDiagnosisResponse"
-                }
-              }
-            }
           },
-          "400": {
-            "description": "Request validation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "AUTH_INVALID_ACCESS_TOKEN",
+          "403": {
+            "description": "KNOWLEDGE_ADMIN_REQUIRED",
             "content": {
               "application/json": {
                 "schema": {
@@ -3600,7 +4882,7 @@
             }
           },
           "404": {
-            "description": "DIAGNOSIS_NOT_FOUND",
+            "description": "KNOWLEDGE_CROP_NOT_FOUND",
             "content": {
               "application/json": {
                 "schema": {
@@ -3611,87 +4893,7 @@
           }
         },
         "tags": [
-          "Diagnosis"
-        ],
-        "security": [
-          {
-            "access-token": []
-          }
-        ]
-      }
-    },
-    "/diagnoses/{diagnosisId}/feedback": {
-      "post": {
-        "operationId": "DiagnosisController_feedback",
-        "summary": "Give feedback on a completed diagnosis (overwrites)",
-        "description": "Empty body (null) on success.",
-        "parameters": [
-          {
-            "name": "diagnosisId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SubmitDiagnosisFeedbackDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Request validation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "AUTH_INVALID_ACCESS_TOKEN",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DomainErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "DIAGNOSIS_NOT_FOUND",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DomainErrorResponse"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "DIAGNOSIS_NOT_COMPLETED",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DomainErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Diagnosis"
+          "Admin Top Articles"
         ],
         "security": [
           {
@@ -5008,6 +6210,47 @@
           }
         }
       },
+      "ProductSuggestionContentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "SuggestProductResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "UNREADABLE",
+              "NOT_FOUND",
+              "FOUND"
+            ]
+          },
+          "remaining": {
+            "type": "number"
+          },
+          "detectedName": {
+            "type": "string"
+          },
+          "suggestion": {
+            "$ref": "#/components/schemas/ProductSuggestionContentResponse"
+          }
+        },
+        "required": [
+          "status",
+          "remaining"
+        ]
+      },
       "CategoryResponse": {
         "type": "object",
         "properties": {
@@ -5035,6 +6278,179 @@
         },
         "required": [
           "items"
+        ]
+      },
+      "CatalogItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ListCatalogItemsResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogItemResponse"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "limit"
+        ]
+      },
+      "CreateCatalogItemDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "UpdateCatalogItemDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000
+          }
+        }
+      },
+      "ProductSuggestionSettingsResponse": {
+        "type": "object",
+        "properties": {
+          "invalidImageLimit": {
+            "type": "number"
+          },
+          "notFoundLimit": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "invalidImageLimit",
+          "notFoundLimit"
+        ]
+      },
+      "UpdateProductSuggestionSettingsDto": {
+        "type": "object",
+        "properties": {
+          "invalidImageLimit": {
+            "type": "number"
+          },
+          "notFoundLimit": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "invalidImageLimit",
+          "notFoundLimit"
+        ]
+      },
+      "ProductSuggestionMissResponse": {
+        "type": "object",
+        "properties": {
+          "normalizedName": {
+            "type": "string"
+          },
+          "latestDetectedName": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          },
+          "distributorCount": {
+            "type": "number"
+          },
+          "lastSeenAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "normalizedName",
+          "latestDetectedName",
+          "count",
+          "distributorCount",
+          "lastSeenAt"
+        ]
+      },
+      "ListProductSuggestionMissesResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductSuggestionMissResponse"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "limit"
         ]
       },
       "ReviewStarCountsResponse": {
@@ -5374,12 +6790,25 @@
           },
           "message": {
             "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "DIAGNOSIS_REPORT"
+            ]
+          },
+          "diagnosisId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
           "messageId",
           "senderId",
-          "message"
+          "message",
+          "type",
+          "diagnosisId"
         ]
       },
       "ChatRoomResponse": {
@@ -5468,6 +6897,17 @@
           "message": {
             "type": "string"
           },
+          "type": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "DIAGNOSIS_REPORT"
+            ]
+          },
+          "diagnosisId": {
+            "type": "string",
+            "nullable": true
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -5479,6 +6919,8 @@
           "senderUsername",
           "senderAvatar",
           "message",
+          "type",
+          "diagnosisId",
           "createdAt"
         ]
       },
@@ -5499,6 +6941,874 @@
         "required": [
           "messages",
           "nextCursor"
+        ]
+      },
+      "ChatDiagnosisConfidenceResponse": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "level",
+          "score"
+        ]
+      },
+      "ChatDiagnosisSummaryDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/ChatDiagnosisConfidenceResponse"
+          },
+          "imageCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "diseaseName",
+          "category",
+          "confidence",
+          "imageCount"
+        ]
+      },
+      "ChatDiagnosisSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "hasDisease": {
+            "type": "boolean"
+          },
+          "conflict": {
+            "type": "boolean"
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatDiagnosisSummaryDiseaseResponse"
+            }
+          }
+        },
+        "required": [
+          "hasDisease",
+          "conflict",
+          "diseases"
+        ]
+      },
+      "ChatDiagnosisImageDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseaseCode": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string",
+            "nullable": true
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/ChatDiagnosisConfidenceResponse"
+          }
+        },
+        "required": [
+          "category",
+          "diseaseCode",
+          "variantCode",
+          "diseaseName",
+          "variantName",
+          "confidence"
+        ]
+      },
+      "ChatDiagnosisBoxResponse": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "w": {
+            "type": "number"
+          },
+          "h": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "w",
+          "h"
+        ]
+      },
+      "ChatDiagnosedDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string",
+            "nullable": true
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/ChatDiagnosisConfidenceResponse"
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "variantCode",
+          "diseaseName",
+          "variantName",
+          "confidence"
+        ]
+      },
+      "ChatDiagnosisRegionResponse": {
+        "type": "object",
+        "properties": {
+          "box": {
+            "$ref": "#/components/schemas/ChatDiagnosisBoxResponse"
+          },
+          "symptom": {
+            "type": "string"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "diagnosis": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatDiagnosedDiseaseResponse"
+              }
+            ]
+          }
+        },
+        "required": [
+          "box",
+          "symptom",
+          "features",
+          "diagnosis"
+        ]
+      },
+      "ChatDiagnosisImageResponse": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "mediaId": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "plantPart": {
+            "type": "string"
+          },
+          "detectedPart": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatDiagnosisImageDiseaseResponse"
+            }
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatDiagnosisRegionResponse"
+            }
+          }
+        },
+        "required": [
+          "index",
+          "mediaId",
+          "url",
+          "plantPart",
+          "detectedPart",
+          "status",
+          "message",
+          "diseases",
+          "regions"
+        ]
+      },
+      "MessageDiagnosisReportResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "cropType": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "summary": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatDiagnosisSummaryResponse"
+              }
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatDiagnosisImageResponse"
+            }
+          },
+          "userFeedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "disclaimer": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "completedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "cropType",
+          "note",
+          "summary",
+          "images",
+          "userFeedback",
+          "disclaimer",
+          "createdAt",
+          "completedAt"
+        ]
+      },
+      "CreateDiagnosisResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROCESSING",
+              "COMPLETED",
+              "FAILED"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ]
+      },
+      "DiagnosisListDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "confidenceLevel": {
+            "type": "string",
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ]
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "diseaseName",
+          "confidenceLevel"
+        ]
+      },
+      "DiagnosisListItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROCESSING",
+              "COMPLETED",
+              "FAILED"
+            ]
+          },
+          "cropType": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisListDiseaseResponse"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "cropType",
+          "thumbnail",
+          "diseases",
+          "createdAt"
+        ]
+      },
+      "ListMyDiagnosesResponse": {
+        "type": "object",
+        "properties": {
+          "diagnoses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisListItemResponse"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "diagnoses",
+          "nextCursor"
+        ]
+      },
+      "DiagnosisFormSettingsResponse": {
+        "type": "object",
+        "properties": {
+          "defaultCropType": {
+            "type": "string",
+            "nullable": true
+          },
+          "minImages": {
+            "type": "number"
+          },
+          "maxImages": {
+            "type": "number"
+          },
+          "maxImageBytes": {
+            "type": "number"
+          },
+          "maxImageWidth": {
+            "type": "number"
+          },
+          "maxImageHeight": {
+            "type": "number"
+          },
+          "remainingToday": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "required": [
+          "defaultCropType",
+          "minImages",
+          "maxImages",
+          "maxImageBytes",
+          "maxImageWidth",
+          "maxImageHeight",
+          "remainingToday"
+        ]
+      },
+      "DiagnosisConfidenceResponse": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "string",
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ]
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "level",
+          "score"
+        ]
+      },
+      "DiagnosisSummaryDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "category": {
+            "type": "object"
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
+          },
+          "imageCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "diseaseName",
+          "category",
+          "confidence",
+          "imageCount"
+        ]
+      },
+      "DiagnosisSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "hasDisease": {
+            "type": "boolean"
+          },
+          "conflict": {
+            "type": "boolean"
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisSummaryDiseaseResponse"
+            }
+          }
+        },
+        "required": [
+          "hasDisease",
+          "conflict",
+          "diseases"
+        ]
+      },
+      "DiagnosisImageDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "object"
+          },
+          "diseaseCode": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string",
+            "nullable": true
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
+          }
+        },
+        "required": [
+          "category",
+          "diseaseCode",
+          "variantCode",
+          "diseaseName",
+          "variantName",
+          "confidence"
+        ]
+      },
+      "DiagnosisBoxResponse": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "w": {
+            "type": "number"
+          },
+          "h": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "w",
+          "h"
+        ]
+      },
+      "DiagnosedDiseaseResponse": {
+        "type": "object",
+        "properties": {
+          "diseaseCode": {
+            "type": "string"
+          },
+          "variantCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseaseName": {
+            "type": "string"
+          },
+          "variantName": {
+            "type": "string",
+            "nullable": true
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
+          }
+        },
+        "required": [
+          "diseaseCode",
+          "variantCode",
+          "diseaseName",
+          "variantName",
+          "confidence"
+        ]
+      },
+      "DiagnosisRegionResponse": {
+        "type": "object",
+        "properties": {
+          "box": {
+            "$ref": "#/components/schemas/DiagnosisBoxResponse"
+          },
+          "symptom": {
+            "type": "string"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "diagnosis": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiagnosedDiseaseResponse"
+              }
+            ]
+          }
+        },
+        "required": [
+          "box",
+          "symptom",
+          "features",
+          "diagnosis"
+        ]
+      },
+      "DiagnosisImageResponse": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number"
+          },
+          "mediaId": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "plantPart": {
+            "type": "string",
+            "enum": [
+              "LEAF",
+              "SHEATH",
+              "STEM",
+              "PANICLE",
+              "ROOT",
+              "WHOLE_PLANT",
+              "SHOOT",
+              "BRANCH",
+              "TRUNK",
+              "COLLAR",
+              "FLOWER",
+              "FRUIT",
+              "ARIL"
+            ]
+          },
+          "detectedPart": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "LEAF",
+              "SHEATH",
+              "STEM",
+              "PANICLE",
+              "ROOT",
+              "WHOLE_PLANT",
+              "SHOOT",
+              "BRANCH",
+              "TRUNK",
+              "COLLAR",
+              "FLOWER",
+              "FRUIT",
+              "ARIL"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "DISEASED",
+              "HEALTHY",
+              "UNCERTAIN",
+              "NOT_TARGET_CROP",
+              "LOW_QUALITY"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "diseases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisImageDiseaseResponse"
+            }
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisRegionResponse"
+            }
+          }
+        },
+        "required": [
+          "index",
+          "mediaId",
+          "url",
+          "plantPart",
+          "detectedPart",
+          "status",
+          "message",
+          "diseases",
+          "regions"
+        ]
+      },
+      "GetDiagnosisResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PROCESSING",
+              "COMPLETED",
+              "FAILED"
+            ]
+          },
+          "cropType": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "summary": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiagnosisSummaryResponse"
+              }
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisImageResponse"
+            }
+          },
+          "userFeedback": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "CORRECT",
+              "WRONG",
+              "UNSURE"
+            ]
+          },
+          "disclaimer": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "completedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "cropType",
+          "note",
+          "summary",
+          "images",
+          "userFeedback",
+          "disclaimer",
+          "createdAt",
+          "completedAt"
+        ]
+      },
+      "SubmitDiagnosisFeedbackDto": {
+        "type": "object",
+        "properties": {
+          "feedback": {
+            "type": "string",
+            "enum": [
+              "CORRECT",
+              "WRONG",
+              "UNSURE"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "feedback"
+        ]
+      },
+      "DiagnosisSettingsResponse": {
+        "type": "object",
+        "properties": {
+          "dailyFreeLimit": {
+            "type": "number"
+          },
+          "defaultCropType": {
+            "type": "string",
+            "nullable": true
+          },
+          "maxImages": {
+            "type": "number"
+          },
+          "maxImageBytes": {
+            "type": "number"
+          },
+          "maxImageWidth": {
+            "type": "number"
+          },
+          "maxImageHeight": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "dailyFreeLimit",
+          "defaultCropType",
+          "maxImages",
+          "maxImageBytes",
+          "maxImageWidth",
+          "maxImageHeight"
+        ]
+      },
+      "UpdateDiagnosisSettingsDto": {
+        "type": "object",
+        "properties": {
+          "dailyFreeLimit": {
+            "type": "number"
+          },
+          "defaultCropType": {
+            "type": "string",
+            "nullable": true,
+            "pattern": "^[A-Z0-9_]{1,50}$"
+          },
+          "maxImages": {
+            "type": "number"
+          },
+          "maxImageBytes": {
+            "type": "number"
+          },
+          "maxImageWidth": {
+            "type": "number"
+          },
+          "maxImageHeight": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "dailyFreeLimit",
+          "defaultCropType",
+          "maxImages",
+          "maxImageBytes",
+          "maxImageWidth",
+          "maxImageHeight"
         ]
       },
       "CropPlantPartResponse": {
@@ -5804,12 +8114,21 @@
           "distinguishingFeature": {
             "type": "string",
             "nullable": true
+          },
+          "article": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiseaseArticleResponse"
+              }
+            ]
           }
         },
         "required": [
           "code",
           "name",
-          "distinguishingFeature"
+          "distinguishingFeature",
+          "article"
         ]
       },
       "DiseaseReferenceResponse": {
@@ -6232,6 +8551,38 @@
           "updatedAt",
           "disease",
           "variant"
+        ]
+      },
+      "TopArticlesGroupResponse": {
+        "type": "object",
+        "properties": {
+          "crop": {
+            "$ref": "#/components/schemas/ArticleCropResponse"
+          },
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleListItemResponse"
+            }
+          }
+        },
+        "required": [
+          "crop",
+          "articles"
+        ]
+      },
+      "ListTopArticlesResponse": {
+        "type": "object",
+        "properties": {
+          "crops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopArticlesGroupResponse"
+            }
+          }
+        },
+        "required": [
+          "crops"
         ]
       },
       "ListArticlesResponse": {
@@ -7092,7 +9443,7 @@
           "file": {
             "type": "string",
             "maxLength": 100,
-            "pattern": "IMAGE_FILE"
+            "pattern": "^[a-z0-9-]+\\.webp$"
           },
           "tmpKey": {
             "type": "string",
@@ -7141,13 +9492,13 @@
         "properties": {
           "code": {
             "type": "string",
-            "pattern": "KB_CODE"
+            "pattern": "^[A-Z0-9_]{1,100}$"
           },
           "slug": {
             "type": "string",
             "minLength": 1,
             "maxLength": 100,
-            "pattern": "SLUG"
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
           },
           "title": {
             "type": "string",
@@ -7164,7 +9515,7 @@
           },
           "cover": {
             "type": "string",
-            "pattern": "IMAGE_FILE"
+            "pattern": "^[a-z0-9-]+\\.webp$"
           },
           "images": {
             "type": "array",
@@ -7227,7 +9578,7 @@
           },
           "cover": {
             "type": "string",
-            "pattern": "IMAGE_FILE"
+            "pattern": "^[a-z0-9-]+\\.webp$"
           },
           "images": {
             "type": "array",
@@ -7294,475 +9645,53 @@
           "isPublished"
         ]
       },
-      "CreateDiagnosisResponse": {
+      "TopArticleSettingsResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "PROCESSING",
-              "COMPLETED",
-              "FAILED"
-            ]
-          }
-        },
-        "required": [
-          "id",
-          "status"
-        ]
-      },
-      "DiagnosisListDiseaseResponse": {
-        "type": "object",
-        "properties": {
-          "diseaseCode": {
-            "type": "string"
-          },
-          "diseaseName": {
-            "type": "string"
-          },
-          "confidenceLevel": {
-            "type": "string",
-            "enum": [
-              "HIGH",
-              "MEDIUM",
-              "LOW"
-            ]
-          }
-        },
-        "required": [
-          "diseaseCode",
-          "diseaseName",
-          "confidenceLevel"
-        ]
-      },
-      "DiagnosisListItemResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "PROCESSING",
-              "COMPLETED",
-              "FAILED"
-            ]
-          },
-          "cropType": {
-            "type": "string"
-          },
-          "thumbnail": {
-            "type": "string",
-            "nullable": true
-          },
-          "diseases": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DiagnosisListDiseaseResponse"
-            }
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "status",
-          "cropType",
-          "thumbnail",
-          "diseases",
-          "createdAt"
-        ]
-      },
-      "ListMyDiagnosesResponse": {
-        "type": "object",
-        "properties": {
-          "diagnoses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DiagnosisListItemResponse"
-            }
-          },
-          "nextCursor": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "diagnoses",
-          "nextCursor"
-        ]
-      },
-      "DiagnosisConfidenceResponse": {
-        "type": "object",
-        "properties": {
-          "level": {
-            "type": "string",
-            "enum": [
-              "HIGH",
-              "MEDIUM",
-              "LOW"
-            ]
-          },
-          "score": {
+          "limit": {
             "type": "number"
           }
         },
         "required": [
-          "level",
-          "score"
+          "limit"
         ]
       },
-      "DiagnosisSummaryDiseaseResponse": {
+      "UpdateTopArticleSettingsDto": {
         "type": "object",
         "properties": {
-          "diseaseCode": {
-            "type": "string"
-          },
-          "diseaseName": {
-            "type": "string"
-          },
-          "category": {
-            "type": "object"
-          },
-          "confidence": {
-            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
-          },
-          "imageCount": {
+          "limit": {
             "type": "number"
           }
         },
         "required": [
-          "diseaseCode",
-          "diseaseName",
-          "category",
-          "confidence",
-          "imageCount"
+          "limit"
         ]
       },
-      "DiagnosisSummaryResponse": {
+      "CropTopArticlesResponse": {
         "type": "object",
         "properties": {
-          "hasDisease": {
-            "type": "boolean"
+          "crop": {
+            "$ref": "#/components/schemas/AdminArticleCropResponse"
           },
-          "conflict": {
-            "type": "boolean"
+          "limit": {
+            "type": "number"
           },
-          "diseases": {
+          "articles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DiagnosisSummaryDiseaseResponse"
+              "$ref": "#/components/schemas/AdminArticleSummaryResponse"
             }
           }
         },
         "required": [
-          "hasDisease",
-          "conflict",
-          "diseases"
+          "crop",
+          "limit",
+          "articles"
         ]
       },
-      "DiagnosisImageDiseaseResponse": {
+      "SetCropTopArticlesDto": {
         "type": "object",
-        "properties": {
-          "category": {
-            "type": "object"
-          },
-          "diseaseCode": {
-            "type": "string"
-          },
-          "variantCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "diseaseName": {
-            "type": "string"
-          },
-          "variantName": {
-            "type": "string",
-            "nullable": true
-          },
-          "confidence": {
-            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
-          }
-        },
-        "required": [
-          "category",
-          "diseaseCode",
-          "variantCode",
-          "diseaseName",
-          "variantName",
-          "confidence"
-        ]
-      },
-      "DiagnosisBoxResponse": {
-        "type": "object",
-        "properties": {
-          "x": {
-            "type": "number"
-          },
-          "y": {
-            "type": "number"
-          },
-          "w": {
-            "type": "number"
-          },
-          "h": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "x",
-          "y",
-          "w",
-          "h"
-        ]
-      },
-      "DiagnosedDiseaseResponse": {
-        "type": "object",
-        "properties": {
-          "diseaseCode": {
-            "type": "string"
-          },
-          "variantCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "diseaseName": {
-            "type": "string"
-          },
-          "variantName": {
-            "type": "string",
-            "nullable": true
-          },
-          "confidence": {
-            "$ref": "#/components/schemas/DiagnosisConfidenceResponse"
-          }
-        },
-        "required": [
-          "diseaseCode",
-          "variantCode",
-          "diseaseName",
-          "variantName",
-          "confidence"
-        ]
-      },
-      "DiagnosisRegionResponse": {
-        "type": "object",
-        "properties": {
-          "box": {
-            "$ref": "#/components/schemas/DiagnosisBoxResponse"
-          },
-          "symptom": {
-            "type": "string"
-          },
-          "features": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "diagnosis": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DiagnosedDiseaseResponse"
-              }
-            ]
-          }
-        },
-        "required": [
-          "box",
-          "symptom",
-          "features",
-          "diagnosis"
-        ]
-      },
-      "DiagnosisImageResponse": {
-        "type": "object",
-        "properties": {
-          "index": {
-            "type": "number"
-          },
-          "mediaId": {
-            "type": "string",
-            "nullable": true
-          },
-          "url": {
-            "type": "string",
-            "nullable": true
-          },
-          "plantPart": {
-            "type": "string",
-            "enum": [
-              "LEAF",
-              "SHEATH",
-              "STEM",
-              "PANICLE",
-              "ROOT",
-              "WHOLE_PLANT",
-              "SHOOT",
-              "BRANCH",
-              "TRUNK",
-              "COLLAR",
-              "FLOWER",
-              "FRUIT",
-              "ARIL"
-            ]
-          },
-          "detectedPart": {
-            "type": "string",
-            "nullable": true,
-            "enum": [
-              "LEAF",
-              "SHEATH",
-              "STEM",
-              "PANICLE",
-              "ROOT",
-              "WHOLE_PLANT",
-              "SHOOT",
-              "BRANCH",
-              "TRUNK",
-              "COLLAR",
-              "FLOWER",
-              "FRUIT",
-              "ARIL"
-            ]
-          },
-          "status": {
-            "type": "string",
-            "nullable": true,
-            "enum": [
-              "DISEASED",
-              "HEALTHY",
-              "UNCERTAIN",
-              "NOT_TARGET_CROP",
-              "LOW_QUALITY"
-            ]
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "diseases": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DiagnosisImageDiseaseResponse"
-            }
-          },
-          "regions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DiagnosisRegionResponse"
-            }
-          }
-        },
-        "required": [
-          "index",
-          "mediaId",
-          "url",
-          "plantPart",
-          "detectedPart",
-          "status",
-          "message",
-          "diseases",
-          "regions"
-        ]
-      },
-      "GetDiagnosisResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "PROCESSING",
-              "COMPLETED",
-              "FAILED"
-            ]
-          },
-          "cropType": {
-            "type": "string"
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          },
-          "summary": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DiagnosisSummaryResponse"
-              }
-            ]
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DiagnosisImageResponse"
-            }
-          },
-          "userFeedback": {
-            "type": "string",
-            "nullable": true,
-            "enum": [
-              "CORRECT",
-              "WRONG",
-              "UNSURE"
-            ]
-          },
-          "disclaimer": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "completedAt": {
-            "format": "date-time",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "id",
-          "status",
-          "cropType",
-          "note",
-          "summary",
-          "images",
-          "userFeedback",
-          "disclaimer",
-          "createdAt",
-          "completedAt"
-        ]
-      },
-      "SubmitDiagnosisFeedbackDto": {
-        "type": "object",
-        "properties": {
-          "feedback": {
-            "type": "string",
-            "enum": [
-              "CORRECT",
-              "WRONG",
-              "UNSURE"
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "maxLength": 1000
-          }
-        },
-        "required": [
-          "feedback"
-        ]
+        "properties": {}
       }
     }
   }

@@ -12,6 +12,14 @@ export class InMemoryCropTopArticlesRepository implements ICropTopArticlesReposi
       : CropTopArticles.empty(cropType);
   }
 
+  async findAll(): Promise<CropTopArticles[]> {
+    return [...this.lists]
+      .filter(([, articleIds]) => articleIds.length > 0)
+      .map(([cropType, articleIds]) =>
+        CropTopArticles.restore({ cropType, articleIds }),
+      );
+  }
+
   async save(top: CropTopArticles): Promise<void> {
     this.lists.set(top.cropType, top.articleIds);
   }

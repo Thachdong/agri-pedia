@@ -15,10 +15,3 @@ export class SetCropTopArticlesDto {
   @Length(1, 100, { each: true })
   articleSlugs: string[];
 }
-
-export class TopArticlesQueryDto {
-  /** Crop slug from GET /knowledge/articles/crops, e.g. `lua`. */
-  @Matches('^[a-z0-9]+(-[a-z0-9]+)*$')
-  @Length(1, 100)
-  crop: string;
-}

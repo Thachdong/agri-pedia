@@ -25,6 +25,22 @@ export class PgCropTopArticlesRepository
     });
   }
 
+  async findAll(): Promise<CropTopArticles[]> {
+    const rows = await this.repository.find({
+      order: { cropType: 'ASC', position: 'ASC' },
+    });
+    const idsByCrop = new Map<string, string[]>();
+    for (const row of rows) {
+      idsByCrop.set(row.cropType, [
+        ...(idsByCrop.get(row.cropType) ?? []),
+        row.articleId,
+      ]);
+    }
+    return [...idsByCrop].map(([cropType, articleIds]) =>
+      CropTopArticles.restore({ cropType, articleIds }),
+    );
+  }
+
   /** Must run inside a transaction (delete + insert). */
   async save(top: CropTopArticles): Promise<void> {
     await this.repository.delete({ cropType: top.cropType });

@@ -21,18 +21,11 @@ defineApiDocs(ArticleController, {
         CACHE_NOTE,
     },
     top: {
-      summary: 'List the top articles of a crop (public)',
+      summary: 'List the top articles of every crop (public)',
       description:
-        "In the order an admin chose (PUT /admin/knowledge/crops/:cropSlug/top-articles), published only, at most the admin's `limit`; " +
-        'empty when none were chosen.' +
+        "One entry per crop, by crop sortOrder; each crop's articles in the order an admin chose (PUT /admin/knowledge/crops/:cropSlug/top-articles), published only, at most the admin's `limit`. " +
+        'Crops without a published top article are left out; `crops` is empty when none were chosen.' +
         CACHE_NOTE,
-      validation: true,
-      errors: [
-        {
-          type: EDomainErrorType.NOT_FOUND,
-          code: 'KNOWLEDGE_CROP_NOT_FOUND',
-        },
-      ],
     },
     list: {
       summary: 'List article summaries of a crop, by title (public)',
