@@ -29,6 +29,7 @@ import {
 import { PRODUCT_QUERY_PORT } from './contracts';
 import './infrastructure/http/category.api-docs';
 import './infrastructure/http/product.api-docs';
+import './infrastructure/http/product-suggestion.api-docs';
 import { CategoryController } from './infrastructure/http/category.controller';
 import { ProductController } from './infrastructure/http/product.controller';
 import { ProductSuggestionController } from './infrastructure/http/product-suggestion.controller';
