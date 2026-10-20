@@ -1,6 +1,6 @@
 import { DomainException, EDomainErrorType } from '@shared/domain';
 
-/** Receiver is the sender, not ACTIVE, or has the same role (chat is FARMER <-> DISTRIBUTOR only). */
+/** Receiver is the sender, not ACTIVE, or not the partner role (chat is FARMER <-> DISTRIBUTOR only). */
 export class InvalidChatReceiverException extends DomainException {
   constructor(receiverId: string) {
     super(

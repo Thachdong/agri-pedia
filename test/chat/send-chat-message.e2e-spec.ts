@@ -230,6 +230,41 @@ describe('socket chat.message.send (e2e)', () => {
     ).toBe('CHAT_SENDER_NOT_ALLOWED');
   });
 
+  it('rejects an ADMIN as sender or receiver', async () => {
+    const farmer = await signUp(farmerAccount('farmer@mail.com'));
+    const admin = await signUp(farmerAccount('admin@mail.com'));
+    await dataSource.query(`UPDATE users SET role = 'ADMIN' WHERE id = $1`, [
+      admin.id,
+    ]);
+
+    expect(
+      await errorCode(await connect(admin.token), {
+        receiverId: farmer.id,
+        message: 'Hi',
+      }),
+    ).toBe('CHAT_SENDER_NOT_ALLOWED');
+    expect(
+      await errorCode(await connect(farmer.token), {
+        receiverId: admin.id,
+        message: 'Hi',
+      }),
+    ).toBe('CHAT_INVALID_RECEIVER');
+    expect(await dataSource.query('SELECT id FROM chat_rooms')).toEqual([]);
+  });
+
+  it('lets only a FARMER open a room', async () => {
+    const shop = await signUp(distributorAccount('0912345678'));
+    const farmer = await signUp(farmerAccount('farmer@mail.com'));
+
+    expect(
+      await errorCode(await connect(shop.token), {
+        receiverId: farmer.id,
+        message: 'Hi',
+      }),
+    ).toBe('CHAT_ROOM_OPEN_NOT_ALLOWED');
+    expect(await dataSource.query('SELECT id FROM chat_rooms')).toEqual([]);
+  });
+
   it('rejects an unknown receiver and room', async () => {
     const farmer = await signUp(farmerAccount('farmer@mail.com'));
     const socket = await connect(farmer.token);

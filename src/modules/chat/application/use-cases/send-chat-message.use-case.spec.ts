@@ -14,6 +14,7 @@ import {
   ChatReceiverNotFoundException,
   ChatRoom,
   ChatRoomNotFoundException,
+  ChatRoomOpenNotAllowedException,
   ChatRoomOrReceiverRequiredException,
   ChatSenderNotAllowedException,
   InvalidChatMessageException,
@@ -54,7 +55,9 @@ describe('SendChatMessageUseCase', () => {
       summary('farmer-1', 'FARMER'),
       summary('farmer-2', 'FARMER'),
       summary('distributor-1', 'DISTRIBUTOR'),
+      summary('distributor-2', 'DISTRIBUTOR'),
       summary('distributor-pending', 'DISTRIBUTOR', false),
+      summary('admin-1', 'ADMIN'),
     ]);
     profiles = [{ userId: 'farmer-1', username: 'Farmer A', role: 'FARMER' }];
     avatars = [{ ownerId: 'farmer-1', url: 'https://cdn/farmer-1.jpg' }];
@@ -228,8 +231,8 @@ describe('SendChatMessageUseCase', () => {
     ).rejects.toThrow(ChatRoomOrReceiverRequiredException);
   });
 
-  it.each(['unknown', 'distributor-pending'])(
-    'rejects sender %s (missing or not ACTIVE)',
+  it.each(['unknown', 'distributor-pending', 'admin-1'])(
+    'rejects sender %s (missing, not ACTIVE or not FARMER / DISTRIBUTOR)',
     async (senderId) => {
       await expect(
         useCase.execute({ senderId, receiverId: 'farmer-1', message: 'Hi' }),
@@ -267,11 +270,25 @@ describe('SendChatMessageUseCase', () => {
     ['oneself', 'farmer-1'],
     ['same role', 'farmer-2'],
     ['not ACTIVE', 'distributor-pending'],
+    ['ADMIN', 'admin-1'],
   ])('rejects a receiver: %s', async (_case, receiverId) => {
     await expect(
       useCase.execute({ senderId: 'farmer-1', receiverId, message: 'Hi' }),
     ).rejects.toThrow(InvalidChatReceiverException);
     expect(rooms.items.size).toBe(0);
+  });
+
+  it('lets only a FARMER open a new room', async () => {
+    await expect(
+      useCase.execute({
+        senderId: 'distributor-2',
+        receiverId: 'farmer-1',
+        message: 'Hi',
+      }),
+    ).rejects.toThrow(ChatRoomOpenNotAllowedException);
+    expect(rooms.items.size).toBe(0);
+    expect(messages.items.size).toBe(0);
+    expect(realtime.emitted).toEqual([]);
   });
 
   it('rejects an empty message without pushing', async () => {

@@ -22,8 +22,9 @@ import { SendChatMessageResponse } from './responses/send-chat-message.response'
  * (REALTIME_VALIDATION_FAILED for a malformed payload).
  *
  * `chat.message.send` `{ roomId?, receiverId?, message }` → `{ messageId, roomId, createdAt }`
+ *   Only FARMER <-> DISTRIBUTOR; only a FARMER opens a new room (a DISTRIBUTOR replies in an existing one).
  *   errors: CHAT_ROOM_OR_RECEIVER_REQUIRED, CHAT_SENDER_NOT_ALLOWED, CHAT_ROOM_NOT_FOUND, CHAT_NOT_ROOM_MEMBER,
- *           CHAT_RECEIVER_NOT_FOUND, CHAT_INVALID_RECEIVER, CHAT_INVALID_MESSAGE
+ *           CHAT_RECEIVER_NOT_FOUND, CHAT_INVALID_RECEIVER, CHAT_ROOM_OPEN_NOT_ALLOWED, CHAT_INVALID_MESSAGE
  * `chat.room.enter` `{ roomId }` → `{ roomId }` — chat window opened: all messages read, and messages arriving
  *   while it stays open are read on arrival. errors: CHAT_ROOM_NOT_FOUND, CHAT_NOT_ROOM_MEMBER
  * `chat.room.leave` `{ roomId }` → `{ roomId }` — chat window closed: new messages count as unread again.

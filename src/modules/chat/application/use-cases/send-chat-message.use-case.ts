@@ -13,6 +13,7 @@ import {
   ChatReceiverNotFoundException,
   ChatRoom,
   ChatRoomNotFoundException,
+  ChatRoomOpenNotAllowedException,
   ChatRoomOrReceiverRequiredException,
   ChatSenderNotAllowedException,
   InvalidChatReceiverException,
@@ -26,6 +27,15 @@ import {
   CHAT_ROOM_REPOSITORY,
   IChatRoomRepository,
 } from '../ports/chat-room.repository';
+
+/** Roles that chat with each other: one FARMER and one DISTRIBUTOR per room. */
+const CHAT_PARTNER_ROLE: Partial<Record<string, string>> = {
+  FARMER: 'DISTRIBUTOR',
+  DISTRIBUTOR: 'FARMER',
+};
+
+/** Only a FARMER opens a new room; a DISTRIBUTOR replies in an existing one. */
+const ROOM_OPENER_ROLE = 'FARMER';
 
 /** Realtime event pushed to the other room member. */
 export const CHAT_MESSAGE_RECEIVED_REALTIME_EVENT = 'chat.message.received';
@@ -58,7 +68,7 @@ export type TSendChatMessageOutput = {
 };
 
 /**
- * An ACTIVE user messages the other member of a FARMER <-> DISTRIBUTOR room, then pushes it to them in realtime
+ * An ACTIVE FARMER or DISTRIBUTOR messages the other member of a FARMER <-> DISTRIBUTOR room, then pushes it to them in realtime
  * together with the sender's username and avatar.
  * The message is read by the receiver right away if they have the room open (entered), unread otherwise.
  */
@@ -78,7 +88,7 @@ export class SendChatMessageUseCase {
   async execute(input: TSendChatMessageInput): Promise<TSendChatMessageOutput> {
     const { senderId, roomId, receiverId } = input;
     const sender = await this.userQuery.findRoleById(senderId);
-    if (!sender || !sender.isActive) {
+    if (!sender || !sender.isActive || !CHAT_PARTNER_ROLE[sender.role]) {
       throw new ChatSenderNotAllowedException(senderId);
     }
     if (!roomId && receiverId) {
@@ -87,7 +97,12 @@ export class SendChatMessageUseCase {
 
     const { room, message, otherMemberId } =
       await this.unitOfWork.runInTransaction(async () => {
-        const room = await this.resolveRoom(senderId, roomId, receiverId);
+        const room = await this.resolveRoom(
+          sender.role,
+          senderId,
+          roomId,
+          receiverId,
+        );
         const otherMemberId = room.otherMember(senderId);
         const message = ChatMessage.create({
           roomId: room.id,
@@ -130,6 +145,7 @@ export class SendChatMessageUseCase {
   }
 
   private async resolveRoom(
+    senderRole: string,
     senderId: string,
     roomId: string | undefined,
     receiverId: string | undefined,
@@ -143,17 +159,20 @@ export class SendChatMessageUseCase {
     }
     if (receiverId) {
       const existing = await this.rooms.findByMembers(senderId, receiverId);
-      return (
-        existing ??
-        this.rooms.saveIfAbsent(
-          ChatRoom.create({ firstUserId: senderId, secondUserId: receiverId }),
-        )
+      if (existing) {
+        return existing;
+      }
+      if (senderRole !== ROOM_OPENER_ROLE) {
+        throw new ChatRoomOpenNotAllowedException(senderId, receiverId);
+      }
+      return this.rooms.saveIfAbsent(
+        ChatRoom.create({ firstUserId: senderId, secondUserId: receiverId }),
       );
     }
     throw new ChatRoomOrReceiverRequiredException();
   }
 
-  /** Receiver must be another ACTIVE user with the opposite role. */
+  /** Receiver must be another ACTIVE user with the partner role (FARMER <-> DISTRIBUTOR). */
   private async assertValidReceiver(
     senderRole: string,
     senderId: string,
@@ -166,7 +185,7 @@ export class SendChatMessageUseCase {
     if (!receiver) {
       throw new ChatReceiverNotFoundException(receiverId);
     }
-    if (!receiver.isActive || receiver.role === senderRole) {
+    if (!receiver.isActive || receiver.role !== CHAT_PARTNER_ROLE[senderRole]) {
       throw new InvalidChatReceiverException(receiverId);
     }
   }
