@@ -14,7 +14,7 @@ export type TPresignedUpload = {
   headers: Record<string, string>;
 };
 
-/** Thrown by moveFile / downloadFile when the object does not exist. */
+/** Thrown by moveFile / copyFile / downloadFile when the object does not exist. */
 export class StorageFileNotFoundError extends Error {
   constructor(readonly key: string) {
     super(`Storage object not found: ${key}`);
@@ -45,6 +45,8 @@ export interface IFileStorage {
   downloadFile(key: string): Promise<Buffer>;
   /** Moves an object inside the bucket; throws StorageFileNotFoundError if `fromKey` is missing. */
   moveFile(fromKey: string, toKey: string): Promise<void>;
+  /** Copies an object inside the bucket (server-side, bytes unchanged); throws StorageFileNotFoundError if `fromKey` is missing. */
+  copyFile(fromKey: string, toKey: string): Promise<void>;
   /** Deletes an object; a missing object is a no-op. */
   deleteFile(key: string): Promise<void>;
 }

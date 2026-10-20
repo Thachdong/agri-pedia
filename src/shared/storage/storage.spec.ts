@@ -102,6 +102,35 @@ describe('InMemoryFileStorage.moveFile', () => {
   });
 });
 
+describe('InMemoryFileStorage.copyFile', () => {
+  it('copies an existing object and keeps the source', async () => {
+    const storage = new InMemoryFileStorage();
+    await storage.uploadFile(
+      'diagnoses/d1/a.jpg',
+      Buffer.from('jpg'),
+      'image/jpeg',
+    );
+
+    await storage.copyFile('diagnoses/d1/a.jpg', 'datasets/RICE/a.jpg');
+
+    expect([...storage.files]).toEqual([
+      'diagnoses/d1/a.jpg',
+      'datasets/RICE/a.jpg',
+    ]);
+    await expect(storage.downloadFile('datasets/RICE/a.jpg')).resolves.toEqual(
+      Buffer.from('jpg'),
+    );
+  });
+
+  it('throws StorageFileNotFoundError when the source is missing', async () => {
+    const storage = new InMemoryFileStorage();
+
+    await expect(
+      storage.copyFile('diagnoses/d1/missing.jpg', 'datasets/RICE/a.jpg'),
+    ).rejects.toBeInstanceOf(StorageFileNotFoundError);
+  });
+});
+
 describe('InMemoryFileStorage.deleteFile', () => {
   it('removes an existing object', async () => {
     const storage = new InMemoryFileStorage();
