@@ -11,7 +11,7 @@ Scope: 1 provider (GEMINI), API key vẫn ở env. Model lưu trong settings DB;
 - [x] 7. [api-docs]      GET/PUT `/admin/diagnosis/ai-models`
 - [x] 8. [http]          GET/PUT `/admin/product-suggestion/ai-model`
 - [x] 9. [api-docs]      GET/PUT `/admin/product-suggestion/ai-model`
-- [ ] 10. [boundary-review]
+- [x] 10. [boundary-review]
 
 Response GET: giá trị đã lưu (null = chưa set) + model đang hiệu lực (env nếu null). PUT `null` = reset về env.
 
