@@ -8,16 +8,17 @@ import {
   productNameOutputSchema,
 } from './product-name.prompt';
 
-const config = (model = 'gemini-3.5-flash-lite') =>
+const config = () =>
   ({
     get: () => ({
       provider: 'GEMINI',
       apiKey: 'key',
-      model,
       timeoutMs: 1000,
       matchThreshold: 0.4,
     }),
   }) as unknown as IConfigService;
+
+const MODEL = 'gemini-3.5-flash-lite';
 
 const png = (width: number, height: number) =>
   sharp({
@@ -37,10 +38,10 @@ describe('AiProductNameReader', () => {
     ai.enqueue({ output: { productName: '  Anvil 5SC ' } });
     const reader = new AiProductNameReader(ai, config());
 
-    const name = await reader.read({
-      data: await png(3000, 1500),
-      mimeType: 'image/png',
-    });
+    const name = await reader.read(
+      { data: await png(3000, 1500), mimeType: 'image/png' },
+      MODEL,
+    );
 
     expect(name).toBe('Anvil 5SC');
     expect(ai.created).toEqual([{ provider: 'GEMINI', apiKey: 'key' }]);
@@ -68,9 +69,12 @@ describe('AiProductNameReader', () => {
 
   it('uses temperature 0 for models other than Gemini 3', async () => {
     ai.enqueue({ output: { productName: 'Anvil' } });
-    const reader = new AiProductNameReader(ai, config('gemini-2.5-flash-lite'));
+    const reader = new AiProductNameReader(ai, config());
 
-    await reader.read({ data: await png(10, 10), mimeType: 'image/png' });
+    await reader.read(
+      { data: await png(10, 10), mimeType: 'image/png' },
+      'gemini-2.5-flash-lite',
+    );
 
     expect(ai.requests[0].temperature).toBe(0);
   });
@@ -80,7 +84,10 @@ describe('AiProductNameReader', () => {
     const reader = new AiProductNameReader(ai, config());
 
     expect(
-      await reader.read({ data: await png(10, 10), mimeType: 'image/png' }),
+      await reader.read(
+        { data: await png(10, 10), mimeType: 'image/png' },
+        MODEL,
+      ),
     ).toBeNull();
   });
 
@@ -88,10 +95,10 @@ describe('AiProductNameReader', () => {
     const reader = new AiProductNameReader(ai, config());
 
     await expect(
-      reader.read({
-        data: Buffer.from('not an image'),
-        mimeType: 'image/jpeg',
-      }),
+      reader.read(
+        { data: Buffer.from('not an image'), mimeType: 'image/jpeg' },
+        MODEL,
+      ),
     ).rejects.toThrow(ProductPhotoUnreadableError);
     expect(ai.requests).toHaveLength(0);
   });
@@ -102,7 +109,7 @@ describe('AiProductNameReader', () => {
     const reader = new AiProductNameReader(ai, config());
 
     await expect(
-      reader.read({ data: await png(10, 10), mimeType: 'image/png' }),
+      reader.read({ data: await png(10, 10), mimeType: 'image/png' }, MODEL),
     ).rejects.toBe(failure);
   });
 });
