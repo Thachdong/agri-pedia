@@ -12,6 +12,7 @@ NestJS 10 (TypeScript) backend. Postgres 16 via `docker-compose.yml` (pgAdmin on
 - `npm test` — unit tests (`*.spec.ts` under `src/`)
 - `npm run test:e2e` — e2e tests (`test/`)
 - `npm run sync-article [-- --dry-run] [-- <CROP>...]` — copy articles + images from `Design/desease-detection/articles` into the crop packs (checked with the server loader first); then restart the server to seed them
+- `npm run seed:catalog` — insert the product-suggestion catalog (`scripts/data/product-catalog/catalog-items.json`, biological products registered in Vietnam for the agents the crop packs recommend); existing names are skipped
 - `npm run create-admin -- <email|phone> [username]` — create an ACTIVE ADMIN account (password asked on the terminal); log in with `POST /auth/login`
 - `npm run migration:generate -- src/migrations/<module>-<desc>` / `migration:run` / `migration:revert`
 

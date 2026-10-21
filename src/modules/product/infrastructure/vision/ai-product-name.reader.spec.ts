@@ -8,7 +8,7 @@ import {
   productNameOutputSchema,
 } from './product-name.prompt';
 
-const config = (model = 'gemini-3-flash-lite') =>
+const config = (model = 'gemini-3.5-flash-lite') =>
   ({
     get: () => ({
       provider: 'GEMINI',
@@ -46,7 +46,7 @@ describe('AiProductNameReader', () => {
     expect(ai.created).toEqual([{ provider: 'GEMINI', apiKey: 'key' }]);
     const [request] = ai.requests;
     expect(request).toMatchObject({
-      model: 'gemini-3-flash-lite',
+      model: 'gemini-3.5-flash-lite',
       system: PRODUCT_NAME_SYSTEM_PROMPT,
       schema: productNameOutputSchema,
       temperature: undefined,
