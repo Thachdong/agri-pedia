@@ -1,5 +1,6 @@
 import {
   CatalogItem,
+  EProductUnit,
   ProductSuggestionMiss,
   ProductSuggestionSettings,
   ProductSuggestionUsage,
@@ -18,6 +19,8 @@ export class CatalogItemMapper {
       name: row.name,
       normalizedName: row.normalizedName,
       description: row.description,
+      categoryId: row.categoryId,
+      unit: row.unit as EProductUnit | null,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
     });
@@ -29,6 +32,8 @@ export class CatalogItemMapper {
       name: item.name,
       normalizedName: item.normalizedName,
       description: item.description,
+      categoryId: item.categoryId,
+      unit: item.unit,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     });

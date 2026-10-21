@@ -22,6 +22,13 @@ export class CatalogItemOrmEntity {
   @Column({ type: 'text' })
   description: string;
 
+  /** Id from `categories`; null = none. */
+  @Column({ name: 'category_id', type: 'uuid', nullable: true })
+  categoryId: string | null;
+
+  @Column({ type: 'varchar', length: 16, nullable: true })
+  unit: string | null;
+
   @Column({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
 

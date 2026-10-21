@@ -4,6 +4,7 @@ import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import { ILogger, LOGGER } from '@shared/logger';
 import {
   EProductSuggestionStatus,
+  EProductUnit,
   normalizeProductName,
   ProductSellerNotAllowedException,
   ProductSuggestionMiss,
@@ -55,7 +56,12 @@ export type TSuggestProductOutput =
     }
   | {
       status: EProductSuggestionStatus.FOUND;
-      suggestion: { name: string; description: string };
+      suggestion: {
+        name: string;
+        description: string;
+        categoryId: string | null;
+        unit: EProductUnit | null;
+      };
       remaining: number;
     };
 
@@ -123,7 +129,12 @@ export class SuggestProductUseCase {
     if (item) {
       return {
         status: EProductSuggestionStatus.FOUND,
-        suggestion: { name: item.name, description: item.description },
+        suggestion: {
+          name: item.name,
+          description: item.description,
+          categoryId: item.categoryId,
+          unit: item.unit,
+        },
         remaining: usage.remaining(settings),
       };
     }

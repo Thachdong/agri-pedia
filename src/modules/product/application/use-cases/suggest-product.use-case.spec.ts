@@ -4,6 +4,7 @@ import { InMemoryLogger } from '@shared/logger';
 import {
   CatalogItem,
   EProductSuggestionStatus,
+  EProductUnit,
   ProductSellerNotAllowedException,
   SuggestionImageInvalidException,
   SuggestionQuotaExceededException,
@@ -44,6 +45,8 @@ describe('SuggestProductUseCase', () => {
       CatalogItem.create({
         name: 'Anvil 5SC',
         description: 'Hexaconazole 50 g/l, trị lem lép hạt, khô vằn',
+        categoryId: 'c1',
+        unit: EProductUnit.PIECE,
       }),
     );
     settings = new InMemoryProductSuggestionSettingsRepository();
@@ -82,6 +85,8 @@ describe('SuggestProductUseCase', () => {
       suggestion: {
         name: 'Anvil 5SC',
         description: 'Hexaconazole 50 g/l, trị lem lép hạt, khô vằn',
+        categoryId: 'c1',
+        unit: EProductUnit.PIECE,
       },
       remaining: 2,
     });

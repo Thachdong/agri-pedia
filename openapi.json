@@ -1867,7 +1867,7 @@
       "post": {
         "operationId": "AdminProductCatalogController_create",
         "summary": "Add a catalog item",
-        "description": "Suggested to distributors whose photo shows this name. The name is unique ignoring case, diacritics and punctuation.",
+        "description": "Suggested to distributors whose photo shows this name. The name is unique ignoring case, diacritics and punctuation. Optional `categoryId` (from `GET /categories`) and `unit` are suggested too, to preselect the product form.",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1927,6 +1927,16 @@
               }
             }
           },
+          "404": {
+            "description": "PRODUCT_CATEGORY_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainErrorResponse"
+                }
+              }
+            }
+          },
           "409": {
             "description": "PRODUCT_CATALOG_ITEM_NAME_TAKEN",
             "content": {
@@ -1952,6 +1962,7 @@
       "patch": {
         "operationId": "AdminProductCatalogController_update",
         "summary": "Change a catalog item (omitted fields are kept)",
+        "description": "`categoryId` / `unit`: null clears them.",
         "parameters": [
           {
             "name": "catalogItemId",
@@ -2021,7 +2032,7 @@
             }
           },
           "404": {
-            "description": "PRODUCT_CATALOG_ITEM_NOT_FOUND",
+            "description": "PRODUCT_CATALOG_ITEM_NOT_FOUND, PRODUCT_CATEGORY_NOT_FOUND",
             "content": {
               "application/json": {
                 "schema": {
@@ -6218,11 +6229,30 @@
           },
           "description": {
             "type": "string"
+          },
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ]
           }
         },
         "required": [
           "name",
-          "description"
+          "description",
+          "categoryId",
+          "unit"
         ]
       },
       "SuggestProductResponse": {
@@ -6292,6 +6322,23 @@
           "description": {
             "type": "string"
           },
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "unit": {
+            "nullable": true,
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ],
+            "type": "string"
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -6305,6 +6352,8 @@
           "id",
           "name",
           "description",
+          "categoryId",
+          "unit",
           "createdAt",
           "updatedAt"
         ]
@@ -6347,6 +6396,21 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 5000
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ]
           }
         },
         "required": [
@@ -6366,6 +6430,23 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 5000
+          },
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "kg",
+              "10kg",
+              "50kg",
+              "100kg",
+              "bag",
+              "piece",
+              "ton"
+            ]
           }
         }
       },

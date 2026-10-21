@@ -1,7 +1,17 @@
 # Product catalog (product-suggestion KB)
 
 `catalog-items.json` → `product_catalog_items` via `npm run seed:catalog` (insert only; names already in the DB are skipped).
-Each item: `name` (trade name matched against the name read from the photo), `description` (suggested product description, Vietnamese), `source` (registration record).
+Each item:
+- `name`: trade name matched against the name read from the photo.
+- `description`: suggested product description (Vietnamese).
+- `category` (optional): category **name** from the `categories` table. Ids differ per database, so the seed stores the matching id;
+  the suggestion returns it as `categoryId`, which the app preselects in its category select box (same ids as `GET /categories`).
+  Unknown name = the seed stops without writing.
+- `unit` (optional): `EProductUnit` value. Set from the formulation code: powders / granules (WP, WG, AP, FG, SP, GR) = `bag`,
+  liquids (SL, SC, OD, EC, FS) = `piece` (bottle); omitted when the name has no code.
+- `source`: registration record.
+
+Existing items (same normalized name) keep their content; the seed only fills a category / unit that is still null.
 
 ## Scope
 

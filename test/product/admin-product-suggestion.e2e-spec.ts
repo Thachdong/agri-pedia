@@ -98,6 +98,8 @@ describe('/admin/product-catalog + /admin/product-suggestion (e2e)', () => {
         id: expect.any(String),
         name: 'Đạm Phú Mỹ',
         description: 'Urê 46% N',
+        categoryId: null,
+        unit: null,
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
       });
@@ -141,6 +143,39 @@ describe('/admin/product-catalog + /admin/product-suggestion (e2e)', () => {
       expect(after.body.total).toBe(1);
     });
 
+    it('keeps the suggested category and unit; PATCH null clears them', async () => {
+      const [{ id: categoryId }] = await dataSource.query(
+        'SELECT id FROM categories ORDER BY name LIMIT 1',
+      );
+
+      const created = await createItem({
+        name: 'Vi-ĐK',
+        description: 'Trichoderma spp.',
+        categoryId,
+        unit: 'bag',
+      }).expect(201);
+      expect(created.body).toMatchObject({ categoryId, unit: 'bag' });
+
+      const cleared = await as(
+        adminToken,
+        http()
+          .patch(`/admin/product-catalog/${created.body.id}`)
+          .send({ categoryId: null }),
+      ).expect(200);
+      expect(cleared.body).toMatchObject({ categoryId: null, unit: 'bag' });
+    });
+
+    it('404 PRODUCT_CATEGORY_NOT_FOUND for an unknown category', async () => {
+      const res = await createItem({
+        name: 'Vi-ĐK',
+        description: 'x',
+        categoryId: '00000000-0000-4000-8000-000000000000',
+      });
+
+      expect(res.status).toBe(404);
+      expect(res.body.code).toBe('PRODUCT_CATEGORY_NOT_FOUND');
+    });
+
     it('409 PRODUCT_CATALOG_ITEM_NAME_TAKEN for the same name ignoring case and punctuation', async () => {
       await createItem({ name: 'Anvil 5SC', description: 'x' }).expect(201);
 
@@ -153,6 +188,14 @@ describe('/admin/product-catalog + /admin/product-suggestion (e2e)', () => {
     it('400 for an invalid body, an unknown field or a bad id', async () => {
       await createItem({ name: '', description: 'x' }).expect(400);
       await createItem({ name: 'A', description: 'x', price: 1 }).expect(400);
+      await createItem({ name: 'A', description: 'x', unit: 'liter' }).expect(
+        400,
+      );
+      await createItem({
+        name: 'A',
+        description: 'x',
+        categoryId: 'c1',
+      }).expect(400);
       await as(
         adminToken,
         http().patch('/admin/product-catalog/not-a-uuid').send({ name: 'A' }),

@@ -1,8 +1,12 @@
-import { EProductSuggestionStatus } from '../../../domain';
+import { EProductSuggestionStatus, EProductUnit } from '../../../domain';
 
 export class ProductSuggestionContentResponse {
   name: string;
   description: string;
+  /** Id from `GET /categories` to preselect; null = let the user choose. */
+  categoryId: string | null;
+  /** null = let the user choose. */
+  unit: EProductUnit | null;
 }
 
 export class SuggestProductResponse {
