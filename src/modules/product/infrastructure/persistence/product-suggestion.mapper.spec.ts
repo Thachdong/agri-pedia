@@ -24,14 +24,15 @@ describe('product suggestion mappers', () => {
   });
 
   it('ProductSuggestionSettings round-trips into the single row', () => {
-    const settings = ProductSuggestionSettings.restore({
-      invalidImageLimit: 20,
-      notFoundLimit: 5,
-    });
+    const settings = ProductSuggestionSettings.restore(
+      { invalidImageLimit: 20, notFoundLimit: 5 },
+      'gemini-2.5-flash-lite',
+    );
 
     const row = ProductSuggestionSettingsMapper.toOrm(settings);
 
     expect(row.id).toBe(1);
+    expect(row.model).toBe('gemini-2.5-flash-lite');
     expect(ProductSuggestionSettingsMapper.toDomain(row)).toEqual(settings);
   });
 

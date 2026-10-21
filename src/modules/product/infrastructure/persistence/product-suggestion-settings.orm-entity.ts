@@ -13,4 +13,8 @@ export class ProductSuggestionSettingsOrmEntity {
 
   @Column({ name: 'not_found_limit', type: 'int' })
   notFoundLimit: number;
+
+  /** null = env model. */
+  @Column({ name: 'model', type: 'varchar', length: 100, nullable: true })
+  model: string | null;
 }
