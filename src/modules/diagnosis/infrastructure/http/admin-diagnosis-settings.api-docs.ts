@@ -38,5 +38,29 @@ defineApiDocs(AdminDiagnosisSettingsController, {
         },
       ],
     },
+    getModels: {
+      summary: 'Get the AI models of the diagnosis steps (admin)',
+      description:
+        'describeModel (B1) / verifyModel (B3): model picked by an admin, null = the env model in `defaults` is used.',
+      auth: true,
+      errors: [ADMIN],
+    },
+    updateModels: {
+      summary: 'Replace the AI models of the diagnosis steps (admin)',
+      description:
+        'Both fields are required; null = use the env model. Model id: letters, digits, `.`, `_`, `-`, ' +
+        'at most 100 characters, not starting with `.`, `_` or `-` (DIAGNOSIS_INVALID_SETTINGS with `details.field` ' +
+        'otherwise). The id is not checked against the provider: an unknown model makes diagnoses fail. ' +
+        'Applies to diagnoses created afterwards.',
+      auth: true,
+      validation: true,
+      errors: [
+        ADMIN,
+        {
+          type: EDomainErrorType.VALIDATION,
+          code: 'DIAGNOSIS_INVALID_SETTINGS',
+        },
+      ],
+    },
   },
 });
