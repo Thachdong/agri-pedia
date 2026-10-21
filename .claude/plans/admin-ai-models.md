@@ -9,8 +9,8 @@ Scope: 1 provider (GEMINI), API key vẫn ở env. Model lưu trong settings DB;
 - [x] 5. [persistence]   cột `describe_model`, `verify_model` (diagnosis_settings), `model` (product_suggestion_settings): orm-entity, mapper, migration
 - [x] 6. [http]          GET/PUT `/admin/diagnosis/ai-models`
 - [x] 7. [api-docs]      GET/PUT `/admin/diagnosis/ai-models`
-- [ ] 8. [http]          GET/PUT `/admin/product-suggestion/ai-model`
-- [ ] 9. [api-docs]      GET/PUT `/admin/product-suggestion/ai-model`
+- [x] 8. [http]          GET/PUT `/admin/product-suggestion/ai-model`
+- [x] 9. [api-docs]      GET/PUT `/admin/product-suggestion/ai-model`
 - [ ] 10. [boundary-review]
 
 Response GET: giá trị đã lưu (null = chưa set) + model đang hiệu lực (env nếu null). PUT `null` = reset về env.

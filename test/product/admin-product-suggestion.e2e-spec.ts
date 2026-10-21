@@ -4,6 +4,7 @@ import {
   ACCESS_TOKEN_SERVICE,
   IAccessTokenService,
 } from '@shared/access-token';
+import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../src/app.module';
@@ -252,6 +253,61 @@ describe('/admin/product-catalog + /admin/product-suggestion (e2e)', () => {
       expect(res.body.code).toBe('PRODUCT_SUGGESTION_INVALID_SETTINGS');
     });
 
+    it('returns no picked AI model and the env model, then the saved one, keeping the quotas', async () => {
+      const defaults = {
+        model: app.get<IConfigService>(CONFIG_SERVICE).get('productSuggestion')
+          .model,
+      };
+      await as(
+        adminToken,
+        http()
+          .put('/admin/product-suggestion/settings')
+          .send({ invalidImageLimit: 30, notFoundLimit: 0 }),
+      ).expect(200);
+      await as(adminToken, http().get('/admin/product-suggestion/ai-model'))
+        .expect(200)
+        .expect({ model: null, defaults });
+
+      const saved = await as(
+        adminToken,
+        http()
+          .put('/admin/product-suggestion/ai-model')
+          .send({ model: 'gemini-2.5-flash-lite' }),
+      ).expect(200);
+
+      expect(saved.body).toEqual({ model: 'gemini-2.5-flash-lite', defaults });
+      await as(adminToken, http().get('/admin/product-suggestion/ai-model'))
+        .expect(200)
+        .expect({ model: 'gemini-2.5-flash-lite', defaults });
+      await as(adminToken, http().get('/admin/product-suggestion/settings'))
+        .expect(200)
+        .expect({ invalidImageLimit: 30, notFoundLimit: 0 });
+
+      await as(
+        adminToken,
+        http().put('/admin/product-suggestion/ai-model').send({ model: null }),
+      ).expect(200);
+      await as(adminToken, http().get('/admin/product-suggestion/ai-model'))
+        .expect(200)
+        .expect({ model: null, defaults });
+    });
+
+    it('400 for a missing or malformed AI model', async () => {
+      await as(
+        adminToken,
+        http().put('/admin/product-suggestion/ai-model').send({}),
+      ).expect(400);
+
+      const res = await as(
+        adminToken,
+        http()
+          .put('/admin/product-suggestion/ai-model')
+          .send({ model: 'gemini flash' }),
+      ).expect(400);
+
+      expect(res.body.code).toBe('PRODUCT_SUGGESTION_INVALID_SETTINGS');
+    });
+
     it('lists misses grouped by normalized name, most frequent first', async () => {
       const u1 = '00000000-0000-4000-8000-000000000001';
       const u2 = '00000000-0000-4000-8000-000000000002';
@@ -290,6 +346,7 @@ describe('/admin/product-catalog + /admin/product-suggestion (e2e)', () => {
     ['GET', '/admin/product-catalog'],
     ['POST', '/admin/product-catalog'],
     ['GET', '/admin/product-suggestion/settings'],
+    ['GET', '/admin/product-suggestion/ai-model'],
     ['GET', '/admin/product-suggestion/misses'],
   ])(
     '403 PRODUCT_ADMIN_REQUIRED for a farmer on %s %s',
