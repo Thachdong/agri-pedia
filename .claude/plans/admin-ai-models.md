@@ -3,7 +3,7 @@
 Scope: 1 provider (GEMINI), API key vẫn ở env. Model lưu trong settings DB; `null` = dùng model env (default hiện tại).
 
 - [x] 1. [domain-model]  diagnosis `DiagnosisSettings`: thêm `describeModel`, `verifyModel` (nullable, check format model id) + `updateModels()`; lỗi dùng lại `DiagnosisInvalidSettings`
-- [ ] 2. [domain-model]  product `ProductSuggestionSettings`: thêm `model` (nullable, check format) + `updateModel()`; lỗi dùng lại `InvalidSuggestionSettings`
+- [x] 2. [domain-model]  product `ProductSuggestionSettings`: thêm `model` (nullable, check format) + `updateModel()`; lỗi dùng lại `InvalidSuggestionSettings`
 - [ ] 3. [use-case]      diagnosis `GetDiagnosisAiModels`, `UpdateDiagnosisAiModels` (admin); `CreateDiagnosis` + `ProcessDiagnosis` lấy model từ settings ?? env, truyền vào `IVisionDiagnosisProvider` (`info`/`describe`/`verify` nhận model thay vì tự đọc config)
 - [ ] 4. [use-case]      product `GetProductSuggestionAiModel`, `UpdateProductSuggestionAiModel` (admin); `SuggestProduct` truyền model vào `IProductNameReader.read`
 - [ ] 5. [persistence]   cột `describe_model`, `verify_model` (diagnosis_settings), `model` (product_suggestion_settings): orm-entity, mapper, migration
