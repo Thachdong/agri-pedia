@@ -6,12 +6,14 @@ import {
   CreateDiagnosisUseCase,
   DiagnosisReportBuilder,
   FailStaleDiagnosesUseCase,
+  GetDiagnosisAiModelsUseCase,
   GetDiagnosisFormSettingsUseCase,
   GetDiagnosisSettingsUseCase,
   GetDiagnosisUseCase,
   ListMyDiagnosesUseCase,
   ProcessDiagnosisUseCase,
   SubmitDiagnosisFeedbackUseCase,
+  UpdateDiagnosisAiModelsUseCase,
   UpdateDiagnosisSettingsUseCase,
 } from './application/use-cases';
 import {
@@ -48,6 +50,8 @@ import { PgDiagnosisSettingsRepository } from './infrastructure/persistence/pg-d
     FailStaleDiagnosesUseCase,
     GetDiagnosisSettingsUseCase,
     UpdateDiagnosisSettingsUseCase,
+    GetDiagnosisAiModelsUseCase,
+    UpdateDiagnosisAiModelsUseCase,
     GetDiagnosisFormSettingsUseCase,
     DiagnosisReportBuilder,
     DiagnosisStartup,

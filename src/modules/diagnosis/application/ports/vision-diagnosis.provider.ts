@@ -19,8 +19,15 @@ export type TVisionProviderInfo = {
   promptVersion: string;
 };
 
+/** Models of the two AI steps, as resolved for one diagnosis. */
+export type TVisionModels = {
+  describeModel: string;
+  verifyModel: string;
+};
+
 /** B1 input: one image. */
 export type TDescribeInput = {
+  model: string;
   image: TProcessedImage;
   /** Crop the photo should show; its features and parts shape the output. */
   crop: TKnowledgeDiagnosisCrop;
@@ -37,6 +44,7 @@ export type TDescribeOutput = {
 
 /** B3 input: one image with the crops of its regions that have candidates. */
 export type TVerifyInput = {
+  model: string;
   crop: TKnowledgeDiagnosisCrop;
   /** Downscaled whole image, for context. */
   thumbnail: TProcessedImage;
@@ -60,8 +68,11 @@ export type TVerifyOutput = {
 
 /** AI vision steps; each call is one request. Throws on provider error, timeout or invalid output. */
 export interface IVisionDiagnosisProvider {
-  /** Provider, models and prompt version used for photos of `crop`. */
-  info(crop: TKnowledgeDiagnosisCrop): TVisionProviderInfo;
+  /** Provider, models and prompt version used for photos of `crop` with `models`. */
+  info(
+    crop: TKnowledgeDiagnosisCrop,
+    models: TVisionModels,
+  ): TVisionProviderInfo;
   /** B1: regions + observations of one image; never a diagnosis. */
   describe(input: TDescribeInput): Promise<TDescribeOutput>;
   /** B3: per region, one of its candidate codes or NONE. */
