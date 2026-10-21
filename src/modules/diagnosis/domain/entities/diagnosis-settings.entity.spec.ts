@@ -78,4 +78,56 @@ describe('DiagnosisSettings', () => {
       }),
     ).toThrow(DiagnosisInvalidSettingsException);
   });
+
+  it('has no AI model until an admin picks one (env model is used)', () => {
+    const settings = DiagnosisSettings.defaults();
+
+    expect(settings.describeModel).toBeNull();
+    expect(settings.verifyModel).toBeNull();
+  });
+
+  it('updateAiModels replaces both models and keeps the other settings', () => {
+    const settings = DiagnosisSettings.restore(valid);
+
+    settings.updateAiModels({
+      describeModel: 'gemini-2.5-flash',
+      verifyModel: 'gemini-3-flash-preview',
+    });
+
+    expect(settings.describeModel).toBe('gemini-2.5-flash');
+    expect(settings.verifyModel).toBe('gemini-3-flash-preview');
+    expect(settings.maxImages).toBe(valid.maxImages);
+  });
+
+  it('update keeps the AI models', () => {
+    const settings = DiagnosisSettings.restore(valid, {
+      describeModel: 'gemini-2.5-flash',
+      verifyModel: null,
+    });
+
+    settings.update({ ...valid, maxImages: 4 });
+
+    expect(settings.describeModel).toBe('gemini-2.5-flash');
+    expect(settings.verifyModel).toBeNull();
+  });
+
+  it.each([
+    ['describeModel', ''],
+    ['describeModel', 'gemini flash'],
+    ['verifyModel', '-gemini'],
+    ['verifyModel', 'models/gemini-2.5-flash'],
+    ['verifyModel', 'g'.repeat(101)],
+  ])('rejects %s = %j and keeps the previous models', (field, value) => {
+    const settings = DiagnosisSettings.defaults();
+
+    expect(() =>
+      settings.updateAiModels({
+        describeModel: null,
+        verifyModel: null,
+        [field]: value,
+      }),
+    ).toThrow(DiagnosisInvalidSettingsException);
+    expect(settings.describeModel).toBeNull();
+    expect(settings.verifyModel).toBeNull();
+  });
 });
