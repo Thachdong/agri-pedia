@@ -59,6 +59,7 @@ export class ArticleController {
     return this.listArticles.execute({
       crop: query.crop,
       category: query.category,
+      diseaseCodes: query.diseaseCodes,
       cursor: query.cursor,
       limit: query.limit ?? DEFAULT_ARTICLE_PAGE_SIZE,
     });
