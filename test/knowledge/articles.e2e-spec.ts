@@ -21,7 +21,7 @@ const shipped = (crop: string): string[] =>
 type TListItem = {
   slug: string;
   variant: { code: string } | null;
-  disease: { category: string } | null;
+  disease: { code: string; category: string } | null;
 };
 
 describe('GET /knowledge/articles/* (e2e)', () => {
@@ -150,10 +150,40 @@ describe('GET /knowledge/articles/* (e2e)', () => {
     expect(articles.every((a) => a.disease?.category === 'PEST')).toBe(true);
   });
 
+  it('filters the list by disease codes, repeated or comma-separated', async () => {
+    const codes = (articles: TListItem[]) =>
+      new Set(articles.map((a) => a.disease?.code));
+
+    const repeated = await http()
+      .get(
+        '/knowledge/articles?crop=lua&diseaseCodes=RICE_BLAST&diseaseCodes=STEM_BORER',
+      )
+      .expect(200);
+    const comma = await http()
+      .get('/knowledge/articles?crop=lua&diseaseCodes=RICE_BLAST,STEM_BORER')
+      .expect(200);
+    const single = await http()
+      .get('/knowledge/articles?crop=lua&diseaseCodes=STEM_BORER')
+      .expect(200);
+
+    expect(codes(repeated.body.articles)).toEqual(
+      new Set(['RICE_BLAST', 'STEM_BORER']),
+    );
+    expect(comma.body.articles).toEqual(repeated.body.articles);
+    expect(single.body.articles.map((a: TListItem) => a.slug)).toContain(
+      'sau-duc-than',
+    );
+    expect(codes(single.body.articles)).toEqual(new Set(['STEM_BORER']));
+  });
+
   it('returns 400 for invalid list queries', async () => {
     await http().get('/knowledge/articles').expect(400);
     await http().get('/knowledge/articles?crop=lua&limit=0').expect(400);
     await http().get('/knowledge/articles?crop=lua&category=X').expect(400);
+    await http()
+      .get('/knowledge/articles?crop=lua&diseaseCodes=rice_blast')
+      .expect(400);
+    await http().get('/knowledge/articles?crop=lua&diseaseCodes=').expect(400);
   });
 
   it('returns 400 KNOWLEDGE_ARTICLE_INVALID_CURSOR for a malformed cursor', async () => {

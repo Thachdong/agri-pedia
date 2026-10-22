@@ -65,6 +65,8 @@ export class AdminProductCatalogController {
       userId: caller.userId,
       name: dto.name,
       description: dto.description,
+      categoryId: dto.categoryId,
+      unit: dto.unit,
     });
   }
 
@@ -79,6 +81,8 @@ export class AdminProductCatalogController {
       catalogItemId,
       name: dto.name,
       description: dto.description,
+      categoryId: dto.categoryId,
+      unit: dto.unit,
     });
   }
 

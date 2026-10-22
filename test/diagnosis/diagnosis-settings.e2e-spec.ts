@@ -4,6 +4,7 @@ import {
   ACCESS_TOKEN_SERVICE,
   IAccessTokenService,
 } from '@shared/access-token';
+import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { FILE_STORAGE, InMemoryFileStorage } from '@shared/storage';
 import * as sharp from 'sharp';
 import * as request from 'supertest';
@@ -213,5 +214,99 @@ describe('diagnosis settings (e2e)', () => {
 
   it('returns 401 without a token', async () => {
     await http().get('/admin/diagnosis/settings').expect(401);
+    await http().get('/admin/diagnosis/ai-models').expect(401);
+  });
+
+  describe('AI models', () => {
+    const envModels = () => {
+      const { describeModel, verifyModel } = app
+        .get<IConfigService>(CONFIG_SERVICE)
+        .get('diagnosis');
+      return { describeModel, verifyModel };
+    };
+
+    it('returns no picked model and the env models, then the saved ones, keeping the other settings', async () => {
+      await as(
+        adminToken,
+        http().put('/admin/diagnosis/settings').send(settings),
+      ).expect(200);
+
+      await as(adminToken, http().get('/admin/diagnosis/ai-models'))
+        .expect(200)
+        .expect({
+          describeModel: null,
+          verifyModel: null,
+          defaults: envModels(),
+        });
+
+      const models = {
+        describeModel: 'gemini-2.5-flash',
+        verifyModel: null,
+      };
+      const saved = await as(
+        adminToken,
+        http().put('/admin/diagnosis/ai-models').send(models),
+      ).expect(200);
+      expect(saved.body).toEqual({ ...models, defaults: envModels() });
+      await as(adminToken, http().get('/admin/diagnosis/ai-models'))
+        .expect(200)
+        .expect({ ...models, defaults: envModels() });
+      await as(adminToken, http().get('/admin/diagnosis/settings'))
+        .expect(200)
+        .expect(settings);
+    });
+
+    it('keeps the AI models when the other settings are saved', async () => {
+      await as(
+        adminToken,
+        http().put('/admin/diagnosis/ai-models').send({
+          describeModel: 'gemini-2.5-flash',
+          verifyModel: 'gemini-2.5-flash',
+        }),
+      ).expect(200);
+
+      await as(
+        adminToken,
+        http().put('/admin/diagnosis/settings').send(settings),
+      ).expect(200);
+
+      const res = await as(
+        adminToken,
+        http().get('/admin/diagnosis/ai-models'),
+      ).expect(200);
+      expect(res.body).toMatchObject({
+        describeModel: 'gemini-2.5-flash',
+        verifyModel: 'gemini-2.5-flash',
+      });
+    });
+
+    it('returns 400 for a missing field or a malformed model id', async () => {
+      await as(
+        adminToken,
+        http().put('/admin/diagnosis/ai-models').send({ describeModel: null }),
+      ).expect(400);
+
+      const malformed = await as(
+        adminToken,
+        http()
+          .put('/admin/diagnosis/ai-models')
+          .send({ describeModel: 'gemini flash', verifyModel: null }),
+      ).expect(400);
+      expect(malformed.body.code).toBe('DIAGNOSIS_INVALID_SETTINGS');
+      expect(malformed.body.details.field).toBe('describeModel');
+    });
+
+    it('returns 403 DIAGNOSIS_ADMIN_REQUIRED for a non-admin', async () => {
+      const res = await as(
+        farmerToken,
+        http()
+          .put('/admin/diagnosis/ai-models')
+          .send({ describeModel: null, verifyModel: null }),
+      ).expect(403);
+      expect(res.body.code).toBe('DIAGNOSIS_ADMIN_REQUIRED');
+      await as(farmerToken, http().get('/admin/diagnosis/ai-models')).expect(
+        403,
+      );
+    });
   });
 });

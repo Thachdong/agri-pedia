@@ -5,6 +5,7 @@ import {
   TKnowledgeDiagnosisCrop,
 } from '@modules/knowledge/contracts';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
+import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import {
   Diagnosis,
@@ -18,6 +19,7 @@ import {
   MIN_DIAGNOSIS_IMAGES,
   TInvalidImage,
 } from '../../domain';
+import { resolveVisionModels } from '../diagnosis-ai-models';
 import {
   DIAGNOSIS_JOB_RUNNER,
   IDiagnosisJobRunner,
@@ -69,7 +71,8 @@ export function startOfLocalDay(now: Date): Date {
 /**
  * Checks the request against the diagnosis settings (image count, bytes and pixel size, daily limit)
  * and the crop (plant parts must belong to it), normalizes the images, records a PROCESSING diagnosis and starts the
- * pipeline in the background with the normalized images; returns without waiting for it.
+ * pipeline in the background with the normalized images and the AI models (admin-picked, else env); returns without
+ * waiting for it.
  */
 @Injectable()
 export class CreateDiagnosisUseCase {
@@ -85,6 +88,7 @@ export class CreateDiagnosisUseCase {
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
     @Inject(KNOWLEDGE_QUERY_PORT)
     private readonly knowledgeQuery: IKnowledgeQueryPort,
+    @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
   ) {}
 
@@ -101,6 +105,7 @@ export class CreateDiagnosisUseCase {
     const settings = await this.settings.get();
     this.checkFiles(input, settings, crop);
     const normalized = await this.normalizeAll(input.files, settings);
+    const models = resolveVisionModels(settings, this.config);
 
     const since = startOfLocalDay(new Date());
     const diagnosis = await this.unitOfWork.runInTransaction(async () => {
@@ -112,7 +117,7 @@ export class CreateDiagnosisUseCase {
         userId: input.userId,
         cropType: input.cropType,
         note: input.note,
-        ...this.vision.info(crop),
+        ...this.vision.info(crop, models),
         kbVersion: crop.kbVersion,
         plantParts: input.plantParts,
         maxImages: settings.maxImages,
@@ -121,7 +126,7 @@ export class CreateDiagnosisUseCase {
       return created;
     });
 
-    this.jobs.start({ diagnosisId: diagnosis.id, images: normalized });
+    this.jobs.start({ diagnosisId: diagnosis.id, images: normalized, models });
     return { id: diagnosis.id, status: diagnosis.status };
   }
 

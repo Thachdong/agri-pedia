@@ -30,4 +30,22 @@ export class DiagnosisSettingsOrmEntity {
 
   @Column({ name: 'max_image_height', type: 'int' })
   maxImageHeight: number;
+
+  /** null = env model. */
+  @Column({
+    name: 'describe_model',
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+  })
+  describeModel: string | null;
+
+  /** null = env model. */
+  @Column({
+    name: 'verify_model',
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+  })
+  verifyModel: string | null;
 }

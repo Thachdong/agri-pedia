@@ -10,7 +10,6 @@ import {
   ArticleParamsDto,
   DEFAULT_ARTICLE_PAGE_SIZE,
   ListArticlesQueryDto,
-  TopArticlesQueryDto,
 } from './dto';
 import {
   ArticleDetailResponse,
@@ -48,10 +47,8 @@ export class ArticleController {
 
   @Get('top')
   @Header('Cache-Control', CACHE_CONTROL)
-  async top(
-    @Query() query: TopArticlesQueryDto,
-  ): Promise<ListTopArticlesResponse> {
-    return this.listTopArticles.execute({ crop: query.crop });
+  async top(): Promise<ListTopArticlesResponse> {
+    return this.listTopArticles.execute();
   }
 
   @Get()
@@ -62,6 +59,7 @@ export class ArticleController {
     return this.listArticles.execute({
       crop: query.crop,
       category: query.category,
+      diseaseCodes: query.diseaseCodes,
       cursor: query.cursor,
       limit: query.limit ?? DEFAULT_ARTICLE_PAGE_SIZE,
     });

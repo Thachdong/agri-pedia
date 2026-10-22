@@ -48,6 +48,7 @@ import {
 import {
   IVisionDiagnosisProvider,
   TVerifyOutput,
+  TVisionModels,
   VISION_DIAGNOSIS_PROVIDER,
 } from '../ports/vision-diagnosis.provider';
 
@@ -122,6 +123,7 @@ export class ProcessDiagnosisUseCase {
               crop,
               job.images[image.sortOrder],
               image.plantPart,
+              job.models,
             ),
           ),
         )
@@ -194,6 +196,7 @@ export class ProcessDiagnosisUseCase {
     crop: TKnowledgeDiagnosisCrop,
     image: TProcessedImage,
     plantPart: EPlantPart,
+    models: TVisionModels,
   ): Promise<TImageOutcome> {
     const { maxRegionsPerImage, candidatesPerRegion } =
       this.config.get('diagnosis');
@@ -202,6 +205,7 @@ export class ProcessDiagnosisUseCase {
     try {
       described = await this.withRetry('describe', diagnosis.id, () =>
         this.vision.describe({
+          model: models.describeModel,
           image,
           crop,
           plantPart,
@@ -265,6 +269,7 @@ export class ProcessDiagnosisUseCase {
           image,
           toVerify,
           regionCandidates,
+          models.verifyModel,
         );
       } catch {
         return {
@@ -314,6 +319,7 @@ export class ProcessDiagnosisUseCase {
     image: TProcessedImage,
     toVerify: Array<{ region: TDescribedRegion; index: number }>,
     regionCandidates: TRegionCandidate[][],
+    model: string,
   ): Promise<TVerifyOutput> {
     const codes = [
       ...new Set(
@@ -331,6 +337,7 @@ export class ProcessDiagnosisUseCase {
     ]);
     return this.withRetry('verify', diagnosisId, () =>
       this.vision.verify({
+        model,
         crop,
         thumbnail,
         regions: toVerify.map(({ region, index }, i) => ({

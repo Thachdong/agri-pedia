@@ -1,7 +1,12 @@
+import { EProductUnit } from '../../../domain';
+
 export class CatalogItemResponse {
   id: string;
   name: string;
   description: string;
+  /** Id from `GET /categories`; null = none. */
+  categoryId: string | null;
+  unit: EProductUnit | null;
   createdAt: Date;
   updatedAt: Date;
 }

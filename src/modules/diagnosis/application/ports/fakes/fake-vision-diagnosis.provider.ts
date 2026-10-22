@@ -5,6 +5,7 @@ import {
   TDescribeOutput,
   TVerifyInput,
   TVerifyOutput,
+  TVisionModels,
   TVisionProviderInfo,
 } from '../vision-diagnosis.provider';
 
@@ -23,10 +24,13 @@ export class FakeVisionDiagnosisProvider implements IVisionDiagnosisProvider {
   >();
   private readonly verifyAnswers = new Map<string, TAnswer<TVerifyOutput>[]>();
 
-  info(crop: TKnowledgeDiagnosisCrop): TVisionProviderInfo {
+  info(
+    crop: TKnowledgeDiagnosisCrop,
+    models: TVisionModels,
+  ): TVisionProviderInfo {
     return {
       provider: 'GEMINI',
-      model: 'describe-model+verify-model',
+      model: `${models.describeModel}+${models.verifyModel}`,
       promptVersion: `d+v/${crop.code}@${crop.kbVersion}`,
     };
   }

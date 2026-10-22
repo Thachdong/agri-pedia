@@ -12,6 +12,10 @@ describe('DiagnosisSettingsMapper', () => {
       maxImageWidth: 3000,
       maxImageHeight: 2000,
     });
+    settings.updateAiModels({
+      describeModel: 'gemini-2.5-flash',
+      verifyModel: null,
+    });
 
     const row = DiagnosisSettingsMapper.toOrm(settings);
 

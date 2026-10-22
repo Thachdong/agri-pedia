@@ -223,36 +223,35 @@ describe('SetCropTopArticlesUseCase / GetCropTopArticlesUseCase', () => {
 });
 
 describe('ListTopArticlesUseCase', () => {
-  it('lists published top articles in order, at most limit', async () => {
+  it('lists published top articles of every crop in order, at most limit', async () => {
     const t = setup();
     t.top.lists.set('RICE', ['a-hidden', 'a-bph', 'a-blast']);
+    t.top.lists.set('CORN', ['a-corn']);
     t.settings.savedLimit = 1;
 
-    const result = await t.listTop.execute({ crop: 'lua' });
+    const result = await t.listTop.execute();
 
-    expect(result.crop).toEqual({
+    // Same sortOrder in the fixture: by code.
+    expect(result.crops.map((g) => g.crop.code)).toEqual(['CORN', 'RICE']);
+    expect(result.crops[0].articles.map((a) => a.slug)).toEqual(['gi-sat']);
+    expect(result.crops[1].crop).toEqual({
       code: 'RICE',
       slug: 'lua',
       nameVi: 'Lúa',
       diagnosisEnabled: true,
     });
-    expect(result.articles).toHaveLength(1);
-    expect(result.articles[0]).toMatchObject({
+    expect(result.crops[1].articles).toHaveLength(1);
+    expect(result.crops[1].articles[0]).toMatchObject({
       slug: 'ray-nau',
       path: '/benh-cay-trong/lua/ray-nau',
       disease: { code: 'RICE_BPH' },
     });
   });
 
-  it('is empty when no article was chosen', async () => {
-    await expect(
-      setup().listTop.execute({ crop: 'lua' }),
-    ).resolves.toMatchObject({ articles: [] });
-  });
+  it('leaves out crops without a published top article', async () => {
+    const t = setup();
+    t.top.lists.set('RICE', ['a-hidden']);
 
-  it('rejects an unknown crop', async () => {
-    await expect(
-      setup().listTop.execute({ crop: 'nope' }),
-    ).rejects.toBeInstanceOf(KnowledgeCropNotFoundException);
+    await expect(t.listTop.execute()).resolves.toEqual({ crops: [] });
   });
 });

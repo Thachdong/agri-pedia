@@ -13,6 +13,7 @@ import {
   TDescribeOutput,
   TVerifyInput,
   TVerifyOutput,
+  TVisionModels,
   TVisionProviderInfo,
 } from '../../application/ports';
 import {
@@ -54,7 +55,7 @@ export function temperatureFor(model: string): number | undefined {
 }
 
 /**
- * Vision steps through the shared AI client (provider + key + models from the `diagnosis` config);
+ * Vision steps through the shared AI client (provider + key from the `diagnosis` config, model per request);
  * schema and prompts are built from the crop's configuration and cached per crop and KB version.
  */
 @Injectable()
@@ -73,22 +74,24 @@ export class AiVisionProvider implements IVisionDiagnosisProvider {
     this.limiter = new Semaphore(concurrency);
   }
 
-  info(crop: TKnowledgeDiagnosisCrop): TVisionProviderInfo {
-    const { provider, describeModel, verifyModel } =
-      this.config.get('diagnosis');
+  info(
+    crop: TKnowledgeDiagnosisCrop,
+    models: TVisionModels,
+  ): TVisionProviderInfo {
+    const { provider } = this.config.get('diagnosis');
     return {
       provider,
-      model: `${describeModel}+${verifyModel}`,
+      model: `${models.describeModel}+${models.verifyModel}`,
       promptVersion: `${DESCRIBE_PROMPT_VERSION}+${VERIFY_PROMPT_VERSION}/${cropKey(crop)}`,
     };
   }
 
   async describe(input: TDescribeInput): Promise<TDescribeOutput> {
     const parts = this.partsFor(input.crop);
-    const { describeModel, timeoutMs } = this.config.get('diagnosis');
+    const { timeoutMs } = this.config.get('diagnosis');
     const { output, raw } = await this.limiter.run(() =>
       this.client.generateObject({
-        model: describeModel,
+        model: input.model,
         system: parts.describeSystem,
         content: [
           { type: 'text', text: buildDescribeUserMessage(input) },
@@ -99,7 +102,7 @@ export class AiVisionProvider implements IVisionDiagnosisProvider {
           },
         ],
         schema: parts.describeSchema,
-        temperature: temperatureFor(describeModel),
+        temperature: temperatureFor(input.model),
         timeoutMs,
       }),
     );
@@ -107,7 +110,7 @@ export class AiVisionProvider implements IVisionDiagnosisProvider {
   }
 
   async verify(input: TVerifyInput): Promise<TVerifyOutput> {
-    const { verifyModel, timeoutMs } = this.config.get('diagnosis');
+    const { timeoutMs } = this.config.get('diagnosis');
     const codes = [
       ...new Set(input.regions.flatMap((region) => region.candidateCodes)),
     ];
@@ -130,11 +133,11 @@ export class AiVisionProvider implements IVisionDiagnosisProvider {
     ];
     const { output, raw } = await this.limiter.run(() =>
       this.client.generateObject({
-        model: verifyModel,
+        model: input.model,
         system: this.partsFor(input.crop).verifySystem,
         content,
         schema: verifyOutputSchema(codes),
-        temperature: temperatureFor(verifyModel),
+        temperature: temperatureFor(input.model),
         timeoutMs,
       }),
     );

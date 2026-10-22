@@ -33,6 +33,30 @@ defineApiDocs(AdminProductSuggestionController, {
         },
       ],
     },
+    getModel: {
+      summary: 'Get the AI model that reads product names',
+      description:
+        '`model`: picked by an admin; null = the env model in `defaults.model` is used.',
+      auth: true,
+      errors: [ADMIN_REQUIRED],
+    },
+    updateModel: {
+      summary: 'Replace the AI model that reads product names',
+      description:
+        '`model` is required; null = use the env model. Model id: letters, digits, `.`, `_`, `-`, ' +
+        'at most 100 characters, not starting with `.`, `_` or `-` (PRODUCT_SUGGESTION_INVALID_SETTINGS otherwise). ' +
+        'The id is not checked against the provider: an unknown model makes suggestions fail. ' +
+        'Applies to the next suggestion.',
+      auth: true,
+      validation: true,
+      errors: [
+        ADMIN_REQUIRED,
+        {
+          type: EDomainErrorType.VALIDATION,
+          code: 'PRODUCT_SUGGESTION_INVALID_SETTINGS',
+        },
+      ],
+    },
     misses: {
       summary: 'List product names read from photos but missing in the catalog',
       description:

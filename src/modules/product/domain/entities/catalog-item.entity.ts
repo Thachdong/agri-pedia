@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { AggregateRoot } from '@shared/domain';
+import { EProductUnit } from '../enums/product-unit.enum';
 import { InvalidCatalogItemException } from '../exceptions/invalid-catalog-item.exception';
 import { normalizeProductName } from '../services/normalize-product-name';
 
@@ -12,6 +13,10 @@ export type TCatalogItemProps = {
   normalizedName: string;
   /** Text suggested as the product description (active ingredients, uses, dosage...). */
   description: string;
+  /** Category suggested for the product (id from the categories list); null = none. */
+  categoryId: string | null;
+  /** Unit suggested for the product; null = none. */
+  unit: EProductUnit | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -19,7 +24,8 @@ export type TCatalogItemProps = {
 export type TCatalogItemContent = Pick<
   TCatalogItemProps,
   'name' | 'description'
->;
+> &
+  Partial<Pick<TCatalogItemProps, 'categoryId' | 'unit'>>;
 
 /** Product known to the platform, suggested to distributors who photograph it. Managed by admins. */
 export class CatalogItem extends AggregateRoot {
@@ -34,6 +40,8 @@ export class CatalogItem extends AggregateRoot {
     const now = new Date();
     return new CatalogItem(randomUUID(), {
       ...CatalogItem.validContent(input),
+      categoryId: input.categoryId ?? null,
+      unit: input.unit ?? null,
       createdAt: now,
       updatedAt: now,
     });
@@ -43,7 +51,7 @@ export class CatalogItem extends AggregateRoot {
     return new CatalogItem(id, { ...props });
   }
 
-  /** Applies the given changes; omitted fields are kept. */
+  /** Applies the given changes; omitted fields are kept, null clears categoryId / unit. */
   update(changes: Partial<TCatalogItemContent>): void {
     this.props = {
       ...this.props,
@@ -51,6 +59,10 @@ export class CatalogItem extends AggregateRoot {
         name: changes.name ?? this.props.name,
         description: changes.description ?? this.props.description,
       }),
+      ...(changes.categoryId !== undefined && {
+        categoryId: changes.categoryId,
+      }),
+      ...(changes.unit !== undefined && { unit: changes.unit }),
       updatedAt: new Date(),
     };
   }
@@ -95,6 +107,14 @@ export class CatalogItem extends AggregateRoot {
 
   get description(): string {
     return this.props.description;
+  }
+
+  get categoryId(): string | null {
+    return this.props.categoryId;
+  }
+
+  get unit(): EProductUnit | null {
+    return this.props.unit;
   }
 
   get createdAt(): Date {

@@ -21,24 +21,19 @@ defineApiDocs(ArticleController, {
         CACHE_NOTE,
     },
     top: {
-      summary: 'List the top articles of a crop (public)',
+      summary: 'List the top articles of every crop (public)',
       description:
-        "In the order an admin chose (PUT /admin/knowledge/crops/:cropSlug/top-articles), published only, at most the admin's `limit`; " +
-        'empty when none were chosen.' +
+        "One entry per crop, by crop sortOrder; each crop's articles in the order an admin chose (PUT /admin/knowledge/crops/:cropSlug/top-articles), published only, at most the admin's `limit`. " +
+        'Crops without a published top article are left out; `crops` is empty when none were chosen.' +
         CACHE_NOTE,
-      validation: true,
-      errors: [
-        {
-          type: EDomainErrorType.NOT_FOUND,
-          code: 'KNOWLEDGE_CROP_NOT_FOUND',
-        },
-      ],
     },
     list: {
       summary: 'List article summaries of a crop, by title (public)',
       description:
         'Vietnamese title order, keyset-paginated (`nextCursor`). Unpublished articles are left out; DRAFT ones are included: render them noindex. ' +
-        "`category` filters by the category of the article's disease. Variant articles are listed too (`variant` set)." +
+        "`category` filters by the category of the article's disease. " +
+        '`diseaseCodes` keeps the articles about any of the given diseases (`?diseaseCodes=RICE_BLAST&diseaseCodes=RICE_BPH` or `?diseaseCodes=RICE_BLAST,RICE_BPH`, 1..50 codes); with `category`, both must match. ' +
+        'Variant articles are listed too (`variant` set).' +
         CACHE_NOTE,
       validation: true,
       errors: [

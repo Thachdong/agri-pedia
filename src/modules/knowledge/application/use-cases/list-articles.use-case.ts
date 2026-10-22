@@ -23,6 +23,8 @@ export type TListArticlesInput = {
   /** Crop.slug. */
   crop: string;
   category?: EDiseaseCategory;
+  /** Articles about any of these diseases (Disease.code); combined with `category`, both must match. */
+  diseaseCodes?: string[];
   /** `nextCursor` of the previous page; omitted for the first page. */
   cursor?: string;
   limit: number;
@@ -99,11 +101,7 @@ export class ListArticlesUseCase {
     const crop = await this.knowledge.findCropBySlug(input.crop);
     if (!crop) throw new KnowledgeCropNotFoundException(input.crop);
 
-    const diseaseCodes = input.category
-      ? (await this.knowledge.listDiseasesByCrop(crop.code))
-          .filter((disease) => disease.category === input.category)
-          .map((disease) => disease.code)
-      : undefined;
+    const diseaseCodes = await this.diseaseFilter(crop.code, input);
     // One extra row tells whether a next page exists.
     const rows = await this.articles.listPublishedPage(crop.code, {
       diseaseCodes,
@@ -134,6 +132,19 @@ export class ListArticlesUseCase {
       ),
       nextCursor,
     };
+  }
+
+  /** Disease codes the articles must have; undefined = no filter. */
+  private async diseaseFilter(
+    cropCode: string,
+    input: TListArticlesInput,
+  ): Promise<string[] | undefined> {
+    const requested = input.diseaseCodes && [...new Set(input.diseaseCodes)];
+    if (!input.category) return requested;
+    return (await this.knowledge.listDiseasesByCrop(cropCode))
+      .filter((disease) => disease.category === input.category)
+      .map((disease) => disease.code)
+      .filter((code) => !requested || requested.includes(code));
   }
 }
 

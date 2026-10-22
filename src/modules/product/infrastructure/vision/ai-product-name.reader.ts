@@ -21,8 +21,8 @@ const JPEG_QUALITY = 85;
 const LOW_TEMPERATURE = 0;
 
 /**
- * Reads the trade name through the shared AI client (provider + key + model from the
- * `productSuggestion` config). The photo is re-encoded in memory (EXIF rotation applied,
+ * Reads the trade name through the shared AI client (provider + key from the
+ * `productSuggestion` config, model per request). The photo is re-encoded in memory (EXIF rotation applied,
  * metadata dropped, long side <= 1024px) and never stored.
  */
 @Injectable()
@@ -37,9 +37,9 @@ export class AiProductNameReader implements IProductNameReader {
     this.client = aiClients.create({ provider, apiKey });
   }
 
-  async read(photo: TProductPhoto): Promise<string | null> {
+  async read(photo: TProductPhoto, model: string): Promise<string | null> {
     const image = await this.toJpeg(photo.data);
-    const { model, timeoutMs } = this.config.get('productSuggestion');
+    const { timeoutMs } = this.config.get('productSuggestion');
     const { output } = await this.client.generateObject({
       model,
       system: PRODUCT_NAME_SYSTEM_PROMPT,

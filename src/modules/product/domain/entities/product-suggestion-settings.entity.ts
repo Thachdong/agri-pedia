@@ -39,26 +39,44 @@ function validate(
   return { ...props };
 }
 
+const MODEL_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
+
 /** App-wide settings of product suggestions (one per app). */
 export class ProductSuggestionSettings {
-  private constructor(private props: TProductSuggestionSettingsProps) {}
+  private constructor(
+    private props: TProductSuggestionSettingsProps,
+    private aiModelId: string | null,
+  ) {}
 
   /** Settings used until an admin saves some. */
   static defaults(): ProductSuggestionSettings {
-    return new ProductSuggestionSettings({
-      ...DEFAULT_PRODUCT_SUGGESTION_SETTINGS,
-    });
+    return new ProductSuggestionSettings(
+      { ...DEFAULT_PRODUCT_SUGGESTION_SETTINGS },
+      null,
+    );
   }
 
   static restore(
     props: TProductSuggestionSettingsProps,
+    aiModel: string | null = null,
   ): ProductSuggestionSettings {
-    return new ProductSuggestionSettings({ ...props });
+    return new ProductSuggestionSettings({ ...props }, aiModel);
   }
 
-  /** Replaces every setting; throws InvalidSuggestionSettings when one is out of range. */
+  /** Replaces both quotas, keeps the AI model; throws InvalidSuggestionSettings when one is out of range. */
   update(props: TProductSuggestionSettingsProps): void {
     this.props = validate(props);
+  }
+
+  /** Replaces the AI model (null = env model); throws InvalidSuggestionSettings on a malformed model id. */
+  updateAiModel(model: string | null): void {
+    if (model !== null && !MODEL_ID.test(model)) {
+      throw new InvalidSuggestionSettingsException(
+        'model',
+        `not a model id: ${model}`,
+      );
+    }
+    this.aiModelId = model;
   }
 
   get invalidImageLimit(): number {
@@ -67,5 +85,10 @@ export class ProductSuggestionSettings {
 
   get notFoundLimit(): number {
     return this.props.notFoundLimit;
+  }
+
+  /** AI model picked by an admin; null = the model set in the env (`productSuggestion` config). */
+  get aiModel(): string | null {
+    return this.aiModelId;
   }
 }

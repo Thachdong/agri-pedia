@@ -5,21 +5,25 @@ import {
   TAccessTokenPayload,
 } from '@shared/access-token';
 import {
+  GetProductSuggestionAiModelUseCase,
   GetProductSuggestionSettingsUseCase,
   ListProductSuggestionMissesUseCase,
+  UpdateProductSuggestionAiModelUseCase,
   UpdateProductSuggestionSettingsUseCase,
 } from '../../application/use-cases';
 import {
   AdminPageQueryDto,
   DEFAULT_ADMIN_PAGE_SIZE,
+  UpdateProductSuggestionAiModelDto,
   UpdateProductSuggestionSettingsDto,
 } from './dto';
 import {
   ListProductSuggestionMissesResponse,
+  ProductSuggestionAiModelResponse,
   ProductSuggestionSettingsResponse,
 } from './responses/product-suggestion-admin.response';
 
-/** Product suggestion quotas and misses for ADMIN accounts (role checked by the use cases). */
+/** Product suggestion quotas, AI model and misses for ADMIN accounts (role checked by the use cases). */
 @Controller('admin/product-suggestion')
 @UseGuards(AccessTokenGuard)
 export class AdminProductSuggestionController {
@@ -27,6 +31,8 @@ export class AdminProductSuggestionController {
     private readonly getSettings: GetProductSuggestionSettingsUseCase,
     private readonly updateSettings: UpdateProductSuggestionSettingsUseCase,
     private readonly listMisses: ListProductSuggestionMissesUseCase,
+    private readonly getAiModel: GetProductSuggestionAiModelUseCase,
+    private readonly updateAiModel: UpdateProductSuggestionAiModelUseCase,
   ) {}
 
   @Get('settings')
@@ -45,6 +51,24 @@ export class AdminProductSuggestionController {
       userId: caller.userId,
       invalidImageLimit: dto.invalidImageLimit,
       notFoundLimit: dto.notFoundLimit,
+    });
+  }
+
+  @Get('ai-model')
+  async getModel(
+    @CurrentUser() caller: TAccessTokenPayload,
+  ): Promise<ProductSuggestionAiModelResponse> {
+    return this.getAiModel.execute({ userId: caller.userId });
+  }
+
+  @Put('ai-model')
+  async updateModel(
+    @CurrentUser() caller: TAccessTokenPayload,
+    @Body() dto: UpdateProductSuggestionAiModelDto,
+  ): Promise<ProductSuggestionAiModelResponse> {
+    return this.updateAiModel.execute({
+      userId: caller.userId,
+      model: dto.model,
     });
   }
 

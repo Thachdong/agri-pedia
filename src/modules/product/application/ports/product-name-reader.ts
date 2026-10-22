@@ -14,11 +14,11 @@ export class ProductPhotoUnreadableError extends Error {
 
 export interface IProductNameReader {
   /**
-   * Trade name printed most prominently on the product in the photo; null when no name can be read
+   * Trade name printed most prominently on the product in the photo, read by AI `model`; null when no name can be read
    * (no product, blurry, no text). Throws ProductPhotoUnreadableError when the photo cannot be decoded;
    * any other error means the reading service failed.
    */
-  read(photo: TProductPhoto): Promise<string | null>;
+  read(photo: TProductPhoto, model: string): Promise<string | null>;
 }
 
 export const PRODUCT_NAME_READER = Symbol('PRODUCT_NAME_READER');

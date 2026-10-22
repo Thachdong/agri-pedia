@@ -1,5 +1,6 @@
 import {
   CatalogItem,
+  EProductUnit,
   ProductSuggestionMiss,
   ProductSuggestionSettings,
   ProductSuggestionUsage,
@@ -18,6 +19,8 @@ export class CatalogItemMapper {
       name: row.name,
       normalizedName: row.normalizedName,
       description: row.description,
+      categoryId: row.categoryId,
+      unit: row.unit as EProductUnit | null,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
     });
@@ -29,6 +32,8 @@ export class CatalogItemMapper {
       name: item.name,
       normalizedName: item.normalizedName,
       description: item.description,
+      categoryId: item.categoryId,
+      unit: item.unit,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     });
@@ -39,10 +44,13 @@ export class ProductSuggestionSettingsMapper {
   static toDomain(
     row: ProductSuggestionSettingsOrmEntity,
   ): ProductSuggestionSettings {
-    return ProductSuggestionSettings.restore({
-      invalidImageLimit: row.invalidImageLimit,
-      notFoundLimit: row.notFoundLimit,
-    });
+    return ProductSuggestionSettings.restore(
+      {
+        invalidImageLimit: row.invalidImageLimit,
+        notFoundLimit: row.notFoundLimit,
+      },
+      row.model,
+    );
   }
 
   static toOrm(
@@ -52,6 +60,7 @@ export class ProductSuggestionSettingsMapper {
       id: PRODUCT_SUGGESTION_SETTINGS_ROW_ID,
       invalidImageLimit: settings.invalidImageLimit,
       notFoundLimit: settings.notFoundLimit,
+      model: settings.aiModel,
     });
   }
 }

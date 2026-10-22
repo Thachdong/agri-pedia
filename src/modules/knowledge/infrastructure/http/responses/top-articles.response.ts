@@ -20,8 +20,13 @@ export class CropTopArticlesResponse {
   articles: AdminArticleSummaryResponse[];
 }
 
-export class ListTopArticlesResponse {
+export class TopArticlesGroupResponse {
   crop: ArticleCropResponse;
   /** In the admin's order, published only, at most `limit`. */
   articles: ArticleListItemResponse[];
+}
+
+export class ListTopArticlesResponse {
+  /** By crop sortOrder; crops without a published top article are left out. */
+  crops: TopArticlesGroupResponse[];
 }

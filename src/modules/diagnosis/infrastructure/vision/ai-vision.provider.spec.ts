@@ -13,12 +13,15 @@ const config = {
   get: () => ({
     provider: 'GEMINI',
     apiKey: 'key',
-    describeModel: 'gemini-3-flash-preview',
-    verifyModel: 'gemini-2.5-flash',
     timeoutMs: 1000,
     concurrency: 2,
   }),
 } as unknown as IConfigService;
+
+const models = {
+  describeModel: 'gemini-3-flash-preview',
+  verifyModel: 'gemini-2.5-flash',
+};
 
 const jpeg = (content: string) => ({
   data: Buffer.from(content),
@@ -101,20 +104,23 @@ describe('AiVisionProvider', () => {
     provider = new AiVisionProvider(ai, config);
   });
 
-  it('uses the configured provider and key, and reports models and the per-crop prompt version', () => {
+  it('uses the configured provider and key, and reports the given models and the per-crop prompt version', () => {
     expect(ai.created).toEqual([{ provider: 'GEMINI', apiKey: 'key' }]);
-    expect(provider.info(rice)).toEqual({
+    expect(provider.info(rice, models)).toEqual({
       provider: 'GEMINI',
       model: 'gemini-3-flash-preview+gemini-2.5-flash',
       promptVersion: 'd2+v2/RICE@2026-10-12',
     });
-    expect(provider.info(durian).promptVersion).toBe('d2+v2/DURIAN@2026-10-15');
+    expect(provider.info(durian, models).promptVersion).toBe(
+      'd2+v2/DURIAN@2026-10-15',
+    );
   });
 
   it("describes one image with the crop's prompt and schema, converting box_2d to a top-left box", async () => {
     ai.enqueue({ output: describeAnswer, raw: { text: 'raw' } });
 
     const result = await provider.describe({
+      model: 'gemini-3-flash-preview',
       image: jpeg('img'),
       crop: rice,
       plantPart: EPlantPart.PANICLE,
@@ -158,6 +164,7 @@ describe('AiVisionProvider', () => {
     ai.enqueue({ output: describeAnswer, raw: null });
     ai.enqueue({ output: describeAnswer, raw: null });
     const input = {
+      model: 'gemini-2.5-flash',
       image: jpeg('i'),
       crop: rice,
       plantPart: null,
@@ -189,6 +196,7 @@ describe('AiVisionProvider', () => {
     });
 
     const result = await provider.verify({
+      model: 'gemini-2.5-flash',
       crop: rice,
       thumbnail: jpeg('thumb'),
       regions: [
@@ -262,6 +270,7 @@ describe('AiVisionProvider', () => {
     };
     const limited = new AiVisionProvider(slowFactory, config);
     const input = {
+      model: 'gemini-2.5-flash',
       image: jpeg('i'),
       crop: rice,
       plantPart: null,

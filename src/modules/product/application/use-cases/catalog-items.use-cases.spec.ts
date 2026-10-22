@@ -4,10 +4,15 @@ import {
   CatalogItem,
   CatalogItemNameTakenException,
   CatalogItemNotFoundException,
+  EProductUnit,
   InvalidCatalogItemException,
   ProductAdminRequiredException,
+  ProductCategoryNotFoundException,
 } from '../../domain';
-import { InMemoryCatalogRepository } from '../ports/fakes';
+import {
+  InMemoryCatalogRepository,
+  InMemoryCategoryRepository,
+} from '../ports/fakes';
 import { CreateCatalogItemUseCase } from './create-catalog-item.use-case';
 import { DeleteCatalogItemUseCase } from './delete-catalog-item.use-case';
 import { ListCatalogItemsUseCase } from './list-catalog-items.use-case';
@@ -43,10 +48,22 @@ describe('catalog item use cases', () => {
       findProfileById: async () => null,
       listProfilesByIds: async () => [],
     };
+    const categories = new InMemoryCategoryRepository();
+    categories.add({ id: 'c1', name: 'Thuốc & vật tư nông nghiệp' });
     const unitOfWork = new InMemoryUnitOfWork();
     list = new ListCatalogItemsUseCase(catalog, userQuery);
-    create = new CreateCatalogItemUseCase(catalog, userQuery, unitOfWork);
-    update = new UpdateCatalogItemUseCase(catalog, userQuery, unitOfWork);
+    create = new CreateCatalogItemUseCase(
+      catalog,
+      categories,
+      userQuery,
+      unitOfWork,
+    );
+    update = new UpdateCatalogItemUseCase(
+      catalog,
+      categories,
+      userQuery,
+      unitOfWork,
+    );
     remove = new DeleteCatalogItemUseCase(catalog, userQuery, unitOfWork);
   });
 
@@ -84,10 +101,39 @@ describe('catalog item use cases', () => {
       expect(created).toMatchObject({
         name: 'Amistar Top 325SC',
         description: 'Azoxystrobin + Difenoconazole',
+        categoryId: null,
+        unit: null,
       });
       expect(catalog.items.get(created.id)?.normalizedName).toBe(
         'amistar top 325sc',
       );
+    });
+
+    it('keeps the optional category and unit', async () => {
+      const created = await create.execute({
+        userId: 'admin',
+        name: 'Amistar Top 325SC',
+        description: 'x',
+        categoryId: 'c1',
+        unit: EProductUnit.PIECE,
+      });
+
+      expect(created).toMatchObject({
+        categoryId: 'c1',
+        unit: EProductUnit.PIECE,
+      });
+    });
+
+    it('rejects an unknown category', async () => {
+      await expect(
+        create.execute({
+          userId: 'admin',
+          name: 'Amistar Top 325SC',
+          description: 'x',
+          categoryId: 'missing',
+        }),
+      ).rejects.toThrow(ProductCategoryNotFoundException);
+      expect(catalog.items.size).toBe(3);
     });
 
     it('rejects a name already in the catalog (ignoring case and punctuation)', async () => {
@@ -125,6 +171,37 @@ describe('catalog item use cases', () => {
         name: 'Anvil 5SC',
         description: 'Hexaconazole 50 g/l',
       });
+    });
+
+    it('sets and clears the category and unit', async () => {
+      const set = await update.execute({
+        userId: 'admin',
+        catalogItemId: anvil.id,
+        categoryId: 'c1',
+        unit: EProductUnit.BAG,
+      });
+      expect(set).toMatchObject({ categoryId: 'c1', unit: EProductUnit.BAG });
+
+      const cleared = await update.execute({
+        userId: 'admin',
+        catalogItemId: anvil.id,
+        categoryId: null,
+      });
+      expect(cleared).toMatchObject({
+        categoryId: null,
+        unit: EProductUnit.BAG,
+      });
+    });
+
+    it('rejects an unknown category and leaves the item unchanged', async () => {
+      await expect(
+        update.execute({
+          userId: 'admin',
+          catalogItemId: anvil.id,
+          categoryId: 'missing',
+        }),
+      ).rejects.toThrow(ProductCategoryNotFoundException);
+      expect(anvil.categoryId).toBeNull();
     });
 
     it('keeps its own name when renamed to a variant of it', async () => {

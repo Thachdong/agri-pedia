@@ -1,4 +1,5 @@
 import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
+import { IConfigService } from '@shared/config';
 import { InMemoryUnitOfWork } from '@shared/database';
 import {
   InvalidSuggestionSettingsException,
@@ -10,9 +11,15 @@ import {
   InMemoryProductSuggestionMissRepository,
   InMemoryProductSuggestionSettingsRepository,
 } from '../ports/fakes';
+import { GetProductSuggestionAiModelUseCase } from './get-product-suggestion-ai-model.use-case';
 import { GetProductSuggestionSettingsUseCase } from './get-product-suggestion-settings.use-case';
 import { ListProductSuggestionMissesUseCase } from './list-product-suggestion-misses.use-case';
+import { UpdateProductSuggestionAiModelUseCase } from './update-product-suggestion-ai-model.use-case';
 import { UpdateProductSuggestionSettingsUseCase } from './update-product-suggestion-settings.use-case';
+
+const config = {
+  get: () => ({ model: 'env-model' }),
+} as unknown as IConfigService;
 
 const miss = (
   id: string,
@@ -32,6 +39,8 @@ describe('product suggestion admin use cases', () => {
   let getSettings: GetProductSuggestionSettingsUseCase;
   let updateSettings: UpdateProductSuggestionSettingsUseCase;
   let listMisses: ListProductSuggestionMissesUseCase;
+  let getAiModel: GetProductSuggestionAiModelUseCase;
+  let updateAiModel: UpdateProductSuggestionAiModelUseCase;
 
   beforeEach(() => {
     settings = new InMemoryProductSuggestionSettingsRepository();
@@ -50,6 +59,67 @@ describe('product suggestion admin use cases', () => {
       new InMemoryUnitOfWork(),
     );
     listMisses = new ListProductSuggestionMissesUseCase(misses, userQuery);
+    getAiModel = new GetProductSuggestionAiModelUseCase(
+      settings,
+      userQuery,
+      config,
+    );
+    updateAiModel = new UpdateProductSuggestionAiModelUseCase(
+      settings,
+      userQuery,
+      config,
+      new InMemoryUnitOfWork(),
+    );
+  });
+
+  it('GetProductSuggestionAiModel returns no picked model and the env model until an admin picks one', async () => {
+    expect(await getAiModel.execute({ userId: 'admin' })).toEqual({
+      model: null,
+      defaults: { model: 'env-model' },
+    });
+  });
+
+  it('UpdateProductSuggestionAiModel saves the model and keeps the limits', async () => {
+    settings.saved = { invalidImageLimit: 30, notFoundLimit: 0 };
+
+    const result = await updateAiModel.execute({
+      userId: 'admin',
+      model: 'gemini-2.5-flash-lite',
+    });
+
+    expect(result).toEqual({
+      model: 'gemini-2.5-flash-lite',
+      defaults: { model: 'env-model' },
+    });
+    expect(settings.savedAiModel).toBe('gemini-2.5-flash-lite');
+    expect(settings.saved).toEqual({ invalidImageLimit: 30, notFoundLimit: 0 });
+    expect(await getAiModel.execute({ userId: 'admin' })).toEqual(result);
+  });
+
+  it('UpdateProductSuggestionAiModel(null) goes back to the env model', async () => {
+    settings.savedAiModel = 'gemini-2.5-flash-lite';
+
+    await updateAiModel.execute({ userId: 'admin', model: null });
+
+    expect(settings.savedAiModel).toBeNull();
+  });
+
+  it('UpdateProductSuggestionAiModel rejects a malformed model id without saving', async () => {
+    await expect(
+      updateAiModel.execute({ userId: 'admin', model: 'gemini flash' }),
+    ).rejects.toThrow(InvalidSuggestionSettingsException);
+    expect(settings.saved).toBeNull();
+  });
+
+  it('AI model use cases reject a caller who is not an active admin', async () => {
+    caller = { userId: 'admin', role: 'DISTRIBUTOR', isActive: true };
+
+    await expect(getAiModel.execute({ userId: 'admin' })).rejects.toThrow(
+      ProductAdminRequiredException,
+    );
+    await expect(
+      updateAiModel.execute({ userId: 'admin', model: null }),
+    ).rejects.toThrow(ProductAdminRequiredException);
   });
 
   it('GetProductSuggestionSettings returns the defaults until saved', async () => {

@@ -74,8 +74,9 @@ describe('POST /products/suggestions (e2e)', () => {
     await dataSource.query('DELETE FROM users');
     await dataSource.query('DELETE FROM otps');
     await dataSource.query(
-      `INSERT INTO product_catalog_items (id, name, normalized_name, description, created_at, updated_at)
-       VALUES (gen_random_uuid(), 'Anvil 5SC', 'anvil 5sc', 'Hexaconazole 50 g/l', now(), now())`,
+      `INSERT INTO product_catalog_items (id, name, normalized_name, description, category_id, unit, created_at, updated_at)
+       SELECT gen_random_uuid(), 'Anvil 5SC', 'anvil 5sc', 'Hexaconazole 50 g/l', id, 'piece', now(), now()
+       FROM categories ORDER BY name LIMIT 1`,
     );
   });
 
@@ -120,9 +121,17 @@ describe('POST /products/suggestions (e2e)', () => {
 
     const res = await suggest(seller.token).expect(200);
 
+    const [{ id: categoryId }] = await dataSource.query(
+      'SELECT id FROM categories ORDER BY name LIMIT 1',
+    );
     expect(res.body).toEqual({
       status: 'FOUND',
-      suggestion: { name: 'Anvil 5SC', description: 'Hexaconazole 50 g/l' },
+      suggestion: {
+        name: 'Anvil 5SC',
+        description: 'Hexaconazole 50 g/l',
+        categoryId,
+        unit: 'piece',
+      },
       remaining: 49,
     });
     expect(ai.requests).toHaveLength(1);

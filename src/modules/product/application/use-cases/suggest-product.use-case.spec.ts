@@ -1,9 +1,11 @@
 import { IUserQueryPort, TUserRoleSummary } from '@modules/user/contracts';
+import { IConfigService } from '@shared/config';
 import { InMemoryUnitOfWork } from '@shared/database';
 import { InMemoryLogger } from '@shared/logger';
 import {
   CatalogItem,
   EProductSuggestionStatus,
+  EProductUnit,
   ProductSellerNotAllowedException,
   SuggestionImageInvalidException,
   SuggestionQuotaExceededException,
@@ -21,6 +23,10 @@ import {
   SuggestProductUseCase,
   TSuggestProductInput,
 } from './suggest-product.use-case';
+
+const config = {
+  get: () => ({ model: 'env-model' }),
+} as unknown as IConfigService;
 
 const input: TSuggestProductInput = {
   userId: 'u1',
@@ -44,6 +50,8 @@ describe('SuggestProductUseCase', () => {
       CatalogItem.create({
         name: 'Anvil 5SC',
         description: 'Hexaconazole 50 g/l, trị lem lép hạt, khô vằn',
+        categoryId: 'c1',
+        unit: EProductUnit.PIECE,
       }),
     );
     settings = new InMemoryProductSuggestionSettingsRepository();
@@ -65,12 +73,22 @@ describe('SuggestProductUseCase', () => {
       usages,
       misses,
       userQuery,
+      config,
       new InMemoryUnitOfWork(),
       logger,
     );
   });
 
   const usage = () => usages.items.get('u1');
+
+  it('reads with the admin-picked model', async () => {
+    settings.savedAiModel = 'gemini-2.5-flash-lite';
+    reader.name = 'Anvil 5SC';
+
+    await useCase.execute(input);
+
+    expect(reader.models).toEqual(['gemini-2.5-flash-lite']);
+  });
 
   it('FOUND: suggests the matching catalog item and charges the visible quota', async () => {
     reader.name = '  ANVIL 5SC® ';
@@ -82,10 +100,13 @@ describe('SuggestProductUseCase', () => {
       suggestion: {
         name: 'Anvil 5SC',
         description: 'Hexaconazole 50 g/l, trị lem lép hạt, khô vằn',
+        categoryId: 'c1',
+        unit: EProductUnit.PIECE,
       },
       remaining: 2,
     });
     expect(reader.photos).toEqual([input.photo]);
+    expect(reader.models).toEqual(['env-model']);
     expect(usage()).toEqual({ userId: 'u1', used: 1, bonusUsed: 0 });
     expect(misses.items).toHaveLength(0);
   });

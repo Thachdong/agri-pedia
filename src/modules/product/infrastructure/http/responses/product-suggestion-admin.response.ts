@@ -21,3 +21,14 @@ export class ListProductSuggestionMissesResponse {
   page: number;
   limit: number;
 }
+
+export class ProductSuggestionDefaultAiModelResponse {
+  model: string;
+}
+
+export class ProductSuggestionAiModelResponse {
+  /** Admin-picked model; null = `defaults.model` is used. */
+  model: string | null;
+  /** Model set in the env. */
+  defaults: ProductSuggestionDefaultAiModelResponse;
+}

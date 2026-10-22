@@ -6,14 +6,17 @@ import {
 
 export class DiagnosisSettingsMapper {
   static toDomain(row: DiagnosisSettingsOrmEntity): DiagnosisSettings {
-    return DiagnosisSettings.restore({
-      dailyFreeLimit: row.dailyFreeLimit,
-      defaultCropType: row.defaultCropType,
-      maxImages: row.maxImages,
-      maxImageBytes: row.maxImageBytes,
-      maxImageWidth: row.maxImageWidth,
-      maxImageHeight: row.maxImageHeight,
-    });
+    return DiagnosisSettings.restore(
+      {
+        dailyFreeLimit: row.dailyFreeLimit,
+        defaultCropType: row.defaultCropType,
+        maxImages: row.maxImages,
+        maxImageBytes: row.maxImageBytes,
+        maxImageWidth: row.maxImageWidth,
+        maxImageHeight: row.maxImageHeight,
+      },
+      { describeModel: row.describeModel, verifyModel: row.verifyModel },
+    );
   }
 
   static toOrm(settings: DiagnosisSettings): DiagnosisSettingsOrmEntity {
@@ -25,6 +28,8 @@ export class DiagnosisSettingsMapper {
       maxImageBytes: settings.maxImageBytes,
       maxImageWidth: settings.maxImageWidth,
       maxImageHeight: settings.maxImageHeight,
+      describeModel: settings.describeModel,
+      verifyModel: settings.verifyModel,
     });
   }
 }

@@ -145,6 +145,7 @@ describe('ProcessDiagnosisUseCase', () => {
     useCase(fileStorage).execute({
       diagnosisId: diagnosis.id,
       images: [image('a'), image('b')],
+      models: { describeModel: 'describe-model', verifyModel: 'verify-model' },
     });
 
   beforeEach(async () => {
@@ -220,12 +221,14 @@ describe('ProcessDiagnosisUseCase', () => {
       wholeImage: { discoloration: 'NONE' },
       limit: 3,
     });
-    // B1 and B3 got the crop configuration
+    // B1 and B3 got the job's models and the crop configuration
     expect(vision.describeRequests[0]).toMatchObject({
+      model: 'describe-model',
       crop: { code: 'RICE' },
       plantPart: EPlantPart.LEAF,
       maxRegions: 5,
     });
+    expect(vision.verifyRequests[0].model).toBe('verify-model');
     expect(vision.verifyRequests[0].crop.code).toBe('RICE');
     // B3 got the thumbnail, the crop and the cards
     expect(vision.verifyRequests[0].thumbnail.data.toString()).toBe('thumb:a');

@@ -1,5 +1,6 @@
 import { IKnowledgeQueryPort } from '@modules/knowledge/contracts';
 import { IUserQueryPort } from '@modules/user/contracts';
+import { IConfigService } from '@shared/config';
 import { InMemoryUnitOfWork } from '@shared/database';
 import {
   DiagnosisCropNotSupportedException,
@@ -22,6 +23,10 @@ import {
   startOfLocalDay,
   TCreateDiagnosisInput,
 } from './create-diagnosis.use-case';
+
+const config = {
+  get: () => ({ describeModel: 'env-describe', verifyModel: 'env-verify' }),
+} as unknown as IConfigService;
 
 describe('startOfLocalDay', () => {
   it('is local (UTC+7) midnight', () => {
@@ -85,6 +90,7 @@ describe('CreateDiagnosisUseCase', () => {
       jobs,
       userQuery,
       knowledgeQuery,
+      config,
       new InMemoryUnitOfWork(),
     );
   });
@@ -99,7 +105,7 @@ describe('CreateDiagnosisUseCase', () => {
       cropType: 'RICE',
       note: 'lá vàng',
       provider: 'GEMINI',
-      model: 'describe-model+verify-model',
+      model: 'env-describe+env-verify',
       promptVersion: 'd+v/RICE@2026-10-12',
       kbVersion: '2026-10-12',
     });
@@ -113,6 +119,27 @@ describe('CreateDiagnosisUseCase', () => {
       'jpeg:img-a',
       'jpeg:img-b',
     ]);
+    expect(jobs.jobs[0].models).toEqual({
+      describeModel: 'env-describe',
+      verifyModel: 'env-verify',
+    });
+  });
+
+  it('uses the admin-picked models, the env model for one not picked', async () => {
+    settings.savedAiModels = {
+      describeModel: 'admin-describe',
+      verifyModel: null,
+    };
+
+    const result = await useCase.execute(input());
+
+    expect(diagnoses.items.get(result.id)?.model).toBe(
+      'admin-describe+env-verify',
+    );
+    expect(jobs.jobs[0].models).toEqual({
+      describeModel: 'admin-describe',
+      verifyModel: 'env-verify',
+    });
   });
 
   it('rejects a user who is not active or unknown', async () => {

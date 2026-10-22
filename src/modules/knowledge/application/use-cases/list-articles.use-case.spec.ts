@@ -138,6 +138,50 @@ describe('ListArticlesUseCase', () => {
     expect(result.articles.map((a) => a.slug)).toEqual(['ray-nau']);
   });
 
+  it('filters by disease codes', async () => {
+    const { store, useCase } = setup();
+    store(
+      buildArticle({ slug: 'dao-on' }),
+      buildArticle({ diseaseCode: 'RICE_BPH', slug: 'ray-nau' }),
+      buildArticle({ diseaseCode: 'RICE_OTHER', slug: 'khac' }),
+    );
+
+    const result = await useCase.execute({
+      crop: 'lua',
+      diseaseCodes: ['RICE_BPH', 'RICE_BLAST', 'RICE_BPH'],
+      limit: 50,
+    });
+
+    expect(result.articles.map((a) => a.slug).sort()).toEqual([
+      'dao-on',
+      'ray-nau',
+    ]);
+  });
+
+  it('keeps only the disease codes of the category when both are given', async () => {
+    const { store, useCase } = setup();
+    store(
+      buildArticle({ slug: 'dao-on' }),
+      buildArticle({ diseaseCode: 'RICE_BPH', slug: 'ray-nau' }),
+    );
+
+    const pest = await useCase.execute({
+      crop: 'lua',
+      category: EDiseaseCategory.PEST,
+      diseaseCodes: ['RICE_BLAST', 'RICE_BPH'],
+      limit: 50,
+    });
+    const none = await useCase.execute({
+      crop: 'lua',
+      category: EDiseaseCategory.PEST,
+      diseaseCodes: ['RICE_BLAST'],
+      limit: 50,
+    });
+
+    expect(pest.articles.map((a) => a.slug)).toEqual(['ray-nau']);
+    expect(none.articles).toEqual([]);
+  });
+
   it('pages with a cursor until the last page', async () => {
     const { store, useCase } = setup();
     store(

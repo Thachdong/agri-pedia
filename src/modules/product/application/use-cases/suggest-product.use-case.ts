@@ -1,9 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IUserQueryPort, USER_QUERY_PORT } from '@modules/user/contracts';
+import { CONFIG_SERVICE, IConfigService } from '@shared/config';
 import { IUnitOfWork, UNIT_OF_WORK } from '@shared/database';
 import { ILogger, LOGGER } from '@shared/logger';
 import {
   EProductSuggestionStatus,
+  EProductUnit,
   normalizeProductName,
   ProductSellerNotAllowedException,
   ProductSuggestionMiss,
@@ -32,6 +34,7 @@ import {
   IProductSuggestionUsageRepository,
   PRODUCT_SUGGESTION_USAGE_REPOSITORY,
 } from '../ports/product-suggestion-usage.repository';
+import { resolveProductNameModel } from '../product-suggestion-ai-model';
 
 export const SUGGESTION_PHOTO_MAX_BYTES = 5 * 1024 * 1024;
 export const SUGGESTION_PHOTO_MIME_TYPES = [
@@ -55,12 +58,17 @@ export type TSuggestProductOutput =
     }
   | {
       status: EProductSuggestionStatus.FOUND;
-      suggestion: { name: string; description: string };
+      suggestion: {
+        name: string;
+        description: string;
+        categoryId: string | null;
+        unit: EProductUnit | null;
+      };
       remaining: number;
     };
 
 /**
- * Reads the product name from a distributor photo and suggests the matching catalog item.
+ * Reads the product name from a distributor photo (AI model: admin-picked, else env) and suggests the matching catalog item.
  * Reserves one suggestion before reading; gives it back when reading fails, moves it to the
  * not-found bonus when the name is not in the catalog (and logs the miss).
  */
@@ -78,6 +86,7 @@ export class SuggestProductUseCase {
     @Inject(PRODUCT_SUGGESTION_MISS_REPOSITORY)
     private readonly misses: IProductSuggestionMissRepository,
     @Inject(USER_QUERY_PORT) private readonly userQuery: IUserQueryPort,
+    @Inject(CONFIG_SERVICE) private readonly config: IConfigService,
     @Inject(UNIT_OF_WORK) private readonly unitOfWork: IUnitOfWork,
     @Inject(LOGGER) logger: ILogger,
   ) {
@@ -98,7 +107,10 @@ export class SuggestProductUseCase {
 
     let name: string | null;
     try {
-      name = await this.reader.read(input.photo);
+      name = await this.reader.read(
+        input.photo,
+        resolveProductNameModel(settings, this.config),
+      );
     } catch (error) {
       await this.update(input.userId, (current) => current.refund());
       if (error instanceof ProductPhotoUnreadableError) {
@@ -123,7 +135,12 @@ export class SuggestProductUseCase {
     if (item) {
       return {
         status: EProductSuggestionStatus.FOUND,
-        suggestion: { name: item.name, description: item.description },
+        suggestion: {
+          name: item.name,
+          description: item.description,
+          categoryId: item.categoryId,
+          unit: item.unit,
+        },
         remaining: usage.remaining(settings),
       };
     }

@@ -138,13 +138,14 @@ describe('top articles (e2e)', () => {
     expect(got.body).toEqual(set.body);
 
     const pub = await http()
-      .get('/knowledge/articles/top?crop=lua')
+      .get('/knowledge/articles/top')
       .expect(200)
       .expect('Cache-Control', 'public, max-age=60');
-    expect(pub.body.crop.code).toBe('RICE');
-    expect(pub.body.articles.map((a: { slug: string }) => a.slug)).toEqual(
-      chosen,
-    );
+    expect(pub.body.crops).toHaveLength(1);
+    expect(pub.body.crops[0].crop.code).toBe('RICE');
+    expect(
+      pub.body.crops[0].articles.map((a: { slug: string }) => a.slug),
+    ).toEqual(chosen);
   });
 
   it('cuts the public list to the limit', async () => {
@@ -157,19 +158,15 @@ describe('top articles (e2e)', () => {
       http().put('/admin/knowledge/settings').send({ limit: 1 }),
     ).expect(200);
 
-    const pub = await http()
-      .get('/knowledge/articles/top?crop=lua')
-      .expect(200);
-    expect(pub.body.articles.map((a: { slug: string }) => a.slug)).toEqual([
-      slugs[0],
-    ]);
+    const pub = await http().get('/knowledge/articles/top').expect(200);
+    expect(
+      pub.body.crops[0].articles.map((a: { slug: string }) => a.slug),
+    ).toEqual([slugs[0]]);
   });
 
   it('returns an empty public list when none were chosen', async () => {
-    const pub = await http()
-      .get('/knowledge/articles/top?crop=lua')
-      .expect(200);
-    expect(pub.body.articles).toEqual([]);
+    const pub = await http().get('/knowledge/articles/top').expect(200);
+    expect(pub.body.crops).toEqual([]);
   });
 
   it('rejects unknown, duplicated and too many articles', async () => {
@@ -207,13 +204,11 @@ describe('top articles (e2e)', () => {
         .put('/admin/knowledge/crops/lua/top-articles')
         .send({ articleSlugs: ['Not A Slug'] }),
     ).expect(400);
-    await http().get('/knowledge/articles/top').expect(400);
 
     const res = await asAdmin(
       http().get('/admin/knowledge/crops/khong-co/top-articles'),
     ).expect(404);
     expect(res.body.code).toBe('KNOWLEDGE_CROP_NOT_FOUND');
-    await http().get('/knowledge/articles/top?crop=khong-co').expect(404);
   });
 
   it('returns 403 for a non-admin and 401 without a token', async () => {
