@@ -1,0 +1,3124 @@
+{
+  "version": "2026-10-30",
+  "crop": "COFFEE",
+  "languageUse": {
+    "en": "retrieval / matching (RAG)",
+    "vn": "display to Vietnamese users"
+  },
+  "note": "Mỗi mục: một bệnh / sinh vật gây hại / rối loạn, các biến thể nằm trong 'variants'. Bao quát cà phê vối (Robusta, chính ở Tây Nguyên) và cà phê chè (Arabica); ghi chú riêng khi một đối tượng chỉ/chủ yếu hại cà phê chè. Xem 'verification', 'unverifiedFields', 'reviewNotes' để biết mức kiểm chứng. Không lưu khuyến cáo hoạt chất.",
+  "dictionaries": {
+    "plantPart": {
+      "LEAF": {
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "SHOOT": {
+        "vn": "Chồi / lá non",
+        "en": "Shoot / young leaves"
+      },
+      "BRANCH": {
+        "vn": "Cành",
+        "en": "Branch"
+      },
+      "TRUNK": {
+        "vn": "Thân",
+        "en": "Trunk / stem"
+      },
+      "COLLAR": {
+        "vn": "Gốc / cổ rễ",
+        "en": "Stem base / collar"
+      },
+      "ROOT": {
+        "vn": "Rễ",
+        "en": "Root"
+      },
+      "FLOWER": {
+        "vn": "Hoa",
+        "en": "Flower"
+      },
+      "FRUIT": {
+        "vn": "Quả",
+        "en": "Berry (cherry)"
+      },
+      "WHOLE_PLANT": {
+        "vn": "Toàn cây",
+        "en": "Whole plant"
+      }
+    },
+    "cropStage": {
+      "SEEDLING": {
+        "vn": "Cây con / vườn ươm",
+        "en": "Seedling / nursery"
+      },
+      "YOUNG_TREE": {
+        "vn": "Kiến thiết cơ bản",
+        "en": "Young non-bearing tree"
+      },
+      "FLOWERING": {
+        "vn": "Ra hoa",
+        "en": "Flowering"
+      },
+      "FRUIT_SET": {
+        "vn": "Đậu quả / quả non",
+        "en": "Fruit set / young berries"
+      },
+      "FRUIT_DEVELOPMENT": {
+        "vn": "Nuôi quả",
+        "en": "Berry development"
+      },
+      "HARVEST": {
+        "vn": "Thu hoạch / sau thu hoạch (quả, nhân)",
+        "en": "Harvest / postharvest (berries, beans)"
+      },
+      "TREE_RECOVERY": {
+        "vn": "Phục hồi cây sau thu hoạch",
+        "en": "Post-harvest tree recovery"
+      }
+    },
+    "season": {
+      "RAINY": {
+        "vn": "Mùa mưa",
+        "en": "Rainy season"
+      },
+      "DRY": {
+        "vn": "Mùa khô",
+        "en": "Dry season"
+      },
+      "YEAR_ROUND": {
+        "vn": "Quanh năm",
+        "en": "Year-round"
+      }
+    },
+    "category": {
+      "DISEASE": {
+        "vn": "Bệnh",
+        "en": "Disease"
+      },
+      "PEST": {
+        "vn": "Sinh vật gây hại",
+        "en": "Pest"
+      },
+      "DISORDER": {
+        "vn": "Rối loạn dinh dưỡng / sinh lý",
+        "en": "Nutrient / physiological disorder"
+      }
+    },
+    "agentType": {
+      "FUNGUS": {
+        "vn": "Nấm",
+        "en": "Fungus"
+      },
+      "COMPLEX": {
+        "vn": "Phức hợp nhiều tác nhân",
+        "en": "Complex of agents"
+      },
+      "NEMATODE": {
+        "vn": "Tuyến trùng",
+        "en": "Nematode"
+      },
+      "INSECT": {
+        "vn": "Côn trùng",
+        "en": "Insect"
+      },
+      "MITE": {
+        "vn": "Nhện hại",
+        "en": "Mite"
+      },
+      "NUTRIENT": {
+        "vn": "Dinh dưỡng",
+        "en": "Nutrient"
+      }
+    },
+    "verification": {
+      "SOURCED": "Viết lại từ tài liệu của cơ quan chuyên môn / tạp chí khoa học (xem references)",
+      "SECONDARY": "Nguồn thứ cấp hoặc tài liệu nước ngoài, chưa có tài liệu chuyên môn Việt Nam — cần chuyên gia xác nhận"
+    }
+  },
+  "count": 25,
+  "diseases": [
+    {
+      "id": "COFFEE_LEAF_RUST",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh gỉ sắt",
+        "en": "Coffee leaf rust",
+        "scientific": "Hemileia vastatrix",
+        "aliasesVn": [
+          "Bệnh rỉ sắt"
+        ],
+        "aliasesEn": [
+          "Orange rust"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Hemileia vastatrix Berkeley & Broome."
+        ],
+        "en": [
+          "Fungus Hemileia vastatrix Berk. & Broome."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Mặt trên lá có đốm nhỏ màu vàng nhạt (3–5 mm), chủ yếu giữa các gân lá, lớn dần và liên kết với nhau.",
+          "Mặt dưới lá, ứng với đốm, có lớp bột màu vàng cam (bào tử); vết bệnh có thể lớn tới khoảng 15 mm.",
+          "Vết bệnh cũ ở mặt trên chuyển nâu, có quầng vàng bao quanh.",
+          "Bệnh nặng làm rụng lá, khô cành, cây suy kiệt, giảm năng suất năm sau."
+        ],
+        "en": [
+          "Small pale-yellow spots (3–5 mm) on the upper leaf surface, mostly between veins, enlarging and merging.",
+          "Powdery yellow-orange spore masses on the underside beneath the spots; lesions can reach about 15 mm.",
+          "Older lesions turn brown on the upper surface with a yellow halo.",
+          "Severe attack causes leaf drop, branch dieback and tree exhaustion, lowering next season's yield."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử phát tán nhờ gió, nước mưa, côn trùng; cần nước tự do (mưa, sương) để nảy mầm."
+          ],
+          "en": [
+            "Spores spread by wind, rain splash and insects; need free water (rain, dew) to germinate."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_DEVELOPMENT",
+          "HARVEST"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Xuất hiện đầu mùa mưa, phát triển mạnh nhất cuối mùa mưa.",
+          "Ẩm độ cao, mưa nhiều, có sương; vườn rậm, thiếu dinh dưỡng, cây mang nhiều quả.",
+          "Cà phê chè (Arabica) nhiễm nặng nhất; cà phê vối (Robusta) bị đáng kể ở giống mẫn cảm."
+        ],
+        "en": [
+          "Appears at the start of the rainy season and peaks at its end.",
+          "High humidity, frequent rain and dew; dense canopies, poor nutrition, heavy crop load.",
+          "Arabica is most susceptible; Robusta is affected significantly in susceptible clones."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Trồng hoặc ghép cải tạo bằng giống kháng gỉ sắt đã công nhận (vd TR4, TR5, TR6, TR7, TR8, TR9, TR11, TR12).",
+            "Thu gom, vùi lá bệnh rụng; tỉa cành tạo tán thông thoáng, mật độ trồng hợp lý."
+          ],
+          "en": [
+            "Plant or top-work with recognised rust-resistant clones (e.g. TR4, TR5, TR6, TR7, TR8, TR9, TR11, TR12).",
+            "Collect and bury fallen diseased leaves; prune for an open canopy and use proper spacing."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Dùng chế phẩm Trichoderma hoặc Trichoderma phối hợp chất hữu cơ, chitosan."
+          ],
+          "en": [
+            "Use Trichoderma products, alone or with organic matter and chitosan."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân cân đối, đủ đạm và kali để cây không kiệt sức khi mang nhiều quả."
+          ],
+          "en": [
+            "Balanced fertilisation with enough N and K so heavily bearing trees are not exhausted."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_BROWN_EYE_SPOT",
+            "distinguishingFeature": {
+              "vn": "Đốm mắt cua: vết tròn tâm xám trắng, viền nâu đậm, không có bột cam mặt dưới lá; gỉ sắt có bột vàng cam mặt dưới.",
+              "en": "Brown eye spot: round spots with grey-white centre and dark brown ring, no orange powder underneath; rust has orange powder on the underside."
+            }
+          },
+          {
+            "id": "COFFEE_K_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu kali: cháy từ mép và chóp lá, không có bột bào tử.",
+              "en": "K deficiency: scorch from leaf margin and tip, no spore powder."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "orange powder under leaf",
+          "yellow spots upper surface",
+          "yellow halo",
+          "leaf drop"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "UBND tỉnh Đắk Lắk – Quy trình quản lý tổng hợp rệp sáp và một số sâu bệnh hại trên cà phê tại Tây Nguyên",
+          "url": "https://vpubnd.daklak.gov.vn/quy-trinh-quan-ly-tong-hop-rep-sap-va-mot-so-sau-benh-hai-tren-ca-phe-tai-tay-nguyen-8553.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "Pacific Pests, Pathogens & Weeds – Coffee rust (fact sheet 141)",
+          "url": "https://apps.lucidcentral.org/ppp_v9/text/web_mini/entities/coffee_rust_141.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_BROWN_EYE_SPOT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh đốm mắt cua",
+        "en": "Brown eye spot",
+        "scientific": "Cercospora coffeicola (Mycosphaerella coffeicola)",
+        "aliasesVn": [
+          "Đốm nâu quả"
+        ],
+        "aliasesEn": [
+          "Cercospora leaf spot",
+          "Berry blotch"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "FRUIT"
+        ],
+        "vn": "Lá, Quả",
+        "en": "Leaf, Berry (cherry)"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Cercospora coffeicola (giai đoạn hữu tính Mycosphaerella coffeicola)."
+        ],
+        "en": [
+          "Fungus Cercospora coffeicola (teleomorph Mycosphaerella coffeicola)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Trên lá: đốm tròn nhỏ màu nâu, lớn dần tới khoảng 15 mm, tâm nâu nhạt hoặc xám trắng, vòng nâu đậm rộng bên ngoài và viền vàng – giống mắt cua.",
+          "Đốm thường giữa các gân và dọc mép lá; nhiều đốm liên kết làm cháy lá, lá rụng sớm.",
+          "Trên quả xanh: vết nâu không đều (thường < 5 mm) ở phía hứng nắng, có khi lan khắp quả; quả chín ép, vỏ khô dính vào nhân, một số rụng."
+        ],
+        "en": [
+          "On leaves: small brown spots enlarging to about 15 mm, light brown or grey-white centre, wide dark brown ring and yellow margin – an 'eye' look.",
+          "Spots mostly between veins and along margins; merging spots cause blight and early leaf drop.",
+          "On green berries: irregular brown lesions (usually < 5 mm) on the sun-exposed side, sometimes covering the berry; berries ripen early, the skin dries onto the bean, some drop."
+        ]
+      },
+      "variants": [
+        {
+          "id": "COFFEE_BROWN_EYE_SPOT__LEAF",
+          "names": {
+            "vn": "Đốm mắt cua trên lá",
+            "en": "Brown eye spot on leaves"
+          },
+          "affectedPart": {
+            "vn": "Lá",
+            "en": "Leaf"
+          },
+          "symptoms": {
+            "vn": [
+              "Đốm tròn tâm xám trắng, vòng nâu đậm, viền vàng trên phiến lá; nặng ở cây con vườn ươm và cây kiến thiết cơ bản."
+            ],
+            "en": [
+              "Round spots with grey-white centre, dark brown ring and yellow margin on the blade; worst on nursery and young plants."
+            ]
+          }
+        },
+        {
+          "id": "COFFEE_BROWN_EYE_SPOT__BERRY",
+          "names": {
+            "vn": "Đốm nâu trên quả",
+            "en": "Berry blotch"
+          },
+          "affectedPart": {
+            "vn": "Quả",
+            "en": "Berry (cherry)"
+          },
+          "symptoms": {
+            "vn": [
+              "Vết nâu lõm không đều ở phía hứng nắng của quả xanh, quả chín ép, vỏ khô dính nhân."
+            ],
+            "en": [
+              "Irregular sunken brown blotches on the sunny side of green berries; premature ripening, skin dries onto the bean."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử phát tán nhờ gió và nước mưa bắn; tàn dư cành lá tỉa để lại trong vườn là nguồn bệnh."
+          ],
+          "en": [
+            "Spores spread by wind and rain splash; pruning debris left in the field is a source of inoculum."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Ẩm độ cao, mưa, nhiệt độ ấm; cây bị khô hạn sau ra hoa.",
+          "Thiếu dinh dưỡng (nhất là đạm, kali), thiếu bóng che; cây con sót lại trong vườn ươm từ năm trước."
+        ],
+        "en": [
+          "High humidity, rain and warm weather; drought stress after flowering.",
+          "Poor nutrition (especially N and K), too little shade; seedlings left over in the nursery from the previous year."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Giãn khoảng cách cây con trong vườn ươm cho thông thoáng; trồng cây che bóng hợp lý (khoảng 35–65%).",
+            "Tỉa cành cho tán thoáng, đưa tàn dư cành lá tỉa ra khỏi vườn."
+          ],
+          "en": [
+            "Space nursery seedlings for airflow; provide moderate shade (about 35–65%).",
+            "Prune for an open canopy and remove pruning debris from the field."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón đủ đạm và kali, đảm bảo thoát nước tốt để giảm stress cho cây."
+          ],
+          "en": [
+            "Supply enough N and K and ensure good drainage to reduce plant stress."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_LEAF_RUST",
+            "distinguishingFeature": {
+              "vn": "Gỉ sắt có bột vàng cam mặt dưới lá; đốm mắt cua không có bột, tâm xám trắng, vòng nâu đậm.",
+              "en": "Rust has orange powder under the leaf; brown eye spot has no powder, a grey-white centre and dark brown ring."
+            }
+          },
+          {
+            "id": "COFFEE_ANTHRACNOSE",
+            "distinguishingFeature": {
+              "vn": "Thán thư trên quả: vết đen lõm, thường từ cuống, quả khô đen; đốm mắt cua: vết nâu phía hứng nắng.",
+              "en": "Anthracnose on berries: black sunken lesions often from the stalk, berries dry black; brown eye spot: brown blotch on the sunny side."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "eye spot",
+          "grey centre",
+          "dark brown ring",
+          "yellow margin",
+          "berry blotch"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "Pacific Pests, Pathogens & Weeds – Coffee brown eye spot / berry blotch (fact sheet 142)",
+          "url": "https://apps.lucidcentral.org/ppp/text/web_full/entities/coffee_browneye_spot_142.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_ANTHRACNOSE",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh khô cành, khô quả (thán thư)",
+        "en": "Anthracnose, twig dieback and berry rot",
+        "scientific": "Colletotrichum spp. (C. gloeosporioides, C. coffeanum)",
+        "aliasesVn": [
+          "Khô cành khô quả",
+          "Thối cuống quả",
+          "Thán thư"
+        ],
+        "aliasesEn": [
+          "Die-back",
+          "Berry stalk rot"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "BRANCH",
+          "FRUIT",
+          "LEAF"
+        ],
+        "vn": "Cành, Quả, Lá",
+        "en": "Branch, Berry (cherry), Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Colletotrichum spp. (C. gloeosporioides, C. coffeanum).",
+          "Khô cành, khô quả cũng có thể do sinh lý: mất cân đối dinh dưỡng, cây mang quá nhiều quả bị kiệt sức; nấm thường xâm nhập sau."
+        ],
+        "en": [
+          "Fungi Colletotrichum spp. (C. gloeosporioides, C. coffeanum).",
+          "Twig and berry dieback can also be physiological (nutrient imbalance, exhaustion from overbearing), with the fungus invading afterwards."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cành khô từ ngọn hoặc từng đoạn, lá trên cành vàng rồi khô, quả trên cành khô đen.",
+          "Quả non và quả đang lớn có vết nâu đen lõm nhỏ, lan ra cả quả; quả thối từ cuống rồi rụng, nhân bị nâu.",
+          "Trên lá: đốm tròn màu xám nâu nhỏ 2–3 mm hoặc mảng khô."
+        ],
+        "en": [
+          "Branches die back from the tip or in sections; leaves yellow then dry; berries on the branch turn black and dry.",
+          "Young and developing berries show small dark sunken spots that spread; berries rot from the stalk and drop; beans turn brown.",
+          "On leaves: small grey-brown round spots (2–3 mm) or dry patches."
+        ]
+      },
+      "variants": [
+        {
+          "id": "COFFEE_ANTHRACNOSE__DIEBACK",
+          "names": {
+            "vn": "Khô cành",
+            "en": "Twig dieback"
+          },
+          "affectedPart": {
+            "vn": "Cành",
+            "en": "Branch"
+          },
+          "symptoms": {
+            "vn": [
+              "Cành tơ, cành quả khô dần từ ngọn vào trong; lá vàng, khô; xuất hiện giữa mùa mưa (tháng 7–9)."
+            ],
+            "en": [
+              "Young and bearing branches die back from the tip; leaves yellow and dry; appears mid rainy season (July–September)."
+            ]
+          }
+        },
+        {
+          "id": "COFFEE_ANTHRACNOSE__BERRY",
+          "names": {
+            "vn": "Khô quả, thối cuống quả",
+            "en": "Berry dieback and stalk rot"
+          },
+          "affectedPart": {
+            "vn": "Quả",
+            "en": "Berry (cherry)"
+          },
+          "symptoms": {
+            "vn": [
+              "Cuống quả thâm đen, quả non thối từ cuống, khô đen và rụng; quả lớn có vết đen lõm."
+            ],
+            "en": [
+              "Berry stalks blacken; young berries rot from the stalk, dry black and drop; larger berries show black sunken spots."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Nấm sống hoại sinh trên vỏ cành chết; bào tử lan theo nước mưa bắn, chim, công cụ."
+          ],
+          "en": [
+            "The fungus survives on dead bark; spores spread by rain splash, birds and tools."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_SET",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Bắt đầu đầu mùa mưa, rõ khi quả 6–7 tháng tuổi; khô cành giữa mùa mưa (tháng 7–9).",
+          "Cây mang quá nhiều quả, thiếu đạm và kali, không có cây che bóng."
+        ],
+        "en": [
+          "Begins early in the rainy season and is obvious when berries are 6–7 months old; dieback mid rainy season (July–September).",
+          "Overbearing trees, lack of N and K, no shade trees."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Trồng cây che bóng hợp lý; cắt bỏ, tiêu hủy cành và quả bệnh."
+          ],
+          "en": [
+            "Use proper shade trees; cut out and destroy diseased branches and berries."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Dùng chế phẩm Trichoderma phối hợp chất hữu cơ, chitosan."
+          ],
+          "en": [
+            "Use Trichoderma products with organic matter and chitosan."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón đủ đạm và kali (lá có hàm lượng đạm ≥ 4% ít bị hại), cân đối với lượng quả trên cây."
+          ],
+          "en": [
+            "Supply enough N and K (leaves with ≥ 4% N are less affected), matched to crop load."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_TWIG_BORER",
+            "distinguishingFeature": {
+              "vn": "Mọt đục cành: có lỗ đục nhỏ ở mặt dưới cành, cành héo phía ngoài lỗ; khô cành do nấm không có lỗ đục.",
+              "en": "Twig borer: a small entry hole under the twig, wilting beyond the hole; fungal dieback has no hole."
+            }
+          },
+          {
+            "id": "COFFEE_PINK_DISEASE",
+            "distinguishingFeature": {
+              "vn": "Nấm hồng: lớp nấm màu hồng trên vỏ cành; thán thư không có lớp hồng.",
+              "en": "Pink disease: pink fungal crust on the bark; anthracnose has none."
+            }
+          },
+          {
+            "id": "COFFEE_BROWN_EYE_SPOT"
+          }
+        ],
+        "visualKeywords": [
+          "twig dieback",
+          "black dried berries",
+          "stalk rot",
+          "sunken black spots"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_PINK_DISEASE",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh nấm hồng",
+        "en": "Pink disease",
+        "scientific": "Erythricium salmonicolor (syn. Corticium salmonicolor)",
+        "aliasesVn": [
+          "Mốc hồng"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "BRANCH"
+        ],
+        "vn": "Cành",
+        "en": "Branch"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Erythricium salmonicolor (tên cũ Corticium salmonicolor)."
+        ],
+        "en": [
+          "Fungus Erythricium salmonicolor (formerly Corticium salmonicolor)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Đầu tiên có lớp sợi nấm trắng mảnh như mạng nhện trên vỏ cành, thường ở chỗ phân cành phía trên tán.",
+          "Sau đó thành lớp vảy màu hồng phấn trên vỏ cành; vết cũ chuyển trắng xám, vỏ nứt nẻ.",
+          "Lá trên cành bệnh héo, nâu nhưng vẫn treo trên cành; phần lớn cành bệnh chết."
+        ],
+        "en": [
+          "First, fine white cobweb-like threads on branch bark, often at forks in the upper canopy.",
+          "Then a salmon-pink crust on the bark; old lesions turn greyish white and the bark cracks.",
+          "Leaves on the infected branch wilt and turn brown but stay attached; most diseased branches die."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử lan theo gió và nước mưa; nấm tồn tại trên vết bệnh ở cành, thân qua mùa khô."
+          ],
+          "en": [
+            "Spores spread by wind and rain; the fungus survives in branch and stem cankers through the dry season."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Phát triển mạnh các tháng cuối mùa mưa (tháng 7–10).",
+          "Tán rậm, che bóng dày, ẩm độ cao; cây trồng dày, thiếu dinh dưỡng."
+        ],
+        "en": [
+          "Most active in the late rainy season (July–October).",
+          "Dense canopy and heavy shade, high humidity; close planting, poor nutrition."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Phát hiện sớm, cắt và đốt cành bệnh, cắt thấp hơn vết bệnh khoảng 10 cm.",
+            "Tỉa cành để tán thông thoáng, điều chỉnh cây che bóng."
+          ],
+          "en": [
+            "Detect early; cut and burn diseased branches about 10 cm below the lesion.",
+            "Prune for an open canopy and adjust shade."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Có thể dùng chế phẩm Trichoderma."
+          ],
+          "en": [
+            "Trichoderma products may be used."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_THREAD_BLIGHT",
+            "distinguishingFeature": {
+              "vn": "Màng nhện: sợi nấm trắng/đen bám lá, lá chết treo bằng sợi nấm, không có vảy hồng trên vỏ cành.",
+              "en": "Thread blight: white/black threads on leaves holding dead leaves, no pink crust on the bark."
+            }
+          },
+          {
+            "id": "COFFEE_ANTHRACNOSE",
+            "distinguishingFeature": {
+              "vn": "Khô cành do thán thư không có lớp nấm hồng.",
+              "en": "Anthracnose dieback has no pink crust."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "pink crust on branch",
+          "white cobweb on bark",
+          "dead leaves attached",
+          "branch dieback"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "UBND tỉnh Đắk Lắk – Quy trình quản lý tổng hợp rệp sáp và một số sâu bệnh hại trên cà phê tại Tây Nguyên",
+          "url": "https://vpubnd.daklak.gov.vn/quy-trinh-quan-ly-tong-hop-rep-sap-va-mot-so-sau-benh-hai-tren-ca-phe-tai-tay-nguyen-8553.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "Pacific Pests, Pathogens & Weeds – Pink disease (Erythricium salmonicolor; ký chủ gồm cà phê)",
+          "url": "https://apps.lucidcentral.org/pppw_v10/text/web_full/entities/cocoa_pink_disease_012.htm"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_THREAD_BLIGHT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh nấm màng nhện (thối đen lá)",
+        "en": "Thread blight (black rot)",
+        "scientific": "Ceratobasidium noxium (syn. Corticium koleroga, Pellicularia koleroga)",
+        "aliasesVn": [
+          "Bệnh sợi bạc",
+          "Thối đen"
+        ],
+        "aliasesEn": [
+          "Koleroga",
+          "Black rot"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "BRANCH",
+          "FRUIT"
+        ],
+        "vn": "Lá, Cành, Quả",
+        "en": "Leaf, Branch, Berry (cherry)"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Ceratobasidium noxium (tên cũ Corticium koleroga / Pellicularia koleroga)."
+        ],
+        "en": [
+          "Fungus Ceratobasidium noxium (formerly Corticium koleroga / Pellicularia koleroga)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Sợi nấm trắng mảnh như mạng nhện bám trên cành, cuống lá và mặt dưới phiến lá.",
+          "Lá bệnh lúc đầu xám nhạt, khô rồi chuyển nâu đen; lá chết rụng nhưng nhiều lá vẫn treo lủng lẳng trên cành nhờ sợi nấm.",
+          "Quả non trong chùm cũng thối đen, rụng; bệnh có thể làm khô gần hết tán, nhất là cà phê chè."
+        ],
+        "en": [
+          "Fine white cobweb-like threads on twigs, petioles and leaf undersides.",
+          "Infected leaves first look pale grey and dry, then turn dark brown to black; dead leaves fall but many hang from the twig on fungal threads.",
+          "Developing berries in the cluster also blacken and drop; can dry out most of the canopy, especially on Arabica."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Sợi nấm tồn tại trên cành quanh năm, lan khi lá chạm nhau và qua tàn dư bệnh."
+          ],
+          "en": [
+            "Mycelium persists on twigs year-round and spreads by leaf contact and infected debris."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa mưa, nơi ẩm, thiếu ánh sáng, che bóng quá dày; cà phê chè bị nặng hơn."
+        ],
+        "en": [
+          "Rainy season, humid and shady sites, overly dense shade; Arabica more affected."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Cắt bỏ cành bệnh thấp hơn phần bệnh khoảng 30 cm, mang ra khỏi vườn tiêu hủy.",
+            "Điều chỉnh cây che bóng, tỉa cành để vườn thông thoáng."
+          ],
+          "en": [
+            "Prune about 30 cm below the affected part and remove and burn prunings.",
+            "Thin shade trees and prune for good airflow."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_PINK_DISEASE",
+            "distinguishingFeature": {
+              "vn": "Nấm hồng có vảy hồng trên vỏ cành; màng nhện có sợi nấm trên lá và lá đen treo trên cành.",
+              "en": "Pink disease shows a pink crust on bark; thread blight shows threads on leaves and black leaves hanging."
+            }
+          },
+          {
+            "id": "COFFEE_SOOTY_MOLD",
+            "distinguishingFeature": {
+              "vn": "Muội đen chỉ là lớp bột đen phủ mặt lá, lau được, lá vẫn xanh bên dưới.",
+              "en": "Sooty mould is a black film that rubs off, with green leaf tissue below."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "white threads",
+          "black dead leaves hanging",
+          "cobweb",
+          "shaded humid"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "Pacific Pests, Pathogens & Weeds – Coffee thread blight (fact sheet 199)",
+          "url": "https://apps.lucidcentral.org/pppw_v10/text/web_full/entities/coffee_thread_blight_199.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_SOOTY_MOLD",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh muội đen (bồ hóng)",
+        "en": "Sooty mould",
+        "scientific": "Capnodium spp. và nấm muội khác",
+        "aliasesVn": [
+          "Nấm muội đen",
+          "Bồ hóng"
+        ],
+        "aliasesEn": [
+          "Fumagine"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "BRANCH",
+          "FRUIT"
+        ],
+        "vn": "Lá, Cành, Quả",
+        "en": "Leaf, Branch, Berry (cherry)"
+      },
+      "pathogens": {
+        "vn": [
+          "Nhóm nấm muội (Capnodium spp. …) sống trên chất mật do rệp vảy, rệp sáp tiết ra; không xâm nhập mô cây."
+        ],
+        "en": [
+          "Sooty mould fungi (Capnodium spp. etc.) growing on honeydew from scales and mealybugs; they do not invade plant tissue."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lớp bột màu đen phủ mặt trên lá, cành, chùm quả; có thể lau hoặc bóc ra, mô lá bên dưới vẫn xanh.",
+          "Thường đi cùng rệp vảy xanh, rệp vảy nâu, rệp sáp và kiến; lá bị phủ dày giảm quang hợp, cây kém phát triển."
+        ],
+        "en": [
+          "Black powdery film on the upper leaf surface, twigs and berry clusters; it can be wiped or peeled off, leaving green tissue.",
+          "Usually with green or brown scales, mealybugs and ants; thick coating reduces photosynthesis and growth."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Bào tử nấm có sẵn trong không khí, phát triển ở nơi có chất mật của côn trùng chích hút."
+          ],
+          "en": [
+            "Airborne spores colonise honeydew left by sap-sucking insects."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FLOWERING",
+          "FRUIT_SET",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mật độ rệp vảy, rệp sáp cao (mùa khô); vườn rậm, ít gió."
+        ],
+        "en": [
+          "High scale or mealybug populations (dry season); dense, sheltered plots."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Phòng trừ rệp chích hút và kiến là biện pháp chính; tỉa cành cho thông thoáng."
+          ],
+          "en": [
+            "Controlling sap-sucking insects and ants is the main measure; prune for airflow."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_SCALE",
+            "distinguishingFeature": {
+              "vn": "Rệp vảy: thấy con rệp dẹt màu xanh/nâu bám dọc gân lá, cành non; muội đen là hậu quả đi kèm.",
+              "en": "Scale: flat green/brown insects along veins and young twigs; sooty mould is a consequence."
+            }
+          },
+          {
+            "id": "COFFEE_THREAD_BLIGHT"
+          }
+        ],
+        "visualKeywords": [
+          "black sooty film",
+          "wipes off",
+          "honeydew",
+          "ants"
+        ]
+      },
+      "verification": "SOURCED",
+      "unverifiedFields": [
+        "epidemiology.cropStage"
+      ],
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_YELLOW_LEAF_ROOT_ROT",
+      "category": "DISEASE",
+      "agentType": "COMPLEX",
+      "names": {
+        "vn": "Bệnh vàng lá, thối rễ",
+        "en": "Yellow leaf and root rot",
+        "scientific": "Pratylenchus coffeae + Fusarium oxysporum / Fusarium spp.",
+        "aliasesVn": [
+          "Vàng lá thối rễ",
+          "Thối rễ"
+        ],
+        "aliasesEn": [
+          "Root rot complex",
+          "Lesion nematode – Fusarium complex"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / VAAS",
+      "affectedPart": {
+        "codes": [
+          "ROOT",
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Rễ, Lá, Toàn cây",
+        "en": "Root, Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Tuyến trùng gây vết thương Pratylenchus coffeae (tác nhân chính), Pratylenchus spp., cùng Meloidogyne spp.",
+          "Nấm Fusarium oxysporum và Fusarium spp. xâm nhập qua vết thương tuyến trùng gây thối rễ."
+        ],
+        "en": [
+          "Lesion nematode Pratylenchus coffeae (main agent), Pratylenchus spp., together with Meloidogyne spp.",
+          "Fungi Fusarium oxysporum and Fusarium spp. entering through nematode wounds and rotting the roots."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá vàng toàn cây hoặc từng phần, cây sinh trưởng chậm, ít cành cấp hai; mùa khô cây héo vàng.",
+          "Cây kiến thiết cơ bản: rễ cọc thối, cây nghiêng vào mùa mưa, nhổ lên dễ dàng bằng tay.",
+          "Cây kinh doanh: rễ tơ, rễ ngang, chóp rễ thối mềm thâm đen; rễ có thể sưng, nứt nẻ."
+        ],
+        "en": [
+          "Whole or partial yellowing, slow growth, few secondary branches; trees wilt and yellow in the dry season.",
+          "Young trees: rotten taproot, trees lean in the rainy season and can be pulled out by hand.",
+          "Bearing trees: feeder roots, laterals and root tips rot soft and dark; roots may swell and crack."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Tuyến trùng và nấm tồn tại trong đất, rễ cũ; lây qua cây giống nhiễm bệnh, nước chảy tràn, tưới tràn."
+          ],
+          "en": [
+            "Nematodes and fungi persist in soil and old roots; spread by infected seedlings, runoff and flood irrigation."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất tái canh có nguồn tuyến trùng (bệnh xuất hiện khi P. coffeae > 500 con/5 g rễ).",
+          "Mùa mưa, tưới tràn, đất nghèo hữu cơ; vườn cho năng suất cao liên tục."
+        ],
+        "en": [
+          "Replanted soil with nematodes (disease appears above about 500 P. coffeae per 5 g roots).",
+          "Rainy season, flood irrigation, low organic matter; plots with continuously high yields."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Nhổ bỏ cây bệnh, cày rà gom rễ tiêu hủy; luân canh cây phân xanh hoặc đậu đỗ 2–3 năm trước khi trồng lại.",
+            "Không ươm cây trên đất có tuyến trùng; chọn cây giống khỏe; hạn chế xới xáo, không tưới tràn."
+          ],
+          "en": [
+            "Remove diseased trees, plough and destroy old roots; rotate with green manure or legumes for 2–3 years before replanting.",
+            "Do not raise seedlings on nematode-infested soil; use healthy seedlings; limit tillage, avoid flood irrigation."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Xử lý bầu ươm bằng chế phẩm Paecilomyces lilacinus, chitosan; dùng chế phẩm Trichoderma hạn chế nấm."
+          ],
+          "en": [
+            "Treat nursery bags with Paecilomyces lilacinus or chitosan; use Trichoderma against the fungi."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón phân cân đối, tăng phân hữu cơ, bổ sung phân bón lá cho vườn năng suất cao liên tục."
+          ],
+          "en": [
+            "Balanced fertiliser, more organic matter, foliar feeding for continuously high-yielding plots."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_ROOT_KNOT_NEMATODE",
+            "distinguishingFeature": {
+              "vn": "Tuyến trùng nốt sần: rễ có nhiều u sần; vàng lá thối rễ: rễ thối mềm, thâm đen, cây dễ nhổ.",
+              "en": "Root-knot: many galls on roots; yellow leaf root rot: soft dark rotting roots, trees pull out easily."
+            }
+          },
+          {
+            "id": "COFFEE_ROOT_MEALYBUG",
+            "distinguishingFeature": {
+              "vn": "Rệp sáp hại rễ: thấy rệp trắng và lớp nấm bao quanh rễ, có kiến.",
+              "en": "Root mealybug: white mealybugs and a fungal sheath around roots, with ants."
+            }
+          },
+          {
+            "id": "COFFEE_N_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu đạm: rễ bình thường, vàng từ lá già.",
+              "en": "N deficiency: healthy roots, yellowing starts on old leaves."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "yellow leaves",
+          "rotten roots",
+          "leaning tree",
+          "pulls out easily",
+          "stunted"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "Tạ Hồng Lĩnh và cs. (2018) – Ảnh hưởng của nấm và tuyến trùng đến bệnh vàng lá thối rễ ở cây cà phê vối trên các nền luân canh. Tạp chí KH&CN Nông nghiệp Việt Nam 03(88): 35–42",
+          "url": "https://tapchi.vaas.vn/vi/tap-chi/anh-huong-cua-nam-va-tuyen-trung-den-benh-vang-la-thoi-re-o-cay-ca-phe-voi-tren-cac-nen"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_ROOT_KNOT_NEMATODE",
+      "category": "DISEASE",
+      "agentType": "NEMATODE",
+      "names": {
+        "vn": "Tuyến trùng nốt sần",
+        "en": "Root-knot nematode",
+        "scientific": "Meloidogyne spp. (M. incognita …)",
+        "aliasesVn": [
+          "Bệnh rễ do tuyến trùng"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "ROOT",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Rễ, Toàn cây",
+        "en": "Root, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Tuyến trùng nốt sần Meloidogyne spp. (M. incognita …)."
+        ],
+        "en": [
+          "Root-knot nematodes Meloidogyne spp. (M. incognita etc.)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rễ phụ có nhiều u sưng dạng nốt sần to nhỏ khác nhau.",
+          "Cây sinh trưởng kém, còi cọc; mùa khô lá vàng héo, nặng có thể chết."
+        ],
+        "en": [
+          "Feeder roots carry many galls of various sizes.",
+          "Poor growth and stunting; leaves yellow and wilt in the dry season; severe cases die."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Lây qua đất, cây giống, nước chảy và nông cụ."
+          ],
+          "en": [
+            "Spread by soil, seedlings, runoff water and tools."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đất tái canh, đất cát pha nhẹ, nghèo hữu cơ; cây giống từ vườn ươm nhiễm tuyến trùng."
+        ],
+        "en": [
+          "Replanted, light and low-organic soils; seedlings from infested nurseries."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Nhổ đốt cây nặng; luân canh hoặc cải tạo đất bằng cây phân xanh 2–3 năm; dùng gốc ghép chống chịu.",
+            "Trồng cúc vạn thọ hoặc vùi thân rễ cúc vạn thọ quanh gốc; không lấy cây giống từ nguồn không rõ."
+          ],
+          "en": [
+            "Uproot and burn badly affected trees; rotate or improve soil with green manure for 2–3 years; use tolerant rootstocks.",
+            "Grow marigold or incorporate marigold residues around trees; avoid seedlings of unknown origin."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Xử lý bầu ươm bằng chế phẩm Paecilomyces lilacinus."
+          ],
+          "en": [
+            "Treat nursery bags with Paecilomyces lilacinus."
+          ]
+        },
+        "nutrition": {
+          "vn": [
+            "Bón nhiều phân hữu cơ."
+          ],
+          "en": [
+            "Apply plenty of organic manure."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_YELLOW_LEAF_ROOT_ROT",
+            "distinguishingFeature": {
+              "vn": "Vàng lá thối rễ: rễ thối mềm thâm đen; tuyến trùng nốt sần: rễ có u sần, chưa thối.",
+              "en": "Yellow leaf root rot: soft dark rotten roots; root-knot: galled roots, not yet rotten."
+            }
+          },
+          {
+            "id": "COFFEE_ROOT_CICADA"
+          }
+        ],
+        "visualKeywords": [
+          "root galls",
+          "knots on roots",
+          "stunted",
+          "yellow wilting dry season"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "Tạ Hồng Lĩnh và cs. (2018) – Ảnh hưởng của nấm và tuyến trùng đến bệnh vàng lá thối rễ ở cây cà phê vối trên các nền luân canh. Tạp chí KH&CN Nông nghiệp Việt Nam 03(88): 35–42",
+          "url": "https://tapchi.vaas.vn/vi/tap-chi/anh-huong-cua-nam-va-tuyen-trung-den-benh-vang-la-thoi-re-o-cay-ca-phe-voi-tren-cac-nen"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_COLLAR_ROT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh lở cổ rễ",
+        "en": "Collar rot / damping-off",
+        "scientific": "Rhizoctonia solani, Fusarium spp.",
+        "aliasesVn": [
+          "Thắt cổ rễ"
+        ],
+        "aliasesEn": [
+          "Damping-off"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "COLLAR"
+        ],
+        "vn": "Gốc / cổ rễ",
+        "en": "Stem base / collar"
+      },
+      "pathogens": {
+        "vn": [
+          "Nấm Rhizoctonia solani Kühn và Fusarium spp."
+        ],
+        "en": [
+          "Fungi Rhizoctonia solani Kühn and Fusarium spp."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Cổ rễ sát mặt đất bị thối hoặc khô một phần, teo thắt lại, vỏ nâu.",
+          "Cây con chậm lớn, vàng lá, héo rũ và có thể chết; chủ yếu ở vườn ươm và cây kiến thiết cơ bản."
+        ],
+        "en": [
+          "The collar at soil level rots or dries partly, constricts and the bark browns.",
+          "Seedlings grow slowly, yellow, wilt and may die; mainly in nurseries and young plantings."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Hạch nấm trong đất là nguồn bệnh, lan theo nước, đất, gió."
+          ],
+          "en": [
+            "Sclerotia in soil are the inoculum, spread by water, soil and wind."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Vườn ươm: bầu đất quá ẩm, mặt bầu đóng váng, ánh sáng không thích hợp.",
+          "Vườn kiến thiết cơ bản: đọng nước, làm cỏ gây vết thương ở cổ rễ."
+        ],
+        "en": [
+          "Nursery: overly wet bags, crusted soil surface, unsuitable light.",
+          "Young plantings: waterlogging, weeding wounds at the collar."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Điều chỉnh ẩm độ, ánh sáng vườn ươm; không dùng lại đất vườn ươm cũ; nhổ đốt cây bệnh nặng.",
+            "Không để đọng nước; tránh gây vết thương cổ rễ khi làm cỏ."
+          ],
+          "en": [
+            "Adjust nursery moisture and light; do not reuse old nursery soil; uproot and burn badly affected plants.",
+            "Avoid waterlogging and collar wounds when weeding."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Dùng chế phẩm Trichoderma viride / Trichoderma spp. phối hợp K-Humate."
+          ],
+          "en": [
+            "Use Trichoderma viride / Trichoderma spp. with K-humate."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_YELLOW_LEAF_ROOT_ROT",
+            "distinguishingFeature": {
+              "vn": "Vàng lá thối rễ: thối ở rễ cọc, rễ tơ dưới đất; lở cổ rễ: vết thắt ở cổ rễ sát mặt đất.",
+              "en": "Yellow leaf root rot: rot of taproot and feeder roots; collar rot: constriction at the collar at soil level."
+            }
+          },
+          {
+            "id": "COFFEE_ROOT_MEALYBUG"
+          }
+        ],
+        "visualKeywords": [
+          "constricted collar",
+          "seedling wilt",
+          "brown collar"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_STEM_CRACK_ROT",
+      "category": "DISEASE",
+      "agentType": "FUNGUS",
+      "names": {
+        "vn": "Bệnh thối nứt thân",
+        "en": "Stem crack and rot",
+        "scientific": "Chưa xác định rõ (nghi Fusarium spp.)",
+        "aliasesVn": [
+          "Nứt thân"
+        ],
+        "aliasesEn": [
+          "Stem canker"
+        ]
+      },
+      "nameVnSource": "UBND Đắk Lắk",
+      "affectedPart": {
+        "codes": [
+          "TRUNK",
+          "SHOOT"
+        ],
+        "vn": "Thân, Chồi / lá non",
+        "en": "Trunk / stem, Shoot / young leaves"
+      },
+      "pathogens": {
+        "vn": [
+          "Nguồn tham khảo không nêu tác nhân; thường được cho là do nấm (Fusarium spp.) – cần xác minh."
+        ],
+        "en": [
+          "The source does not name the agent; often attributed to fungi (Fusarium spp.) – to be verified."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Thân cây bị nứt dọc hoặc có vết thối đen nhỏ trên vỏ thân.",
+          "Phần ngọn phía trên vết bệnh khô héo (khô ngọn)."
+        ],
+        "en": [
+          "Longitudinal cracks or small black rotting lesions on the stem bark.",
+          "The top above the lesion withers and dies (top dieback)."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "RAINY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Xuất hiện khi bắt đầu mùa mưa."
+        ],
+        "en": [
+          "Appears at the start of the rainy season."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Kiểm tra vườn đầu mùa mưa, phát hiện sớm khi thân vừa nứt hoặc vết thối còn nhỏ.",
+            "Cây đã khô ngọn: cưa ngang dưới phần bệnh, đốt bỏ phần bệnh, chăm sóc để nuôi chồi mới."
+          ],
+          "en": [
+            "Inspect plots early in the rainy season to catch fresh cracks or small rot lesions.",
+            "Trees with top dieback: saw below the diseased part, burn it, and grow a new sucker."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_WHITE_STEM_BORER",
+            "distinguishingFeature": {
+              "vn": "Sâu đục thân mình trắng: gờ lằn nổi quanh thân, có lỗ đục và mùn; thối nứt thân không có lỗ đục.",
+              "en": "White stem borer: ridges around the stem, holes and frass; stem crack rot has no bore holes."
+            }
+          },
+          {
+            "id": "COFFEE_PINK_DISEASE"
+          }
+        ],
+        "visualKeywords": [
+          "cracked stem",
+          "black rot on stem",
+          "top dieback"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "pathogens",
+        "names.scientific",
+        "agentType"
+      ],
+      "reviewNotes": {
+        "vn": "Quy trình của UBND Đắk Lắk chỉ mô tả triệu chứng (thân nứt, vết thối đen, khô ngọn) và thời điểm; tác nhân cần chuyên gia xác nhận.",
+        "en": "The Dak Lak procedure only describes symptoms (cracks, black rot, top dieback) and timing; the agent needs expert confirmation."
+      },
+      "references": [
+        {
+          "title": "UBND tỉnh Đắk Lắk – Quy trình quản lý tổng hợp rệp sáp và một số sâu bệnh hại trên cà phê tại Tây Nguyên",
+          "url": "https://vpubnd.daklak.gov.vn/quy-trinh-quan-ly-tong-hop-rep-sap-va-mot-so-sau-benh-hai-tren-ca-phe-tai-tay-nguyen-8553.html"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_SCALE",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rệp vảy (rệp vảy xanh, rệp vảy nâu)",
+        "en": "Soft scales (green scale, brown scale)",
+        "scientific": "Coccus viridis; Saissetia coffeae, S. hemisphaerica",
+        "aliasesVn": [
+          "Rệp sáp mềm xanh"
+        ],
+        "aliasesEn": [
+          "Green coffee scale",
+          "Brown scale"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "SHOOT",
+          "LEAF",
+          "BRANCH",
+          "FRUIT"
+        ],
+        "vn": "Chồi / lá non, Lá, Cành, Quả",
+        "en": "Shoot / young leaves, Leaf, Branch, Berry (cherry)"
+      },
+      "pathogens": {
+        "vn": [
+          "Côn trùng chích hút họ Coccidae: Coccus viridis Green (rệp vảy xanh); Saissetia coffeae, S. hemisphaerica (rệp vảy nâu)."
+        ],
+        "en": [
+          "Sap-sucking soft scales (Coccidae): Coccus viridis Green (green scale); Saissetia coffeae, S. hemisphaerica (brown scale)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Rệp dẹt bám cố định dọc gân mặt dưới lá, trên chồi non, cành non và quả non.",
+          "Rệp chích hút nhựa làm lá, quả rụng, cây kiệt sức; chất mật rệp tiết ra tạo muội đen phủ lá, có nhiều kiến."
+        ],
+        "en": [
+          "Flat, immobile scales along veins on leaf undersides, on young shoots, green twigs and young berries.",
+          "Sap feeding causes leaf and berry drop and tree exhaustion; honeydew leads to sooty mould and attracts ants."
+        ]
+      },
+      "variants": [
+        {
+          "id": "COFFEE_SCALE__GREEN",
+          "names": {
+            "vn": "Rệp vảy xanh",
+            "en": "Green scale",
+            "scientific": "Coccus viridis"
+          },
+          "affectedPart": {
+            "vn": "Chồi / lá non, Lá, Cành",
+            "en": "Shoot / young leaves, Leaf, Branch"
+          },
+          "symptoms": {
+            "vn": [
+              "Rệp hình bầu dục dẹt màu xanh nhạt bóng (2,5–3 mm), có vệt đen hình chữ U trên lưng, xếp dọc gân lá và chồi non."
+            ],
+            "en": [
+              "Flat oval, shiny pale-green scales (2.5–3 mm) with a black U-shaped mark, lined along veins and young shoots."
+            ]
+          }
+        },
+        {
+          "id": "COFFEE_SCALE__BROWN",
+          "names": {
+            "vn": "Rệp vảy nâu",
+            "en": "Brown scale",
+            "scientific": "Saissetia coffeae, S. hemisphaerica"
+          },
+          "affectedPart": {
+            "vn": "Cành, Lá, Quả",
+            "en": "Branch, Leaf, Berry (cherry)"
+          },
+          "symptoms": {
+            "vn": [
+              "Rệp khum hình mũ bảo hiểm, nhẵn bóng, màu vàng nâu đến nâu sẫm (khoảng 2 mm), bám trên cành non và mặt dưới lá."
+            ],
+            "en": [
+              "Helmet-shaped, smooth, shiny yellow-brown to dark brown scales (about 2 mm) on green twigs and leaf undersides."
+            ]
+          }
+        }
+      ],
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Rệp non di chuyển ngắn; kiến mang rệp lan sang cây khác."
+          ],
+          "en": [
+            "Crawlers move short distances; ants carry them to other trees."
+          ]
+        },
+        "cropStage": [
+          "SEEDLING",
+          "YOUNG_TREE",
+          "FLOWERING",
+          "FRUIT_SET"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Phát triển quanh năm, mạnh vào mùa khô và trên vườn kiến thiết cơ bản; nhiều kiến, nhiều cỏ."
+        ],
+        "en": [
+          "Present year-round, worst in the dry season and on young plots; many ants and weeds."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Làm sạch cỏ, cắt cành sát mặt đất để hạn chế kiến; kiểm tra cây giống trước khi trồng.",
+            "Kiểm tra vườn thường xuyên, chỉ xử lý cây có mật độ rệp cao."
+          ],
+          "en": [
+            "Keep weeds down and cut branches touching the ground to limit ants; check seedlings before planting.",
+            "Inspect regularly and treat only heavily infested trees."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bảo vệ thiên địch: bọ rùa đỏ (Rodolia sp.), bọ mắt vàng (Chrysopa sp.), bọ rùa nhỏ (Scymnus sp.); nấm ký sinh Lecanicillium (Verticillium) lecanii."
+          ],
+          "en": [
+            "Protect natural enemies: Rodolia, Chrysopa, Scymnus; the parasitic fungus Lecanicillium (Verticillium) lecanii."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_MEALYBUG",
+            "distinguishingFeature": {
+              "vn": "Rệp sáp: thân phủ sáp trắng như bông, tập trung ở chùm hoa, cuống quả; rệp vảy: dẹt, xanh/nâu, không phủ sáp bông.",
+              "en": "Mealybugs: cottony white wax, clustered on flower clusters and berry stalks; scales: flat, green/brown, no cottony wax."
+            }
+          },
+          {
+            "id": "COFFEE_SOOTY_MOLD"
+          }
+        ],
+        "visualKeywords": [
+          "flat green scales",
+          "brown helmet scales",
+          "along leaf veins",
+          "honeydew",
+          "ants"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_MEALYBUG",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rệp sáp hại quả, chùm hoa",
+        "en": "Mealybugs on flowers and berries",
+        "scientific": "Planococcus kraunhiae, Planococcus citri, Planococcus spp.",
+        "aliasesVn": [
+          "Rệp sáp",
+          "Rệp bông"
+        ],
+        "aliasesEn": [
+          "Berry mealybug"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / UBND Đắk Lắk",
+      "affectedPart": {
+        "codes": [
+          "FLOWER",
+          "FRUIT",
+          "BRANCH"
+        ],
+        "vn": "Hoa, Quả, Cành",
+        "en": "Flower, Berry (cherry), Branch"
+      },
+      "pathogens": {
+        "vn": [
+          "Rệp sáp giả họ Pseudococcidae: Planococcus kraunhiae Kuwana, P. citri và Planococcus spp."
+        ],
+        "en": [
+          "Mealybugs (Pseudococcidae): Planococcus kraunhiae Kuwana, P. citri and Planococcus spp."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Đám rệp phủ sáp trắng như bông bám ở chùm hoa, cuống quả, kẽ giữa các quả trong chùm và đốt cành.",
+          "Hoa, quả non khô rồi rụng; quả chậm lớn, chùm quả khô, cành có thể chết; thường có muội đen và kiến."
+        ],
+        "en": [
+          "Colonies covered in cottony white wax on flower clusters, berry stalks, between berries in the cluster and on nodes.",
+          "Flowers and young berries dry and drop; berries stay small, clusters dry, twigs may die; sooty mould and ants are common."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Kiến và nước chảy tràn là tác nhân lan truyền chính."
+          ],
+          "en": [
+            "Ants and runoff water are the main spread agents."
+          ]
+        },
+        "cropStage": [
+          "FLOWERING",
+          "FRUIT_SET",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Gây hại nặng trong mùa khô, từ sau khi ra hoa, mật độ cao tháng 2–4; nắng mưa xen kẽ, năm hạn."
+        ],
+        "en": [
+          "Severe in the dry season after flowering, peaks February–April; alternating sun and rain, drought years."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Sau thu hoạch tỉa cành thông thoáng, vệ sinh vườn, làm sạch cỏ hạn chế kiến.",
+            "Cắt, tiêu hủy cành, chùm hoa, quả bị hại nặng; kiểm tra thường xuyên, nhất là năm hạn."
+          ],
+          "en": [
+            "After harvest prune for airflow, clean the plot and control weeds to limit ants.",
+            "Cut and destroy heavily infested branches, flower and berry clusters; inspect often, especially in drought years."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bảo vệ thiên địch: bọ rùa đỏ (Rodolia sp.), bọ mắt vàng (Chrysopa sp.), bọ rùa nhỏ (Scymnus sp.), Cryptolaemus montrouzieri."
+          ],
+          "en": [
+            "Protect natural enemies: Rodolia, Chrysopa, Scymnus, Cryptolaemus montrouzieri."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_SCALE"
+          },
+          {
+            "id": "COFFEE_ROOT_MEALYBUG",
+            "distinguishingFeature": {
+              "vn": "Rệp sáp hại rễ ở cổ rễ, rễ dưới đất; rệp sáp hại quả ở chùm hoa, cuống quả trên cây.",
+              "en": "Root mealybugs are at the collar and roots underground; berry mealybugs are on flower and berry clusters."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "white cottony wax",
+          "berry cluster",
+          "flower cluster",
+          "ants",
+          "dried berries"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "UBND tỉnh Đắk Lắk – Quy trình quản lý tổng hợp rệp sáp và một số sâu bệnh hại trên cà phê tại Tây Nguyên",
+          "url": "https://vpubnd.daklak.gov.vn/quy-trinh-quan-ly-tong-hop-rep-sap-va-mot-so-sau-benh-hai-tren-ca-phe-tai-tay-nguyen-8553.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_ROOT_MEALYBUG",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Rệp sáp hại rễ",
+        "en": "Root mealybug",
+        "scientific": "Planococcus lilacinus, Planococcus spp.",
+        "aliasesVn": [
+          "Rệp sáp giả ca cao hại rễ"
+        ],
+        "aliasesEn": [
+          "Coffee root mealybug"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / UBND Đắk Lắk",
+      "affectedPart": {
+        "codes": [
+          "ROOT",
+          "COLLAR",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Rễ, Gốc / cổ rễ, Toàn cây",
+        "en": "Root, Stem base / collar, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Rệp sáp Planococcus lilacinus Cockerell và Planococcus spp.; thường kết hợp với nấm tạo lớp bao quanh rễ."
+        ],
+        "en": [
+          "Mealybugs Planococcus lilacinus Cockerell and Planococcus spp.; often associated with a fungus forming a sheath around roots."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Đào quanh cổ rễ (0–20 cm) thấy rệp trắng phủ sáp bám cổ rễ, rễ ngang, rễ tơ, kèm lớp nấm bao quanh rễ và nhiều kiến.",
+          "Cây chậm lớn, vàng lá, suy yếu, nặng có thể chết; cây kiến thiết cơ bản bị nặng hơn cây kinh doanh.",
+          "Vết chích của rệp là đường cho nấm gây thối rễ xâm nhập."
+        ],
+        "en": [
+          "Digging around the collar (0–20 cm) reveals white waxy mealybugs on the collar, laterals and feeder roots, with a fungal sheath and many ants.",
+          "Slow growth, yellowing, decline; severe cases die; young trees suffer more than bearing trees.",
+          "Feeding wounds let root-rotting fungi in."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Kiến và nước chảy tràn lan truyền rệp."
+          ],
+          "en": [
+            "Ants and runoff spread the mealybugs."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa khô; nhiều kiến; ngưỡng cần xử lý > 100 con/gốc ở vùng cổ rễ sâu 0–20 cm."
+        ],
+        "en": [
+          "Dry season; many ants; action threshold > 100 per tree in the 0–20 cm collar zone."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thường xuyên kiểm tra cổ rễ; nhổ, tiêu hủy cây bị hại rễ nặng, thu dọn sạch rễ.",
+            "Chỉ xử lý cây nhiễm; xử lý xong lấp đất ngay để kiến không mang rệp đi nơi khác."
+          ],
+          "en": [
+            "Check the collar regularly; uproot and destroy badly infested trees and clear their roots.",
+            "Treat only infested trees and refill the soil at once so ants do not move mealybugs."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bới đất quanh cổ rễ, dùng chế phẩm nấm Metarhizium (khoảng 150–250 g/gốc) theo hướng dẫn."
+          ],
+          "en": [
+            "Expose the collar and apply Metarhizium (about 150–250 g per tree) as directed."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_YELLOW_LEAF_ROOT_ROT"
+          },
+          {
+            "id": "COFFEE_ROOT_CICADA",
+            "distinguishingFeature": {
+              "vn": "Ve sầu: ấu trùng to màu nâu trắng trong đất, không có sáp trắng.",
+              "en": "Cicada: large brownish-white nymphs in the soil, no white wax."
+            }
+          },
+          {
+            "id": "COFFEE_MEALYBUG"
+          }
+        ],
+        "visualKeywords": [
+          "white mealybugs on roots",
+          "fungal sheath",
+          "ants at collar",
+          "yellowing young tree"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "UBND tỉnh Đắk Lắk – Quy trình quản lý tổng hợp rệp sáp và một số sâu bệnh hại trên cà phê tại Tây Nguyên",
+          "url": "https://vpubnd.daklak.gov.vn/quy-trinh-quan-ly-tong-hop-rep-sap-va-mot-so-sau-benh-hai-tren-ca-phe-tai-tay-nguyen-8553.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_BERRY_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Mọt đục quả",
+        "en": "Coffee berry borer",
+        "scientific": "Hypothenemus hampei (syn. Stephanoderes hampei)",
+        "aliasesVn": [
+          "Mọt đục quả cà phê"
+        ],
+        "aliasesEn": [
+          "Broca"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "FRUIT"
+        ],
+        "vn": "Quả",
+        "en": "Berry (cherry)"
+      },
+      "pathogens": {
+        "vn": [
+          "Mọt cánh cứng Hypothenemus hampei Ferrari (Curculionidae: Scolytinae)."
+        ],
+        "en": [
+          "Bark beetle Hypothenemus hampei Ferrari (Curculionidae: Scolytinae)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lỗ đục nhỏ (khoảng 1 mm) ở núm quả; bị nặng có từ 2 lỗ trở lên, có mùn bột đùn ra ở miệng lỗ.",
+          "Mọt đục vào phá nhân; quả non bị đục dễ rụng; nhân bị hại có rãnh, lỗ, giảm chất lượng.",
+          "Hại quả xanh già, quả chín, quả khô sót trên cây và dưới đất, cả nhân khô trong kho."
+        ],
+        "en": [
+          "A small hole (about 1 mm) at the berry crown (navel); heavy attack shows two or more holes with powdery frass at the opening.",
+          "Beetles bore into and feed on the bean; young bored berries drop; damaged beans have tunnels and lose quality.",
+          "Attacks mature green, ripe and dry berries left on the tree or ground, and stored dry beans."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Mọt tồn tại trong quả khô sót trên cây và dưới đất, quả và bao bì vận chuyển."
+          ],
+          "en": [
+            "Survives in leftover dry berries on the tree and ground, and in transported berries and bags."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_DEVELOPMENT",
+          "HARVEST"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Thu hoạch không kịp thời, để sót quả; bảo quản hạt có độ ẩm trên 13%."
+        ],
+        "en": [
+          "Late harvest and gleanings left behind; storing beans above 13% moisture."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Thu hoạch kịp thời quả chín; nhặt sạch quả khô trên cây và dưới đất sau thu hoạch, tiêu hủy.",
+            "Phơi sấy, bảo quản quả khô/nhân ở độ ẩm dưới 13%."
+          ],
+          "en": [
+            "Harvest ripe berries on time; collect and destroy all leftover berries on the tree and ground.",
+            "Dry and store berries/beans below 13% moisture."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Bảo vệ ong ký sinh (Cephalonomia stephanoderis, Prorops nasuta, Phymastichus coffea); nấm Beauveria bassiana."
+          ],
+          "en": [
+            "Conserve parasitoids (Cephalonomia stephanoderis, Prorops nasuta, Phymastichus coffea); Beauveria bassiana."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_TWIG_BORER",
+            "distinguishingFeature": {
+              "vn": "Mọt đục cành: lỗ đục trên cành, cành héo; mọt đục quả: lỗ đục ở núm quả.",
+              "en": "Twig borer: holes in twigs and wilting twigs; berry borer: hole at the berry crown."
+            }
+          },
+          {
+            "id": "COFFEE_ANTHRACNOSE"
+          }
+        ],
+        "visualKeywords": [
+          "pinhole at berry crown",
+          "powdery frass",
+          "bored beans",
+          "berry drop"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "UBND tỉnh Đắk Lắk – Quy trình quản lý tổng hợp rệp sáp và một số sâu bệnh hại trên cà phê tại Tây Nguyên",
+          "url": "https://vpubnd.daklak.gov.vn/quy-trinh-quan-ly-tong-hop-rep-sap-va-mot-so-sau-benh-hai-tren-ca-phe-tai-tay-nguyen-8553.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_TWIG_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Mọt đục cành",
+        "en": "Black twig borer (shot hole borer)",
+        "scientific": "Xylosandrus compactus (syn. Xyleborus morstatti)",
+        "aliasesEn": [
+          "Shot hole borer"
+        ]
+      },
+      "nameVnSource": "Khuyến nông QG / Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "BRANCH"
+        ],
+        "vn": "Cành",
+        "en": "Branch"
+      },
+      "pathogens": {
+        "vn": [
+          "Mọt cánh cứng Xylosandrus compactus (tên cũ Xyleborus morstatti Hagedorn), nuôi nấm cộng sinh trong đường đục."
+        ],
+        "en": [
+          "Ambrosia beetle Xylosandrus compactus (formerly Xyleborus morstatti Hagedorn), farming a symbiotic fungus in its galleries."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Một lỗ đục nhỏ tròn (khoảng 1 mm) thường ở mặt dưới cành tơ, cành quả.",
+          "Phần cành phía ngoài lỗ đục vàng, héo, lá rủ rồi khô chết nhanh; chẻ cành thấy đường đục đen."
+        ],
+        "en": [
+          "A single small round hole (about 1 mm), usually on the underside of young or bearing twigs.",
+          "The twig beyond the hole yellows, wilts, leaves droop and die quickly; splitting the twig shows a blackened gallery."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Mọt cái bay sang cành khác."
+          ],
+          "en": [
+            "Adult females fly to new twigs."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Xuất hiện từ đầu mùa khô, mạnh vào giữa và cuối mùa khô; chủ yếu vườn kiến thiết cơ bản."
+        ],
+        "en": [
+          "Starts early in the dry season and peaks mid to late dry season; mainly young plots."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Phát hiện sớm, cắt cành bị hại dưới lỗ đục khoảng 2–7 cm và đốt bỏ; giữ bóng che vừa phải, thoát nước tốt."
+          ],
+          "en": [
+            "Detect early, cut infested twigs about 2–7 cm below the hole and burn them; keep light shade and good drainage."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_ANTHRACNOSE",
+            "distinguishingFeature": {
+              "vn": "Khô cành do nấm không có lỗ đục.",
+              "en": "Fungal dieback has no bore hole."
+            }
+          },
+          {
+            "id": "COFFEE_RED_BORER",
+            "distinguishingFeature": {
+              "vn": "Sâu đục thân mình đỏ: lỗ to hơn, có phân dạng viên đùn ra, thấy sâu non màu đỏ hồng.",
+              "en": "Red borer: larger hole with pellet frass and a reddish-pink caterpillar."
+            }
+          },
+          {
+            "id": "COFFEE_BERRY_BORER"
+          }
+        ],
+        "visualKeywords": [
+          "tiny hole under twig",
+          "wilting twig tip",
+          "dry branch"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Trung tâm Khuyến nông Quốc gia – Phòng trừ sâu bệnh hại trong tái canh cây cà phê vối",
+          "url": "https://khuyennongvn.gov.vn/khoa-hoc-cong-nghe/khcn-trong-nuoc/phong-tru-sau-benh-hai-trong-tai-canh-cay-ca-phe-voi-8014.html"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "Kerala Agricultural University – Coffee shot hole borer (Xylosandrus compactus)",
+          "url": "https://celkau.in/crops/plantation/coffee/holeborer.php"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_RED_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu đục thân mình đỏ (sâu hồng)",
+        "en": "Red coffee borer",
+        "scientific": "Zeuzera coffeae (Polyphagozerra coffeae)",
+        "aliasesVn": [
+          "Sâu đỏ",
+          "Sâu hồng"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "BRANCH",
+          "TRUNK"
+        ],
+        "vn": "Cành, Thân",
+        "en": "Branch, Trunk / stem"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non của bướm Zeuzera coffeae Nietner (Cossidae)."
+        ],
+        "en": [
+          "Larva of the moth Zeuzera coffeae Nietner (Cossidae)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Sâu non màu đỏ hồng đục vào thân hoặc cành; mỗi cây hoặc cành chỉ có một sâu.",
+          "Phân dạng viên đùn ra treo ở miệng lỗ và rơi tích tụ dưới gốc.",
+          "Cây non, cành bị héo; lâu ngày cành khô chết, dễ gãy."
+        ],
+        "en": [
+          "A reddish-pink caterpillar bores into the stem or branch; only one larva per tree or branch.",
+          "Pellet-like frass is pushed out, hangs at the hole and piles up at the base.",
+          "Young plants and branches wilt; later the branch dries, dies and breaks easily."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "YOUNG_TREE"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Chủ yếu hại vườn kiến thiết cơ bản."
+        ],
+        "en": [
+          "Mainly young, non-bearing plots."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Phát hiện sớm, bẻ hoặc chẻ cành để diệt sâu, cắt đốt cành bị hại; gốc còn lại sẽ mọc thân mới thay thế."
+          ],
+          "en": [
+            "Detect early; break or split the branch to kill the larva, cut and burn infested parts; the stump regrows a new stem."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Nấm Beauveria bassiana; ong ký sinh Amyosoma zeuzerae."
+          ],
+          "en": [
+            "Beauveria bassiana; the braconid Amyosoma zeuzerae."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_TWIG_BORER"
+          },
+          {
+            "id": "COFFEE_WHITE_STEM_BORER",
+            "distinguishingFeature": {
+              "vn": "Sâu đục thân mình trắng: gờ lằn nổi quanh thân, sâu non màu trắng kem, chủ yếu cà phê chè.",
+              "en": "White stem borer: ridges around the stem, creamy-white larvae, mainly on Arabica."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "pellet frass",
+          "bore hole in branch",
+          "red caterpillar",
+          "wilted branch"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "TNAU Agritech Portal – Coffee red borer (Zeuzera coffeae)",
+          "url": "https://agritech.tnau.ac.in/crop_protection/coffeepest/coffee_11.html"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_WHITE_STEM_BORER",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Sâu đục thân mình trắng",
+        "en": "White coffee stem borer",
+        "scientific": "Xylotrechus quadripes",
+        "aliasesVn": [
+          "Sâu bore",
+          "Xén tóc đục thân"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "TRUNK",
+          "BRANCH",
+          "ROOT",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Thân, Cành, Rễ, Toàn cây",
+        "en": "Trunk / stem, Branch, Root, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Sâu non của xén tóc Xylotrechus quadripes Chevrolat (Cerambycidae)."
+        ],
+        "en": [
+          "Larva of the longhorn beetle Xylotrechus quadripes Chevrolat (Cerambycidae)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Gờ lằn nổi vòng quanh thân và cành lớn, vỏ nứt, có lỗ đục; đường đục trong gỗ chứa đầy mùn nén chặt, có thể xuống tới rễ.",
+          "Đọt lá xanh đậm, phiến lá biến dạng; nặng thì lá vàng, héo và cây chết (cây 7–8 năm tuổi có thể chết trong một năm).",
+          "Chỉ hại cà phê chè (Arabica)."
+        ],
+        "en": [
+          "Raised ridges around the stem and thick branches, cracked bark and holes; galleries packed with frass, sometimes reaching the roots.",
+          "Shoots dark green with deformed leaves; later leaves yellow and wilt and the tree dies (7–8-year-old trees may die within a year).",
+          "Attacks Arabica only."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Xén tóc trưởng thành đẻ trứng dưới vỏ thân gần gốc (trong khoảng 50 cm)."
+          ],
+          "en": [
+            "Adult beetles lay eggs under bark within about 50 cm of the stem base."
+          ]
+        },
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Vườn cà phê chè thiếu cây che bóng, thân cây lộ nắng; hại nặng ở miền Bắc, có ở Lâm Đồng, Đắk Lắk."
+        ],
+        "en": [
+          "Arabica plots without shade and with sun-exposed stems; severe in northern Vietnam, also in Lam Dong and Dak Lak."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Trồng cây che bóng; dùng giống thấp cây (Catimor) hoặc tạo tán kín che thân.",
+            "Kiểm tra gờ lằn trên thân hằng năm; cắt, nhổ và đốt cây bị nặng; chà vỏ khô bong để diệt trứng."
+          ],
+          "en": [
+            "Plant shade trees; use short varieties (Catimor) or a dense canopy that shades the stem.",
+            "Inspect stems for ridges every year; cut, uproot and burn badly infested trees; rub off loose bark to kill eggs."
+          ]
+        },
+        "biological": {
+          "vn": [
+            "Nấm Beauveria bassiana; bảo vệ ong ký sinh và thiên địch."
+          ],
+          "en": [
+            "Beauveria bassiana; conserve parasitoids and predators."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_RED_BORER"
+          },
+          {
+            "id": "COFFEE_STEM_CRACK_ROT"
+          }
+        ],
+        "visualKeywords": [
+          "ridges on stem",
+          "frass packed tunnels",
+          "Arabica",
+          "yellowing wilting tree"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "TNAU Agritech Portal – Coffee white stem borer (Xylotrechus quadripes)",
+          "url": "https://agritech.tnau.ac.in/crop_protection/coffeepest/coffee_1.html"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_ROOT_CICADA",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Ve sầu hại rễ",
+        "en": "Root-feeding cicada",
+        "scientific": "Dundubia nagarasagna Distant",
+        "aliasesVn": [
+          "Ve sầu phấn trắng"
+        ]
+      },
+      "nameVnSource": "VAAS",
+      "affectedPart": {
+        "codes": [
+          "ROOT",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Rễ, Toàn cây",
+        "en": "Root, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Ấu trùng ve sầu phấn trắng Dundubia nagarasagna Distant (Cicadidae)."
+        ],
+        "en": [
+          "Nymphs of the cicada Dundubia nagarasagna Distant (Cicadidae)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Ấu trùng sống sâu trong đất, chích hút nhựa rễ; đào gốc thấy ấu trùng màu nâu trắng, mình mập.",
+          "Cây vàng lá, còi cọc; mật độ cao gây rụng lá, rụng quả."
+        ],
+        "en": [
+          "Nymphs live deep in the soil and suck root sap; digging reveals plump brownish-white nymphs.",
+          "Trees yellow and stunt; high densities cause leaf and berry drop."
+        ]
+      },
+      "epidemiology": {
+        "transmissionMode": {
+          "vn": [
+            "Ve sầu trưởng thành đẻ trứng trên cành; ấu trùng nở rơi xuống đất, vòng đời khoảng 330 ngày."
+          ],
+          "en": [
+            "Adults lay eggs in twigs; hatched nymphs drop to the soil; life cycle about 330 days."
+          ]
+        },
+        "cropStage": [
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Đắk Lắk, Lâm Đồng, Gia Lai; mật độ ấu trùng cao nhất cuối tháng 4 – giữa tháng 5, tăng lại vào tháng 9."
+        ],
+        "en": [
+          "Dak Lak, Lam Dong, Gia Lai; nymph density peaks late April – mid May and rises again in September."
+        ]
+      },
+      "treatments": {
+        "biological": {
+          "vn": [
+            "Chế phẩm nấm Metarhizium anisopliae (hiệu lực khoảng 34–62% trong thử nghiệm ở Gia Lai)."
+          ],
+          "en": [
+            "Metarhizium anisopliae products (about 34–62% efficacy in Gia Lai trials)."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_ROOT_MEALYBUG"
+          },
+          {
+            "id": "COFFEE_YELLOW_LEAF_ROOT_ROT",
+            "distinguishingFeature": {
+              "vn": "Vàng lá thối rễ: rễ thối đen; ve sầu: rễ không thối, có ấu trùng trong đất.",
+              "en": "Yellow leaf root rot: black rotten roots; cicada: roots not rotten, nymphs in the soil."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "cicada nymphs in soil",
+          "yellowing",
+          "stunted",
+          "berry drop"
+        ]
+      },
+      "verification": "SOURCED",
+      "unverifiedFields": [
+        "treatments.cultural"
+      ],
+      "references": [
+        {
+          "title": "Nguyễn Thị Thủy và cs. (2011) – Một số đặc điểm sinh học loài ve sầu phấn trắng Dundubia nagarasagna Distant hại cà phê. Tạp chí KH&CN Nông nghiệp Việt Nam 09(21): 75–80",
+          "url": "https://tapchi.vaas.vn/vi/tap-chi/mot-so-dac-diem-sinh-hoc-loai-ve-sau-phan-trang-dundubia-nagarasagna-distant-homoptera"
+        },
+        {
+          "title": "Nguyễn Quang Ngọc, Phan Võ Ngọc Quyền (2017) – Thử nghiệm chế phẩm nấm Metarhizium anisopliae để phòng trừ ve sầu hại cà phê và xén tóc. Tạp chí KH&CN Nông nghiệp Việt Nam 09(82)",
+          "url": "https://tapchi.vaas.vn/vi/tap-chi/thu-nghiem-che-pham-nam-metarhizium-anisopliae-de-phong-tru-ve-sau-hai-ca-phe-va-xen-toc"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_THRIPS",
+      "category": "PEST",
+      "agentType": "INSECT",
+      "names": {
+        "vn": "Bọ trĩ",
+        "en": "Coffee thrips",
+        "scientific": "Diarthrothrips coffeae, Thrips spp."
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "SHOOT",
+          "FRUIT"
+        ],
+        "vn": "Lá, Chồi / lá non, Quả",
+        "en": "Leaf, Shoot / young leaves, Berry (cherry)"
+      },
+      "pathogens": {
+        "vn": [
+          "Bọ trĩ Diarthrothrips coffeae và một số loài Thrips spp. (dài 1–1,5 mm)."
+        ],
+        "en": [
+          "Thrips Diarthrothrips coffeae and some Thrips spp. (1–1.5 mm long)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Mặt dưới lá (nặng thì cả mặt trên, chồi non, quả) có mảng bạc, xám không đều với nhiều chấm đen nhỏ (phân bọ trĩ).",
+          "Lá non biến dạng; bị nặng lá khô và rụng."
+        ],
+        "en": [
+          "Irregular silvery or grey patches dotted with tiny black specks (excreta) on leaf undersides, and on upper surfaces, shoots and berries when severe.",
+          "Young leaves deform; heavy attack dries and drops leaves."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "FLOWERING",
+          "FRUIT_SET"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Bùng phát khi khô hạn, nhiệt độ cao."
+        ],
+        "en": [
+          "Outbreaks in drought and high temperatures."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Tủ gốc giữ ẩm giúp giảm đáng kể mật độ bọ trĩ; tưới đủ nước mùa khô."
+          ],
+          "en": [
+            "Mulching considerably reduces thrips numbers; irrigate adequately in the dry season."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_RED_MITE",
+            "distinguishingFeature": {
+              "vn": "Nhện đỏ: lá màu đồng, nâu đỏ, nhất là mặt trên; bọ trĩ: mảng bạc có chấm đen.",
+              "en": "Red mite: bronzed reddish-brown leaves, mostly upper surface; thrips: silvery patches with black specks."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "silvery patches",
+          "black specks",
+          "leaf underside",
+          "dry season"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "epidemiology.cropStage",
+        "affectedPart"
+      ],
+      "reviewNotes": {
+        "vn": "Mô tả lấy từ tài liệu nước ngoài (Infonet-Biovision, Đông Phi); chưa tìm được tài liệu chuyên môn Việt Nam mô tả bọ trĩ hại cà phê – cần chuyên gia xác nhận loài và mức độ phổ biến ở Tây Nguyên.",
+        "en": "Description from foreign sources (Infonet-Biovision, East Africa); no Vietnamese technical source found – species and prevalence in the Central Highlands need expert confirmation."
+      },
+      "references": [
+        {
+          "title": "Infonet-Biovision – Thrips (Diarthrothrips coffeae) on coffee",
+          "url": "https://infonet-biovision.org/PlantHealth/MinorPests/thrips-15"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_RED_MITE",
+      "category": "PEST",
+      "agentType": "MITE",
+      "names": {
+        "vn": "Nhện đỏ",
+        "en": "Coffee red mite",
+        "scientific": "Oligonychus coffeae, Oligonychus ilicis",
+        "aliasesEn": [
+          "Red spider mite"
+        ]
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Nhện hại Oligonychus coffeae (Nietner), O. ilicis (McGregor) (Tetranychidae)."
+        ],
+        "en": [
+          "Spider mites Oligonychus coffeae (Nietner), O. ilicis (McGregor) (Tetranychidae)."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Nhện chích hút làm lá mất màu, lấm tấm chấm nhỏ rồi chuyển màu đồng, nâu đỏ, nhất là mặt trên lá.",
+          "Bị nặng lá khô, rụng, cây sinh trưởng kém."
+        ],
+        "en": [
+          "Feeding causes fine stippling, then bronzed reddish-brown leaves, mostly on the upper surface.",
+          "Severe attack dries and drops leaves and slows growth."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "YOUNG_TREE",
+          "FLOWERING"
+        ],
+        "season": "DRY"
+      },
+      "favorableConditions": {
+        "vn": [
+          "Mùa khô, nắng nóng, bụi nhiều."
+        ],
+        "en": [
+          "Dry, hot, dusty weather."
+        ]
+      },
+      "treatments": {
+        "cultural": {
+          "vn": [
+            "Tưới đủ nước, giữ ẩm vườn mùa khô; bảo vệ nhện bắt mồi và bọ rùa ăn nhện."
+          ],
+          "en": [
+            "Irrigate adequately and keep the plot humid in the dry season; conserve predatory mites and ladybirds."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_THRIPS"
+          },
+          {
+            "id": "COFFEE_K_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu kali: cháy nâu ở mép, chóp lá già; nhện đỏ: cả phiến lá màu đồng, lấm tấm.",
+              "en": "K deficiency: brown scorch at margins and tips of old leaves; red mite: whole blade bronzed and stippled."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "bronzed leaves",
+          "stippling",
+          "upper leaf surface",
+          "dry season"
+        ]
+      },
+      "verification": "SECONDARY",
+      "unverifiedFields": [
+        "epidemiology.cropStage",
+        "favorableConditions",
+        "treatments.cultural"
+      ],
+      "reviewNotes": {
+        "vn": "Chưa tìm được tài liệu chuyên môn Việt Nam mô tả nhện đỏ hại cà phê; mô tả dựa trên tài liệu nước ngoài – cần chuyên gia xác nhận.",
+        "en": "No Vietnamese technical source found for coffee red mite; description from foreign sources – needs expert confirmation."
+      },
+      "references": [
+        {
+          "title": "PestInfo Wiki – Oligonychus ilicis (coffee red mite)",
+          "url": "https://wiki.pestinfo.org/wiki/Oligonychus_ilicis"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_N_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu đạm (N)",
+        "en": "Nitrogen deficiency"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "WHOLE_PLANT"
+        ],
+        "vn": "Lá, Toàn cây",
+        "en": "Leaf, Whole plant"
+      },
+      "pathogens": {
+        "vn": [
+          "Không do vi sinh vật; thiếu đạm."
+        ],
+        "en": [
+          "Not caused by a pathogen; lack of nitrogen."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá già vàng đều từ cuống, gân chính và gân phụ lan ra; ngoài nắng lá màu vàng ô liu đến vàng cam.",
+          "Nặng thì lá nhỏ, rụng lá, khô cành."
+        ],
+        "en": [
+          "Older leaves yellow evenly from the petiole, midrib and veins outward; olive to yellow-orange in full sun.",
+          "Severe cases show smaller leaves, defoliation and dieback."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Bón đạm vào đất theo khuyến cáo hoặc phun urê qua lá; bón thêm phân hữu cơ."
+          ],
+          "en": [
+            "Apply soil N as recommended or foliar urea; add organic manure."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_YELLOW_LEAF_ROOT_ROT",
+            "distinguishingFeature": {
+              "vn": "Kiểm tra rễ: thiếu đạm rễ trắng khỏe; vàng lá thối rễ rễ thối đen.",
+              "en": "Check roots: healthy white roots with N deficiency, black rotten roots with root rot."
+            }
+          },
+          {
+            "id": "COFFEE_S_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu lưu huỳnh: vàng nhạt ở lá non trước; thiếu đạm: vàng ở lá già trước.",
+              "en": "S deficiency: young leaves pale first; N deficiency: old leaves yellow first."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "old leaves uniformly yellow",
+          "no spots",
+          "leaf drop"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_K_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu kali (K)",
+        "en": "Potassium deficiency"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF",
+          "BRANCH"
+        ],
+        "vn": "Lá, Cành",
+        "en": "Leaf, Branch"
+      },
+      "pathogens": {
+        "vn": [
+          "Không do vi sinh vật; thiếu kali, thường nặng khi cây mang nhiều quả."
+        ],
+        "en": [
+          "Not caused by a pathogen; lack of potassium, worse under heavy crop load."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá già cháy hoại tử ở chóp và mép lá; nặng thì rụng lá và khô cành."
+        ],
+        "en": [
+          "Older leaves show tip and margin necrosis (scorch); severe cases defoliate and die back."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Bón kali cân đối với đạm và sản lượng; có thể phun kali clorua 0,1% qua lá."
+          ],
+          "en": [
+            "Apply K balanced with N and expected yield; foliar 0.1% potassium chloride."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_LEAF_RUST"
+          },
+          {
+            "id": "COFFEE_RED_MITE"
+          }
+        ],
+        "visualKeywords": [
+          "leaf margin scorch",
+          "tip burn",
+          "old leaves"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        },
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_MG_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu magie (Mg)",
+        "en": "Magnesium deficiency"
+      },
+      "nameVnSource": "đề xuất",
+      "affectedPart": {
+        "codes": [
+          "LEAF"
+        ],
+        "vn": "Lá",
+        "en": "Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Không do vi sinh vật; thiếu magie, hay gặp khi bón nhiều kali."
+        ],
+        "en": [
+          "Not caused by a pathogen; lack of magnesium, common with high K rates."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá già vàng thành mảng lớn giữa các gân, dọc gân còn dải xanh nhạt; vàng lan ra mép lá.",
+          "Nặng thì chóp lá có đốm hoại tử sẫm màu, rụng lá nhiều."
+        ],
+        "en": [
+          "Large yellow interveinal areas on older leaves with a light-green band along the veins; yellowing spreads to the margin.",
+          "Severe cases show dark necrotic spots at the tip and heavy leaf drop."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Bón vôi dolomite hoặc phun magie sunfat 0,1% qua lá."
+          ],
+          "en": [
+            "Dolomitic lime or foliar 0.1% magnesium sulphate."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_ZN_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu kẽm: ở lá non đầu cành, lá nhỏ hẹp mọc chùm; thiếu magie: ở lá già.",
+              "en": "Zn deficiency: young leaves at shoot tips, small narrow rosetted leaves; Mg deficiency: old leaves."
+            }
+          },
+          {
+            "id": "COFFEE_N_DEFICIENCY"
+          }
+        ],
+        "visualKeywords": [
+          "interveinal chlorosis old leaves",
+          "green band along veins"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_ZN_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Thiếu kẽm (Zn) – bệnh rụt cổ",
+        "en": "Zinc deficiency",
+        "aliasesVn": [
+          "Rụt cổ",
+          "Lá nhỏ"
+        ],
+        "aliasesEn": [
+          "Little leaf",
+          "Rosette"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "SHOOT",
+          "LEAF"
+        ],
+        "vn": "Chồi / lá non, Lá",
+        "en": "Shoot / young leaves, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Không do vi sinh vật; thiếu kẽm."
+        ],
+        "en": [
+          "Not caused by a pathogen; lack of zinc."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Đốt ngọn phía trên bị rụt lại, lá non nhỏ, hẹp, dài, giòn, vàng xanh giữa các gân, mọc chùm ở đầu cành.",
+          "Nặng thì rụng lá, khô cành."
+        ],
+        "en": [
+          "Shortened top internodes; young leaves small, narrow, lance-shaped, brittle and yellow-green between veins, bunched at branch tips (rosette).",
+          "Severe cases defoliate and die back."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "YOUNG_TREE",
+          "FRUIT_DEVELOPMENT"
+        ],
+        "season": "YEAR_ROUND"
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Phun kẽm sunfat 0,2–0,3% lên toàn tán (trung hòa bằng vôi)."
+          ],
+          "en": [
+            "Spray 0.2–0.3% zinc sulphate on the whole canopy (neutralised with lime)."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_MG_DEFICIENCY"
+          },
+          {
+            "id": "COFFEE_S_DEFICIENCY",
+            "distinguishingFeature": {
+              "vn": "Thiếu lưu huỳnh: lá non nhạt màu nhưng không nhỏ hẹp, không mọc chùm.",
+              "en": "S deficiency: pale young leaves, but not small, narrow or rosetted."
+            }
+          }
+        ],
+        "visualKeywords": [
+          "small narrow leaves",
+          "rosette at shoot tip",
+          "short internodes"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    },
+    {
+      "id": "COFFEE_S_DEFICIENCY",
+      "category": "DISORDER",
+      "agentType": "NUTRIENT",
+      "names": {
+        "vn": "Bệnh bạc lá (thiếu lưu huỳnh)",
+        "en": "Sulphur deficiency (leaf bleaching)",
+        "aliasesVn": [
+          "Bạc lá"
+        ]
+      },
+      "nameVnSource": "Lâm Đồng",
+      "affectedPart": {
+        "codes": [
+          "SHOOT",
+          "LEAF"
+        ],
+        "vn": "Chồi / lá non, Lá",
+        "en": "Shoot / young leaves, Leaf"
+      },
+      "pathogens": {
+        "vn": [
+          "Không do vi sinh vật; thiếu lưu huỳnh và một số nguyên tố vi lượng."
+        ],
+        "en": [
+          "Not caused by a pathogen; lack of sulphur and some micronutrients."
+        ]
+      },
+      "symptoms": {
+        "vn": [
+          "Lá non mất diệp lục, vàng nhạt đến trắng bạc; lá mới nhỏ, nhạt màu, chồi chậm phát triển.",
+          "Thường gặp ở cây kiến thiết cơ bản."
+        ],
+        "en": [
+          "Young leaves lose chlorophyll, turning pale yellow to whitish; new leaves small and pale, slow shoot growth.",
+          "Common in young, non-bearing plots."
+        ]
+      },
+      "epidemiology": {
+        "cropStage": [
+          "YOUNG_TREE"
+        ],
+        "season": "RAINY"
+      },
+      "treatments": {
+        "nutrition": {
+          "vn": [
+            "Bón phân có gốc lưu huỳnh (sunfat đạm, sunfat kali); phun sunfat đạm hoặc sunfat kẽm 0,1%, 1–2 lần cách 2 tuần vào đầu mùa mưa."
+          ],
+          "en": [
+            "Use sulphate fertilisers (ammonium or potassium sulphate); spray 0.1% ammonium or zinc sulphate 1–2 times, 2 weeks apart, early in the rainy season."
+          ]
+        }
+      },
+      "diagnosisHelper": {
+        "similarDiseases": [
+          {
+            "id": "COFFEE_N_DEFICIENCY"
+          },
+          {
+            "id": "COFFEE_ZN_DEFICIENCY"
+          }
+        ],
+        "visualKeywords": [
+          "pale young leaves",
+          "whitish new leaves",
+          "young plants"
+        ]
+      },
+      "verification": "SOURCED",
+      "references": [
+        {
+          "title": "Cổng TTĐT tỉnh Lâm Đồng – Cây cà phê, Phần 4: Phòng trừ sâu bệnh và cỏ dại",
+          "url": "https://lamdong.gov.vn/sites/book/Caphe/phan4.htm"
+        },
+        {
+          "title": "NIPHM (Ấn Độ) – AESA based IPM package: Coffee",
+          "url": "https://niphm.gov.in/IPMPackages/Coffee.pdf"
+        }
+      ]
+    }
+  ]
+}

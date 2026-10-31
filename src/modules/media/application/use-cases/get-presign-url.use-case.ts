@@ -28,6 +28,7 @@ export class GetPresignUrlUseCase {
 
   /**
    * Signed PUT URLs for new objects in TMP; objects only become Media once confirmed.
+   * Unconfirmed TMP objects are deleted by the bucket lifecycle rule (infra/gcs) after 1 day.
    * All-or-nothing: any invalid extension fails the whole request before anything is signed.
    */
   async execute(input: TGetPresignUrlInput): Promise<TGetPresignUrlOutput> {

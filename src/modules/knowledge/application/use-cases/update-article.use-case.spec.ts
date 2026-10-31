@@ -64,6 +64,7 @@ function setup() {
   const storage = new InMemoryFileStorage();
   storage.files.add(TMP);
   const invalidator = new InMemoryArticleCacheInvalidator();
+  const logger = new InMemoryLogger();
   const useCase = new UpdateArticleUseCase(
     stubUserQuery(),
     knowledge,
@@ -72,9 +73,17 @@ function setup() {
     storage,
     new InMemoryUnitOfWork(),
     new RevalidateArticlesUseCase(articles, knowledge, invalidator),
-    new InMemoryLogger(),
+    logger,
   );
-  return { article, articles, publisher, storage, invalidator, useCase };
+  return {
+    article,
+    articles,
+    publisher,
+    storage,
+    invalidator,
+    logger,
+    useCase,
+  };
 }
 
 const flush = () => new Promise((resolve) => setImmediate(resolve));
@@ -117,6 +126,26 @@ describe('UpdateArticleUseCase', () => {
     expect(invalidator.calls).toEqual([
       expect.arrayContaining(['article:lua:benh-dao-on', 'articles:lua']),
     ]);
+  });
+
+  it('still saves the article when a TMP upload cannot be deleted', async () => {
+    const { article, articles, storage, logger, useCase } = setup();
+    jest
+      .spyOn(storage, 'deleteFile')
+      .mockRejectedValue(new Error('storage down'));
+
+    await useCase.execute(input());
+
+    expect(articles.articles.get(article.id)?.title).toBe(
+      'Bệnh đạo ôn trên lúa',
+    );
+    expect(logger.entries).toContainEqual(
+      expect.objectContaining({
+        level: 'warn',
+        message: 'TMP upload not deleted',
+        meta: { key: TMP, reason: 'Error: storage down' },
+      }),
+    );
   });
 
   it('edits an unpublished variant article by its variant code and keeps it hidden', async () => {

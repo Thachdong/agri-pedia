@@ -1,4 +1,6 @@
 import { IUserQueryPort } from '@modules/user/contracts';
+import { ILogger } from '@shared/logger';
+import { IFileStorage } from '@shared/storage';
 import {
   Disease,
   KnowledgeAdminRequiredException,
@@ -107,4 +109,26 @@ export async function resolveArticleImages(
     tmpKeys.push(image.tmpKey);
   }
   return { images, tmpKeys };
+}
+
+/**
+ * Deletes the TMP uploads of a saved article. Best-effort: the article is already committed, so a
+ * failure is only logged; the bucket lifecycle rule on `tmp/` removes what is left.
+ */
+export async function deleteTmpUploads(
+  storage: IFileStorage,
+  logger: ILogger,
+  tmpKeys: string[],
+): Promise<void> {
+  const results = await Promise.allSettled(
+    tmpKeys.map((key) => storage.deleteFile(key)),
+  );
+  results.forEach((result, index) => {
+    if (result.status === 'rejected') {
+      logger.warn('TMP upload not deleted', {
+        key: tmpKeys[index],
+        reason: String(result.reason),
+      });
+    }
+  });
 }

@@ -1,0 +1,89 @@
+{
+  "code": "COFFEE",
+  "slug": "ca-phe",
+  "nameVi": "Cà phê",
+  "nameEn": "coffee",
+  "enabled": false,
+  "sortOrder": 3,
+  "plantParts": [
+    {
+      "code": "LEAF",
+      "nameVi": "Lá",
+      "promptEn": "leaf"
+    },
+    {
+      "code": "SHOOT",
+      "nameVi": "Chồi / lá non",
+      "promptEn": "young shoot / new leaves"
+    },
+    {
+      "code": "BRANCH",
+      "nameVi": "Cành",
+      "promptEn": "branch / twig"
+    },
+    {
+      "code": "TRUNK",
+      "nameVi": "Thân",
+      "promptEn": "main stem"
+    },
+    {
+      "code": "COLLAR",
+      "nameVi": "Gốc / cổ rễ",
+      "promptEn": "stem base / collar"
+    },
+    {
+      "code": "ROOT",
+      "nameVi": "Rễ",
+      "promptEn": "root"
+    },
+    {
+      "code": "FLOWER",
+      "nameVi": "Hoa",
+      "promptEn": "flower / flower cluster"
+    },
+    {
+      "code": "FRUIT",
+      "nameVi": "Quả",
+      "promptEn": "berry (cherry) / berry cluster"
+    },
+    {
+      "code": "WHOLE_PLANT",
+      "nameVi": "Toàn cây",
+      "promptEn": "whole tree"
+    }
+  ],
+  "cropStages": [
+    {
+      "code": "SEEDLING",
+      "nameVi": "Cây con / vườn ươm"
+    },
+    {
+      "code": "YOUNG_TREE",
+      "nameVi": "Kiến thiết cơ bản"
+    },
+    {
+      "code": "FLOWERING",
+      "nameVi": "Ra hoa"
+    },
+    {
+      "code": "FRUIT_SET",
+      "nameVi": "Đậu quả / quả non"
+    },
+    {
+      "code": "FRUIT_DEVELOPMENT",
+      "nameVi": "Nuôi quả"
+    },
+    {
+      "code": "HARVEST",
+      "nameVi": "Thu hoạch / sau thu hoạch (quả, nhân)"
+    },
+    {
+      "code": "TREE_RECOVERY",
+      "nameVi": "Phục hồi cây sau thu hoạch"
+    }
+  ],
+  "prompt": {
+    "subjectEn": "coffee trees (Coffea canephora – Robusta, and Coffea arabica – Arabica)",
+    "wholeImageCuesEn": "general yellowing, leaf drop, dry dead branches, wilting, leaning or stunted trees, blackened or dropping berries, visible insects"
+  }
+}
