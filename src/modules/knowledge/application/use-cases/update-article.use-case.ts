@@ -13,6 +13,7 @@ import {
 } from '../../domain';
 import {
   assertArticleAdmin,
+  deleteTmpUploads,
   kbCodesOf,
   resolveArticleImages,
   TAdminArticleImageInput,
@@ -123,7 +124,7 @@ export class UpdateArticleUseCase {
       this.articles.replaceArticles([article], []),
     );
 
-    await Promise.all(tmpKeys.map((key) => this.storage.deleteFile(key)));
+    await deleteTmpUploads(this.storage, this.logger, tmpKeys);
     this.revalidateArticles
       .execute({
         upserted: [

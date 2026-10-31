@@ -15,6 +15,7 @@ NestJS 10 (TypeScript) backend. Postgres 16 via `docker-compose.yml` (pgAdmin on
 - `npm run seed:catalog` — insert the product-suggestion catalog (`scripts/data/product-catalog/catalog-items.json`, biological products registered in Vietnam for the agents the crop packs recommend); existing items keep their content, only a missing category / unit is filled in
 - `npm run create-admin -- <email|phone> [username]` — create an ACTIVE ADMIN account (password asked on the terminal); log in with `POST /auth/login`
 - `npm run migration:generate -- src/migrations/<module>-<desc>` / `migration:run` / `migration:revert`
+- `gcloud storage buckets update gs://$FIREBASE_STORAGE_BUCKET --lifecycle-file=infra/gcs/private-bucket.lifecycle.json` — once per environment: deletes `tmp/` uploads older than 1 day (presigned but never confirmed, or left after a failed move/delete). Replaces the bucket's whole lifecycle config: check `gcloud storage buckets describe gs://<bucket> --format="default(lifecycle_config)"` first and merge existing rules
 
 Run `npm run lint` and `npm test` before calling a task done.
 
