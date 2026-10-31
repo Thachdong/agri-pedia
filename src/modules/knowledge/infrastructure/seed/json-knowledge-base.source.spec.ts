@@ -159,7 +159,40 @@ describe('JsonKnowledgeBaseSource (shipped crop packs)', () => {
     expect(
       diseases.filter((d) => d.verification === 'SECONDARY').length,
     ).toBeGreaterThan(0);
-    expect(snapshot.crops.map((c) => c.code)).toEqual(['DURIAN', 'RICE']);
+  });
+
+  it('loads the COFFEE pack disabled, with its own parts, stages and features', async () => {
+    const snapshot = await new JsonKnowledgeBaseSource().load();
+
+    const coffee = snapshot.crops.find((c) => c.code === 'COFFEE');
+    expect(coffee).toBeDefined();
+    expect([
+      coffee.nameVi,
+      coffee.slug,
+      coffee.enabled,
+      coffee.kbVersion,
+    ]).toEqual(['Cà phê', 'ca-phe', false, '2026-10-30']);
+    expect(coffee.plantParts.map((p) => p.code)).toContain('FRUIT');
+    expect(coffee.cropStages.map((s) => s.code)).not.toContain('FLUSHING');
+    expect(coffee.features.berries.level).toBe('image');
+    expect(coffee.features).not.toHaveProperty('panicle');
+
+    const diseases = snapshot.diseases.filter((d) => d.cropType === 'COFFEE');
+    expect(diseases).toHaveLength(25);
+    expect(diseases.every((d) => d.code.startsWith('COFFEE_'))).toBe(true);
+    expect(diseases.filter((d) => d.profile !== null)).toHaveLength(25);
+    const rust = diseases.find((d) => d.code === 'COFFEE_LEAF_RUST');
+    expect(rust?.profile?.base).toBeDefined();
+    const eyeSpot = diseases.find((d) => d.code === 'COFFEE_BROWN_EYE_SPOT');
+    expect(eyeSpot?.content.variants.map((v) => v.code)).toEqual([
+      'COFFEE_BROWN_EYE_SPOT__LEAF',
+      'COFFEE_BROWN_EYE_SPOT__BERRY',
+    ]);
+    expect(snapshot.crops.map((c) => c.code)).toEqual([
+      'COFFEE',
+      'DURIAN',
+      'RICE',
+    ]);
   });
 
   it('scores the rice scenarios exactly as the single-crop loader did', async () => {

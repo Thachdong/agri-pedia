@@ -1,0 +1,327 @@
+{
+  "note": "Tình huống kiểm tra profile cà phê: quan sát B1 giả lập -> đơn vị đứng đầu (top-1) ở B2. Tự viết từ KB, chỉ kiểm tra tính nhất quán của trọng số, không đo độ chính xác.",
+  "scenarios": [
+    {
+      "name": "gỉ sắt mặt dưới lá",
+      "part": "LEAF",
+      "observations": {
+        "sign": "ORANGE_POWDER",
+        "centerColor": "ORANGE_RUST",
+        "position": "LEAF_UNDERSIDE",
+        "lesionShape": "ROUND_OVAL",
+        "distribution": "SCATTERED"
+      },
+      "expectTop1": "COFFEE_LEAF_RUST"
+    },
+    {
+      "name": "đốm mắt cua trên lá",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "EYE_SPOT_RINGED",
+        "centerColor": "GRAY_WHITE",
+        "borderColor": "DARK_BROWN",
+        "halo": "YELLOW",
+        "position": "LEAF_BLADE"
+      },
+      "expectTop1": "COFFEE_BROWN_EYE_SPOT__LEAF"
+    },
+    {
+      "name": "đốm nâu trên quả xanh",
+      "part": "FRUIT",
+      "observations": {
+        "position": "BERRY",
+        "lesionShape": "IRREGULAR_BLOTCH",
+        "centerColor": "BROWN",
+        "berries": "SPOTTED_BLOTCHED",
+        "borderColor": "DARK_BROWN"
+      },
+      "expectTop1": "COFFEE_BROWN_EYE_SPOT__BERRY"
+    },
+    {
+      "name": "khô cành",
+      "part": "BRANCH",
+      "observations": {
+        "position": "BRANCH",
+        "deformation": "DRIED_WITHERED",
+        "centerColor": "DARK_BROWN_BLACK",
+        "plantForm": "BRANCH_DIEBACK",
+        "lesionShape": "NO_DISTINCT_LESION"
+      },
+      "expectTop1": "COFFEE_ANTHRACNOSE__DIEBACK"
+    },
+    {
+      "name": "thối cuống, khô quả",
+      "part": "FRUIT",
+      "observations": {
+        "position": "BERRY_STALK",
+        "berries": "STALK_ROT",
+        "centerColor": "DARK_BROWN_BLACK",
+        "lesionShape": "SUNKEN_SPOT"
+      },
+      "expectTop1": "COFFEE_ANTHRACNOSE__BERRY"
+    },
+    {
+      "name": "nấm hồng trên cành",
+      "part": "BRANCH",
+      "observations": {
+        "sign": "PINK_CRUST",
+        "centerColor": "PINK",
+        "position": "BRANCH_FORK",
+        "deformation": "DEAD_LEAVES_ATTACHED"
+      },
+      "expectTop1": "COFFEE_PINK_DISEASE"
+    },
+    {
+      "name": "màng nhện lá đen treo",
+      "part": "LEAF",
+      "observations": {
+        "sign": "MYCELIAL_THREADS",
+        "deformation": "DEAD_LEAVES_ATTACHED",
+        "centerColor": "DARK_BROWN_BLACK",
+        "position": "BRANCH"
+      },
+      "expectTop1": "COFFEE_THREAD_BLIGHT"
+    },
+    {
+      "name": "muội đen phủ lá",
+      "part": "LEAF",
+      "observations": {
+        "sign": "SOOTY_COATING",
+        "centerColor": "DARK_BROWN_BLACK",
+        "distribution": "WHOLE_ORGAN",
+        "position": "LEAF_BLADE"
+      },
+      "expectTop1": "COFFEE_SOOTY_MOLD"
+    },
+    {
+      "name": "vàng lá thối rễ",
+      "part": "ROOT",
+      "observations": {
+        "position": "ROOT",
+        "deformation": "SOFT_ROT",
+        "centerColor": "DARK_BROWN_BLACK",
+        "discoloration": "GENERAL_YELLOWING",
+        "plantForm": "LEANING_LOOSE"
+      },
+      "expectTop1": "COFFEE_YELLOW_LEAF_ROOT_ROT"
+    },
+    {
+      "name": "vàng lá toàn cây, cây nghiêng",
+      "part": "WHOLE_PLANT",
+      "observations": {
+        "lesionShape": "NO_DISTINCT_LESION",
+        "distribution": "WHOLE_ORGAN",
+        "discoloration": "GENERAL_YELLOWING",
+        "plantForm": "LEANING_LOOSE"
+      },
+      "expectTop1": "COFFEE_YELLOW_LEAF_ROOT_ROT"
+    },
+    {
+      "name": "rễ có nốt sần",
+      "part": "ROOT",
+      "observations": {
+        "position": "ROOT",
+        "deformation": "GALLS_KNOTS",
+        "plantForm": "STUNTED"
+      },
+      "expectTop1": "COFFEE_ROOT_KNOT_NEMATODE"
+    },
+    {
+      "name": "thắt cổ rễ cây con",
+      "part": "COLLAR",
+      "observations": {
+        "position": "TRUNK_BASE_COLLAR",
+        "deformation": "CONSTRICTED_GIRDLED",
+        "centerColor": "BROWN",
+        "plantForm": "WILTING"
+      },
+      "expectTop1": "COFFEE_COLLAR_ROT"
+    },
+    {
+      "name": "thân nứt, khô ngọn",
+      "part": "TRUNK",
+      "observations": {
+        "position": "TRUNK",
+        "deformation": "CRACKED",
+        "lesionShape": "BARK_PATCH_CANKER",
+        "centerColor": "DARK_BROWN_BLACK",
+        "plantForm": "TIP_DIEBACK"
+      },
+      "expectTop1": "COFFEE_STEM_CRACK_ROT"
+    },
+    {
+      "name": "rệp vảy xanh dọc gân lá",
+      "part": "LEAF",
+      "observations": {
+        "sign": "SCALE_INSECTS",
+        "centerColor": "PALE_GREEN",
+        "position": "ALONG_MIDRIB_OR_VEINS",
+        "pestsVisible": "SCALE_INSECTS"
+      },
+      "expectTop1": "COFFEE_SCALE__GREEN"
+    },
+    {
+      "name": "rệp vảy nâu trên cành",
+      "part": "BRANCH",
+      "observations": {
+        "sign": "SCALE_INSECTS",
+        "centerColor": "BROWN",
+        "position": "BRANCH",
+        "pestsVisible": "SCALE_INSECTS"
+      },
+      "expectTop1": "COFFEE_SCALE__BROWN"
+    },
+    {
+      "name": "rệp sáp chùm quả",
+      "part": "FRUIT",
+      "observations": {
+        "sign": "WHITE_WAX_COLONY",
+        "position": "BERRY_STALK",
+        "pestsVisible": "MEALYBUG",
+        "berries": "SOOTY_OR_WAXY"
+      },
+      "expectTop1": "COFFEE_MEALYBUG"
+    },
+    {
+      "name": "rệp sáp hại rễ",
+      "part": "ROOT",
+      "observations": {
+        "sign": "WHITE_WAX_COLONY",
+        "position": "ROOT",
+        "pestsVisible": "ANTS"
+      },
+      "expectTop1": "COFFEE_ROOT_MEALYBUG"
+    },
+    {
+      "name": "lỗ đục núm quả",
+      "part": "FRUIT",
+      "observations": {
+        "position": "BERRY_CROWN",
+        "lesionShape": "BORE_HOLES",
+        "size": "SMALL_LT_2MM",
+        "sign": "FRASS_OR_HOLE",
+        "berries": "BORE_HOLE_AT_CROWN"
+      },
+      "expectTop1": "COFFEE_BERRY_BORER"
+    },
+    {
+      "name": "lỗ đục nhỏ, cành héo",
+      "part": "BRANCH",
+      "observations": {
+        "position": "BRANCH",
+        "lesionShape": "BORE_HOLES",
+        "size": "SMALL_LT_2MM",
+        "deformation": "DRIED_WITHERED"
+      },
+      "expectTop1": "COFFEE_TWIG_BORER"
+    },
+    {
+      "name": "phân viên ở lỗ đục cành",
+      "part": "BRANCH",
+      "observations": {
+        "sign": "PELLET_FRASS",
+        "lesionShape": "BORE_HOLES",
+        "size": "MEDIUM_2_10MM",
+        "position": "BRANCH"
+      },
+      "expectTop1": "COFFEE_RED_BORER"
+    },
+    {
+      "name": "gờ lằn trên thân cà phê chè",
+      "part": "TRUNK",
+      "observations": {
+        "deformation": "RIDGES_ON_STEM",
+        "position": "TRUNK",
+        "discoloration": "GENERAL_YELLOWING"
+      },
+      "expectTop1": "COFFEE_WHITE_STEM_BORER"
+    },
+    {
+      "name": "ấu trùng ve sầu ở rễ",
+      "part": "ROOT",
+      "observations": {
+        "pestsVisible": "CICADA",
+        "sign": "INSECT_OR_EGGS",
+        "position": "ROOT",
+        "discoloration": "GENERAL_YELLOWING"
+      },
+      "expectTop1": "COFFEE_ROOT_CICADA"
+    },
+    {
+      "name": "mảng bạc chấm đen mặt dưới lá",
+      "part": "LEAF",
+      "observations": {
+        "centerColor": "WHITE_SILVERY",
+        "sign": "EXCRETA_SPECKS",
+        "lesionShape": "TINY_DOTS_STIPPLING",
+        "position": "LEAF_UNDERSIDE"
+      },
+      "expectTop1": "COFFEE_THRIPS"
+    },
+    {
+      "name": "lá màu đồng lấm tấm",
+      "part": "LEAF",
+      "observations": {
+        "discoloration": "SILVERY_BRONZE",
+        "centerColor": "REDDISH_BROWN",
+        "lesionShape": "TINY_DOTS_STIPPLING",
+        "distribution": "WHOLE_ORGAN"
+      },
+      "expectTop1": "COFFEE_RED_MITE"
+    },
+    {
+      "name": "lá già vàng đều",
+      "part": "LEAF",
+      "observations": {
+        "discoloration": "OLD_LEAF_YELLOWING",
+        "lesionShape": "NO_DISTINCT_LESION",
+        "distribution": "WHOLE_ORGAN",
+        "centerColor": "YELLOW"
+      },
+      "expectTop1": "COFFEE_N_DEFICIENCY"
+    },
+    {
+      "name": "cháy mép lá",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "TIP_OR_MARGIN_BURN",
+        "position": "LEAF_MARGIN",
+        "centerColor": "BROWN",
+        "borderColor": "YELLOW"
+      },
+      "expectTop1": "COFFEE_K_DEFICIENCY"
+    },
+    {
+      "name": "vàng giữa gân lá già",
+      "part": "LEAF",
+      "observations": {
+        "lesionShape": "INTERVEINAL_CHLOROSIS",
+        "discoloration": "OLD_LEAF_YELLOWING",
+        "centerColor": "YELLOW",
+        "position": "LEAF_BLADE"
+      },
+      "expectTop1": "COFFEE_MG_DEFICIENCY"
+    },
+    {
+      "name": "rụt cổ lá nhỏ chùm",
+      "part": "SHOOT",
+      "observations": {
+        "deformation": "SMALL_NARROW_ROSETTE",
+        "position": "SHOOT_TIP",
+        "lesionShape": "INTERVEINAL_CHLOROSIS"
+      },
+      "expectTop1": "COFFEE_ZN_DEFICIENCY"
+    },
+    {
+      "name": "bạc lá non",
+      "part": "SHOOT",
+      "observations": {
+        "discoloration": "YOUNG_LEAF_PALE",
+        "lesionShape": "NO_DISTINCT_LESION",
+        "distribution": "WHOLE_ORGAN",
+        "centerColor": "WHITE_SILVERY"
+      },
+      "expectTop1": "COFFEE_S_DEFICIENCY"
+    }
+  ]
+}

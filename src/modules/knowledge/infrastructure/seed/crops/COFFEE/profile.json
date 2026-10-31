@@ -1,0 +1,1031 @@
+{
+  "version": "2026-10-30",
+  "crop": "COFFEE",
+  "kbVersion": "2026-10-30",
+  "note": "Trọng số enum quan sát (B1) cho chấm điểm ứng viên ở B2, cây cà phê. Bộ enum riêng cho cà phê (dựa trên bộ của sầu riêng: thay trái/múi bằng quả cà phê với vị trí núm quả và cuống quả; thêm bột gỉ sắt, vết mắt cua, sợi nấm màng nhện, rệp vảy, phân viên, gờ lằn thân, u sần rễ, ve sầu). Bản nháp do AI dựng từ symptoms / visualKeywords / distinguishingFeature trong diseases.json — cần người am hiểu nông nghiệp duyệt và chỉnh sau khi đo.",
+  "scale": "+4 dấu hiệu gần như đặc trưng, +3 rất đặc trưng, +2 mạnh, +1 hỗ trợ, -1/-2 mâu thuẫn; giá trị không ghi = 0; UNSURE luôn bỏ qua",
+  "merge": "trọng số biến thể = base, ghi đè theo từng (trường, giá trị) bằng variants[variantCode]; mục có biến thể chỉ chấm các biến thể",
+  "detectedPart": [
+    "LEAF",
+    "SHOOT",
+    "BRANCH",
+    "TRUNK",
+    "COLLAR",
+    "ROOT",
+    "FLOWER",
+    "FRUIT",
+    "WHOLE_PLANT",
+    "UNSURE"
+  ],
+  "features": {
+    "lesionShape": {
+      "level": "region",
+      "values": [
+        "ROUND_OVAL",
+        "EYE_SPOT_RINGED",
+        "IRREGULAR_BLOTCH",
+        "SUNKEN_SPOT",
+        "TIP_OR_MARGIN_BURN",
+        "INTERVEINAL_CHLOROSIS",
+        "BARK_PATCH_CANKER",
+        "BORE_HOLES",
+        "TINY_DOTS_STIPPLING",
+        "NO_DISTINCT_LESION",
+        "UNSURE"
+      ],
+      "descriptionEn": "shape of the lesion",
+      "hintsEn": {
+        "EYE_SPOT_RINGED": "round spot with a pale grey or light brown centre and a wide dark brown ring",
+        "SUNKEN_SPOT": "dark spot sunken into the berry or twig surface",
+        "TIP_OR_MARGIN_BURN": "dry brown band along the leaf tip or edge",
+        "INTERVEINAL_CHLOROSIS": "yellow between green veins",
+        "BARK_PATCH_CANKER": "dark, sunken or cracked patch of bark on stem or branch",
+        "BORE_HOLES": "small round entry or exit holes",
+        "TINY_DOTS_STIPPLING": "many pinpoint pale or dark dots"
+      }
+    },
+    "centerColor": {
+      "level": "region",
+      "values": [
+        "GRAY_WHITE",
+        "WHITE_SILVERY",
+        "TAN",
+        "BROWN",
+        "REDDISH_BROWN",
+        "DARK_BROWN_BLACK",
+        "ORANGE_RUST",
+        "PINK",
+        "YELLOW",
+        "PALE_GREEN",
+        "TRANSLUCENT_WATER_SOAKED",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "colour of the lesion centre (or of the insects covering the region)",
+      "hintsEn": {
+        "ORANGE_RUST": "yellow-orange to orange, rust-like",
+        "PALE_GREEN": "pale or yellowish green (e.g. flat scale insects)",
+        "TRANSLUCENT_WATER_SOAKED": "dark, wet-looking, translucent"
+      }
+    },
+    "borderColor": {
+      "level": "region",
+      "values": [
+        "DARK_BROWN",
+        "REDDISH_BROWN",
+        "YELLOW",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "colour of the lesion edge"
+    },
+    "margin": {
+      "level": "region",
+      "values": [
+        "SHARP",
+        "WAVY_IRREGULAR",
+        "DIFFUSE",
+        "UNSURE"
+      ],
+      "descriptionEn": "edge of the lesion",
+      "hintsEn": {
+        "SHARP": "clear edge",
+        "WAVY_IRREGULAR": "wavy edge",
+        "DIFFUSE": "edge fades out"
+      }
+    },
+    "halo": {
+      "level": "region",
+      "values": [
+        "YELLOW",
+        "NONE",
+        "UNSURE"
+      ],
+      "descriptionEn": "a coloured zone around the lesion"
+    },
+    "size": {
+      "level": "region",
+      "values": [
+        "SMALL_LT_2MM",
+        "MEDIUM_2_10MM",
+        "LARGE_GT_10MM",
+        "UNSURE"
+      ],
+      "descriptionEn": "lesion or hole size, estimated from a coffee leaf width of about 5-8 cm or a berry of about 1-1.5 cm"
+    },
+    "distribution": {
+      "level": "region",
+      "values": [
+        "SINGLE",
+        "SCATTERED",
+        "CLUSTERED_COALESCING",
+        "WHOLE_ORGAN",
+        "UNSURE"
+      ],
+      "descriptionEn": "how the lesions are spread",
+      "hintsEn": {
+        "SINGLE": "one spot or hole",
+        "SCATTERED": "scattered spots",
+        "CLUSTERED_COALESCING": "spots grouped or merging into patches",
+        "WHOLE_ORGAN": "the whole leaf/organ"
+      }
+    },
+    "position": {
+      "level": "region",
+      "values": [
+        "LEAF_TIP",
+        "LEAF_MARGIN",
+        "ALONG_MIDRIB_OR_VEINS",
+        "LEAF_BLADE",
+        "LEAF_UNDERSIDE",
+        "SHOOT_TIP",
+        "BRANCH",
+        "BRANCH_FORK",
+        "TRUNK",
+        "TRUNK_BASE_COLLAR",
+        "ROOT",
+        "FLOWER",
+        "BERRY",
+        "BERRY_CROWN",
+        "BERRY_STALK",
+        "UNSURE"
+      ],
+      "descriptionEn": "where the region is on the coffee tree",
+      "hintsEn": {
+        "LEAF_UNDERSIDE": "lower side of the leaf",
+        "SHOOT_TIP": "young shoot or newest leaf pair",
+        "BRANCH": "twig or lateral branch",
+        "BRANCH_FORK": "where branches split, upper canopy",
+        "TRUNK_BASE_COLLAR": "stem base at soil level",
+        "BERRY": "berry (cherry) surface",
+        "BERRY_CROWN": "tip (navel) of the berry, opposite the stalk",
+        "BERRY_STALK": "stalk joining berry and twig, or the berry cluster base"
+      }
+    },
+    "sign": {
+      "level": "region",
+      "values": [
+        "NONE",
+        "ORANGE_POWDER",
+        "WHITE_MYCELIUM",
+        "MYCELIAL_THREADS",
+        "PINK_CRUST",
+        "BLACK_FUNGAL_DOTS",
+        "SOOTY_COATING",
+        "WHITE_WAX_COLONY",
+        "SCALE_INSECTS",
+        "EXCRETA_SPECKS",
+        "PELLET_FRASS",
+        "FRASS_OR_HOLE",
+        "SOIL_TUNNEL_OR_TENT",
+        "INSECT_OR_EGGS",
+        "UNSURE"
+      ],
+      "descriptionEn": "visible signs on the region",
+      "hintsEn": {
+        "ORANGE_POWDER": "powdery yellow-orange spore mass, mostly under the leaf",
+        "WHITE_MYCELIUM": "white cottony fungal growth or fungal sheath",
+        "MYCELIAL_THREADS": "fine white to dark fungal threads along twigs and leaves",
+        "PINK_CRUST": "pink or salmon crust on bark",
+        "BLACK_FUNGAL_DOTS": "tiny black dots inside the lesion",
+        "SOOTY_COATING": "black powdery film that can be rubbed off",
+        "WHITE_WAX_COLONY": "clusters of white cottony waxy insects",
+        "SCALE_INSECTS": "flat or dome-shaped immobile insects stuck along veins or twigs",
+        "EXCRETA_SPECKS": "tiny black specks of insect excreta",
+        "PELLET_FRASS": "coarse pellet-like droppings pushed out of a hole",
+        "FRASS_OR_HOLE": "bore holes, sawdust-like or powdery droppings",
+        "SOIL_TUNNEL_OR_TENT": "earthen tunnels or soil tents built by ants or insects"
+      }
+    },
+    "deformation": {
+      "level": "region",
+      "values": [
+        "NONE",
+        "CURLED_DEFORMED",
+        "SMALL_NARROW_ROSETTE",
+        "DRIED_WITHERED",
+        "DEAD_LEAVES_ATTACHED",
+        "SOFT_ROT",
+        "CRACKED",
+        "CONSTRICTED_GIRDLED",
+        "RIDGES_ON_STEM",
+        "GALLS_KNOTS",
+        "UNSURE"
+      ],
+      "descriptionEn": "shape change of the organ",
+      "hintsEn": {
+        "CURLED_DEFORMED": "leaves curled or twisted",
+        "SMALL_NARROW_ROSETTE": "small narrow leaves bunched at shoot tips, short internodes",
+        "DEAD_LEAVES_ATTACHED": "dead brown or black leaves still hanging on the twig",
+        "CRACKED": "cracked bark",
+        "CONSTRICTED_GIRDLED": "stem or collar shrunken or girdled",
+        "RIDGES_ON_STEM": "raised ridges or swellings around the stem",
+        "GALLS_KNOTS": "swollen knots on roots"
+      }
+    },
+    "discoloration": {
+      "level": "image",
+      "values": [
+        "GENERAL_YELLOWING",
+        "OLD_LEAF_YELLOWING",
+        "YOUNG_LEAF_PALE",
+        "SILVERY_BRONZE",
+        "BROWN_SCORCH",
+        "NONE",
+        "UNSURE"
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "colour of the foliage",
+      "hintsEn": {
+        "OLD_LEAF_YELLOWING": "yellowing mostly on older, lower leaves",
+        "YOUNG_LEAF_PALE": "new leaves pale yellow to whitish",
+        "SILVERY_BRONZE": "silvery or bronze sheen on leaves",
+        "BROWN_SCORCH": "leaves browned as if burnt"
+      }
+    },
+    "plantForm": {
+      "level": "image",
+      "values": [
+        "NORMAL",
+        "THIN_CANOPY_LEAF_DROP",
+        "BRANCH_DIEBACK",
+        "TIP_DIEBACK",
+        "WILTING",
+        "STUNTED",
+        "LEANING_LOOSE",
+        "DEAD_OR_DYING",
+        "UNSURE"
+      ],
+      "normal": [
+        "NORMAL"
+      ],
+      "descriptionEn": "shape of the whole coffee tree / canopy",
+      "hintsEn": {
+        "THIN_CANOPY_LEAF_DROP": "sparse canopy, many leaves dropped",
+        "BRANCH_DIEBACK": "some lateral branches dry and dead",
+        "TIP_DIEBACK": "top of the stem dry and dead",
+        "LEANING_LOOSE": "tree leaning or loosely anchored"
+      }
+    },
+    "berries": {
+      "level": "image",
+      "values": [
+        "NOT_VISIBLE",
+        "NORMAL",
+        "SPOTTED_BLOTCHED",
+        "BLACKENED_DRIED",
+        "BORE_HOLE_AT_CROWN",
+        "DROPPING",
+        "STALK_ROT",
+        "SOOTY_OR_WAXY",
+        "UNSURE"
+      ],
+      "normal": [
+        "NOT_VISIBLE",
+        "NORMAL"
+      ],
+      "descriptionEn": "coffee berries (cherries)",
+      "hintsEn": {
+        "SPOTTED_BLOTCHED": "brown spots or blotches on green berries",
+        "BLACKENED_DRIED": "berries black, dry and shrivelled on the branch",
+        "BORE_HOLE_AT_CROWN": "small hole at the berry tip",
+        "DROPPING": "many berries falling",
+        "STALK_ROT": "berry stalks dark and rotting",
+        "SOOTY_OR_WAXY": "clusters covered by black soot or white wax"
+      }
+    },
+    "pestsVisible": {
+      "level": "image",
+      "values": [
+        "NONE",
+        "SCALE_INSECTS",
+        "MEALYBUG",
+        "MITE",
+        "THRIPS",
+        "CATERPILLAR_LARVA",
+        "BEETLE_BORER",
+        "CICADA",
+        "ANTS",
+        "OTHER",
+        "UNSURE"
+      ],
+      "normal": [
+        "NONE"
+      ],
+      "descriptionEn": "visible pests",
+      "hintsEn": {
+        "SCALE_INSECTS": "flat green or brown scales",
+        "MEALYBUG": "white waxy insects",
+        "CICADA": "cicada nymphs or adults, or their empty skins"
+      }
+    }
+  },
+  "profiles": {
+    "COFFEE_LEAF_RUST": {
+      "base": {
+        "sign": {
+          "ORANGE_POWDER": 4,
+          "WHITE_WAX_COLONY": -1
+        },
+        "centerColor": {
+          "ORANGE_RUST": 3,
+          "YELLOW": 1,
+          "GRAY_WHITE": -1
+        },
+        "position": {
+          "LEAF_UNDERSIDE": 2,
+          "LEAF_BLADE": 1
+        },
+        "lesionShape": {
+          "ROUND_OVAL": 2,
+          "EYE_SPOT_RINGED": -1
+        },
+        "halo": {
+          "YELLOW": 1
+        },
+        "distribution": {
+          "SCATTERED": 1,
+          "CLUSTERED_COALESCING": 1
+        },
+        "plantForm": {
+          "THIN_CANOPY_LEAF_DROP": 1
+        }
+      }
+    },
+    "COFFEE_BROWN_EYE_SPOT": {
+      "base": {
+        "lesionShape": {
+          "EYE_SPOT_RINGED": 4,
+          "ROUND_OVAL": 1
+        },
+        "centerColor": {
+          "GRAY_WHITE": 2,
+          "TAN": 1
+        },
+        "borderColor": {
+          "DARK_BROWN": 2,
+          "REDDISH_BROWN": 1
+        },
+        "halo": {
+          "YELLOW": 1
+        },
+        "margin": {
+          "SHARP": 1
+        },
+        "sign": {
+          "ORANGE_POWDER": -2
+        }
+      },
+      "variants": {
+        "COFFEE_BROWN_EYE_SPOT__LEAF": {
+          "position": {
+            "LEAF_BLADE": 1,
+            "LEAF_MARGIN": 1
+          }
+        },
+        "COFFEE_BROWN_EYE_SPOT__BERRY": {
+          "position": {
+            "BERRY": 3
+          },
+          "berries": {
+            "SPOTTED_BLOTCHED": 3
+          },
+          "lesionShape": {
+            "IRREGULAR_BLOTCH": 2,
+            "SUNKEN_SPOT": 1
+          },
+          "centerColor": {
+            "BROWN": 2
+          }
+        }
+      }
+    },
+    "COFFEE_ANTHRACNOSE": {
+      "base": {
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "sign": {
+          "BLACK_FUNGAL_DOTS": 2,
+          "FRASS_OR_HOLE": -2,
+          "PINK_CRUST": -2
+        },
+        "lesionShape": {
+          "SUNKEN_SPOT": 2,
+          "BORE_HOLES": -2
+        },
+        "plantForm": {
+          "BRANCH_DIEBACK": 1
+        }
+      },
+      "variants": {
+        "COFFEE_ANTHRACNOSE__DIEBACK": {
+          "position": {
+            "BRANCH": 2,
+            "SHOOT_TIP": 1
+          },
+          "deformation": {
+            "DRIED_WITHERED": 3
+          },
+          "plantForm": {
+            "BRANCH_DIEBACK": 3
+          },
+          "distribution": {
+            "WHOLE_ORGAN": 1
+          }
+        },
+        "COFFEE_ANTHRACNOSE__BERRY": {
+          "position": {
+            "BERRY_STALK": 3,
+            "BERRY": 2
+          },
+          "berries": {
+            "BLACKENED_DRIED": 3,
+            "STALK_ROT": 3,
+            "DROPPING": 1
+          },
+          "deformation": {
+            "DRIED_WITHERED": 1
+          }
+        }
+      }
+    },
+    "COFFEE_PINK_DISEASE": {
+      "base": {
+        "sign": {
+          "PINK_CRUST": 4,
+          "WHITE_MYCELIUM": 1
+        },
+        "centerColor": {
+          "PINK": 3,
+          "GRAY_WHITE": 1
+        },
+        "position": {
+          "BRANCH_FORK": 2,
+          "BRANCH": 2
+        },
+        "deformation": {
+          "DEAD_LEAVES_ATTACHED": 2,
+          "CRACKED": 1
+        },
+        "lesionShape": {
+          "BARK_PATCH_CANKER": 1
+        },
+        "plantForm": {
+          "BRANCH_DIEBACK": 1
+        }
+      }
+    },
+    "COFFEE_THREAD_BLIGHT": {
+      "base": {
+        "sign": {
+          "MYCELIAL_THREADS": 4,
+          "WHITE_MYCELIUM": 1,
+          "PINK_CRUST": -2
+        },
+        "deformation": {
+          "DEAD_LEAVES_ATTACHED": 3
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2,
+          "GRAY_WHITE": 1
+        },
+        "position": {
+          "LEAF_UNDERSIDE": 1,
+          "BRANCH": 1
+        },
+        "distribution": {
+          "CLUSTERED_COALESCING": 1,
+          "WHOLE_ORGAN": 1
+        },
+        "berries": {
+          "BLACKENED_DRIED": 1
+        }
+      }
+    },
+    "COFFEE_SOOTY_MOLD": {
+      "base": {
+        "sign": {
+          "SOOTY_COATING": 4,
+          "SCALE_INSECTS": 1,
+          "WHITE_WAX_COLONY": 1
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1,
+          "CLUSTERED_COALESCING": 1
+        },
+        "position": {
+          "LEAF_BLADE": 1
+        },
+        "berries": {
+          "SOOTY_OR_WAXY": 2
+        },
+        "pestsVisible": {
+          "ANTS": 1
+        }
+      }
+    },
+    "COFFEE_YELLOW_LEAF_ROOT_ROT": {
+      "base": {
+        "position": {
+          "ROOT": 3
+        },
+        "deformation": {
+          "SOFT_ROT": 3,
+          "GALLS_KNOTS": 1
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "sign": {
+          "WHITE_WAX_COLONY": -2,
+          "INSECT_OR_EGGS": -1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 2,
+          "OLD_LEAF_YELLOWING": 1
+        },
+        "plantForm": {
+          "LEANING_LOOSE": 3,
+          "STUNTED": 1,
+          "WILTING": 1
+        }
+      }
+    },
+    "COFFEE_ROOT_KNOT_NEMATODE": {
+      "base": {
+        "deformation": {
+          "GALLS_KNOTS": 4,
+          "SOFT_ROT": -1
+        },
+        "position": {
+          "ROOT": 2
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 1
+        },
+        "plantForm": {
+          "STUNTED": 2,
+          "WILTING": 1
+        }
+      }
+    },
+    "COFFEE_COLLAR_ROT": {
+      "base": {
+        "position": {
+          "TRUNK_BASE_COLLAR": 3
+        },
+        "deformation": {
+          "CONSTRICTED_GIRDLED": 4,
+          "DRIED_WITHERED": 1,
+          "SOFT_ROT": 1
+        },
+        "centerColor": {
+          "BROWN": 1,
+          "DARK_BROWN_BLACK": 1
+        },
+        "sign": {
+          "WHITE_WAX_COLONY": -2
+        },
+        "plantForm": {
+          "WILTING": 1,
+          "STUNTED": 1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 1
+        }
+      }
+    },
+    "COFFEE_STEM_CRACK_ROT": {
+      "base": {
+        "position": {
+          "TRUNK": 3
+        },
+        "deformation": {
+          "CRACKED": 3,
+          "RIDGES_ON_STEM": -1
+        },
+        "lesionShape": {
+          "BARK_PATCH_CANKER": 2,
+          "BORE_HOLES": -2
+        },
+        "centerColor": {
+          "DARK_BROWN_BLACK": 2
+        },
+        "sign": {
+          "FRASS_OR_HOLE": -2,
+          "PINK_CRUST": -2
+        },
+        "plantForm": {
+          "TIP_DIEBACK": 2
+        }
+      }
+    },
+    "COFFEE_SCALE": {
+      "base": {
+        "sign": {
+          "SCALE_INSECTS": 4,
+          "SOOTY_COATING": 1
+        },
+        "pestsVisible": {
+          "SCALE_INSECTS": 3,
+          "ANTS": 1
+        },
+        "position": {
+          "SHOOT_TIP": 2,
+          "LEAF_UNDERSIDE": 1,
+          "BRANCH": 1
+        },
+        "distribution": {
+          "CLUSTERED_COALESCING": 1
+        }
+      },
+      "variants": {
+        "COFFEE_SCALE__GREEN": {
+          "centerColor": {
+            "PALE_GREEN": 3
+          },
+          "position": {
+            "ALONG_MIDRIB_OR_VEINS": 2
+          }
+        },
+        "COFFEE_SCALE__BROWN": {
+          "centerColor": {
+            "BROWN": 3,
+            "REDDISH_BROWN": 1
+          },
+          "position": {
+            "BRANCH": 2
+          }
+        }
+      }
+    },
+    "COFFEE_MEALYBUG": {
+      "base": {
+        "sign": {
+          "WHITE_WAX_COLONY": 4,
+          "SOOTY_COATING": 1
+        },
+        "pestsVisible": {
+          "MEALYBUG": 3,
+          "ANTS": 1
+        },
+        "position": {
+          "BERRY_STALK": 3,
+          "FLOWER": 2,
+          "BERRY": 2,
+          "ROOT": -2,
+          "TRUNK_BASE_COLLAR": -2
+        },
+        "berries": {
+          "SOOTY_OR_WAXY": 2,
+          "DROPPING": 1,
+          "BLACKENED_DRIED": 1
+        },
+        "distribution": {
+          "CLUSTERED_COALESCING": 1
+        }
+      }
+    },
+    "COFFEE_ROOT_MEALYBUG": {
+      "base": {
+        "sign": {
+          "WHITE_WAX_COLONY": 3,
+          "SOIL_TUNNEL_OR_TENT": 2,
+          "WHITE_MYCELIUM": 1
+        },
+        "position": {
+          "ROOT": 2,
+          "TRUNK_BASE_COLLAR": 2,
+          "BERRY_STALK": -2,
+          "FLOWER": -2
+        },
+        "pestsVisible": {
+          "MEALYBUG": 2,
+          "ANTS": 1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 1
+        },
+        "plantForm": {
+          "STUNTED": 1,
+          "WILTING": 1
+        }
+      }
+    },
+    "COFFEE_BERRY_BORER": {
+      "base": {
+        "position": {
+          "BERRY_CROWN": 4,
+          "BERRY": 1
+        },
+        "lesionShape": {
+          "BORE_HOLES": 3
+        },
+        "size": {
+          "SMALL_LT_2MM": 2
+        },
+        "sign": {
+          "FRASS_OR_HOLE": 2
+        },
+        "berries": {
+          "BORE_HOLE_AT_CROWN": 4,
+          "DROPPING": 1
+        },
+        "pestsVisible": {
+          "BEETLE_BORER": 1
+        }
+      }
+    },
+    "COFFEE_TWIG_BORER": {
+      "base": {
+        "lesionShape": {
+          "BORE_HOLES": 3
+        },
+        "size": {
+          "SMALL_LT_2MM": 2
+        },
+        "position": {
+          "BRANCH": 2,
+          "BERRY_CROWN": -2,
+          "BERRY": -1
+        },
+        "sign": {
+          "FRASS_OR_HOLE": 2,
+          "PELLET_FRASS": -1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 2
+        },
+        "plantForm": {
+          "BRANCH_DIEBACK": 1
+        },
+        "pestsVisible": {
+          "BEETLE_BORER": 1
+        }
+      }
+    },
+    "COFFEE_RED_BORER": {
+      "base": {
+        "sign": {
+          "PELLET_FRASS": 4,
+          "FRASS_OR_HOLE": 1
+        },
+        "lesionShape": {
+          "BORE_HOLES": 2
+        },
+        "size": {
+          "MEDIUM_2_10MM": 2,
+          "SMALL_LT_2MM": -1
+        },
+        "position": {
+          "BRANCH": 1,
+          "TRUNK": 1
+        },
+        "deformation": {
+          "DRIED_WITHERED": 1
+        },
+        "pestsVisible": {
+          "CATERPILLAR_LARVA": 3
+        }
+      }
+    },
+    "COFFEE_WHITE_STEM_BORER": {
+      "base": {
+        "deformation": {
+          "RIDGES_ON_STEM": 4,
+          "CRACKED": 1
+        },
+        "position": {
+          "TRUNK": 2
+        },
+        "lesionShape": {
+          "BORE_HOLES": 1
+        },
+        "sign": {
+          "FRASS_OR_HOLE": 1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 1
+        },
+        "plantForm": {
+          "WILTING": 1,
+          "DEAD_OR_DYING": 1
+        },
+        "pestsVisible": {
+          "BEETLE_BORER": 2
+        }
+      }
+    },
+    "COFFEE_ROOT_CICADA": {
+      "base": {
+        "pestsVisible": {
+          "CICADA": 4
+        },
+        "sign": {
+          "INSECT_OR_EGGS": 2,
+          "SOIL_TUNNEL_OR_TENT": 1,
+          "WHITE_WAX_COLONY": -2
+        },
+        "position": {
+          "ROOT": 2
+        },
+        "deformation": {
+          "SOFT_ROT": -1
+        },
+        "discoloration": {
+          "GENERAL_YELLOWING": 1
+        },
+        "plantForm": {
+          "STUNTED": 1,
+          "THIN_CANOPY_LEAF_DROP": 1
+        },
+        "berries": {
+          "DROPPING": 1
+        }
+      }
+    },
+    "COFFEE_THRIPS": {
+      "base": {
+        "centerColor": {
+          "WHITE_SILVERY": 3
+        },
+        "lesionShape": {
+          "TINY_DOTS_STIPPLING": 2
+        },
+        "sign": {
+          "EXCRETA_SPECKS": 3
+        },
+        "position": {
+          "LEAF_UNDERSIDE": 1,
+          "SHOOT_TIP": 1
+        },
+        "discoloration": {
+          "SILVERY_BRONZE": 2
+        },
+        "deformation": {
+          "CURLED_DEFORMED": 1
+        },
+        "pestsVisible": {
+          "THRIPS": 4
+        }
+      }
+    },
+    "COFFEE_RED_MITE": {
+      "base": {
+        "discoloration": {
+          "SILVERY_BRONZE": 3
+        },
+        "centerColor": {
+          "REDDISH_BROWN": 2,
+          "BROWN": 1
+        },
+        "lesionShape": {
+          "TINY_DOTS_STIPPLING": 2
+        },
+        "position": {
+          "LEAF_BLADE": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        },
+        "sign": {
+          "EXCRETA_SPECKS": -1
+        },
+        "pestsVisible": {
+          "MITE": 4
+        }
+      }
+    },
+    "COFFEE_N_DEFICIENCY": {
+      "base": {
+        "discoloration": {
+          "OLD_LEAF_YELLOWING": 3,
+          "GENERAL_YELLOWING": 2
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "centerColor": {
+          "YELLOW": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 2
+        },
+        "plantForm": {
+          "THIN_CANOPY_LEAF_DROP": 1
+        },
+        "position": {
+          "ROOT": -2
+        },
+        "deformation": {
+          "SOFT_ROT": -2
+        }
+      }
+    },
+    "COFFEE_K_DEFICIENCY": {
+      "base": {
+        "lesionShape": {
+          "TIP_OR_MARGIN_BURN": 4
+        },
+        "position": {
+          "LEAF_MARGIN": 3,
+          "LEAF_TIP": 2
+        },
+        "centerColor": {
+          "BROWN": 1,
+          "TAN": 1
+        },
+        "borderColor": {
+          "YELLOW": 1
+        },
+        "sign": {
+          "ORANGE_POWDER": -2
+        },
+        "discoloration": {
+          "OLD_LEAF_YELLOWING": 1,
+          "BROWN_SCORCH": 1
+        },
+        "plantForm": {
+          "BRANCH_DIEBACK": 1
+        }
+      }
+    },
+    "COFFEE_MG_DEFICIENCY": {
+      "base": {
+        "lesionShape": {
+          "INTERVEINAL_CHLOROSIS": 4
+        },
+        "discoloration": {
+          "OLD_LEAF_YELLOWING": 2
+        },
+        "centerColor": {
+          "YELLOW": 2
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 1
+        },
+        "position": {
+          "LEAF_BLADE": 1,
+          "SHOOT_TIP": -1
+        },
+        "deformation": {
+          "SMALL_NARROW_ROSETTE": -2
+        }
+      }
+    },
+    "COFFEE_ZN_DEFICIENCY": {
+      "base": {
+        "deformation": {
+          "SMALL_NARROW_ROSETTE": 4
+        },
+        "lesionShape": {
+          "INTERVEINAL_CHLOROSIS": 2
+        },
+        "position": {
+          "SHOOT_TIP": 3
+        },
+        "discoloration": {
+          "YOUNG_LEAF_PALE": 2
+        },
+        "centerColor": {
+          "YELLOW": 1
+        }
+      }
+    },
+    "COFFEE_S_DEFICIENCY": {
+      "base": {
+        "discoloration": {
+          "YOUNG_LEAF_PALE": 3
+        },
+        "lesionShape": {
+          "NO_DISTINCT_LESION": 1
+        },
+        "distribution": {
+          "WHOLE_ORGAN": 2
+        },
+        "centerColor": {
+          "YELLOW": 1,
+          "WHITE_SILVERY": 1
+        },
+        "position": {
+          "SHOOT_TIP": 1
+        },
+        "deformation": {
+          "SMALL_NARROW_ROSETTE": -1
+        },
+        "plantForm": {
+          "STUNTED": 1
+        }
+      }
+    }
+  }
+}
