@@ -6,8 +6,9 @@ import { ChannelMessageSender } from './channel.messaging';
 import { LogMessageSender } from './log.messaging';
 import { EMessageChannel, MESSAGE_SENDER } from './messaging.interface';
 import { SmtpEmailSender } from './smtp.messaging';
+import { SpeedSmsSender } from './speedsms.messaging';
 
-/** EMAIL goes through SMTP when `mail.transport` is SMTP, else to the log; PHONE always goes to the log (no SMS provider yet). */
+/** EMAIL goes through SMTP when `mail.transport` is SMTP, PHONE through SpeedSMS when `sms.transport` is SPEEDSMS; otherwise to the log. */
 const messageSenderFactory = (
   config: IConfigService,
   logger: ILogger,
@@ -27,9 +28,14 @@ const messageSenderFactory = (
           logger,
         )
       : logSender;
+  const sms = config.get('sms');
+  const phoneSender =
+    sms.transport === 'SPEEDSMS'
+      ? new SpeedSmsSender(sms.speedSmsAccessToken, logger)
+      : logSender;
   return new ChannelMessageSender({
     [EMessageChannel.EMAIL]: emailSender,
-    [EMessageChannel.PHONE]: logSender,
+    [EMessageChannel.PHONE]: phoneSender,
   });
 };
 

@@ -5,6 +5,7 @@ import { InMemoryMessageSender } from './in-memory.messaging';
 import { LogMessageSender } from './log.messaging';
 import { EMessageChannel } from './messaging.interface';
 import { SmtpEmailSender } from './smtp.messaging';
+import { SpeedSmsSender } from './speedsms.messaging';
 
 const configFor = (nodeEnv: string) =>
   ({ get: () => ({ nodeEnv }) }) as unknown as IConfigService;
@@ -85,5 +86,77 @@ describe('ChannelMessageSender', () => {
     await sender.send(sms);
     expect(email.sent).toEqual([message]);
     expect(phone.sent).toEqual([sms]);
+  });
+});
+
+describe('SpeedSmsSender', () => {
+  const sms = {
+    channel: EMessageChannel.PHONE,
+    to: '0912345678',
+    body: 'Your code is 123456',
+  };
+  const fetchReturning = (body: unknown, status = 200) =>
+    jest
+      .fn()
+      .mockResolvedValue(
+        new Response(JSON.stringify(body), { status }),
+      ) as unknown as jest.MockedFunction<typeof fetch>;
+  const success = {
+    status: 'success',
+    code: '00',
+    data: { tranId: 42, invalidPhone: [] },
+  };
+
+  it.each([
+    ['0912345678', '84912345678'],
+    ['+84912345678', '84912345678'],
+    ['84912345678', '84912345678'],
+  ])('sends %s as %s from a random sender number', async (phone, expected) => {
+    const fetchFn = fetchReturning(success);
+    const logger = new InMemoryLogger();
+    await new SpeedSmsSender('token-1', logger, fetchFn).send({
+      ...sms,
+      to: phone,
+    });
+    const url = new URL(fetchFn.mock.calls[0][0] as string);
+    expect(url.origin + url.pathname).toBe(
+      'https://api.speedsms.vn/index.php/sms/send',
+    );
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      'access-token': 'token-1',
+      to: expected,
+      content: 'Your code is 123456',
+      type: '2',
+      sender: '',
+    });
+    expect(logger.entries[0].meta).toEqual({ to: expected, tranId: 42 });
+  });
+
+  it('rejects on a SpeedSMS error response', async () => {
+    const fetchFn = fetchReturning({
+      status: 'error',
+      code: '300',
+      message: 'not enough balance',
+    });
+    await expect(
+      new SpeedSmsSender('t', new InMemoryLogger(), fetchFn).send(sms),
+    ).rejects.toThrow('SpeedSMS error 300: not enough balance');
+  });
+
+  it('rejects when SpeedSMS reports the phone as invalid', async () => {
+    const fetchFn = fetchReturning({
+      ...success,
+      data: { tranId: 1, invalidPhone: ['84912345678'] },
+    });
+    await expect(
+      new SpeedSmsSender('t', new InMemoryLogger(), fetchFn).send(sms),
+    ).rejects.toThrow('SpeedSMS rejected phone 84912345678');
+  });
+
+  it('rejects on a non-2xx HTTP status', async () => {
+    const fetchFn = fetchReturning({}, 502);
+    await expect(
+      new SpeedSmsSender('t', new InMemoryLogger(), fetchFn).send(sms),
+    ).rejects.toThrow('SpeedSMS HTTP 502');
   });
 });
