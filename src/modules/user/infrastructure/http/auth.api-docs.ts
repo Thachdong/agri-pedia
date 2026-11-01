@@ -11,7 +11,9 @@ defineApiDocs(AuthController, {
         'Creates a user with its primary address. Responds 201 with an empty body. ' +
         '`address.province` = a province `codename` from GET /provinces; ' +
         '`address.ward` = a ward `codename` of that province from GET /provinces/{provinceCode}/wards. ' +
-        'Unknown codenames, or a ward of another province, return USER_LOCATION_INVALID.',
+        'Unknown codenames, or a ward of another province, return USER_LOCATION_INVALID. ' +
+        'loginType PHONE: `identifier` must be a Viettel, Mobifone or Vinaphone mobile number ' +
+        '(0 / 84 / +84 prefix, judged by the original carrier prefix); other carriers fail request validation (400).',
       validation: true,
       errors: [
         { type: EDomainErrorType.VALIDATION, code: 'USER_INVALID_COORDINATES' },
