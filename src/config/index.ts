@@ -16,6 +16,7 @@ import {
   TProductSuggestionConfig,
 } from './product-suggestion.config';
 import { securityConfig, TSecurityConfig } from './security.config';
+import { smsConfig, TSmsConfig } from './sms.config';
 import { storageConfig, TStorageConfig } from './storage.config';
 
 export * from './app.config';
@@ -30,6 +31,7 @@ export * from './mail.config';
 export * from './otp.config';
 export * from './product-suggestion.config';
 export * from './security.config';
+export * from './sms.config';
 export * from './storage.config';
 
 /** Every config group, loaded once by SharedConfigModule. Add new groups here. */
@@ -47,6 +49,7 @@ export const configGroups = [
   productSuggestionConfig,
   datasetConfig,
   mailConfig,
+  smsConfig,
 ];
 
 /** Namespace -> type map used by IConfigService.get(). Keep in sync with configGroups. */
@@ -64,4 +67,5 @@ export type TConfigMap = {
   productSuggestion: TProductSuggestionConfig;
   dataset: TDatasetConfig;
   mail: TMailConfig;
+  sms: TSmsConfig;
 };
