@@ -21,9 +21,14 @@ import {
 import { RegisterAddressDto } from './register-address.dto';
 
 const PHONE_SEPARATORS = /[\s.\-()]/g;
-const VN_PHONE = /^(?:\+84|84|0)\d{9}$/;
+/**
+ * Vietnamese mobile number of Viettel (32-39, 86, 96-98), Mobifone (70, 76-79, 89, 90, 93)
+ * or Vinaphone (81-85, 88, 91, 94): the carriers OTP SMS is sent to. Checked on the original
+ * prefix, so a number ported to or from another carrier is judged by its old carrier.
+ */
+const VN_PHONE = /^(?:\+84|84|0)(?:3[2-9]|7[06-9]|8[1-689]|9[0134678])\d{7}$/;
 
-/** Validates `identifier` as email or Vietnamese phone number depending on `loginType`. */
+/** Validates `identifier` as email or supported Vietnamese mobile number depending on `loginType`. */
 const IsIdentifierOfLoginType =
   (): PropertyDecorator => (target, propertyName) =>
     registerDecorator({
@@ -47,7 +52,7 @@ const IsIdentifierOfLoginType =
         defaultMessage(args: ValidationArguments): string {
           const { loginType } = args.object as RegisterUserDto;
           return loginType === ELoginType.PHONE
-            ? 'identifier must be a valid phone number'
+            ? 'identifier must be a Viettel, Mobifone or Vinaphone phone number'
             : 'identifier must be a valid email';
         },
       },

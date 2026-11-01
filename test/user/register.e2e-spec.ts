@@ -151,4 +151,25 @@ describe('POST /auth/register (e2e)', () => {
   it('returns 400 for an invalid phone number', async () => {
     await register({ ...distributor, identifier: '12345' }).expect(400);
   });
+
+  it.each([
+    ['Viettel', '0981234567'],
+    ['Mobifone', '+84701234567'],
+    ['Vinaphone', '84 88 123 4567'],
+  ])('accepts a %s number', async (_carrier, identifier) => {
+    await register({ ...distributor, identifier }).expect(201);
+  });
+
+  it.each([
+    ['Vietnamobile', '0921234567'],
+    ['Gmobile', '0991234567'],
+    ['Itel', '0871234567'],
+    ['Reddi', '0551234567'],
+  ])('returns 400 for a %s number', async (_carrier, identifier) => {
+    const res = await register({ ...distributor, identifier }).expect(400);
+    expect(JSON.stringify(res.body)).toContain(
+      'identifier must be a Viettel, Mobifone or Vinaphone phone number',
+    );
+    expect(await dataSource.query('SELECT id FROM users')).toHaveLength(0);
+  });
 });
